@@ -1,0 +1,153 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>酒店角色管理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <li class="on">酒店角色管理</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main" class="bgfff jiudianluru">
+        <div class="panel panel-default table-datawrap">
+            <div class="panel-heading">
+                <!-- Single button -->
+                <form class="clearfix searchbar">
+                    <div class="col">
+                        <input type="text" class="form-control search" placeholder="输入姓名进行搜索" id="name"  value="{$filter.name|default=''}">
+                    </div>
+                    <div class="col">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span class="text"><span class="default">{$filter.hotel_name|default='酒店名称'}</span></span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu hotel_id">
+                                <foreach name="Hotel" item="voone">
+                                    <li><a value="{$voone.id}">{$voone.name}</a></li>
+                                </foreach>
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span class="text"><span class="default">{$filter.role_name|default='用户类型'}</span></span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu role_id">
+                                <foreach name="role" item="votwo">
+                                    <li><a value="{$votwo.id}">{$votwo.name}</a></li>
+                                </foreach>
+                            </ul>
+                        </div>
+                        <div class="navbar-form navbar-left">
+                            <input type="hidden" id="hotel_id" value="{$filter.hotel_id}">
+                            <input type="hidden" id="role_id" value="{$filter.role_id}">
+                            <input type="hidden" id="hotel_name" value="{$filter.hotel_name}">
+                            <input type="hidden" id="role_name" value="{$filter.role_name}">
+                            <button type="button" class="btn btn-warning searchs">搜索</button>
+                            <button type="button" class="btn btn-warning chongzhi">重置</button>
+                            <button type="button" class="btn btn-warning xinzeng" urls="{:U('/HotelUserRole/addUser')}">新增</button>
+                        </div>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="panel-body">
+            <table class="table table-condensed table-data">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <!--<th>用户ID</th>-->
+                    <th>用户账号</th>
+                    <th>用户姓名</th>
+                    <th>联系方式</th>
+                    <th>酒店名称</th>
+                    <th>用户类型</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <notempty name="data">
+                <foreach name="data" item="vo">
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <!--<td>{$vo.sn}</td>-->
+                        <td>{$vo.loginname}</td>
+                        <td>{$vo.real_name}</td>
+                        <td>{$vo.mobile}</td>
+                        <td>{$vo.hotel_name}</td>
+                        <td>{$vo.role_name}</td>
+                        <td><a class="text-warning" href="{:U('Pc/HotelUserRole/editUser',array('id'=>$vo['id']))}">编辑</a> 丨 <a class="text-warning" href="{:U('Pc/HotelUserRole/resetPass',array('id'=>$vo['id']))}">重置密码</a> 丨 <a class="text-warning" href="#" onclick="delUser({$vo.id})">删除</a></td>
+                    </tr>
+                </foreach>
+                <else/>
+                <tr><td colspan="7">暂无数据</td></tr>
+                </notempty>
+                </tbody>
+            </table>
+            <div class="pagination-container">
+                <div class="pagination">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__JS__/jquery.z-pager.js"></script>
+    <script type="text/javascript">
+        $(".xinzeng").click(function () {
+            var url = $(this).attr('urls');
+            window.location.href = url;
+        });
+
+        $(".text-warning").click(function () {
+            var url = $(this).attr('url');
+            window.location.href = url;
+        });
+
+        $(".chongzhi").click(function () {
+            window.location.href="/Pc/HotelUserRole/index"
+        })
+
+        // 搜索
+        $(".searchs").click(function () {
+            var name = $("#name").val();
+            var hotel_id = $("#hotel_id").val();
+            var role_id = $("#role_id").val();
+            var hotel_name = $("#hotel_name").val();
+            var role_name = $("#role_name").val();
+            window.location.href = "{:U('')}?name=" + name + "&hotel_id=" + hotel_id + "&role_id=" + role_id + "&hotel_name=" + hotel_name + "&role_name=" + role_name;
+        });
+
+        $(".hotel_id li a").click(function () {
+            $("#hotel_id").val($(this).attr('value'));
+            $("#hotel_name").val($(this).text());
+        });
+
+        $(".role_id li a").click(function () {
+            $("#role_id").val($(this).attr('value'));
+            $("#role_name").val($(this).text());
+        });
+
+        function delUser(id) {
+            var data = {};
+            data.id = id;
+            var url = '/Pc/HotelUserRole/delUser';
+            $.post(url, data, function (f) {
+                if(f.code == 0){
+                    layer.msg(data.message,{time:1000, offset: 0, icon:1});
+                }else{
+                    layer.msg(data.message,{time:1000, offset: 0, icon:2});
+                    window.location.reload();
+                }
+            })
+        }
+    </script>
+</block>

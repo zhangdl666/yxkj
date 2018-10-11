@@ -1,0 +1,87 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>添加新账户</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        .renlingchakan {
+            padding-bottom: 0.1rem;
+        }
+    </style>
+</block>
+<block name="main">
+    <!-- 主体内容 开始 -->
+    <div class="main">
+        <!-- header 开始 -->
+        <div class="header">
+            <div class="left"><a href="{:U('apply')}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+            <div class="center"></div>
+            <div class="right"><a class="s" ></a></div>
+        </div>
+        <!-- header 结束 -->
+
+        <div class="main_body">
+            <div class="form_data_wrap renlingchakan">
+                <form id="" method="post" action="{:U('addbank')}">
+                    <ul class="form_data">
+                        <li class="layoutlr form_item">
+                            <div class="left"><font color="red">*</font>账户姓名</div>
+                            <div class="right">
+                                <div><input type="text" style="border: 0;text-align: right" name="name" value=""><i class="icon w_0000_00 w_00_11"></i></div>
+                                <!--<input type="text" name="name" >-->
+                            </div>
+                        </li>
+                        <li class="layoutlr form_item">
+                            <div class="left"> <font color="red">*</font>选择银行</div>
+                            <div class="right">
+                                <div class="" data-relation="hotel_type">
+                                    <select name="bank_type" style="width: 127px">
+                                        <volist name="row" id="row">
+                                            <option value="{$row.id}">{$row.name}</option>
+                                        </volist>
+                                    </select>
+                                    <i class="icon w_0000_00 w_00_12"></i>
+                                </div>
+
+                                <span class="errortips"></span>
+                            </div>
+                        </li>
+                        <li class="layoutlr form_item">
+                            <div class="left"><font color="red">*</font>输入支行</div>
+                            <div class="right">
+                                <div><input type="text" style="border: 0;text-align: right" name="bank_name" value=""><i class="icon w_0000_00 w_00_11"></i></div>
+                                <!--<input type="text" name="bank_name" >-->
+                            </div>
+                        </li>
+                        <li class="layoutlr form_item">
+                            <div class="left"> <font color="red">*</font>银行卡号</div>
+                            <div class="right">
+                                <div><input type="text" style="border: 0;text-align: right" name="bank_num" value=""><i class="icon w_0000_00 w_00_11"></i></div>
+                                <!--<input type="text" name="bank_num" >-->
+
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="form_data_btns">
+                        <li class="layoutlr">
+                            <div class="right">
+                                <button type="submit" class="btn maxbtn ajax-post ">提交</button>
+                            </div>
+                            &nbsp;
+                            <div class="left">
+                                <a href="{:U('index')} " class="btn maxbtn back">取消</a></button>
+                            </div>
+
+                        </li>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+    <script type="text/javascript" src="__JS__/saleext.js"></script>
+</block>
+
+

@@ -1,0 +1,691 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>净化效果</title>
+</block>
+<block name="css">
+<style>
+	button.btn.black.room {
+		background-color: #aaaca2;
+	}
+	.fj_gezi_cont .i_radio {
+		border-radius: 0.14rem !important;
+		margin-top: 0.05rem;
+	}
+	.hotel_selects {
+		padding: 0.3rem 0rem 0.2rem 3rem;
+		background-color: white;
+	}
+
+	.jiudianxuanze{
+		width: 2.93rem;
+		height: 0.64rem;
+		border-radius: 0.1rem;
+		background-color: #f4f4f4;
+		border: none;
+		color: #666;
+	}
+
+	.select_yx_div{
+		width: 6rem;
+		height: 0.6rem;
+		background-color: #f4f4f4;
+		border-radius: 5px;
+	}
+	.yunxing{
+		background-color: white;
+		padding: 0.2rem 0rem;
+	}
+	.header .right .icon {
+		margin-right: 0rem;
+	}
+	select {
+		width: 6rem;
+		padding-left: 0.2rem;
+		font-size: 0.3rem;
+		line-height: 0.6rem;
+		text-align: left;
+		/*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+		border: solid 1px #000;
+		/*很关键：将默认的select选择框样式清除*/
+		appearance:none;
+		-moz-appearance:none;
+		-webkit-appearance:none;
+		/*在选择框的最右侧中间显示小箭头图片*/
+		background: url("") no-repeat scroll right center transparent;
+		/*为下拉小箭头留出一点位置，避免被文字覆盖*/
+		padding-right: 14px;
+	}
+
+
+	/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+	select::-ms-expand { display: none; }
+	.hotel_selects {
+		text-align: left;
+		padding: 0.2rem 0;
+		height: 1rem;
+		background-color: white;
+	}
+	select {
+		direction:inherit;
+	}
+	select option {
+		direction: inherit;
+	}
+	.select_css_div{
+		width: 6rem;
+		height: 0.6rem;
+		margin: 0 auto;
+		background-color: #f4f4f4;
+	}
+	.editdate{
+		background-color: #f4f4f4!important;
+		margin: 0.2rem 0;
+	}
+	.screening_condition_wrap .screening {
+		margin-left: 0rem!important;
+	}
+	.screening_condition_wrap label {
+		padding-right: 0.2rem;
+		font-size: 0.3rem;
+		line-height: 1.1rem;
+		padding-left: 0rem;
+		float: none;
+		margin-right: 0.1rem;
+	}
+	.screening_condition_wrap select, .screening_condition_wrap input {
+		width: 5.50rem;
+		height: 0.7rem;
+		text-align: center;
+	}
+
+	/*.input_position{*/
+	/*position: absolute;*/
+	/*width: 100%;*/
+	/*top: 50%;*/
+	/*margin-top: -1.10rem;*/
+	/*}*/
+
+	.btn_icon_top .icon{background: url('__IMG__/contraction.png');
+		background-repeat: no-repeat;
+		background-size: contain;
+		top: 0.05rem;}
+	.btn_icon_bottom .icon{background: url('__IMG__/open.png');
+		background-repeat: no-repeat;
+		background-size: contain;
+		top: 0.05rem;}
+
+	.pc_kq_height{
+		height: 0.20rem;
+		overflow: hidden;
+	}
+
+
+	.jinhuaxiaoguo .pmnum .dpro .progress-container{
+		width: 25vw;
+	}
+	.jinhuaxiaoguo .bjkkitem02_wrap .bjkkitem02 .bjkkitem_main{
+		padding-left: 1.2rem;
+	}
+	.w_04_07{
+		top:0.1rem;
+	}
+	.gezi-container{
+		padding: 0.2rem 0;
+	}
+	.bjkkitem .bjkkitem_main{
+		height: 20vw;
+	}
+	.layoutlr .col{
+		width: 50%;
+	}
+	.jinhuaxiaoguo .bjkkitem02_wrap{
+		padding: 0;
+	}
+	.jinhuaxiaoguo .bjkkitem02_wrap .bjkkitem02{
+		height: 20vw;
+		border: none;
+		background: #fff;
+	}
+	.layoutlr {
+		 line-height: 1.5em;
+	}
+	.jinhuaxiaoguo .jinhua_block {
+		padding-top: 0.35rem;
+	}
+	.white_header .left {
+		color: #666;
+		padding-left: 0.2rem;
+		font-size: 0.26rem;
+		padding-bottom: 0.36rem;
+	}
+
+	.pitch_on{
+		background: url("__IMG__/pitch_on.png") no-repeat;
+		background-size: 40%;
+		background-position: right bottom;
+		color: #4e4e4e!important;
+	}
+
+	.fj_div{
+		width: 4.5rem;
+		margin: 0 auto;
+		display: block;
+		height: 25px;
+		margin-bottom: 0.3rem;
+	}
+
+	.fj_div .btn.green {
+		color: #fff;
+		background-color: #35ce85;
+	}
+	.fj_div .btn {
+		padding: 0;
+		float: left;
+		margin: 6px 2px 0;
+		width: 2rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		height: 24px;
+		background-color: #f4f4f4;
+		border: none;
+	}
+	.fj_sales{
+		display: none;
+	}
+	.display_none{
+		display: none;
+	}
+	.display_block{
+		display: block;
+	}
+
+</style>
+</block>
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left back"><i class="icon w_0000_00 w_00_08"></i><a href="{:U('Index/index')}">返回</a></div>
+			<div class="center"></div>
+			<div class="right"><a class="s fenxiang"><i class="icon w_0004_04 w_04_07"></i></a></div>
+		</div>
+
+		<div class="main_body jinhuaxiaoguo" data="{$hotelid|default=0}">
+			<if condition="($role eq 5) OR ($role eq 9)">
+			<div class="hotel_selects" data-relation="hotel_type" >
+				<div class="select_css_div">
+					<select name="hotels" id="hotelsss" style="height: 0.6rem;">
+						<foreach name="hotelData" item="do">
+							<option value="{$do.id}" <eq name="do.id" value="$hotelid">selected</eq>>{$do.name}</option>
+						</foreach>
+					</select>
+					<i class="icon w_0000_00 w_00_12" style="position: relative;top: -0.48rem;right: -5.6rem;"></i>
+				</div>
+			</div>
+			</if>
+			<if condition="($role eq 5) OR ($role eq 9)">
+				<else/>
+			<div class="layoutlr jinhua_title">
+				<div class="col left"><i class="icon w_0003_03 w_03_12"></i>{$hotel_name}</div>
+			</div>
+			</if>
+			<div class="jinhua_block">
+				<dl class="gezi-container">
+					<dt class="left gezi-title" style="text-align-last: justify;padding: 0.18rem 0.4rem;">
+						<div class="checkbox-container gezi-green" data-type="checkbox">
+							<i class="icon icon01 i_radio"></i>
+							<span class="checkbox_txt">优</span>
+						</div>
+						<div class="checkbox-container gezi-orange" data-type="checkbox">
+							<i class="icon icon01 i_radio"></i>
+							<span class="checkbox_txt">良</span>
+						</div>
+						<div class="checkbox-container gezi-red" data-type="checkbox">
+							<i class="icon icon01 i_radio"></i>
+							<span class="checkbox_txt">差</span>
+						</div>
+						<div class="checkbox-container gezi-gray" data-type="checkbox">
+							<i class="icon icon01 i_radio"></i>
+							<span class="checkbox_txt">离线</span>
+						</div>
+						<div class="checkbox-container gezi-black" data-type="checkbox">
+							<i class="icon icon01 i_radio"></i>
+							<span class="checkbox_txt">关闭</span>
+						</div>
+						<div class="btn_kq_icon btn_icon_bottom" style="float: right;"><i class="icon"></i></div>
+					</dt>
+					<dd class="right gezi-group pc_kq_height" id="kq_height">
+						<foreach name="rooms" item="vo">
+							<button type="button" class="btn room {$vo.status}" data-type="{$vo.room_sno}" value="{$vo.equipment_sno}">{$vo.room_sno}</button>
+						</foreach>
+					</dd>
+					<div class="btn_kq_icon btn_icon_bottom" style="text-align:center;"><i class="icon"></i></div>
+				</dl>
+			</div>
+			<div class="saless">
+			<div class="layoutlr bjkkitem02_wrap jinhua_block" style="background: #f4f4f4;">
+				<div class="col left">
+					<div class="bjkkitem bjkkitem02">
+						<div class="bjkkitem_main">
+							<div class="icon_wrap"><i class="icon w_0002_02 w_02_05"></i></div>
+							<div class="num">{$room_num}<span class="min">个</span></div>
+							<div class="title_wrap">
+								<div class="title_inner">
+									<span class="title">优享客房数</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col right">
+					<div class="bjkkitem bjkkitem02">
+						<div class="bjkkitem_main">
+							<div class="icon_wrap"><i class="icon w_0002_02 w_02_06"></i></div>
+							<div class="num">{$yznum|default=0}<span class="min">天</span></div>
+							<div class="title_wrap">
+								<div class="title_inner">
+									<span class="title" style="margin-left: -0.1rem;">室内累计优质天数</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layoutlr bjkkitem02_wrap jinhua_block pmnum">
+				<div class="col left">
+					<div class="bjkkitem bjkkitem02">
+						<div class="bjkkitem_main">
+							<div class="icon_wrap"><i class="icon dan_icon i_dan15">PM2.5</i></div>
+							<div class="dpro">
+								<span class="dantitle">当日室内空气质量均值</span>
+								<div class="progress-container progress01"><div class="progress" data-width="{$indoor_pms / 5}" style="width: 30vw;"></div></div>
+								<div class="prodata">
+									<span class="max">{$indoor_pms}</span><if condition="$indoor_pming eq 1">优<elseif condition="$indoor_pming eq 2"/>良<else />差</if>
+								</div>
+							</div>
+							<div class="dpro">
+								<span class="dantitle">当日室外空气质量均值</span>
+								<div class="progress-container progress03"><div class="progress" data-width="{$outdoor_pms / 5}" style="width: 30vw;"></div></div>
+								<div class="prodata">
+									<span class="max">{$outdoor_pms}</span><if condition="$outdoor_pming eq 1"> 优<elseif condition="$outdoor_pming eq 2"/>良<else />差</if>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- 图表 开始 -->
+			<div class="jinhua_block">
+				<div class="layoutlr white_header">
+					<div class="" style="text-align: center;font-size: 0.36rem;margin-bottom: 0.2rem;">空气质量走势统计</div>
+					<div class="fj_div" >
+						<button type="button" class="fj_7 btn gray green">近7日</button>
+						<button type="button" class="fj_btn btn gray ">=</button>
+					</div>
+				</div>
+				<!--【图表】-->
+                <div class="sales fj_sales_7">
+                    <div id="onemain" style="height: 300px;"></div>
+                </div>
+			</div>
+			</div>
+			<!-- 图表 结束 -->
+		</div>
+
+	</div>
+	<!-- 主体内容 结束 -->
+
+</block>
+
+<block name="js">
+<script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Layer3.1/layer.js"></script>
+<if condition="($role eq 5) OR ($role eq 9)">
+<else/>
+<script src="__PUBLIC__/Layer/mobile/layer.js"></script>
+</if>
+
+<script type="text/javascript">
+    /***房间数量超出一排显示下拉开关***/
+    function but_show(){
+        var kg_btn = $("#kq_height");
+        var btn_icon =$(".btn_kq_icon");
+        var btn_length = kg_btn.children(".btn").length;
+        var btn_num =parseInt(kg_btn.width() / 54);
+        if(btn_length > btn_num){
+            btn_icon.addClass("btn_block");
+            btn_icon.removeClass(" btn_none");
+        }else {
+            btn_icon.addClass("btn_none");
+            btn_icon.removeClass("btn_block");
+        }
+    }
+    but_show();
+	$('.fj_div button').click(function () {
+		var _this = $(this);
+		var _vae = _this.hasClass('fj_btn');
+
+
+		if(!_this.hasClass('green')){
+            if(_vae){
+                var a = $(".fj_btn").text();
+                if(a == "="){
+                    return;
+                }
+            }
+		    _this.siblings().removeClass('green');
+		    _this.addClass('green');
+            if(_this.hasClass('fj_7')){
+                $('#onemain').css('display','block');
+                $('#room_onemain').css('display','none');
+            }else {
+                $('#onemain').css('display','none');
+                $('#room_onemain').css('display','block');
+			}
+		}
+	});
+
+
+    $(document).ready(function(){
+        /********房间下拉图标和向上关闭图标切换********/
+        $(function(){
+            var on_num = 0;
+            $(".btn_kq_icon").click(function(){
+                var this_icon =  $(".btn_kq_icon");
+                if(on_num == 0){
+                    this_icon.removeClass("btn_icon_bottom");
+                    $("#kq_height").removeClass("pc_kq_height");
+                    this_icon.addClass("btn_icon_top");
+                    on_num = 1;
+                }else if(on_num == 1){
+                    $("#kq_height").addClass("pc_kq_height");
+                    this_icon.addClass("btn_icon_bottom");
+                    this_icon.removeClass("btn_icon_top");
+                    on_num = 0;
+                }
+            })
+        });
+    });
+
+    window.onload=function () {
+        var hotel = {$hotelid|default=0};
+        if(hotel == 0){
+        	$("#hotelsss option:first").prop("selected", 'selected');
+        	hotel = $("#hotelsss").val();
+        }
+        if (hotel) {
+            $(".right").show();
+            $.get('/Wx/RemovalInfo/gethotelroom', {'id': hotel}, function (d) {
+                if (d.code == 1) {
+                    $(".jinhua_title").hide();
+                    var strings = '';
+                    for (var i in d.data) {
+                        strings += '<button type="button" class="btn room ' + d.data[i].status +'" value="' + d.data[i].equipment_sno
+                            + '">' + d.data[i]['room_sno'] + '</button>'
+                    }
+                    $(".gezi-group").html(strings);
+                    but_show();
+                }
+            })
+            $.get('/Wx/RemovalInfo/gethotelinfo', {id: hotel}, function (f) {
+                $(".saless").html(f);
+            }, 'html');
+            but_show();
+        }
+    };
+
+    $('select[name="hotels"]').on('change', function () {
+        var index = layer.load(1, {
+            shade: [0.5,'#fff'] //0.1透明度的白色背景
+        });
+        var hotel = $(this).val();
+        if (hotel) {
+        	window.location.href = "{:U('')}?id="+hotel;
+        	/*$(".main_body").attr("data",hotel);
+            $(".right").show();
+            $.get('/Wx/RemovalInfo/gethotelroom', {'id': hotel}, function (d) {
+                layer.close(index);
+                if (d.code == 1) {
+                    $(".jinhua_title").hide();
+                    var strings = '';
+                    for (var i in d.data) {
+                        strings += '<button type="button" class="btn room ' + d.data[i].status +'" value="' + d.data[i].equipment_sno
+                            + '">' + d.data[i]['room_sno'] + '</button>'
+                    }
+                    $(".gezi-group").html(strings);
+                    but_show();
+                }
+            })
+            $.get('/Wx/RemovalInfo/gethotelinfo', {id: hotel}, function (f) {
+                $(".saless").html(f);
+            }, 'html')*/
+        }
+        //but_show();
+    });
+
+	$(".fenxiang").click(function () {
+        layer.open({
+            content: '请点击右上角三个点进行分享此页面'
+            ,btn: '确定'
+        });
+    })
+	// 基于准备好的dom，初始化echarts实例
+	var myChartOne= echarts.init(document.getElementById('onemain'));
+	optionOne = {
+		tooltip : {
+			trigger: 'axis'
+		},
+//			toolbox: {
+//				show : true,
+//				feature : {
+//					mark : {show: true},
+//					dataView : {show: true, readOnly: false},
+//					magicType : {
+//						show: true,
+//						type: ['pie', 'funnel']
+//					},
+//					restore : {show: true},
+//					saveAsImage : {show: true}
+//				}
+//			},
+		grid: {
+			left: '5%',
+			right: '6%',
+			bottom: '3%',
+			containLabel: true
+		},
+		xAxis : [
+			{
+				type : 'category',
+				boundaryGap : false,
+				data : {$date}
+			}
+		],
+		legend: {
+			data: ['室内空气质量均值','室外空气质量均值']
+		},
+		yAxis : [
+			{
+                name:'PM2.5(μg/m3)',
+            <if condition="($spm25 eq '[]') AND ($sapm25 eq '[]')">
+            min: 0,
+        max: 100,
+    </if>
+				type : 'value',
+                nameRotate:0.1,
+			}
+		],
+		series : [
+			{
+				name: '室内空气质量均值',
+				type:'line',
+				smooth: true,
+				areaStyle: {
+					normal: {
+					}
+				},
+				// 背景颜色设置
+				lineStyle: {
+					normal: {
+						width: 1.5,
+						// 线条颜色
+                        color: ['#7DD9B2']
+					}
+				},
+				data:{$spm25},
+                color: ['#7DD9B2']
+			},
+			{
+				name: '室外空气质量均值',
+				type:'line',
+				smooth: true,
+				areaStyle: {
+					normal: {
+					}
+				},
+				// 背景颜色设置
+				lineStyle: {
+					normal: {
+						width: 1.5,
+						// 线条颜色
+
+                        color: ['#B9A7DE']
+					}
+				},
+				data:{$sapm25},
+				color: ['#B9A7DE']
+			},
+		]
+	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChartOne.setOption(optionOne);
+
+	// 点击展示数据
+	$("body").on("click",'.room',function () {
+//        var room_name = $(this).data('type');
+        var room_name = $(this).text();
+        $(".room").removeClass("pitch_on");
+        $(this).addClass("pitch_on");
+        var value = $(this).attr('value');
+        $.post('/Wx/RemovalInfo/onedevices', {mac: value}, function (f) {
+            if(f.code == 1){
+//                $('.out-air-info').css('color','#ccc');
+                $('.fj_7').removeClass('green');
+                $('.fj_btn').addClass('green');
+                $('.fj_btn').html(room_name+'房间');
+                $('.fj_sales_7').append(f.message);
+                $('#onemain').css('display','none');
+            }else {
+                layer.msg(f.message);
+            }
+        }, 'json')
+    })
+
+    //微信配置
+    wx.config({
+        debug: false,
+        appId: '{$appId}',
+        timestamp:'{$timestamp}',
+        nonceStr:'{$nonceStr}',
+        signature:'{$signature}',
+        jsApiList : ['checkJsApi','onMenuShareQQ','onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQZone','onMenuShareWeibo']
+    });
+
+
+	wx.error(function(res) {
+		pop.msg("出错了：" + res.errMsg);
+	});
+
+	wx.ready(function() {
+        wx.showAllNonBaseMenuItem();
+		wx.checkJsApi({
+			jsApiList : ['onMenuShareQQ','onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQZone','onMenuShareWeibo'],
+			success : function(res) {
+			}
+		});
+
+		// 2.3 监听“分享到QQ”按钮点击、自定义分享内容及分享结果接口
+		wx.onMenuShareQQ({
+			title: '{$title}',
+			desc: '{$summary}',
+			link: "{$web_url}{:U('/Wx/Share/share')}?id="+$(".main_body").attr("data"),
+			imgUrl: "{$web_url}__IMG__/elogo.png",
+			success: function (res) {
+				//pop.msg('分享成功');
+			},
+			cancel: function (res) {
+				pop.msg('您已取消');
+			}
+		});
+
+
+		//分享到朋友
+		wx.onMenuShareAppMessage({
+			title: '{$title}',
+			desc: '{$summary}',
+			link: "{$web_url}{:U('/Wx/Share/share')}?id="+$(".main_body").attr("data"),
+			imgUrl: "{$web_url}__IMG__/elogo.png",
+			type: '', // 分享类型,music、video或link，不填默认为link
+			dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+			success: function (res) {
+				//pop.msg('分享成功');
+			},
+			cancel: function (res) {
+				pop.msg('您已取消');
+			}
+		});
+
+		//分享到朋友圈
+		wx.onMenuShareTimeline({
+			title: '{$title}',
+			link: "{$web_url}{:U('/Wx/Share/share')}?id="+$(".main_body").attr("data"),
+			imgUrl: "{$web_url}__IMG__/elogo.png",
+			success: function (res) {
+				//pop.msg('分享成功');
+			},
+			cancel: function (res) {
+				pop.msg('您已取消');
+			}
+		});
+
+		//分享到QQ空间
+		wx.onMenuShareQZone({
+			title: '{$title}',
+			desc: '{$summary}',
+			link: "{$web_url}{:U('/Wx/Share/share')}?id="+$(".main_body").attr("data"),
+			imgUrl: "{$web_url}__IMG__/elogo.png",
+			success: function (res) {
+				//pop.msg('分享成功');
+			},
+			cancel: function (res) {
+				pop.msg('您已取消');
+			}
+		});
+
+		//分享到腾讯微博
+		wx.onMenuShareWeibo({
+			title: '{$title}',
+			desc: '{$summary}',
+			link: "{$web_url}{:U('/Wx/Share/share')}?id="+$(".main_body").attr("data"),
+			imgUrl: "{$web_url}__IMG__/elogo.png",
+			success: function (res) {
+				//pop.msg('分享成功');
+			},
+			cancel: function (res) {
+				pop.msg('您已取消');
+			}
+		});
+
+	});//end_ready
+
+</script>
+</block>
+
+
+
+
+

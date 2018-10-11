@@ -1,0 +1,398 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>运行信息</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        .table-forms{
+            width: 310px;
+            height: 38px;
+            border: 1px solid #dedede;
+            padding-left: 10px;
+            border-radius: 4px;
+            text-align: left;
+        }
+        .jhxg_main .shouyitongji_block li {
+            width: calc(25% - 8px)!important;
+        }
+        .gezi-container .gezi-group .btn {
+            margin: 11.5px;
+            /*width: calc(6.3% - 10px);*/
+            width: 90px;
+            height: 42px;
+        }
+        @media screen and (max-width: 1199px) and (min-width: 1000px){
+            .gezi-container .gezi-group .btn {
+                margin: 10px!important;
+            }
+        }
+        .btn_icon{
+            width: 26px;
+            height: 19px;
+            display: block;
+            float: right;
+        }
+        .max_btn_icon{
+            width: 37px;
+            height: 27px;
+            display: block;
+            margin: 10px auto;
+        }
+        .btn_icon_bottom{
+            background: url("__IMG__/wx_kq_bottom_bottom.png");
+            background-size: 100%;
+        }
+        .btn_icon_top{
+            background: url("__IMG__/wx_kq_bottom_top.png");
+            background-size: 100%;
+        }
+        .pc_kq_height{
+            height: 68px;
+            overflow: hidden;
+        }
+
+        .pitch_on{
+            background: url("__IMG__/pitch_on.png") no-repeat;
+            background-position: right bottom;
+            color: #4e4e4e!important;
+        }
+
+    </style>
+
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <li class="on">运行信息</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main" class="jhxg_main">
+        <!-- 导航 开始 -->
+        <if condition="($role eq 11) OR ($role eq 12)">
+            <ul class="clearfix subnav hetongnav">
+                <li style="width:50%;margin-left:20px;"><a title="{$hotelname}" style="text-align: left;"><i class="icon"></i><span class="cur_title">{$hotelname}</span></a></li>
+            </ul>
+        </if>
+        <!-- 导航 结束 -->
+
+
+        <!-- 内容 开始 -->
+        <div class="subpage hetongxinxi02 jhxg">
+
+            <div class="gezi-container-wrap jhxg-gezi2">
+                <dl class="gezi-container">
+                    <dt class="gezi-title">
+
+
+                        <if condition="($role eq 11) OR ($role eq 12)">
+                            <span class="riqiq" style="float: left;margin-right: 10px">选择日期</span>
+                            <input  type="text" class="editdate" name=""  id="Time">
+                            <!--<span class="riqiq" style="float: left;margin-left: 20px;margin-right: 10px">开启情况</span>-->
+                            <!--<input type="text" class="editdate" name="" value="" id="Times">-->
+                            <else/>
+                            <span class="riqiq" style="float: left;margin-right: 10px;margin-left: 10px">选择日期</span>
+                            <input  type="text" class="editdate" name="" value="<?php echo date('Y-m-d',time())?>" id="Time" >
+                            <!--<span class="riqiq" style="float: left;margin-left: 20px;margin-right: 10px;display: none">开启情况</span>-->
+                            <!--<input type="text" class="editdate" name="" value="" id="Times" style="display: none">-->
+                        </if>
+                        <if condition="($role eq 5) OR ($role eq 9) OR ($role eq 1)">
+                            <div class="col right table-form editdate" style="margin-left: 10px">
+                                <select name="hotels" class="hotels">
+                                    <option value="0">--请选择酒店查看--</option>
+                                    <foreach name="hotelData" item="vo">
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                    </foreach>
+                                </select>
+                            </div>
+                        </if>
+
+                        <div class="checkbox-container gezi-green" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">运行正常</span>
+                        </div>
+                        <div class="checkbox-container gezi-red" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">超标预警</span>
+                        </div>
+                        <div class="checkbox-container gezi-orange" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">离线预警</span>
+                        </div>
+                        <div class="checkbox-container gezi-gay" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">暂未开启</span>
+                        </div>
+                    <i class="btn_icon btn_kq_icon btn_icon_bottom"></i>
+                    </dt>
+                    <dd class="gezi-group pc_kq_height" id="kq_height">
+
+                        <foreach name="datas" item="vo">
+                            <button type="button" class="btn {$vo.status} rooms" value="{$vo.equipment_sno}">
+                                {$vo.room_sno}
+                            </button>
+                        </foreach>
+
+                    </dd>
+                    <dd><i class="max_btn_icon btn_kq_icon btn_icon_bottom"></i></dd>
+                </dl>
+            </div>
+
+            <div class="saled">
+                <div class="shouyitongji_block jhxg_danzi2">
+                    <ul class="clearfix danzi">
+                        <li>
+                            <div class="danzidata dan1">
+                                <i class="icon dan_icon i_dan17"></i>
+                                <div class="danzinum"><span>{$hours|default=0}</span>小时</div>
+                                <div class="danziname">今日累计开启时长</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="danzidata dan2">
+                                <i class="icon dan_icon i_dan18"></i>
+                                <div class="danzinum" style="color: #d783fd"><span>{$pm|default=0}</span>μg/m3</div>
+                                <div class="danziname">历史平均室内PM2.5</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="danzidata dan3">
+                                <i class="icon dan_icon i_dan19"></i>
+                                <div class="danzinum"><span>{$allday|default=0}</span>天</div>
+                                <div class="danziname">累计开启天数</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="danzidata dan4">
+                                <i class="icon dan_icon i_dan20"></i>
+                                <div class="danzinum" style="color: #ff7d76;"><span>{$day|default=0}</span>天</div>
+                                <div class="danziname">累计运行天数</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel panel-default sales timesale">
+                    <div class="panel-heading"><h1>当天室内空气质量统计</h1></div>
+                    <div class="panel-body">
+                        <div class="panel" id="onemain" style="height: 350px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 内容 结束 -->
+    </div>
+    </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/laydate/laydate.js"></script>
+    <script type="text/javascript">
+        function but_show(){
+            console.log("进入方法1");
+            var kg_btn = $("#kq_height");
+            var btn_icon =$(".btn_kq_icon");
+            var btn_length = kg_btn.children(".btn").length;
+            var btn_num =parseInt(kg_btn.width() / 110);
+            if(btn_length > btn_num){
+                btn_icon.addClass("btn_block");
+                btn_icon.removeClass("btn_none");
+            }else {
+                btn_icon.addClass("btn_none");
+                btn_icon.removeClass("btn_block");
+            }
+        }
+        $(document).ready(function(){
+//            /***房间数量超出一排显示下拉开关***/
+//            function but_show(){
+//                console.log("进入方法");
+//                var kg_btn = $("#kq_height");
+//                var btn_icon =$(".btn_kq_icon");
+//                var btn_length = kg_btn.children(".btn").length;
+//                var btn_num =parseInt(kg_btn.width() / 110);
+//                alert(btn_length);
+//                if(btn_length > btn_num){
+//                    btn_icon.addClass("btn_block");
+//                    btn_icon.removeClass("btn_none");
+//                }else {
+//                    btn_icon.addClass("btn_none");
+//                    btn_icon.removeClass("btn_block");
+//                }
+//            }
+            but_show();
+            /***********浏览器窗口宽度发生变化时执行************/
+            $(window).resize(function() {
+                but_show();
+            });
+
+            /********房间下拉图标和向上关闭图标切换********/
+            $(function(){
+                var on_num = 0;
+                $(".btn_kq_icon").click(function(){
+                    var this_icon =  $(".btn_kq_icon");
+                    if(on_num == 0){
+                        this_icon.removeClass("btn_icon_bottom");
+                        $("#kq_height").removeClass("pc_kq_height");
+                        this_icon.addClass("btn_icon_top");
+                        on_num = 1;
+                    }else if(on_num == 1){
+                        $("#kq_height").addClass("pc_kq_height");
+                        this_icon.addClass("btn_icon_bottom");
+                        this_icon.removeClass("btn_icon_top");
+                        on_num = 0;
+                    }
+                })
+            });
+
+        });
+        // 点击展示数据
+        $("#kq_height").on('click',".rooms",function () {
+            $(".rooms").removeClass("pitch_on");
+            $(this).addClass("pitch_on");
+            var value = $(this).attr('value');
+            var time = $('.editdate').val();
+            $.get('/Pc/RunInfo/roonclick', {mac: value,time:time}, function (f) {
+                $(".saled").html(f);
+            }, 'html')
+        });
+
+
+        $(function () {
+            $(".hotels option:first").prop("selected", 'selected');
+            var hotel_id = $(".hotels").val();
+            var time = $("#Time").val();
+            if(hotel_id){
+                $.get('/RunInfo/getOneData', {date: time,hotel_id:hotel_id}, function (f) {
+                    $(".timesale").html(f);
+                }, 'html')
+            }
+
+        })
+        $('select[name="hotels"]').on('change', function () {
+            var index = layer.load(1, {
+                shade: [0.5,'#fff'] //0.1透明度的白色背景
+            });
+            var id = $(this).val();
+            but_show();
+            if(!id){
+                window.location.reload();
+                return;
+            }
+            $.get('/Pc/RunInfo/getHotelData',{'id':id},function (f) {
+                    // 获取酒店
+                $("#Time").show();
+                $("#Times").show();
+                $(".riqiq").show();
+                $.get('/Pc/RunInfo/gethotelroom',{'id':id},function (d) {
+                    layer.close(index);
+                    if(d.code == 1){
+                        var strings = '';
+                        for (var i in d.data) {
+                            strings += '<button type="button" class="btn '+d.data[i].status+' rooms" value="'+d.data[i].equipment_sno
+                                +'">'+d.data[i]['room_sno']+'</button>'
+                        }
+                        $(".gezi-group").html(strings);
+                        but_show();
+                    }
+                })
+                $(".saled").html(f);
+                but_show();
+            },'html')
+        });
+        laydate.render({
+            elem: '#Time' //指定元素
+            , done: function (value, date, endDate) {
+                var hotel_id = $(".hotels").val();
+                var room_dev = '';
+                $(".pc_kq_height button").each(function () {
+                    if($(this).hasClass('pitch_on')){
+                        room_dev = $(this).attr('value');
+                    }
+                });
+                $.get('/RunInfo/getOneData', {hotel_id:hotel_id,date: value,room_dev:room_dev}, function (f) {
+                        $(".timesale").html(f);
+                    }, 'html')
+                }
+        });
+        laydate.render({
+            elem: '#Times' //指定元素
+            , done: function (value, date, endDate) {
+                var hotel_id = $(".hotels").val();
+               window.location.href = '/Pc/RunInfo/getDevicesInfo/date/'+value+'/hotel_id/'+hotel_id
+            }
+        });
+
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChartOne = echarts.init(document.getElementById('onemain'));
+        optionOne = {
+            tooltip: {
+                trigger: 'axis',
+            },
+//            toolbox: {
+//                show: true,
+//                feature: {
+//                    mark: {show: true},
+//                    dataView: {show: true, readOnly: false},
+//                    magicType: {
+//                        show: true,
+//                        type: ['pie', 'funnel']
+//                    },
+//                    restore: {show: true},
+//                    saveAsImage: {show: true}
+//                }
+//            },
+            grid: {
+                left: '5%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: {$date}
+                }
+            ],
+            legend: {
+//            data: ['清洗']
+            },
+            yAxis: [
+                {
+                    name:'空气指数PM2.5(μg/m3)',
+                <if condition="$rpm25 neq ''">
+                type: 'value',
+            min: 0,
+            max: 100,
+        <else/>
+        type: 'value',
+        </if>
+                }
+            ],
+            series: [
+                {
+//                name: '清洗',
+                    type: 'line',
+                    smooth: true,
+                    // 背景颜色设置
+                    lineStyle: {
+                        normal: {
+                            width: 1.5,
+                            // 线条颜色
+                            color: ['#75CE68']
+                        }
+                    },
+                    data: {$rundata},
+                    color: ['#75CE68']
+                },
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChartOne.setOption(optionOne);
+    </script>
+</block>

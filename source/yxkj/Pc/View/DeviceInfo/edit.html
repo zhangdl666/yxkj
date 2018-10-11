@@ -1,0 +1,162 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>房间与设备绑定关系</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>系统设置</a></li>
+      <li class="on"><notempty name="id">编辑<else/>新增</notempty>房间与设备绑定关系</li>
+    </ol>
+</block>
+
+<block name="main">
+    <notempty name="redonly">
+        <style type="text/css">
+            .safari_caret{
+                display: none;
+            }
+        </style>
+    </notempty>
+	<div id="main">
+      <!-- 导航 开始 -->
+      <ul class="clearfix subnav hetongnav">
+        <li><a><i class="icon"></i><span class="cur_title">房间与设备绑定关系</span></a></li>
+      </ul>
+      <!-- 导航 结束 -->
+
+      <!-- 内容 开始 -->
+      <div class="subpage jiudianxinzeng">
+          <form method="post" action="{:U('operation')}">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                <tr>
+                  <th><span class="text-orange">*</span>酒店名称：</th>
+                  <td>
+                    <input type="text" name="hotel_name" value="{$hotel_name}" disabled>
+                  </td>
+                </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>合同名称：</th>
+                    <td>
+                      <input type="text" name="hc_name" value="{$hc_name}" disabled>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>楼层：</th>
+                    <td>
+                      <input type="text" name="floor" value="{$floor}" <notempty name="redonly">disabled</notempty>>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>房间：</th>
+                    <td>
+                      <input type="text" name="room_sno" value="{$room_sno}" <notempty name="redonly">disabled</notempty>>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>MAC地址：</th>
+                    <td>
+                      <input type="text" name="equipment_sno" value="{$equipment_sno}" <notempty name="redonly">disabled</notempty>>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>是否有窗户：</th>
+                    <td>
+                      <select name="is_window">
+                        <option value="0" <eq name="is_window" value="0">selected</eq>>否</option>
+                        <option value="1" <eq name="is_window" value="1">selected</eq>>是</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>朝向：</th>
+                    <td>
+                      <select name="orientation">
+                        <option value="1" <eq name="orientation" value="1">selected</eq>>东</option>
+                        <option value="2" <eq name="orientation" value="2">selected</eq>>南</option>
+                        <option value="3" <eq name="orientation" value="3">selected</eq>>西</option>
+                        <option value="4" <eq name="orientation" value="4">selected</eq>>北</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>安装位置：</th>
+                    <td>
+                      <select name="place">
+                        <option value="1" <eq name="place" value="1">selected</eq>>回风口</option>
+                        <option value="2" <eq name="place" value="2">selected</eq>>出风口</option>
+                        <option value="3" <eq name="place" value="3">selected</eq>>其他</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>中央空调品牌：</th>
+                    <td>
+                      <select name="e_id">
+                        <volist name="equipmenta_list" id="equipment">
+                          <option value="{$equipment.id}" <eq name="equipment.id" value="$e_id">selected</eq>>{$equipment.name}</option>
+                        </volist>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><input type="hidden" name="id" value="{$id}"></th>
+                    <td>
+                       <notempty name="redonly">
+                          <button type="button" class="btn btn-quxiao back">返回</button>
+                        <else/>
+                           <button type="button" class="btn btn-tijiao ajax-post">保存</button>
+                           <button type="button" class="btn btn-quxiao back">取消</button>
+                       </notempty>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <!-- 内容 结束 -->
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript">
+show_leader($("select[name='role_id'] option:selected").val(),{$parent_id|default='0'});
+
+$("select[name='role_id']").change(function(){
+    var rid = $(this).val();
+    show_leader(rid);
+});
+
+//是否显示上级领导
+function show_leader(rid,pid){
+    if(rid == 2 || rid == 4){
+        $.post("{:U('get_parents')}",{rid:rid},function(re_data){
+            re_data = eval("("+re_data+")");
+            var poption = "";
+            $(re_data.data.pusers).each(function(){
+                if(pid > 0 && pid == $(this).attr("id")){
+                  poption += "<option value='"+$(this).attr("id")+"' selected>"+re_data.data.rname+"-"+$(this).attr("name")+"</option>";
+                }else{
+                  poption += "<option value='"+$(this).attr("id")+"'>"+re_data.data.rname+"-"+$(this).attr("name")+"</option>";
+                }
+
+            });
+            $("select[name='parent_id']").html(poption);
+            if(rid == 2){
+                $(".parent1").show();
+            }else {
+                $(".parent1").hide();
+            }
+            $(".parent2").show();
+        });
+    }else{
+        $("select[name='parent_id']").html("<option value=''></option>");
+        $(".parent1").hide();
+        $(".parent2").hide();
+    }
+}
+</script>
+</block>

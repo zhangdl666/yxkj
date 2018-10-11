@@ -1,0 +1,177 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>系统消息</title>
+</block>
+<block name="css">
+  <style type="text/css">
+    .message_td td:nth-child(3){
+      /*color: rgb(255,60,0);*/
+      text-align: left!important;
+    }
+    .btn-warning{margin-right:20px;}
+  </style>
+</block>
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>系统设置 </a></li>
+      <li class="on">系统消息</li>
+    </ol>
+</block>
+
+<block name="main">
+  <div id="main" class="bgfff">
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading" style="margin:0px 15px;">
+        <!-- Single button -->
+        <form class="clearfix searchbar">
+          <div class="col">
+            <if condition="$role eq 1">
+              <button type="button" class="btn btn-warning" onclick="now_href('{:U('add')}')">新增</button>
+              <button type="button" class="btn btn-warning" onclick="infor()" >全选</button>
+              <button type="button" class="btn btn-warning" onclick="delate()">删除</button>
+            </if>
+          </div>
+        </form>
+    </div>
+
+      <div class="panel-body">
+        <table class="table table-condensed table-data">
+          <colgroup>
+            <if condition="$role eq 1">
+            <col style="width:5%;"></col>
+            </if>
+            <col style="width:10%;"></col>
+            <col style="width:40%;"></col>
+            <col style="width:15%;"></col>
+            <col style="width:15%;"></col>
+            <col style="width:15%;"></col>
+          </colgroup>
+          <thead>
+            <tr>
+              <if condition="$role eq 1">
+              <th>
+                <input type="checkbox" name="status" value="{$item.id}">
+                <!--<i class="icon icon01 i_radio">-->
+              </th>
+              </if>
+              <th>序号</th>
+              <th>标题内容</th>
+              <th>消息类型</th>
+              <th>发布时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          <notempty name="items">
+            <volist name="items" id="item">
+            <tr class="message_td">
+              <if condition="$role eq 1">
+              <td>
+
+                <input type="checkbox" name="status" value="{$item.id}">
+                <!--<i class="icon icon01 i_radio">-->
+
+                </i></td>
+              </if>
+              <td>{$key+1}</td>
+              <td <if condition="$role neq 1">style="text-align:left!important;"</if>>{$item.title}</td>
+              <td <if condition="$role neq 1">style="text-align:center!important;"</if>>{$item.type}</td>
+              <td>
+                {$item.time|date='Y-m-d H:i:s',###}
+              </td>
+              <td class="orprate">
+                <notempty name="item.oper_url">
+                  <a class="text-warning" data="{$item['id']}" href="/Pc/{$item.oper_url}">去处理</a>
+                <else/>
+                  <a class="text-warning" href="{:U('getInfo',array('id'=>$item['id']))}">查看详情</a>
+                </notempty>
+              </td>
+            </tr>
+            </volist>
+            <else/>
+            <tr>
+              <if condition="$role eq 1">
+              <td colspan="6">暂无数据</td>
+              <else/>
+                <td colspan="5">暂无数据</td>
+              </if>
+            </tr>
+          </notempty>
+          </tbody>
+        </table>
+        <div class="pagination-container">
+            <div class="pagination">
+                {$pageHtml}
+            </div>
+        </div>
+      </div>
+    </div>
+</block>
+<block name="js">
+  <script type="text/javascript" src="__PUBLIC__/Layui/layui.js"></script>
+<script type="text/javascript">
+  function now_href(url){
+    window.location.href = url;
+  }
+  function infor() {
+    var count = 0;
+    var checkArry = $('input[type="checkbox"]');
+    for (var i = 0; i < checkArry.length; i++) {
+      if(checkArry[i].checked == true){
+        //选中的操作
+        count++;
+      }
+    }
+    var leanth = $('input').length;
+    if(count == leanth){
+      for (var i = 0; i < checkArry.length; i++) {
+          checkArry[i].checked = false;
+      }
+    }else{
+      for (var i = 0; i < checkArry.length; i++) {
+          checkArry[i].checked=true;
+      }
+    }
+  }
+
+  function delate() {
+    var count = 0;
+    var checkArry = $('input[type="checkbox"]');
+    for (var i = 0; i < checkArry.length; i++) {
+      if(checkArry[i].checked == true){
+        //选中的操作
+        count++;
+      }
+    }
+    if( count == 0 ){
+     layer.msg('请选择需要删除的消息！',{
+       time:2000,
+     })
+      return false;
+    }
+    layer.open({
+      area: ['260px', '25%'],
+      content: '你确定要删除选中消息吗？'
+      ,btn: ['确定','取消']
+      ,yes:function () {
+        var img_val = "";
+        $("input[name='status']:checkbox:checked").each(function(i){
+          if(i != 0){
+            img_val += ",";
+          }
+          img_val += $(this).val();
+        })
+        var url = '/Pc/Message/delate';
+        var data = {};
+        data.name = img_val;
+        $.post(url, data, function (data) {
+          //>>2.使用layer提示
+          showLayer(data);
+        },'json');
+      }
+    });
+
+  }
+</script>
+</block>

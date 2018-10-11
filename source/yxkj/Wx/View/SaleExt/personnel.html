@@ -1,0 +1,330 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>提现</title>
+</block>
+<block name="css">
+    <style>
+        td.w-level-full {
+            display: inline-table;
+            width: 300% !important;
+            height: 187px;
+            line-height: 187px;
+            color: #ffb533;
+            font-size: 0.28rem;
+            text-align: left !important;
+            margin-left: 0rem;
+        }
+        .tixianyemian .tb-lr{
+            top: -17px;
+            height: 125%;
+        }
+        .tixianyemian .tixiantitle{
+            padding: 0.08rem 0.2rem;
+            background: #fff;
+        }
+        .layoutlr{
+            padding-top: 0.3rem;
+        }
+        .tixianyemian .bjkkitem02_wrap .bjkkitem02{
+            height: 1rem;
+        }
+        .bjkkitem .bjkkitem_main{
+            height: 1rem;
+        }
+        .maxbtn{
+            display: block;
+            width: 96vw;
+            margin: 0.3rem auto;
+        }
+        a.btn, a.btn:hover, a.btn:active, a.btn:visited, a.btn:link, a.btn:focus{
+            background: #19B958;
+        }
+        .layoutlr {
+            height: 0.5rem;
+            line-height: 0.5rem;
+        }
+        .tixianyemian .tb-lr {
+            color: #d0d0d0;
+        }
+        .tixianyemian .bjkkitem02_wrap .bjkkitem02 .num {
+            margin-bottom: -0.15rem;
+        }
+        .max_dj{
+           width: 100vw!important;
+            height: 3rem;
+            text-align: right;
+        }
+        .max_dj div{
+            float: right;
+        }
+
+        .maxbtn{
+            font-size: 0.3rem!important;
+        }
+
+        .tixianyemian .qian_block td .qian_num {
+            font-size: 0.20rem;
+        }
+        .header .right .icon {
+            margin-right: 0rem;
+        }
+        .has_header .header .right {
+            margin-top: 0.02rem;
+        }
+
+    </style>
+</block>
+<block name="main">
+    <!-- header 开始 -->
+    <div class="header">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <div class="left backs" data-url="{:U('Index/index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+        <div class="center"></div>
+        <div class="right"><a class="s" href="{:U('record',array('status'=>1))}">
+            <i class="icon w_0004_04 w_04_09"></i>
+        </a>
+        </div>
+    </div>
+    <!-- header 结束 -->
+    <!-- 主体内容 开始 -->
+    <div class="main">
+        <div class="main_body tixianyemian">
+            <div class="tixiantitle"><i style="margin-right: 0.1rem" class="icon w_0000_00 w_00_07"></i>收益统计</div>
+            <div class="tixian_mk tixian_yuan">
+                <div class="layoutlr">
+                    <div class="col left">
+                        <div class="block">
+                            <div class="radius">￥{$saleAllMoney}</div>
+                            <input type="hidden" name="price" value="渠道总收益:￥{$saleAllMoney}"/>
+                            <p>渠道总收益</p>
+                        </div>
+                    </div>
+                    <div class="col center">
+                        <div class="block">
+                            <div class="radius">￥{$saleAllReimbursementMoney}</div>
+                            <input type="hidden" name="price" value="报销总额:￥{$saleAllReimbursementMoney}"/>
+                            <p>报销总额</p>
+                        </div>
+                    </div>
+                    <div class="col center">
+                        <div class="block">
+                            <div class="radius">￥{$saleAllGetMoney}</div>
+                            <input type="hidden" name="price" value="历史提现总额:￥{$saleAllGetMoney}"/>
+                            <p>历史提现总额</p>
+                        </div>
+                    </div>
+                    <div class="col right">
+                        <div class="block">
+                            <div class="radius">￥{$saleLeftMoney}</div>
+                            <input type="hidden" name="price" value="可提现金额:￥{$saleLeftMoney}"/>
+                            <p>可提现金额</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tixian_mk layoutlr bjkkitem02_wrap">
+                <div class="col left">
+                    <div class="bjkkitem bjkkitem02">
+                        <div class="bjkkitem_main">
+                            <div class="icon_wrap"><i class="icon w_0003_03 w_03_09"></i></div>
+                            <div class="num">{$crow.hotel_num}<span class="min"></span></div>
+                            <div class="title_wrap">
+                                <div class="title_inner">
+                                    <span class="title">签约酒店数</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col center">
+                    <div class="bjkkitem bjkkitem02">
+                        <div class="bjkkitem_main">
+                            <div class="icon_wrap"><i class="icon w_0003_03 w_03_08"></i></div>
+                            <div class="num">{$crow.room_num}<span class="min"></span></div>
+                            <div class="title_wrap">
+                                <div class="title_inner">
+                                    <span class="title">签约房间数</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col right">
+                    <div class="bjkkitem bjkkitem02">
+                        <div class="bjkkitem_main">
+                            <div class="icon_wrap"><i class="icon w_0003_03 w_03_07"></i></div>
+                            <div class="num">{$crow.equipment_num}<span class="min"></span></div>
+                            <div class="title_wrap">
+                                <div class="title_inner">
+                                    <span class="title">签约设备数</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tixian_mk shouyitongji_block bgfff qian_block">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>已回款金额</th>
+                        <th></th>
+                        <th>渠道等级</th>
+                        <th></th>
+                        <th>收益</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <foreach name="zprofit" key="ke" item="vo">
+                            <if condition="($ke+1) eq $count">
+                                <!----------------     金色 开始    ------------------------>
+                                <tr>
+                                    <td>
+                                        <div class="qian_img"><i class="icon qian01 i_qian01"></i></i></div>
+                                        <div class="qian_num"><span class="min">￥</span>{$vo.price}</div>
+                                    </td>
+                                    <td><i class="icon icon02 i_icon02_01"></i></td>
+                                    <td>
+                                        <div class="qian_img h_dj_div">
+                                            <i class="icon h_img_dj h_j_001"></i>
+                                            <span class="h_dj_span">{$vo.name}</span>
+                                        </div>
+                                        <div class="qian_num">提成比例：{$vo.rate}%</div>
+                                        <div class="tb-lr"></div>
+                                    </td>
+                                    <td><i class="icon icon02 i_icon02_02"></i></td>
+                                    <td>
+                                        <div class="qian_img"><i class="icon qian01 i_qian03"></i></div>
+                                        <div class="qian_num"><span class="min">￥</span>{$vo.trueprofit}</div>
+                                    </td>
+                                </tr>
+                                <!----------------     金色 结束    ------------------------>
+                                <else/>
+                                <!----------------     灰色 开始    ------------------------>
+                                <tr>
+                                    <td>
+                                        <div class="qian_img"><i class="icon h_img h_001"></i></i></div>
+                                        <div class="qian_num h_text_gr"><span class="min">￥</span>{$vo.price}</div>
+                                    </td>
+                                    <td><i class="icon icon02 i_icon02_01"></i></td>
+                                    <td>
+                                        <div class="qian_img h_dj_div">
+                                            <i class="icon h_img_dj h_002"></i></i>
+                                            <span class="h_dj_span">{$vo.name}</span>
+                                        </div>
+                                        <div class="qian_num h_text_gr">提成比例：{$vo.rate}%</div>
+                                        <div class="tb-lr"></div>
+                                    </td>
+                                    <td><i class="icon icon02 i_icon02_02"></i></td>
+                                    <td>
+                                        <div class="qian_img"><i class="icon h_img h_003"></i></div>
+                                        <div class="qian_num h_text_gr"><span class="min">￥</span>{$vo.trueprofit}</div>
+                                    </td>
+                                </tr>
+                                <!----------------     灰色 开始    ------------------------>
+                            </if>
+                        </foreach>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="tixian_mk shouyitongji_block bgfff qian_block">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>待回款金额</th>
+                        <th></th>
+                        <th>渠道等级</th>
+                        <th></th>
+                        <th>收益</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="qian_img"><i class="icon qian01 i_qian01"></i></div>
+                            <div class="qian_num"><span class="min">￥</span>{$dmoney}</div>
+                        </td>
+                        <td><i class="icon icon02 i_icon02_01"></i></td>
+                        <td>
+                            <div class="qian_img h_dj_div">
+                                <i class="icon h_img_dj h_j_001"></i>
+                                <span class="h_dj_span">{$crow['name']}</span>
+                            </div>
+                            <div class="qian_num"><span class="min">提成比例： </span> {$crow['rate']}%</div>
+
+                        </td>
+                        <td><i class="icon icon02 i_icon02_02"></i></td>
+                        <td>
+                            <div class="qian_img"><i class="icon qian01 i_qian03"></i></div>
+                            <div class="qian_num"><span class="min">￥</span>{$dzprofit}</div>
+                        </td>
+                    </tr>
+                    <tr class="">
+                        <empty name="next">
+                            <!-----空的td请不要删除，为了保持队形---------->
+
+                            <td></td>
+                            <td class="w-level-full max_dj" style="margin-left: -0.6rem;height: 100px;line-height: 100px;">
+                                <div>恭喜你，已晋升最高等级！</div>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <else/>
+                            <!-----空的td请不要删除，为了保持队形---------->
+                            <td></td>
+                            <td></td>
+
+<!----------------- 金色 开始 ---------->
+                            <!--<td>
+                                <i class="icon icon02 i_icon02_03"></i>
+                                <div class="h_dj_div">
+                                    <i class="icon h_img_dj h_j_001"></i>
+                                    <span class="h_dj_span">{$next.name}</span>
+                                </div>
+                                <div class="qian_num">{$next.name}提成比例：{$next.rate}%</div>
+                                <div class="tb-lr">距离钻石等级只差{$next.room_less}间</div>
+                            </td>
+                            <td><i style="top: 30px;" class="icon icon02 i_icon02_02"></i></td>
+                            <td>
+                                <i class="icon icon02 i_icon02_03" style="line-height: 0.35rem;margin: 12px 0; text-indent: 6px;font-size: 12px;font-style: normal;"><span style="color: #19b958;">+{$next.money_more}%</span></i>
+                                <div class="qian_img"><i class="icon qian01 i_qian01"></i></div>
+                                <div class="qian_num"><span class="min">￥</span>{$next.trueprofit}</div>
+                            </td>-->
+<!----------------- 金色 结束 ---------->
+<!----------------- 灰色 开始 ---------->
+                            <td>
+                                <i class="icon icon02 i_icon02_03"></i>
+                                <div class="qian_img h_dj_div">
+                                    <i class="icon h_img_dj h_002"></i></i>
+                                    <span class="h_dj_span">{$next.name}</span>
+                                </div>
+                                <div class="qian_num h_text_gr">提成比例：{$next.rate}%</div>
+                                <div class="tb-lr">距离钻石等级只差{$next.room_less}间</div>
+                            </td>
+                            <td><i style="top: 30px;" class="icon icon02 i_icon02_02"></i></td>
+                            <td>
+                                <i class="icon icon02 i_icon02_03" style="line-height: 0.35rem;margin: 12px 0; text-indent: 6px;font-size: 12px;font-style: normal;"><span style="color: #19b958;">+{$next.money_more}%</span></i>
+                                <div class="qian_img"><i class="icon h_img h_003"></i></div>
+                                <div class="qian_num h_text_gr"><span class="min">￥</span>{$next.trueprofit}</div>
+                            </td>
+<!----------------- 灰色 结束 ---------->
+                        </empty>
+
+                    </tr>
+                    </tbody>
+                </table>
+
+        </div>
+                <a class="btn maxbtn"  href="{:U('apply')}">申请提现</a>
+         </div>
+    <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+<script type="text/javascript">
+$('.block').click(function () {
+    var price = $(this).find('input[name="price"]').val();
+    layer.open({content:price,time:3000});
+})
+</script>
+</block>

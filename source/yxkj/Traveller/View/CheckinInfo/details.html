@@ -1,0 +1,709 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>足迹详情</title>
+</block>
+<block name="css">
+	<style type="text/css">
+		body{
+			/*width: 100%;*/
+			/*height: 100vh;*/
+			/*overflow: hidden;*/
+		}
+		.fangjianxinxitanchuang{
+			position: relative;
+			box-sizing: border-box;
+			bottom:200%;
+			top: 50%;
+			left: 10%;
+			height: 43%;
+			width: 80%;
+			background: #012c63;
+			margin-top: -2.77rem;
+			border-radius: 0.3rem;
+		}
+
+		.fangjianxinxitanchuang .chuangkoutitle{
+			color: rgb(37,252,255);
+			text-align: center;
+			font-size: 0.32rem;
+			padding: 0.4rem 0 0.4rem;
+		}
+		 .in_header {
+			height: 0.84rem;
+			box-sizing: border-box;
+			/* border-bottom: 1px solid #e6e6e6; */
+			padding: 0 0.2rem;
+			background-color: #353438;
+			color: #fff;
+			left: 0;
+			line-height: 0.84rem;
+		}
+
+
+		/*.fangjianxinxitanchuang .tiaojiebox{*/
+		/*text-align: center;*/
+		/*height: 1.5rem;*/
+		/*font-size: 0.44rem;*/
+		/*}*/
+		.fangjianxinxitanchuang .tiaojiebox span{
+			margin: 0 1rem;
+			line-height: 1rem;
+			vertical-align: bottom;
+		}
+		.fangjianxinxitanchuang .tiaojiebox .btn-l,
+			/*.fangjianxinxitanchuang .tiaojiebox .btn-r{*/
+			/*display: inline-block;*/
+			/*width: 0.9rem;*/
+			/*height: 0.9rem;*/
+			/*border-radius: 100%;*/
+			/*color: #fff;*/
+			/*font-size: 1rem;*/
+			/*line-height: 0.9rem;*/
+			/*}*/
+		.fangjianxinxitanchuang .tiaojiebox .btn-l{
+			background: #ACAFAE;
+			line-height: 0.8rem;
+		}
+		/*.fangjianxinxitanchuang .tiaojiebox .btn-r{*/
+		/*background: #FF8800;*/
+		/*}*/
+		/*.kongqiziliangdi,.kongqizilianggao{*/
+		/*text-align: center;*/
+		/*height: 0.8rem;*/
+		/*line-height: 0.8rem;*/
+		/*font-size: 0.32rem;*/
+		/*color: #787D7B;*/
+		/*}*/
+		/*.kongqiback1{*/
+		/*background-color: #ff5353!important;*/
+		/*}*/
+		/*.kongqiback2{*/
+		/*background-color: rgba(0, 0, 0, 0.25)!important;*/
+		/*}*/
+		.addimg_wrap{
+			width: 100vw;
+			height: 1rem;
+		}
+		.addimg_wrap .close {
+			position: absolute;
+			top: 0.3rem;
+			right: 0.2rem;
+			background-color: #20d1d5;
+			width: 1.5rem;
+			height: 0.4rem;
+			color: #333;
+		}
+		input{
+			border: none;
+			text-align: center;
+			background: rgba(0,0,0,0);
+		}
+		/*.swiper-tab-nav{*/
+		/*height:1.5rem;*/
+		/*}*/
+		/*.inair{*/
+		/*width:33%;*/
+		/*height:100%;*/
+		/*text-align: center;*/
+		/*margin:auto;*/
+		/*}*/
+		.inair img{
+			width: 50%;
+			height: 40px;
+			margin:0 auto;
+		}
+		.on{
+			/*样式影响*/
+			/*background: rgba(255,255,255,0.2);*/
+		}
+		.fangjianxinxi .fangjian_opreate_wrap .fangjian_opreate .col:first-child .n1 {
+			background-color: rgba(0, 0, 0, 0.25); }
+		.fangjianxinxi .fangjian_opreate_wrap .fangjian_opreate .col:first-child .n1.on{
+			background-color: #ff5353; }
+		/*.bottomnume{*/
+		/*height: 1.3rem;*/
+		/*}*/
+		/*.bottomnume-content{*/
+		/*display: flex;*/
+		/*}*/
+		.bottomnume-content a{
+			flex: 1;
+			text-align: center;
+		}
+		.bottomnume-content a img{
+			width: 24px;
+			height: 24px;
+			padding-top: 12px;
+		}
+		.layoutlr {
+			line-height: 0.4rem;
+			background-color: transparent;
+		}
+		.n2{
+			margin-top: 0.17rem;
+		}
+		/*.jinhua_block{*/
+		/*margin-top: 0.5rem;*/
+		/*margin-bottom: 0.5rem;*/
+		/*}*/
+		/*.has_header .main {*/
+		/*padding-top: 0;*/
+		/*overflow: auto;*/
+		/*}*/
+		.fangjianxinxi {
+			padding-top: 0rem;
+		}
+		.chuangkoutitle input{
+			font-size: 0.22rem;
+			padding: 0.2rem;
+			width: 40%;
+			text-align: left;
+			border-radius: 5px;
+		}
+		.btn{
+			width: 80%;
+			background: #0063ff;
+			border-radius: 0.1rem;
+			margin: 0.1rem 10%;
+			color: white;
+			height: 0.8rem;
+			font-size: 0.34rem;
+			border:0;
+		}
+		.speeding{
+			font-size: 0.44rem;
+		}
+		/*.fangjianxinxitanchuang .tiaojiebox {*/
+		/*margin-top: 1rem;*/
+		/*}*/
+		.fangjianxinxitanchuang .tiaojiebox .btn-l, .fangjianxinxitanchuang .tiaojiebox .btn-r {
+
+			width: 0.7rem;
+			height: 0.7rem;
+			line-height: 0.7rem;
+		}
+		.tiaojiebox .btn-l {
+			/*background: #ACAFAE;*/
+			line-height: 0.6rem;
+		}
+		.fangjianxinxitanchuang .tiaojiebox span {
+			margin: 0.2rem 1rem;
+			line-height: 0.7rem;
+			color: rgb(125,125,125);
+		}
+		.fangjianxinxitanchuang_temp{
+			position: absolute;
+			box-sizing: border-box;
+			bottom:200%;
+			left: 25vw;
+			height: 20vh;
+			width:50vw;
+			z-index: 10;
+			border-radius: 0.3rem;
+			background: #012c63;
+		}
+		.air_main{
+			left: 6vw;
+		}
+		.air_container{
+			background-size: 65vw 65vw!important;
+			height: 6rem!important;
+			left: -0.2rem!important;
+			width: 82%!important;
+		}
+		.fangjianxinxi .air_container .num {
+			margin: 0.14rem;
+			font-size: 1.3rem!important;
+			position: relative;
+			height: 1rem;
+			left: -0.35rem;
+			top: -0.2rem;
+		}
+		.fangjianxinxi .air_container .numberic {
+			font-size: 5vw;
+			color: #fff;
+			padding-top: 1.8rem;
+			line-height: 0.6rem;
+			margin-left: -0.3rem;
+			padding-bottom: 0.2rem;
+		}
+		/*.fangjianxinxi .air_container .air_main {*/
+		/*width: 100%;*/
+		/*height: 4rem;*/
+		/*margin: 0.3rem 0rem 0rem 0.2rem;*/
+		/*position: relative;*/
+		/*}*/
+		.fx_m_flow{
+			width: 100%;
+			height: 100%;
+			padding-bottom:0rem;
+			background-color:rgba(0,0,0,0.5);
+			z-index: 9;
+			position: absolute;
+			top: 0;
+			display: none;
+		}
+		.fx_flow{
+			width: 80%;
+			left: 10%;
+			height: 3.55rem;
+			z-index: 10;
+			position: relative;
+			top: 50%;
+			margin-top: -1.77rem;
+		}
+		.fx_left_temp{
+			color: #02cdff;
+			font-size: 1rem;
+			background: none!important;
+			margin-left: 0.3rem;
+			margin-top: -0.2rem;
+			display: inline-block;
+		}
+		.fx_right_temp{
+			color: #02cdff;
+			font-size: 0.8rem;
+			margin-left: 0.2rem;
+			background: none!important;
+			display: inline-block;
+		}
+		.fx_input_span{
+			font-size: 0.6rem;
+			color: rgb(37,252,255);
+			margin: 0 0rem;
+		}
+
+		.fx_box{
+			padding: 0.6rem 0;
+			width: 76%;
+			margin: 0 auto;
+		}
+
+		.fx_btn_div{
+			width: 4.08rem;
+			height: 0.6rem;
+			margin: 0.2rem auto;
+		}
+		.fx_btn{
+			width: 2.04rem;
+			background-color: white;
+			color: rgb(0,91,217);
+			float: left;
+			margin: 0rem;
+			border-radius: 0rem;
+			border: 0rem;
+		}
+		.fx_btn_left{border-top-left-radius: 0.08rem;border-bottom-left-radius:0.08rem;}
+		.fx_btn_right{border-bottom-right-radius: 0.08rem;border-top-right-radius:0.08rem;}
+		.fx_chick{
+			background-color: rgb(0,91,217);
+			color:white ;
+		}
+		.air_main{
+			height: 5rem!important;
+			margin-top: -0.2rem!important;
+		}
+		.num_san1{
+			position: absolute;
+			width: 46vw;
+			height: 4vh;
+			left: 1.3rem;
+			top: 0;
+			line-height: 0.1rem;
+			text-align: right;
+		}
+		.num_san2{
+			position: absolute;
+			width: 46vw;
+			height: 4vh;
+			left: 1.6rem;
+			top: 0;
+			line-height: 0.1rem;
+			text-align: right;
+			-ms-transform: rotate(66deg);
+			-moz-transform: rotate(66deg);
+			-webkit-transform: rotate(66deg);
+			-o-transform: rotate(66deg);
+			transform: rotate(66deg);
+		}
+		.num_san3{
+			position: absolute;
+			width: 50vw;
+			height: 4vh;
+			left: 1.2rem;
+			top: 0;
+			line-height: 0.1rem;
+			text-align: right;
+			-ms-transform: rotate(115deg);
+			-moz-transform: rotate(115deg);
+			-webkit-transform: rotate(115deg);
+			-o-transform: rotate(115deg);
+			transform: rotate(115deg);
+		}
+		.num_san4{
+			position: absolute;
+			width: 46vw;
+			height: 4vh;
+			left: 1.3rem;
+			top: 0;
+			line-height: 0.1rem;
+			text-align: left;
+		}
+		.num_san5{
+			position: absolute;
+			width: 44vw;
+			height: 4vh;
+			left: 1.5rem;
+			top: 0;
+			line-height: 0.1rem;
+			text-align: right;
+			-ms-transform: rotate(228deg);
+			-moz-transform: rotate(228deg);
+			-webkit-transform: rotate(228deg);
+			-o-transform: rotate(228deg);
+			transform: rotate(228deg);
+		}
+		.num_san6{
+			position: absolute;
+			width: 44vw;
+			height: 4vh;
+			left: 1.2rem;
+			top: 0;
+			line-height: 0.1rem;
+			text-align: right;
+			-ms-transform: rotate(-50deg);
+			-moz-transform: rotate(-50deg);
+			-webkit-transform: rotate(-50deg);
+			-o-transform: rotate(-50deg);
+			transform: rotate(-50deg);
+		}
+		.close{
+			background-color: rgba(0,0,0,0)!important;
+			width: 0.3rem!important;
+		}
+		.fangjianxinxi {
+			padding-top: 0rem;
+			padding-bottom: 0rem;
+		}
+		.fangjianxinxi .fangjian_title .left {
+			height: 1.1rem;
+			padding-left: 0.2rem;
+			width: 48vw;
+		}
+		.mar_top{
+			margin-top: 0rem!important;
+		}
+		i {
+			width: 0rem;
+			height: 0rem;
+			background-color: #ffffff;
+		}
+		.fangjian_btm{
+			margin-top: 0.76rem;
+		}
+		.yourclass{
+			background: #0f2c66;
+			text-align: center;
+			color:#fff;
+			line-height: 0.8rem;
+			border-radius: 0.1rem;
+			padding:0 0.3rem;
+		}
+		.fangjianxinxi .fangjian_opreate_wrap {
+			background:  #000926;
+		}
+		.w_div{ display: inline-block;}
+		.w_div:nth-child(1){
+			width:15%;
+			text-align: left;
+			margin-left: 5%;
+		}
+		.w_div:nth-child(3){
+			width: 56%;
+			text-align: center;
+		}
+		.w_div:nth-child(4){
+			width: 15%;
+			text-align: right;
+			float: right;
+		}
+		.has_header .main {
+			padding-top: 0rem;
+			height: 100%;
+			width: 100%;
+		}
+		.fangjianxinxi {
+			position: inherit;
+		}
+		.fangjianxinxi .fangjian_opreate_wrap .bottom_col .col img {
+			margin-left: 18%;
+		}
+		.fangjianxinxi .fangjian_opreate_wrap .bottom_col .col .n2 {
+			margin-left: 8%;
+		}
+		.fangjianxinxi .air_container .num .in_pm_num{
+			margin: 0 0 0 0.3rem!important;
+		}
+
+		.fangjianxinxi .air_container .num img{
+			width: 0.25rem;
+			height: 0.27rem;
+		}
+		.n1_icon{
+			width: 0.9rem;
+			height: 0.9rem;
+			display: inline-block;
+			font-style: normal;
+		}
+
+		.temperature_002{
+			background: url("__IMG__/temperature002.png") no-repeat;
+			background-size: 100%;
+		}
+
+
+		/**********  iPhone5  适配*****开始********/
+		@media only screen and (max-width:320px){
+			.fangjianxinxi .air_container .num {
+				margin: 0rem;
+				padding-top: 0rem;
+				left: -0.3rem;
+				top: -0.2rem;
+			}
+			.fangjianxinxi .air_container .numberic {
+				padding-top: 1.2rem;
+				margin-left: -0.1rem;
+				padding-bottom: 0.2rem;
+			}
+			.fangjianxinxi .air_container .num .in_pm_num{
+				margin: 0 0 0 0.3rem!important;
+			}
+			.fangjianxinxi .content_outdoor {
+				margin-top: 0.5rem;
+			}
+			.air_container {
+				height: 4.5rem!important;
+			}
+			.fangjian_btm {
+				margin-top: 0.38rem;
+			}
+			.fangjianxinxitanchuang .chuangkoutitle {
+				padding: 0.2rem 0 0.4rem;
+			}
+
+		}
+		/**********  iPhone5  适配*****结束********/
+
+		/**********  iPhone6 Plus  适配*****开始********/
+		@media only screen and (max-width:414px)and (min-width:376px){
+			.fangjianxinxi .content_outdoor {
+				margin-top: 0.8rem;
+			}
+			.mar_top {
+				margin-top: 1rem!important;
+			}
+			.air_container {
+				margin: 0.43rem auto;
+
+			}
+			.fangjian_btm {
+				margin-top: 0.82rem;
+			}
+			.fangjianxinxi .air_container .numberic {
+				margin-left: -0.6rem;
+				padding-bottom: 0.2rem;
+			}
+			.fangjianxinxi .air_container .num {
+				left: -0.4rem;
+			}
+			.fangjianxinxitanchuang .chuangkoutitle {
+				font-size: 0.35rem;
+			}
+			.fangjianxinxi .air_container .num .in_pm_num {
+				margin: 0rem!important;
+			}
+			.num_san1 {
+				position: absolute;
+				width: 46vw;
+				height: 4vh;
+				left: 1.4rem;
+				top: 0;
+				line-height: 0.1rem;
+				text-align: right;
+			}
+			.num_san3 {
+				position: absolute;
+				width: 50vw;
+				height: 4vh;
+				left: 1.3rem;
+				top: 0;
+				line-height: 0.1rem;
+				text-align: right;
+				-ms-transform: rotate(118deg);
+				-moz-transform: rotate(118deg);
+				-webkit-transform: rotate(118deg);
+				-o-transform: rotate(118deg);
+				transform: rotate(118deg);
+			}
+			.num_san2 {
+				position: absolute;
+				width: 46vw;
+				height: 4vh;
+				left: 1.6rem;
+				top: 0;
+				line-height: 0.1rem;
+				text-align: right;
+				-ms-transform: rotate(63deg);
+				-moz-transform: rotate(63deg);
+				-webkit-transform: rotate(63deg);
+				-o-transform: rotate(63deg);
+				transform: rotate(63deg);
+			}
+			.num_san4 {
+				position: absolute;
+				width: 46vw;
+				height: 4vh;
+				left: 1.4rem;
+				top: 0;
+				line-height: 0.1rem;
+				text-align: left;
+			}
+			.num_san5 {
+				position: absolute;
+				width: 44vw;
+				height: 4vh;
+				left: 1.6rem;
+				top: 0;
+				line-height: 0.1rem;
+				text-align: right;
+				-ms-transform: rotate(230deg);
+				-moz-transform: rotate(230deg);
+				-webkit-transform: rotate(230deg);
+				-o-transform: rotate(230deg);
+				transform: rotate(230deg);
+			}
+			.num_san6 {
+				position: absolute;
+				width: 44vw;
+				height: 4vh;
+				left: 1.3rem;
+				top: 0;
+				line-height: 0.1rem;
+				text-align: right;
+				-ms-transform: rotate(-51deg);
+				-moz-transform: rotate(-51deg);
+				-webkit-transform: rotate(-51deg);
+				-o-transform: rotate(-51deg);
+				transform: rotate(-51deg);
+			}
+		}
+		/**********  iPhone6 Plus  适配*****结束********/
+	</style>
+</block>
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main">
+
+
+
+		<div class="main_body fangjianxinxi" style="width: 100%;">
+			<!-- header 开始 -->
+			<div class="in_header">
+				<div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+			</div>
+			<notempty name="promotion">
+				<div class="fx_As">
+					<div class="addimg_wrap imgs">
+						<a href="{:U('/Wx/Promotion/preview',array('id'=>$promotion['id']))}">
+							<img class="addimg" src="{$promotion.img}" alt="" style="width: 100%;height:50px">
+						</a>
+						<button class="close"><i class="icon w_0000_00 w_00_05 delete"></i></button>
+					</div>
+				</div>
+				<else/>
+			</notempty>
+			<!-- header 结束 -->
+			<div class="addimg_wrap">
+				<div class="addimg">
+					<div class="layoutlr fangjian_title">
+						<div class="col left">
+							<p class="title_name">{$data.hotel_name}</p>
+							<span class="title_span">{$data.room_name}</span>
+						</div>
+						<span class="title_border"></span>
+						<div class="col right">
+							<p class="title_time"><span>{$data.ctime|date='Y-m-d H:i',###}</span><span>{$data.wtime}</span></p>
+							<span class="title_span_right">状态:<if condition="$data['status'] eq 2">
+                            待维修
+                            <elseif condition="$data['status'] eq 3"/>
+                            待保养
+                            <else/>
+                            正常
+                        </if></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="jinhua_block">
+				<div class="content_outdoor">室外PM2.5</div>
+				<div class="content_region">{$data.provice}市{$data.city}:{$data.out_pm}</div>
+				<div class="air_container">
+						<div class="air_main">
+							<!--这个num可是删掉，插件就直接放这个里面-->
+							<div class="numberic" >室内PM2.5</div>
+							<input type="hidden" name="in_pm" value="{$data.in_pm}">
+							<div class="num" ><span class="in_pm_num">{$data.in_pm}</span>
+								<div class="num_san1"><img src="__IMG__/sanjiao1.png" alt=""></div>
+								<div class="num_san2"><img src="__IMG__/sanjiao02.png" alt=""></div>
+								<div class="num_san3"><img src="__IMG__/sanjiao3.png" alt=""></div>
+								<div class="num_san4"><img src="__IMG__/sanjiao4.png" alt=""></div>
+								<div class="num_san5"><img src="__IMG__/sanjiao5.png" alt=""></div>
+								<div class="num_san6"><img src="__IMG__/sanjiao6.png" alt=""></div>
+							</div>
+						</div>
+				</div>
+				<div class="content_outdoor in_margin">室内温度:{$data.in_temperature}℃ <span>舒适</span></div>
+			</div>
+
+			<!-- 图表 开始 -->
+
+
+		</div>
+	</div>
+	<!-- 主体内容 结束 -->
+
+</block>
+<block name="js">
+	<script type="text/javascript">
+		$(".close").click(function () {
+			$(".fx_As").remove();
+		})
+		var In_pm =parseInt( $('input[name="in_pm"]').val());
+		color(In_pm);
+		function color(num) {
+			if(250<num ){
+				$('.num').attr("style","color:#53039a");
+				$('.num>div').eq(4).css("display","block").siblings("div").css('display','none');
+			}else if(35<num && num<=75){
+				$('.num').attr("style","color:#fff700");
+				$('.num>div').eq(0).css("display","block").siblings("div").css('display','none');
+			}else if(75<num && num<=115){
+				$('.num').attr("style","color:#fa620c");
+				$('.num>div').eq(1).css("display","block").siblings("div").css('display','none');
+			}
+			else if(115<num && num<=150){
+				$('.num').attr("style","color:#ff0600");
+				$('.num>div').eq(2).css("display","block").siblings("div").css('display','none');
+			}else if(150<num && num<=250){
+				$('.num').attr("style","color:#a501ee");
+				$('.num>div').eq(3).css("display","block").siblings("div").css('display','none');
+			}else{
+				$('.num').attr("style","color:#41ff01");
+				$('.num>div').eq(5).css("display","block").siblings("div").css('display','none');
+
+
+			}
+
+		}
+	</script>
+</block>

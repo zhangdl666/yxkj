@@ -1,0 +1,247 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>运行信息</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        .yx_from{
+            padding: 22px 15px!important;
+        }
+
+        @media screen and (min-width:1000px) and (max-width:1400px){
+            .jhxg_main .gezi-container-wrap {
+                background-color: #fff;
+                padding: 6px 15px;
+            }
+        }
+        @media screen and (min-width:1600px)  and (max-width:1680px){
+            .jhxg_main .gezi-container-wrap {
+                background-color: #fff;
+                padding: 17px 15px !important;
+            }
+        }
+        .yx_details_div{
+            padding-top: 0rem;
+        }
+
+        .gezi-container .gezi-group .btn {
+            margin: 10px;
+            height: 42px;
+            width: 90px;
+            /*width: calc(6.5% - 10px);*/
+        }
+        .btn_icon{
+            width: 26px;
+            height: 19px;
+            display: block;
+            float: right;
+        }
+        .max_btn_icon{
+            width: 37px;
+            height: 27px;
+            display: block;
+            margin: 10px auto;
+        }
+        .btn_icon_bottom{
+            background: url("__IMG__/wx_kq_bottom_bottom.png");
+            background-size: 100%;
+        }
+        .btn_icon_top{
+            background: url("__IMG__/wx_kq_bottom_top.png");
+            background-size: 100%;
+        }
+        .pc_kq_height{
+            height: 68px;
+            overflow: hidden;
+        }
+        .pitch_on{
+            background: url("__IMG__/pitch_on.png") no-repeat;
+            background-position: right bottom;
+            color: #4e4e4e!important;
+        }
+    </style>
+</block>
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a href="javascript:history.back(-1)">返回</a></li>
+        <li class="on">开启情况</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main" class="jhxg_main" style="background-color:transparent;">
+        <!-- 导航 开始 -->
+        <!--<ul class="clearfix subnav hetongnav">-->
+            <!--<div class="col right table-form yx_nav">-->
+                <!--<input type="text" class="editdate" name="">-->
+                <!--<select name="hotels" class="yx_nav_option">-->
+                    <!--<option value="0">&#45;&#45;请选择酒店查看&#45;&#45;</option>-->
+                    <!--<option value="1">成都国际大酒店</option>-->
+                    <!--<option value="2">某某某大酒店</option>-->
+                <!--</select>-->
+
+            <!--</div>-->
+
+        <!--</ul>-->
+        <!-- 导航 结束 -->
+
+
+        <!-- 内容 开始 -->
+        <div class="subpage hetongxinxi02 jhxg">
+            <div style="min-height: 100px;margin-top: 20px;">
+                <div class="gezi-container-wrap yx_panel yx_c_height" style="min-height: 258px">
+                    <div style="height: 50px"></div>
+                    <div class="left_two yx_right_two_div" style="width: 225px;height: 225px" id="cjs">
+
+                    </div>
+                    <div class="right_two yx_progress-div">
+                        <div class="right_two_div yx_right_two_div" >
+
+                        </div>
+                        <div class="progress-div ">
+                            <div class="right_two_txt right_two_point">
+                                <div class="point01 point-01 right_two_border"></div>
+                                <span>开始时间：</span><span>{$date} 00:00:00</span>
+                            </div>
+                            <div class="right_two_txt right_two_point">
+                                <div class="point01 point-02 right_two_border"></div>
+                                <span>开始时间：</span><span>{$time|date="Y-m-d H:i:s",###}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="gezi-container-wrap jhxg-gezi2 yx_from yx_height" style="min-height: 258px">
+
+                    <dl class="gezi-container ">
+                        <dt class="gezi-title">
+
+                            <div class="checkbox-container gezi-green" data-type="checkbox">
+                                <i class="icon icon01 i_radio"></i>
+                                <span class="checkbox_txt">开启一天次</span>
+                            </div>
+                            <div class="checkbox-container gezi-red" data-type="checkbox">
+                                <i class="icon icon01 i_radio"></i>
+                                <span class="checkbox_txt">未到达一个天次</span>
+                            </div>
+                            <div class="checkbox-container gezi-orange" data-type="checkbox">
+                                <i class="icon icon01 i_radio"></i>
+                                <span class="checkbox_txt">离线预警</span>
+                            </div>
+                        <i class="btn_icon btn_kq_icon btn_icon_bottom"></i>
+                        </dt>
+                        <dd id="kq_height" class="gezi-group pc_kq_height">
+                            <foreach name="rooms" item="vo">
+                                <button type="button" value="{$vo.equipment_sno}" class='room btn <if condition="$vo['status'] eq 3">green<elseif condition="$vo['status'] eq 2"/>orange<else/>red</if>'>{$vo.room_sno}</button>
+                            </foreach>
+                        </dd>
+                        <dd><i class="max_btn_icon btn_kq_icon btn_icon_bottom"></i></dd>
+                    </dl>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="panel panel-default yx_details_div sno">
+                <div class="yx_details">
+                    <div class="left">月度开启率</div>
+                    <div class="right">{$monthsbai}%</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="yx_details">
+                    <div class="left">季度开启率</div>
+                    <div class="right">{$jidubai}%</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="yx_details">
+                    <div class="left">年度开启率</div>
+                    <div class="right">{$nainbai}%</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="yx_details">
+                    <div class="left">安装日到现在开启率</div>
+                    <div class="right">{$anbais}%</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="yx_details">
+                    <div class="left">本结算周期开启率</div>
+                    <div class="right">{$anbai|default=0}%</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="yx_details">
+                    <div class="left">结算周期开启天次</div>
+                    <div class="right">{$hahdats}天</div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <!-- 内容 结束 -->
+    </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+    <script type="text/javascript">
+
+
+        $(document).ready(function(){
+            var yx_height = $(".yx_height").outerHeight()
+            var a = $(".yx_c_height").outerHeight(yx_height);
+        })
+
+        $(".room").click(function () {
+            $(".room").removeClass("pitch_on");
+            $(this).addClass("pitch_on");
+            var sno = $(this).attr('value');
+            $.get('/RunInfo/oneDevice',{sno:sno},function (f) {
+                $('.sno').empty();
+                $('.sno').html(f);
+            },'html')
+        })
+        var myCharOne = echarts.init(document.getElementById('cjs'));
+        optionOne = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+            },
+            series: [
+                {
+                    name:'天次',
+                    type:'pie',
+                    //给图表添加坐标center : ['50%', '35%'],配合htmldiv的高度为230.4，高度变化就要修改坐标变化
+                    center : ['50%', '40%'],
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '16',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:[
+                        {value:"{$hahdats}", name:'天次'},
+                    ],
+                    color:[ '#6BC35E',]
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myCharOne.setOption(optionOne);
+
+    </script>
+</block>

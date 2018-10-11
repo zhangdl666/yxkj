@@ -1,0 +1,120 @@
+<extend name="Public:index"/>
+
+<block name="head">
+    <title>提现记录</title>
+</block>
+
+<block name="css">
+    <link rel="stylesheet" href="__TREETABLE__/jquery.treetable.css">
+    <link rel="stylesheet" href="__TREETABLE__/jquery.treetable.theme.default.css">
+    <style>
+        .handle span:last-child{
+            padding: 0;
+        }
+    </style>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>系统设置</a></li>
+        <li class="on">提现记录列表</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main" class="bgfff">
+        <div class="panel panel-default table-datawrap">
+            <div class="panel-heading">
+                <!-- Single button -->
+                <form class="clearfix searchbar" method="post" action="{:U('SaleExt/saleGetmoney')}">
+                    <div class="col">
+                        <div class="navbar-form navbar-left">
+                            <div class="btn-group">
+
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    <span class="text search"><span class="default">全部</span></span> <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a>全部</a></li>
+                                    <li><a>待打款</a></li>
+                                    <li><a>已打款</a></li>
+                                </ul>
+                                &nbsp;
+                            </div>
+                            <button type="button" class="btn btn-warning" id="allsearch" style="height: 37px">搜索</button>
+                        </div>
+                        <div class="navbar-form navbar-right">
+
+                            <a class="btn btn-warning  active" href="{:U('index')}" style="height: 37px;margin-left: 10px;color: white!important;">返回到收益首页</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="panel-body">
+                <table class="table table-condensed table-data" >
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>提现编号</th>
+                        <th>申请提现金额</th>
+                        <th>申请时间</th>
+                        <th>提现状态</th>
+                        <th>申请人</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <notempty name="rows">
+                    <volist name="rows" id="row">
+                        <tr>
+                            <td>{$row.id}</td>
+                            <td>{$row.sno}</td>
+                            <td>{$row.rprice}</td>
+                            <td><?php echo date('Y-m-d H:i:s',$row['ctime']); ?></td>
+                            <td><?php if($row['status']==1){echo '待打款';}else{echo '已打款';}?></td>
+                            <td><?php $row1=M('user')->where(['id'=>$row['sale_id']])->select();foreach($row1 as $row2){echo $row2['real_name'];}?></td>
+                            <td class="orprate">
+                                <a class="text-warning" href="{:U('select',['id'=>$row['id']])}">查看</a>
+                        </tr>
+                    </volist>
+                    <else/>
+                    <tr><td colspan="7">暂无数据</td></tr>
+                    </notempty>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    {$pageHtml}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</block>
+
+<block name="js">
+    <script src="__TREETABLE__/jquery.treetable.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#treeTable").treetable({
+                expandable : true
+            });
+
+        });
+        $('#allsearch').click(function () {
+            var value = $('.search ').text();
+            if(value == '待打款'){
+                var roth =1;
+            }
+            if(value == '已打款'){
+                var roth = '2';
+            }
+            if(value == '全部' ){
+                var roth =0;
+            }
+            self.location.href ='/Pc/SaleExt/saleGetmoney/id/'+roth;
+        })
+    </script>
+</block>
+

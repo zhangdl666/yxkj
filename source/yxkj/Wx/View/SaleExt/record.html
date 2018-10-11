@@ -1,0 +1,221 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>提现记录列表</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        .loading{text-align: center;}
+    </style>
+</block>
+<block name="main">
+    <!-- header 开始 -->
+    <div class="header">
+        <div class="left"><a href="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+        <div class="center">
+
+        </div>
+        <div class="right"><a class="s">
+        </a>
+        </div>
+    </div>
+    <!-- header 结束 -->
+    <!-- 主体内容 开始 -->
+    <div class="main swiper-container-01">
+        <div class="main_body">
+            <div class="swiper-container swiper-tab-nav">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide swiper-tab-link <?php if($status == 1){ echo 'on';};?> "><a href="record?status=1">待打款</a></div>
+                    <div class="swiper-slide swiper-tab-link <?php if($status == 2){ echo 'on';};?>"><a href="record?status=2">已打款</a></div>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="swiper-container swiper-tab-page hetongpage" id="hetongpage">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide swiper-tab-content list">
+                        <notempty name="items">
+                            <volist name="items" id="row">
+                            <dl class=" green_panel ">
+                                <dt class="layoutlr green_header">
+                                    <div class="left"><i class="icon w_0004_04 w_04_08"></i>提现编号</div>
+                                    <div class="right" style="margin-top: 0.19rem;">ID:{$row.sno}</div>
+                                </dt>
+                                <dd class="green_body">
+                                    <div class="form_data_wrap">
+                                        <a href="{:U('recordstt',['id'=>$row['id']])}">
+                                            <ul class="form_data">
+                                                <li class="layoutlr form_item">
+                                                    <div class="left">申请提现金额：</div>
+                                                    <div class="right">￥{$row.rprice}</div>
+                                                </li>
+                                                <li class="layoutlr form_item">
+                                                    <div class="left">申请时间：</div>
+                                                    <div class="right">{$row.ctime|date='Y-m-d H:i:s',###}</div>
+                                                </li>
+                                                <li class="layoutlr form_item">
+                                                    <div class="left">申请人：</div>
+                                                    <div class="right">{$uname}</div>
+                                                </li>
+                                            </ul>
+                                        </a>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </volist>
+                        <else/>
+                            <dl class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></dl>
+                        </notempty>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 主体内容 结束 -->
+    <!--装页码的div-->
+    <div style="display:none" key="1" class="key"></div>
+    <div style="display:none" key="1" class="list-page"></div>
+</block>
+
+<block name="js">
+    <script type="text/javascript">
+        $('.main').on('click', '.swiper-tab-link', function() {
+            $('.swiper-tab-link').removeClass('on');
+            $(this).addClass('on');
+        });
+        var swiperNav = new Swiper('.swiper-tab-nav', {
+            // pagination: '.swiper-pagination',
+            slidesPerView: 'auto',
+            // centeredSlides: true,
+            // paginationClickable: true,
+            // spaceBetween: 30
+
+            // slidesPerView: 3,
+            paginationClickable: true,
+            // spaceBetween: 30,
+
+            onInit: function(swiper) { // 初始化回调函数
+//
+            },
+            onClick: function(swiper) {
+                swiperPage.slideTo($(swiper.clickedSlide).index(), 500, false);//切换到第一个slide，速度为1秒
+            },
+        });
+
+        var swiperPage = new Swiper ('.swiper-tab-page', {
+            // loop: true,
+
+            onInit: function(swiper) { // 初始化回调函数
+
+            },
+            onTouchEnd: function(swiper) { // 初始化回调函数
+                swiperNav.slideTo(swiper.previousIndex, 500, false);//切换到第一个slide，速度为1秒
+                setTimeout(function() {
+                    if($('.swiper-tab-link.on').index() != swiperPage.activeIndex) {
+                        $('.swiper-tab-link').removeClass('on');
+                        $($('.swiper-tab-link')[swiperPage.activeIndex]).addClass('on');
+                    }
+                }, 100);
+            },
+        });
+        //下拉显示更多
+        //当前的数据一定要超过页面显示的
+        $("#hetongpage").scroll(function () {
+            var docHei = $("#hetongpage").prop("scrollHeight"), winHei = $("#hetongpage").height(),
+                scrHei = $("#hetongpage").scrollTop();
+            if (scrHei >= docHei - winHei) {
+                $(".loading").show();
+                var key = $('.key').attr('key');//当前页码
+                key = key * 1 + 1;
+                //获取加载数据
+                $.ajax({
+                    type: "POST",
+                    url: "{:U('SaleExt/show_more_data')}?page=" + $(".list-page").attr('key'),
+                    data: {key: key},
+                    success: function (info) {
+                        info = eval("(" + info + ")");
+                        if (info.status) {
+                            var re_data = info.data;
+                            $('.key').attr('key', re_data.key);          //添加最新显示页码
+                            $(".list-page").attr('key', re_data.page);   //添加最新查询页码
+
+                            //显示加载的数据
+                            showHtmlRecord(re_data.datas);
+
+                            //>>隐藏加载图
+                            setTimeout(function () {
+                                $(".loading").hide();
+                            }, 1000);
+                        } else {
+                            $(".loading").empty();
+                            $(".loading").text("已全部加载完");
+                        }
+                    }
+                });
+            }
+        });
+        //显示加载的数据
+        function showHtmlRecord(datas) {
+            $(datas).each(function(){
+                var html=
+                    "<dl class='green_panel'>\
+                        <dt class='layoutlr green_header'>\
+                            <div class='left'><i class='icon w_0004_04 w_04_08'></i>提现编号</div>\
+                            <div class='right'>ID："+$(this).attr('sno')+"</div>\
+                            </dt>\
+                            <dd class='green_body'>\
+                                <div class='form_data_wrap'>\
+                                    <a href=\"{:U('recordstt',['id'=>"+$(this).attr('id')+"])}\">\
+                                    <ul class='form_data'>\
+                                        <li class='layoutlr form_item'>\
+                                            <div class='left'>申请提现金额：</div>\
+                                            <div class='right'>￥"+$(this).attr('rprice')+"</div>\
+                                        </li>\
+                                        <li class='layoutlr form_item'>\
+                                            <div class='left'>申请时间：</div>\
+                                            <div class='right'>"+getMyDate($(this).attr('ctime'))+"</div>\
+                                        </li>\
+                                        <li class='layoutlr form_item'>\
+                                            <div class='left'>申请人：</div>\
+                                            <div class='right'>"+$(this).attr('sale_id')+"</div>\
+                                        </li>\
+                                    </ul>\
+                                    </a>\
+                                </div>\
+                            </dd>\
+                        </dl>";
+                $(".list").append(html);
+            })
+        }
+        //将时间戳转换
+        function getMyDate(str){
+            var oDate = new Date(str),
+                oYear = oDate.getFullYear(),
+                oMonth = oDate.getMonth()+1,
+                oDay = oDate.getDate(),
+                oHour = oDate.getHours(),
+                oMin = oDate.getMinutes(),
+                oSen = oDate.getSeconds(),
+                oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay) +' '+ getzf(oHour) +':'+ getzf(oMin) +':'+getzf(oSen);//最后拼接时间
+            return oTime;
+        };
+        //补0操作
+        function getzf(num){
+            if(parseInt(num) < 10){
+                num = '0'+num;
+            }
+            return num;
+        }
+    </script>
+</block>
+
+
+
+
+
+
+
+
+
+
+
+

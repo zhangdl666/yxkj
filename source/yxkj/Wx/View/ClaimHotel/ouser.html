@@ -1,0 +1,49 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>我的认领</title>
+</block>
+<block name="main">
+
+	<!-- 主体内容 开始 -->
+	<div class="main">
+		<!-- header 开始 -->
+		<div class="header">
+			<div class="left" ><a href="{:U('index')}">
+				<i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+		</div>
+		<!-- header 结束 -->
+
+		<div class="main_body">
+			<ul class="renling">
+				<notempty name="items">
+				<volist name="items" id="vol">
+					<a href="{:U('edit',array(id =>$vol['id']))}">
+						<li class="layoutlr renling_item">
+								<div class="left">
+									<div class="goodsimg">
+										<if condition="$vol['imgs'][0] neq ''">
+											<img src="{$vol['imgs'][0]}" >
+											<else />
+											<img src="__IMG__/head.png" alt="酒店图片">
+										</if>
+									</div>
+								</div>
+								<div class="right">
+									<ul class="showdata">
+										<li><i class="icon w_0007_07 w_07_02"></i>酒店名称：{$vol.name} </li>
+										<li><i class="icon w_0007_07 w_07_03"></i>酒店星级：{$vol.type_name}</li>
+										<li><i class="icon w_0007_07 w_07_04"></i>认领有效期：{$vol.ytime}天</li>
+									</ul>
+								</div>
+						</li>
+					</a>
+				</volist>
+				<else/>
+					<li class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></li>
+				</notempty>
+			</ul>
+		</div>
+		
+	</div>
+	<!-- 主体内容 结束 -->
+</block>

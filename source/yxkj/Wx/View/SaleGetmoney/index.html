@@ -1,0 +1,160 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>提现</title>
+</block>
+<block name="css">
+	<style type="text/css">
+		.loading{text-align: center;display: none;}
+		.layoutlr {
+			line-height: 0.4rem;
+		}
+		li {
+			margin-bottom:0rem;
+			border-bottom: 1px solid #e1e1e1;
+			padding: 0.15rem 0;
+		}
+		.layoutlr_right {
+			padding-top: 0.2rem;
+			color: rgb(255,255,255)!important;
+			text-align: right!important;
+		}
+		.showdata .left,.showdata .right{
+			display: inline-block;
+		}
+		.showdata .left{
+			text-align: left!important;
+		}
+		.showdata .right{
+			float: right;
+			text-align: right!important;
+		}
+	</style>
+</block>
+<block name="main">
+	<!-- header 开始 -->
+	<div class="header">
+		<div class="left"><a href="{:U('Index/index')}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+		<div class="center"></div>
+	</div>
+	<!-- header 结束 -->
+	<!-- 主体内容 开始 -->
+		<div class="main swiper-container-01" >
+		<div class="main_body">
+			<div class="swiper-container swiper-tab-nav">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide swiper-tab-link  <?php if($type == 1){ echo 'on';};?>">
+						<a href="{:U('index',array(status =>1))}">待打款<if condition="$flag eq 1"><i class="msg-flag"></i></if></a>
+					</div>
+					<div class="swiper-slide swiper-tab-link  <?php if($type == 2){ echo 'on';};?>">
+						<a href="{:U('index',array(status =>2))}">已打款</a>
+					</div>
+				</div>
+				<!-- Add Pagination -->
+				<div class="swiper-pagination"></div>
+			</div>
+			<div class="jiesuan">
+				<notempty name="items">
+					<volist name="items" id="vol">
+						<a href="{:U('recordstt',array(id =>$vol['id'],type => $type))}">
+							<dl class="jiesuan_item">
+								<dt class="layoutlr jiesuan_title">
+								<div class="left"><i class="icon w_0004_04 w_04_08"></i>提现编号</div>
+								<div class="right layoutlr_right">{$vol.sno}</div>
+								</dt>
+
+								<dd class="layoutlr jiesuan_content">
+									<div class="right">
+										<ul class="showdata">
+											<li><span class="label left">申请提现金额：</span><span class="right">￥{$vol.rprice}</span></li>
+											<li><span class="label left">申请日期：</span><span class="right">{$vol.ctime|date='Y-m-d',###}</span></li>
+											<li><span class="label left">申请人：</span><span class="right">{$vol.real_name}</span></li>
+										</ul>
+									</div>
+								</dd>
+							</dl>
+						</a>
+					</volist>
+				<else/>
+                    <dl class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></dl>
+                </notempty>
+			</div>
+			<div class="col-xs-12 loading">
+				<img src="__IMG__/loading.gif" alt="">
+			</div>
+		</div>
+		</div>
+	<!-- 主体内容 结束 -->
+	<!--装页码的div-->
+	<div style="display:none" key="1" class="key"></div>
+	<div style="display:none" key="1" class="list-page"></div>
+</block>
+<block name="js">
+	<script type="text/javascript">
+		if($(".main_body").height() >= 667 ){
+			//下拉显示更多
+			//当前的数据一定要超过页面显示的
+			$(window).scroll(function () {
+				var docHei = $(document).height(), winHei = $(window).height(), scrHei = $(document).scrollTop();
+				if (scrHei >= docHei - winHei) {
+					$(".loading").show();
+					var key = $('.key').attr('key');//当前页码
+					key = key * 1 + 1;
+					//获取加载数据
+					$.ajax({
+						type:"POST",
+						url:"{:U('SaleGetmoney/show_more_data')}?page="+$(".list-page").attr('key'),
+						data:{key:key},
+						success:function(info){
+							info = eval("("+info+")");
+							if (info.status) {
+								var re_data = info.data;
+								$('.key').attr('key', re_data.key);          //添加最新显示页码
+								$(".list-page").attr('key',re_data.page);   //添加最新查询页码
+								//显示加载的数据
+								showHtml(re_data.datas);
+								//>>隐藏加载图
+								setTimeout(function () {
+									$(".loading").hide();
+								}, 1000);
+							} else {
+								$(".loading").empty();
+								$(".loading").text("已全部加载完");
+							}
+						}
+					});
+				}
+			});
+			//显示加载的数据
+			function showHtml(datas){
+				$(datas).each(function () {
+					var status = $(this).attr('type');
+					var time = "<?php echo date('Y-m-d H:i:s',$row['ctime'])?>"
+					var id = $(this).attr("id")+'.html';
+					var html  = " <a href="+'/Wx/SaleGetmoney/recordstt/id/'+id+">\
+					<div class='row' style='background:#1b6d85;'>\
+							<span class='text_left'>提现编号："+$(this).attr("sno")+"</span>\
+					</div>\
+					<li class='layoutlr renling_item'>\
+							<div class='left '>\
+							<div class='goodsimg'>\
+							<img src='{$vol.img}' >\
+							</div>\
+							</div>\
+							<div class='right'>\
+							<ul class='showdata'>\
+							<li>申请提现金额：￥"+$(this).attr("rprice")+"元 </li>\
+					<li>申请时间："+time+"</li>\
+					<li>申请人："+$(this).attr("name")+"</li>\
+					</ul>\
+					</div>\
+					</li>\
+					</a>";
+					$(".renling").append(html);
+				});
+			}
+		}else {
+			$(".loading").empty();
+			$(".loading").text("已全部加载完");
+		}
+	</script>
+</block>

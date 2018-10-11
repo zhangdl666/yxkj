@@ -1,0 +1,222 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>订单管理</title>
+</block>
+<block name="css">
+  <style type="text/css">
+  .table-form-text{    float: left;
+    display: inline-block;
+    line-height: 34px;}
+    .table-datawrap .panel-heading .search-wrap .search,.btn-warning{margin-left:20px;margin-right:0px;}
+
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+    .safari_caret{
+      position: relative;
+      right: -130px;
+      top: -28px;
+    }
+    .panel .panel-heading {
+      margin-left: 15px;
+      margin-right: 15px;
+      background-color: transparent;
+      padding:25px 0px 0 0 !important;
+    }
+    .table-datawrap .panel-heading .searchbar .col .table-form-text + .btn-group {
+      line-height: 1em;
+    }
+  }
+    </style>  
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>订单管理</a></li>
+      <li class="on">安装列表</li>
+    </ol>
+</block>
+
+<block name="main">
+  <div id="main" class="bgfff">
+    <ul class="clearfix danzi">
+      <notempty name="room_num">
+        <li>
+          <div class="danzidata dan1">
+            <i class="icon dan_icon i_dan1"></i>
+            <div class="danzinum"><span>{$installed_house_num}</span>个</div>
+            <div class="danziname">已安装房间数</div>
+          </div>
+        </li>
+        <li>
+          <div class="danzidata dan1">
+            <i class="icon dan_icon i_dan1"></i>
+            <div class="danzinum"><span>{$finished_num}</span>个</div>
+            <div class="danziname">待安装房间数</div>
+          </div>
+        </li>
+        <li>
+          <div class="danzidata dan2">
+            <i class="icon dan_icon i_dan2"></i>
+            <div class="danzinum"><span>{$room_all}</span>个</div>
+            <div class="danziname">总房间数</div>
+          </div>
+        </li>
+      <else/>
+      
+      <notempty name="distribution">
+      <li>
+        <div class="danzidata dan1">
+          <i class="icon dan_icon i_dan1"></i>
+          <div class="danzinum"><span>{$status_1}</span>个</div>
+          <div class="danziname">待分配</div>
+        </div>
+      </li>
+      </notempty>
+
+      <li>
+        <div class="danzidata dan1">
+          <i class="icon dan_icon i_dan1"></i>
+          <div class="danzinum"><span>{$status_2}</span>个</div>
+          <div class="danziname">待安装</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan2">
+          <i class="icon dan_icon i_dan2"></i>
+          <div class="danzinum"><span>{$status_3}</span>个</div>
+          <div class="danziname">待确认</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan3">
+          <i class="icon dan_icon i_dan3"></i>
+          <div class="danzinum"><span>{$status_4}</span>个</div>
+          <div class="danziname">已安装</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan4">
+          <i class="icon dan_icon i_dan4"></i>
+          <div class="danzinum"><span>{$total_num}</span>个</div>
+          <div class="danziname">总单数</div>
+        </div>
+      </li>
+    </notempty>
+    </ul>
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading">
+        <!-- Single button -->
+        <form class="clearfix searchbar">
+          <div class="col">
+            <span class="table-form-text">安装状态：</span>
+            <div class="btn-group">
+              <select name="estatus" class="form-control">
+                <option value="">全部</option>
+                <if condition="$role_id neq 11"><option value="1" <eq name="estatus" value="1">selected</eq>>待分配</option></if>
+                <option value="2" <eq name="estatus" value="2">selected</eq>>待安装</option>
+                <option value="3" <eq name="estatus" value="3">selected</eq>>待确认</option>
+                <option value="4" <eq name="estatus" value="4">selected</eq>>已安装</option>
+              </select>
+            </div>
+          </div>
+
+          <empty name="room_num">
+          <div class="col">
+            <div class="navbar-form navbar-left">
+              <div class="form-group search-wrap">
+                <input type="text" class="form-control search" name="keyword" value="{$keyword}" placeholder="{$placeholder}">
+              </div>
+            </div>
+            <div class="navbar-form navbar-left">
+                <button type="button" class="btn btn-warning btn-search">搜索</button>
+            </div>
+          </div>
+          </empty>
+
+        </form>
+      </div>
+
+      <div class="panel-body">
+        <table class="table table-condensed table-data">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>工单编号</th>
+              <th>酒店名称</th>
+              <th>安装数量</th>
+              <th>安装进度</th>
+              <th>安装状态</th>
+              <th>安装时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          <notempty name="items">
+            <volist name="items" id="item">
+            <tr <eq name="item.roll_back" value="1">style="color:red;"</eq>>
+              <td>{$key+1}</td>
+              <td>{$item.sno}</td>
+              <td>{$item.hotel_name}</td>
+              <td>{$item.now_nume}</td>
+              <td>{$item.now_nume}/{$item.nume}</td>
+              <td>
+                <if condition="$item.status eq 1">
+                  待分配
+                <elseif condition="$item.status eq 2"/>
+                  待安装
+                <elseif condition="$item.status eq 3"/>
+                  待确认
+                <else/>
+                  已安装
+                </if>
+              </td>
+              <td><notempty name="item.datetime">{$item.datetime}</notempty></td>
+              <td class="orprate"><a class="text-warning" href="{:U('read',array('readonly'=>1,'id'=>$item['id']))}">立即查看</a><if condition="in_array('EquipmentInstall/upload',$method_arr) && $item['status'] eq 2 && $item['now_nume'] gt 0"> 丨 <a class="text-warning"  href="{:U('read',array('id'=>$item['id']))}">上传凭证</a></if><if condition="in_array('EquipmentInstall/distribution',$method_arr) && $item['status'] eq 1"> 丨 <a class="text-warning"  href="{:U('distribution',array('id'=>$item['id']))}">分配</a><elseif condition="$item['status'] eq 2 && in_array('EquipmentInstall/distribution',$method_arr) && $item['num_ratio'] eq 0"/> 丨 <a class="text-warning"  href="{:U('distribution',array('id'=>$item['id']))}">重新分配</a></if><if condition="in_array('EquipmentInstall/over',$method_arr) && $item['status'] eq 3"> 丨 <a class="text-warning"  href="{:U('read',array('id'=>$item['id']))}">确认</a></if></td>
+            </tr>
+            </volist>
+            <else/>
+            <tr><td colspan="8">暂无数据</td></tr>
+          </notempty>
+          </tbody>
+        </table>
+        <div class="pagination-container">
+            <div class="pagination">
+                {$pageHtml}
+            </div>
+        </div>
+      </div>
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript">
+
+//搜索
+$(".btn-search").click(function(){
+  var estatus = $("select[name='estatus'] option:selected").val();
+  var keyw = $("input[name='keyword']").val();
+  window.location.href = "{:U('')}?estatus="+estatus+"&keyword="+keyw;
+});
+
+//选择状态是否搜索
+$("select[name='estatus']").change(function(){
+  if(typeof($("input[name='keyword']").val()) == 'undefined'){
+    var estatus = $("select[name='estatus'] option:selected").val();
+    window.location.href = "{:U('')}?estatus="+estatus;
+  }
+})
+
+$(document).ready(function () {
+  var dan_zi = $(".danzi li");
+  var danzi_num = dan_zi.length;
+  if(danzi_num == 3){
+    dan_zi.addClass("three_dan_zi");
+  }else if(danzi_num == 4){
+
+    dan_zi.addClass("four_dan_zi");
+
+  }else if(danzi_num == 5){
+    dan_zi.addClass("five_dan_zi");
+  }
+});
+</script>
+</block>

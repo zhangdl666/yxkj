@@ -1,0 +1,228 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>报销</title>
+</block>
+
+<block name="main">
+    <style>
+        .green_panel .green_header .right {
+            max-width: calc(100vw - 0.4rem - 47vw);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-top: 0.2rem!important;
+            float: right;
+        }
+        .green_panel .green_header .left {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 40vw;
+        }
+        .form_data_wrap {
+            border-radius:5px;
+             border-top: 0rem solid #f4f4f4;
+        }
+        .green_panel .green_body {
+            border-radius:5px;
+        }
+
+        .green_panel .green_body li:nth-child(5){ border: 0rem;
+        }
+        input{border: 0rem}
+    </style>
+    <!-- 主体内容 开始 -->
+    <div class="main swiper-container-01">
+        <!-- 【此处嵌套 header】 -->
+        <div class="header">
+            <div class="left backs" data-url="{:U('Wx/Index/index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+            <if condition="in_array('Reimbursement/add',$method_arr)"><div class="right"><a class="s" href="{:U('Reimbursement/add')}"><i class="icon add"></i>新增报销</a></div></if>
+        </div>
+        <div class="main_body">
+            <div class="swiper-container swiper-tab-nav">
+                <div class="swiper-wrapper">
+                    <if condition="($role_id eq 2) OR ($role_id eq 3) OR ($role_id eq 9)">
+                        <div class="swiper-slide swiper-tab-link <if condition='$type eq 1'>on</if>" data-type="1">待审核<if condition="$flagOne eq 1"><i class="msg-flag"></i></if></div>
+                    </if>
+                    <if condition="($role_id eq 2) OR ($role_id eq 3)">
+                        <div class="swiper-slide swiper-tab-link <if condition='$type eq 4'>on</if>" data-type="4">已驳回</div>
+                    </if>
+                    <div class="swiper-slide swiper-tab-link <if condition='$type eq 2'>on</if>" data-type="2">待打款<if condition="$flagTwo eq 1"><i class="msg-flag"></i></if></div>
+                    <div class="swiper-slide swiper-tab-link <if condition='$type eq 3'>on</if>" data-type="3">已打款</div>
+                    <if condition="$role_id eq 2">
+                        <div class="swiper-slide swiper-tab-link <if condition='$type eq 5'>on</if>" data-type="5">已撤回</div>
+                    </if>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="swiper-container swiper-tab-page hetongpage">
+                <div class="swiper-wrapper">
+                    <!-- 保养信息 开始 -->
+                    <div class="swiper-slide swiper-tab-content content">
+                        <!--<div class="search_container">
+                            <div class="search_input_wrap">
+                                <div class="search_input"><i class="icon"></i><div class="contenteditable on" contenteditable="" placeholder="输入关键词进行搜索"></div></div>
+                                &lt;!&ndash; <input type="text" class="search_input" name="" placeholder="输入关键词进行搜索"> &ndash;&gt;
+                            </div>
+                        </div>-->
+                        <notempty name="datas">
+                        <foreach name="datas" item="vo">
+                            <dl class="green_panel reimbursement" flag="{$vo.id}">
+                                <dt class="layoutlr green_header">
+                                    <div class="left"><i class="icon w_0004_04 w_04_08"></i>{$vo.h_name}</div>
+                                    <div class="right">ID：{$vo.sno}</div>
+                                </dt>
+                                <dd class="green_body">
+                                    <div class="form_data_wrap">
+                                        <ul class="form_data">
+                                            <li class="layoutlr form_item">
+                                                <div class="left">报销人：</div>
+                                                <div class="right">{$vo.sale_name}</div>
+                                            </li>
+                                            <li class="layoutlr form_item">
+                                                <div class="left">报销类型：</div>
+                                                <div class="right">{$vo.rt_name}</div>
+                                            </li>
+                                            <li class="layoutlr form_item">
+                                                <div class="left">报销金额：</div>
+                                                <div class="right">{$vo.price} 元</div>
+                                            </li>
+                                            <li class="layoutlr form_item">
+                                                <div class="left">报销时间：</div>
+                                                <div class="right">{$vo.ctime|date="Y-m-d H:i:s",###}</div>
+                                            </li>
+                                            <li class="layoutlr form_item">
+                                                <div class="left">归属合同：</div>
+                                                <div class="right">{$vo.hc_name}</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </foreach>
+                        <else/>
+                            <dl class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></dl>
+                        </notempty>
+                    </div>
+                    <!-- 保养信息 结束 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 主体内容 结束 -->
+    <input type="hidden" name="role_id" value="{$role_id}">
+    <!--装页码的div-->
+    <div style="display:none" key="1" class="key"></div>
+    <div style="display:none" key="1" class="list-page"></div>
+
+</block>
+<block name="js">
+    <script src="__PUBLIC__/Swiper-3.4.1/js/swiper.jquery.min.js"></script>
+    <script type="text/javascript">
+        $('.main').on('click', '.swiper-tab-link', function() {
+           /* $('.swiper-tab-link').removeClass('on');
+            $(this).addClass('on');*/
+            var type=$(this).data('type');
+            window.location.href='/Wx/Reimbursement/index/type/'+type;
+        });
+        $(window).scroll(function () {
+            var docHei = $(document).height(), winHei = $(window).height(), scrHei = $(document).scrollTop();
+            if (scrHei >= docHei - winHei) {
+                $(".loading").show();
+                var key = $('.key').attr('key');//当前页码
+                key = key * 1 + 1;
+                //获取加载数据
+                $.ajax({
+                    type:"POST",
+                    async: false,
+                    url:"{:U('show_more_data')}?page="+$(".list-page").attr('key'),
+                    data:{key:key},
+                    success:function(info){
+                        info = eval("("+info+")");
+                        if (info.status) {
+                            var re_data = info.data;
+                            $('.key').attr('key', re_data.key);          //添加最新显示页码
+                            $(".list-page").attr('key',re_data.page);   //添加最新查询页码
+                            //显示加载的数据
+                            showList(re_data.datas);
+                            //>>隐藏加载图
+                            setTimeout(function () {
+                                $(".loading").hide();
+                            }, 1000);
+                        } else {
+                            $(".loading").empty();
+                            $(".loading").text("已全部加载完");
+                        }
+                    }
+                });
+            }
+        });
+        //查看报销数据详情
+        $(".reimbursement").click(function(){
+            var id = $(this).attr('flag');
+            var type=$('.on').data('type');
+            //var mark = $(this).attr('mark');
+            var role_id = $("input[name='role_id']").val();
+            //window.location.href = "{:U('cat')}?id=" + id + "&mark=" + mark + "&role_id=" + role_id;
+            window.location.href = "{:U('cat')}?id=" + id + "&role_id=" + role_id+"&type="+type ;
+        });
+        function showList(datas) {
+            $(datas).each(function(){
+                var html=
+                    '<dl class="green_panel reimbursement" flag="'+$(this).attr('id')+'">\
+                        <dt class="layoutlr green_header">\
+                            <div class="left"><i class="icon w_0004_04 w_04_08"></i>'+$(this).attr('h_name')+'</div>\
+                            <div class="right">ID：'+$(this).attr('h_name')+'</div>\
+                        </dt>\
+                        <dd class="green_body">\
+                            <div class="form_data_wrap">\
+                                <ul class="form_data">\
+                                    <li class="layoutlr form_item">\
+                                        <div class="left">报销人：</div>\
+                                        <div class="right">'+$(this).attr('sale_name')+'</div>\
+                                    </li>\
+                                    <li class="layoutlr form_item">\
+                                        <div class="left">报销类型：</div>\
+                                        <div class="right">{$vo.rt_name}</div>\
+                                    </li>\
+                                    <li class="layoutlr form_item">\
+                                        <div class="left">报销金额：</div>\
+                                        <div class="right">'+$(this).attr('price')+'</div>\
+                                    </li>\
+                                    <li class="layoutlr form_item">\
+                                        <div class="left">报销时间：</div>\
+                                        <div class="right">'+getMyDate($(this).attr('ctime'))+'</div>\
+                                    </li>\
+                                    <li class="layoutlr form_item">\
+                                        <div class="left">归属合同：</div>\
+                                        <div class="right">'+$(this).attr('hc_name')+'</div>\
+                                    </li>\
+                                </ul>\
+                            </div>\
+                        </dd>\
+                    </dl>';
+                $(".content").append(html);
+            })
+        }
+        //将时间戳转换
+        function getMyDate(str){
+            var oDate = new Date(str),
+                oYear = oDate.getFullYear(),
+                oMonth = oDate.getMonth()+1,
+                oDay = oDate.getDate(),
+                oHour = oDate.getHours(),
+                oMin = oDate.getMinutes(),
+                oSen = oDate.getSeconds(),
+                oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay) +' '+ getzf(oHour) +':'+ getzf(oMin) +':'+getzf(oSen);//最后拼接时间
+            return oTime;
+        };
+        //补0操作
+        function getzf(num){
+            if(parseInt(num) < 10){
+                num = '0'+num;
+            }
+            return num;
+        }
+    </script>
+</block>

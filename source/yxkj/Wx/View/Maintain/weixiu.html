@@ -1,0 +1,220 @@
+<div class="swiper-wrapper">
+    <!-- 销售额 开始 -->
+    <div class="swiper-slide swiper-tab-content">
+        <div class="white_panel">
+            <div class="layoutlr white_header">
+                <div class="left">维修数量统计</div>
+            </div>
+            <div class="white_body">
+                <div class="layoutlr xiaoshoutongji_echart">
+                    <div class="left" style="width: 207.2px;height: 194.4px" id="onemain">
+
+                    </div>
+                    <div class="right">
+                        <ul class="echart_prog">
+                            <foreach name="data" item="list">
+                                <li>
+                                    <div class="text">{$list.oper_name}{$list.num}
+                                    </div>
+                                    <div class="progress-container progress01">
+                                        <div class="progress" data-width="30%"></div>
+                                    </div>
+                                </li>
+                            </foreach>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="white_panel">
+            <div class="layoutlr white_header">
+                <div class="left">维修方式占比统计</div>
+            </div>
+            <div class="white_body">
+                <div class="layoutlr xiaoshoutongji_echart">
+                    <div class="left" style="width: 207.2px;height: 194.4px" id="twomain">
+
+                    </div>
+                    <div class="right">
+                        <ul class="echart_prog">
+                            <foreach name="data" item="list">
+                                <li>
+                                    <div class="text">{$list.oper_name}{$list.bai}
+                                    </div>
+                                    <div class="progress-container progress01">
+                                        <div class="progress" data-width="30%"></div>
+                                    </div>
+                                </li>
+                            </foreach>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="white_panel">
+            <div class="layoutlr white_header">
+                <div class="left">维修方式趋势统计图</div>
+            </div>
+            <div class="white_body" id="fourmain">
+            </div>
+        </div>
+
+    </div>
+    <!-- 销售额 结束 -->
+</div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChartOne = echarts.init(document.getElementById('onemain'));
+    optionOne = {
+        title : {
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            x : 'center',
+            y : 'bottom',
+            data:{$type},
+        },
+        series : [
+            {
+                name:'保养数量统计',
+                type:'pie',
+                roseType : 'radius',
+                label: {
+                    normal: {
+                        show: false
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                lableLine: {
+                    normal: {
+                        show: false
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                data:{$item},
+                color:[ '#F6B55B','#D97A80','#5BB0F0','#5BB0F0','#1DABAD'],
+            },
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartOne.setOption(optionOne);
+    // 基于准备好的dom，初始化echarts实例
+    var myChartTwo = echarts.init(document.getElementById('twomain'));
+    optionTwo = {
+        title : {
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            x : 'center',
+            y : 'bottom',
+            data:{$type},
+        },
+        series : [
+            {
+                name:'保养数量统计',
+                type:'pie',
+                roseType : 'radius',
+                label: {
+                    normal: {
+                        show: false
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                lableLine: {
+                    normal: {
+                        show: false
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                data:{$item},
+                color:[ '#F6B55B','#D97A80','#5BB0F0','#5BB0F0','#1DABAD'],
+            },
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartTwo.setOption(optionTwo);
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChartThe= echarts.init(document.getElementById('fourmain'));
+    myChartThe.setOption({
+        tooltip: {
+            trigger: 'axis',
+        },
+//        toolbox: {
+//            show: true,
+//            feature: {
+//                mark: {show: true},
+//                dataView: {show: true, readOnly: false},
+//                magicType: {
+//                    show: true,
+//                    type: ['pie', 'funnel']
+//                },
+//                restore: {show: true},
+//                saveAsImage: {show: true}
+//            }
+//        },
+        grid: {
+            left: '4%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: {$types},
+            }
+        ],
+        legend: {
+            data: {$type}
+        },
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: []
+    });
+    $.get('/Wx/Maintain/getReps', {id: 18}).done(function (f) {
+        var data = f.data;
+        var serie = [];
+        for (var i = 0; i < data.length; i++) {
+            var listnum = [];
+            for (var j = 0; j < data[i].length; j++) {
+                listnum.push(data[i][j]['value']);
+            }
+            serie.push({
+                name: data[i][0]['name'],
+                type: 'line',
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        width: 1.5,
+                    }
+                },
+                data: listnum,
+            })
+        };
+        // 填入数据
+        myChartThe.setOption({
+            series: serie
+        });
+    });
+</script>

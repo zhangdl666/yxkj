@@ -1,0 +1,156 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>酒店认领</title>
+</block>
+
+<block name="top">
+  <ol class="breadcrumb">
+    当前的位置：
+    <li><a>首页</a></li>
+    <li class="on">酒店认领</li>
+  </ol>
+</block>
+
+<block name="main">
+  <div id="main" class="bgfff jiudianluru">
+    <ul class="clearfix danzi">
+      <li>
+        <div class="danzidata dan1">
+          <i class="icon dan_icon i_dan5"></i>
+          <div class="danzinum"><span>{$count.allHotel}</span>家</div>
+          <div class="danziname">总酒店数</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan2">
+          <i class="icon dan_icon i_dan6"></i>
+          <div class="danzinum"><span>{$count.norHotel}</span>家</div>
+          <div class="danziname">正常营业酒店数</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan3">
+          <i class="icon dan_icon i_dan7"></i>
+          <div class="danzinum"><span>{$count.wroHotel}</span>家</div>
+          <div class="danziname">非正常营业酒店数</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan4">
+          <i class="icon dan_icon i_dan8"></i>
+          <div class="danzinum"><span>{$count.yciHotel}</span>家</div>
+          <div class="danziname">已被认领酒店数</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan4">
+          <i class="icon dan_icon i_dan9"></i>
+          <div class="danzinum"><span>{$count.nciHotel}</span>家</div>
+          <div class="danziname">未被认领酒店数</div>
+        </div>
+      </li>
+    </ul>
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading">
+        <!-- Single button -->
+        <form class="clearfix searchbar">
+          <div class="col">
+            <input type="text" class="form-control search" placeholder="输入姓名进行搜索">
+          </div>
+          <div class="col">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                <span class="text"><span class="default">状态选择</span></span> <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a>Action</a></li>
+                <li><a>Another action</a></li>
+                <li><a>Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a>Separated link</a></li>
+              </ul>
+            </div>
+            <!--<div class="navbar-form navbar-left">-->
+              <!--<button type="button" class="btn btn-warning">导入</button>-->
+              <!--<button type="button" class="btn btn-warning">下载模板</button>-->
+              <!--<button type="button" class="btn btn-warning">新增酒店</button>-->
+            <!--</div>-->
+        </form>
+      </div>
+
+    </div>
+
+    <div class="panel-body">
+      <table class="table table-condensed table-data">
+        <thead>
+        <tr>
+          <th>序号</th>
+          <th>酒店名称</th>
+          <th>认领状态</th>
+          <th>酒店类型</th>
+          <th>酒店联系方式</th>
+          <th>酒店图片</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <notempty name="data">
+        <foreach name="data" item="vo">
+          <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.name}</td>
+            <td>
+              <if condition="$vo['hotel_status'] eq 1"> 我已认领
+                <elseif condition="$vo['hotel_status'] eq 2"/>已认领
+                <else /> 未认领
+              </if>
+            </td>
+            <td>{$vo.type_name}</td>
+            <td>{$vo.tell}</td>
+            <td><img class="jiudiantupian" src="{$vo.thumb_img}"></td>
+            <td class="orprate">
+              <a class="text-warning" href="{:U('Pc/SalesClaim/getListId',array('id'=>$vo['id'],'p'=>$p))}">查看</a>
+            </td>
+          </tr>
+        </foreach>
+        <else/>
+        <tr><td colspan="7">暂无数据</td></tr>
+        </notempty>
+        </tbody>
+      </table>
+      <div class="pagination-container">
+        <select class="form-control">
+          <option>10</option>
+          <option>20</option>
+        </select>
+        <div class="pagination">
+          {$page}
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</block>
+<block name="js">
+  <script type="text/javascript" src="__JS__/jquery.z-pager.js"></script>
+  <script type="text/javascript">
+      function AddHotelCliams(id) {
+          var url = '/Pc/ClaimHotel/userClaim';
+          var data = {};
+          data.id = id;
+          $.post(url, data, function (data) {
+              if(data.code == 0){
+                  alert(data.message);
+                  setTimeout(function () {
+                      window.location.reload();
+                  },1000)
+              }else{
+                  alert(data.message);
+              }
+          });
+      }
+      
+
+  </script>
+</block>

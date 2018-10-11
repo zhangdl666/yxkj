@@ -1,0 +1,337 @@
+<extend name="Public:index"/>
+<block name="title">
+  <title>合同管理</title>
+</block>
+<block name="css">
+<style type="text/css">
+  .loading{text-align: center;display: none;}
+  .posi{
+    margin-left: 0.4rem;
+    margin-bottom: 0.1rem;
+  }
+  .col{width: 50%}
+  .bjkkitem .bjkkitem_main {
+    height: 20vw;
+  }
+  .bjkkitem02_wrap .bjkkitem02 {
+    height: 20vw;
+
+  }
+  .green_panel .green_header .right {
+      padding-top: 0.25rem;
+  }
+  .layoutlr {
+
+      line-height: 1.5em;
+
+  }
+  .form_data_wrap {  border-top: 0rem solid #f4f4f4;
+  }
+  .bjkkitem .icon_wrap {
+      position: absolute;
+      /**回款模块的icon图标位置不对，因此改为0.35rem**/
+      top: 0.35rem;
+
+  }
+  .green_panel .green_header .right {
+      padding-right: 0.2rem;
+      float: right;
+  }
+  @media only screen and (max-width:320px){
+
+      .bjkkitem .icon_wrap {
+          position: absolute;
+          top: 0.25rem;
+          left: -0.2rem;
+      }
+  }
+</style>
+</block>
+
+<block name="main">
+  <!-- 主体内容 开始 -->
+  <div class="main swiper-container-01">
+    <div class="header">
+      <div class="left backs" data-url="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+      <!-- <div class="center">合同管理</div> -->
+    </div>
+
+    <div class="main_body">
+      <div class="swiper-container swiper-tab-nav">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('read',array('id'=>$hcid))}')">基础信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('installe',array('id'=>$hcid))}')">安装信息</div>
+              <div class="swiper-slide swiper-tab-link on" onclick="now_href('{:U('return_money',array('id'=>$hcid))}')">结算信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('upkeep',array('id'=>$hcid))}')">保养信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('maintain',array('id'=>$hcid))}')">维修信息</div>
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+      </div>
+
+      <div class="swiper-container swiper-tab-page" id="hetongpage" style="-webkit-overflow-scrolling : touch!important;">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-content">
+                <div class="hetong_content">
+
+                  <!-- 回款信息 开始 -->
+                  <div class="swiper-slide swiper-tab-content huikuanxinxi renling">
+                    <div class="layoutlr bjkkitem02_wrap" style="background-color: transparent!important;">
+                      <div class="col left">
+                        <div class="bjkkitem bjkkitem02 b4">
+                          <div class="bjkkitem_main">
+                            <div class="icon_wrap"><i class="icon w_0002_02 w_02_03 posi"></i></div>
+                            <div class="num">{$rm_price|default='0.00'}</div>
+                            <div class="title_wrap">
+                              <div class="title_inner">
+                                <span class="title">已结算金额</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col right">
+                        <div class="bjkkitem bjkkitem02 b2">
+                          <div class="bjkkitem_main">
+                            <div class="icon_wrap"><i class="icon w_0002_02 w_02_04 posi"></i></div>
+                            <div class="num">{$nrm_price|default='0.00'}</div>
+                            <div class="title_wrap">
+                              <div class="title_inner">
+                                <span class="title">逾期未缴金额</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="layoutlr bjkkitem02_wrap" style="background-color: transparent!important;">
+                      <div class="col left">
+                        <div class="bjkkitem bjkkitem02 b3">
+                          <div class="bjkkitem_main">
+                            <div class="icon_wrap"><i class="icon w_0002_02 w_02_08 posi"></i></div>
+                            <div class="num">{$rm_num}<span class="min">次</span></div>
+                            <div class="title_wrap">
+                              <div class="title_inner">
+                                <span class="title">已结算次数</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col right">
+                        <div class="bjkkitem bjkkitem02 b1">
+                          <div class="bjkkitem_main">
+                            <div class="icon_wrap"><i class="icon w_0002_02 w_02_02 posi"></i></div>
+                            <div class="num">{$nrm_num}<span class="min">次</span></div>
+                            <div class="title_wrap">
+                              <div class="title_inner">
+                                <span class="title">逾期未缴次数</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <notempty name="datas">
+                    <volist name="datas" id="item">
+                    <dl class="green_panel">
+                        <dt class="layoutlr green_header">
+                            <div class="left"><i class="icon w_0004_04 w_04_08"></i>结算账期:{$item.etime}</div>
+                            <div class="right" style="font-size: 0.28rem;color: rgb(254,246,0);">结算状态:{$item.status}</div>
+                        </dt>
+                        <dd class="green_body">
+                          <div class="form_data_wrap">
+                            <ul class="form_data">
+                              <li class="layoutlr form_item">
+                                <div class="left">本期使用天次：</div>
+                                <div class="right">{$item.num}</div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">应结算金额：</div>
+                                <div class="right">¥ {$item.rprice}</div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">实际结算金额：</div>
+                                <div class="right">¥ {$item.price}</div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">应结算日期：</div>
+                                <div class="right">{$item.rtime}</div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">实际结算日期：</div>
+                                <div class="right">{$item.time}</div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">逾期天数：</div>
+                                <div class="right">{$item.mtime}天</div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">滞纳金：</div>
+                                <div class="right">¥{$item.mprice}</div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">结算模式：</div>
+                                <div class="right">{$item.type}</div>
+                              </li>
+                            </ul>
+                          </div>
+                        </dd>
+                      </dl>
+                      </volist>
+                      <else/>
+                            <dl class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></dl>
+                      </notempty>
+                    </div>
+                    <!-- 回款信息 结束 -->
+                    <div class="col-xs-12 loading">
+                        <img src="__IMG__/loading.gif" alt="">
+                    </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- 主体内容 结束 -->
+
+<!--装页码的div-->
+<div style="display:none" key="1" class="key"></div>
+<div style="display:none" key="1" class="list-page"></div>
+</block>
+<block name="js">
+<script src="__PUBLIC__/Swiper-3.4.1/js/swiper.jquery.min.js"></script>
+<script type="text/javascript">
+//var swiperNav = new Swiper('.swiper-tab-nav', {
+//    // pagination: '.swiper-pagination',
+//    slidesPerView: 'auto',
+//    // centeredSlides: true,
+//    // paginationClickable: true,
+//    // spaceBetween: 30
+//    // slidesPerView: 3,
+//    paginationClickable: true,
+//    // spaceBetween: 30,
+//    onInit: function(swiper) { // 初始化回调函数
+//    },
+//    onClick: function(swiper) {
+//    /*swiperPage.slideTo($(swiper.clickedSlide).index(), 500, false);*///切换到第一个slide，速度为1秒
+//    },
+//});
+//
+//var swiperPage = new Swiper ('.swiper-tab-page', {
+//  // loop: true,
+//  onInit: function(swiper) { // 初始化回调函数
+//  },
+//  onTouchEnd: function(swiper) { // 初始化回调函数
+//    /*swiperNav.slideTo(swiper.previousIndex, 500, false);//切换到第一个slide，速度为1秒
+//    setTimeout(function() {
+//      if($('.swiper-tab-link.on').index() != swiperPage.activeIndex) {
+//        $('.swiper-tab-link').removeClass('on');
+//        $($('.swiper-tab-link')[swiperPage.activeIndex]).addClass('on');
+//      }
+//    }, 100);*/
+//  },
+//});
+
+/* 跳转 */
+function now_href(url){
+  window.location.href = url;
+}
+
+/* 返回 */
+$(".backs").click(function(){
+  window.location.href = "{:U('index')}";
+})
+
+//下拉显示更多
+//当前的数据一定要超过页面显示的
+$("#hetongpage").scroll(function () {
+    var docHei = $("#hetongpage").prop("scrollHeight"), winHei = $("#hetongpage").height(), scrHei = $("#hetongpage").scrollTop();
+  if (scrHei >= docHei - winHei) {
+        $(".loading").show();
+        var key = $('.key').attr('key');//当前页码
+        key = key * 1 + 1;
+        //获取加载数据
+        $.ajax({
+            type:"POST",
+            url:"{:U('show_more_rm_data')}?page="+$(".list-page").attr('key'),
+            async:false,
+            data:{key:key},
+            success:function(info){
+
+                info = eval("("+info+")");
+                if (info.status) {
+                    var re_data = info.data;
+                    $('.key').attr('key', re_data.key);          //添加最新显示页码
+                    $(".list-page").attr('key',re_data.page);   //添加最新查询页码
+
+                    //显示加载的数据
+                    showHtml(re_data.datas);
+
+                    //>>隐藏加载图
+                    setTimeout(function () {
+                        $(".loading").hide();
+                    }, 1000);
+                } else {
+                    $(".loading").empty();
+                    $(".loading").text("已全部加载完");
+                }
+            }
+        });
+    }
+});
+
+//显示加载的数据
+function showHtml(datas){
+    $(datas).each(function () {
+        var status = $(this).attr('type');
+        var html  = "<dl class='green_panel'>\
+                        <dt class='layoutlr green_header'>\
+                            <div class='left'><i class='icon w_0004_04 w_04_08'></i>结算账期:"+$(this).attr("etime")+"</div>\
+                            <div class='right'>结算状态:"+$(this).attr("status")+"</div>\
+                        </dt>\
+                        <dd class='green_body'>\
+                          <div class='form_data_wrap'>\
+                            <ul class='form_data'>\
+                              <li class='layoutlr form_item'>\
+                                <div class='left'>本期使用天次：</div>\
+                                <div class='right'>"+$(this).attr("num")+"</div>\
+                              </li>\
+                              <li class='layoutlr form_item'>\
+                                <div class='left'>应回款金额：</div>\
+                                <div class='right'>"+$(this).attr("rprice")+"</div>\
+                              </li>\
+                              <li class='layoutlr form_item'>\
+                                <div class='left'>实际回款金额：</div>\
+                                <div class='right'>"+$(this).attr("price")+"</div>\
+                              </li>\
+                              <li class='layoutlr form_item'>\
+                                <div class='left'>应回款日期：</div>\
+                                <div class='right'>"+$(this).attr("rtime")+"</div>\
+                              </li>\
+                              <li class='layoutlr form_item'>\
+                                <div class='left'>应回款实际日期：</div>\
+                                <div class='right'>"+$(this).attr("time")+"</div>\
+                              </li>\
+                              <li class='layoutlr form_item'>\
+                                <div class='left'>逾期天数：</div>\
+                                <div class='right'>"+$(this).attr("mtime")+"</div>\
+                              </li>\
+                              <li class='layoutlr form_item'>\
+                                <div class='left'>滞纳金：</div>\
+                                <div class='right'>"+$(this).attr("mprice")+"</div>\
+                              </li>\
+                              <li class='layoutlr form_item'>\
+                                <div class='left'>结算模式：</div>\
+                                <div class='right'>"+$(this).attr("type")+"</div>\
+                              </li>\
+                            </ul>\
+                          </div>\
+                        </dd>\
+                      </dl>";
+        $(".renling").append(html);
+    });
+}
+</script>
+</block>

@@ -1,0 +1,265 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>{$status}详情</title>
+</block>
+<block name="css">
+    <style>
+        input[type='text'] {
+            border: none;
+            text-align: right;
+        }
+        .checkbox-container .i_radio {
+            vertical-align: initial;
+        }
+
+    </style>
+</block>
+<block name="main">
+    <!-- 主体内容 开始 -->
+    <div class="main swiper-container-01">
+        <div class="header">
+            <div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+            <!-- <div class="center">{$status}详情</div> -->
+        </div>
+
+        <div class="main_body anzhuangxiangx">
+            <div class="anzhuangxiangx_content">
+                <div class="daishenhebiaoxiao-page">
+
+					<!-- 待审核 开始 -->
+					<form id="" method="post" action="{:U('EquipmentUpkeep/oioperation')}">
+					<div class="form_data_wrap anzhuangxinxi">
+	        			<ul class="form_data">
+	        				<li class="layoutlr form_item">
+	        					<div class="left">设备MAC</div>
+	        					<div class="right"><input type="text" readonly="true" name="equipment_sno" value="{$sno}"></div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">房间类型</div>
+	        					<div class="right">
+                                    <select name="rt_id">
+                                        <volist name="maintenance_items" id="maintenance">
+                                            <option value="{$maintenance.id}">{$maintenance.name}</option>
+                                        </volist>
+                                    </select>
+                                    <i class="icon w_0000_00 w_00_11"></i>
+                                </div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">楼层</div>
+	        					<div class="right">
+                              <select name="floor">
+                                 <option value="1">1楼</option>
+                                 <option value="2">2楼</option>
+                                 <option value="3">3楼</option>
+                                 <option value="4">4楼</option>
+                                 <option value="5">5楼</option>
+                                 <option value="6">6楼</option>
+                                 <option value="7">7楼</option>
+                                 <option value="8">8楼</option>
+                                 <option value="9">9楼</option>
+                                 <option value="10">10楼</option>
+                                 <option value="11">11楼</option>
+                                 <option value="12">12楼</option>
+                                 <option value="13">13楼</option>
+                                 <option value="14">14楼</option>
+                                 <option value="15">15楼</option>
+                                 <option value="16">16楼</option>
+                                 <option value="17">17楼</option>
+                                 <option value="18">18楼</option>
+                                 <option value="19">19楼</option>
+                                 <option value="20">20楼</option>
+                              </select>
+                        <i class="icon w_0000_00 w_00_11"></i>
+	        					</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">房间号</div>
+	        					<div class="right"><input placeholder="请输入房间号" type="text" name="room_sno"></div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">是否有窗</div>
+	        					<div class="right">
+	        		      <label class="checkbox-container" data-type="radio" checked="checked">
+                    <input type="radio" name="is_window" value="1" checked="checked">
+                    <i class="icon icon01 i_radio"></i>
+                    <span class="radio_txt">是</span>
+                  	</label>
+                                        <label class="checkbox-container" data-type="radio">
+                                            <input type="radio" name="is_window" value="0">
+                                            <i class="icon icon01 i_radio"></i>
+                                            <span class="radio_txt">否</span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li class="layoutlr form_item">
+                                    <div class="left">朝向</div>
+                                    <div class="right">
+                                        <label class="checkbox-container" data-type="radio" checked="checked">
+                                            <input type="radio" name="orientation" value="1" checked="checked">
+                                            <i class="icon icon01 i_radio"></i>
+                                            <span class="radio_txt">东</span>
+                                        </label>
+
+                                        <label class="checkbox-container" data-type="radio">
+                                            <input type="radio" name="orientation" value="2">
+                                            <i class="icon icon01 i_radio"></i>
+                                            <span class="radio_txt">南</span>
+                                        </label>
+
+                                        <label class="checkbox-container" data-type="radio">
+                                            <input type="radio" name="orientation" value="3">
+                                            <i class="icon icon01 i_radio"></i>
+                                            <span class="radio_txt">西</span>
+                                        </label>
+
+                                        <label class="checkbox-container" data-type="radio">
+                                            <input type="radio" name="orientation" value="4">
+                                            <i class="icon icon01 i_radio"></i>
+                                            <span class="radio_txt">北</span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li class="layoutlr form_item">
+                                    <div class="left">安装位置</div>
+                                    <div class="right">
+                                        <label class="checkbox-container" data-type="radio" checked="checked">
+                                            <input type="radio" name="place" value="1" checked="checked">
+                                            <i class="icon icon01 i_radio"></i>
+                                            <span class="radio_txt">出风口</span>
+                                        </label>
+
+                                        <label class="checkbox-container" data-type="radio">
+                                            <input type="radio" name="place" value="2">
+                                            <i class="icon icon01 i_radio"></i>
+                                            <span class="radio_txt">回风口</span>
+                                        </label>
+
+                                        <label class="checkbox-container" data-type="radio">
+                                            <input type="radio" name="place" value="3">
+                                            <i class="icon icon01 i_radio"></i>
+                                            <span class="radio_txt">其他</span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li class="layoutlr form_item">
+                                    <div class="left">中央空调品牌</div>
+                                    <div class="right">
+                                        <select name="e_id">
+                                            <volist name="air_items" id="air_item">
+                                                <option value="{$air_item.id}">{$air_item.name}</option>
+                                            </volist>
+                                        </select>
+                                        <i class="icon icon_top w_0000_00 w_00_11"></i>
+                                    </div>
+
+                                </li>
+                                <li class="layoutlr form_item" id="configWXDeviceWiFi" style="border: 0rem;">
+                                    <div class="left">设备配网</div>
+                                    <div class="right">
+                                        <div>
+                                            <i class="icon w_0000_00 w_00_11"></i>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <notempty name="sno">
+                        <div class="form_data_btns form_data_btns_tj">
+                            <input type="hidden" name="oo_id" value="{$oo_id}">
+                            <button type="button" class="btn maxbtn ajax-post">提交</button>
+                        </div>
+                        </notempty>
+                    </form>
+                    <!-- 待审核 结束 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 彈窗內容 開始 -->
+        <!--<div class="selected_layer hide" data-relation="rtype">-->
+            <!--<ul class="options_container" data-relation="rtype">-->
+                <!--<volist name="maintenance_items" id="maintenance">-->
+                    <!--<li><span data="{$maintenance.id}">{$maintenance.name}</span></li>-->
+                <!--</volist>-->
+            <!--</ul>-->
+        <!--</div>-->
+
+        <!--<div class="selected_layer hide" data-relation="floor">-->
+            <!--<ul class="options_container" data-relation="floor">-->
+                <!--<li><span data="1">1楼</span></li>-->
+                <!--<li><span data="2">2楼</span></li>-->
+                <!--<li><span data="3">3楼</span></li>-->
+                <!--<li><span data="4">4楼</span></li>-->
+                <!--<li><span data="5">5楼</span></li>-->
+                <!--<li><span data="6">6楼</span></li>-->
+                <!--<li><span data="7">7楼</span></li>-->
+                <!--<li><span data="8">8楼</span></li>-->
+                <!--<li><span data="9">9楼</span></li>-->
+                <!--<li><span data="10">10楼</span></li>-->
+                <!--<li><span data="11">11楼</span></li>-->
+                <!--<li><span data="12">12楼</span></li>-->
+                <!--<li><span data="13">13楼</span></li>-->
+                <!--<li><span data="14">14楼</span></li>-->
+                <!--<li><span data="15">15楼</span></li>-->
+                <!--<li><span data="16">16楼</span></li>-->
+                <!--<li><span data="17">17楼</span></li>-->
+                <!--<li><span data="18">18楼</span></li>-->
+                <!--<li><span data="19">19楼</span></li>-->
+                <!--<li><span data="20">20楼</span></li>-->
+            <!--</ul>-->
+        <!--</div>-->
+
+        <div class="selected_layer hide" data-relation="air">
+            <ul class="options_container" data-relation="air">
+                <volist name="air_items" id="air_item">
+                    <li><span data="{$air_item.id}">{$air_item.name}</span></li>
+                </volist>
+            </ul>
+        </div>
+        <!-- 彈窗內容 結束 -->
+
+    </div>
+    <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript">
+$("input[name='equipment_sno']").focus(function(){
+    document.activeElement.blur();
+});
+        // 微信链接wifi
+        wx.config({
+            beta: true,
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: '{$appId}', // 必填，企业号的唯一标识，此处填写企业号corpid
+            timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+            nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+            signature: '{$signature}',// 必填，签名，见附录1
+            jsApiList: ['configWXDeviceWiFi','hideAllNonBaseMenuItem'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        wx.ready(function(){
+            wx.error(function(res){
+        //      layer.open({content:res.errMsg,time:2});
+                return false;
+            });
+
+            //隐藏所有非基础按钮接口
+            wx.hideAllNonBaseMenuItem();
+        });
+        document.querySelector('#configWXDeviceWiFi').onclick = function () {
+            document.activeElement.blur();
+            wx.invoke('configWXDeviceWiFi', {}, function (res) {
+                //layer.open(res);
+                // 这里是回调函数
+                /*var err_msg = res.err_msg;
+                if(err_msg == 'configWXDeviceWiFi:ok'){
+                    layer.open('连接成功');
+                }else{
+                    layer.open(res);
+                }*/
+            });
+        };
+    </script>
+</block>

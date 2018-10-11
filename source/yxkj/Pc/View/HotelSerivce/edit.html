@@ -1,0 +1,157 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>服务项目</title>
+</block>
+<block name="top">
+  <ol class="breadcrumb">
+    当前的位置：
+    <li><a>系统设置</a></li>
+    <li class="on"><notempty name="id">编辑<else/>新增</notempty>服务项目</li>
+  </ol>
+  <link rel="stylesheet" href="__PUBLIC__/Layui/css/layui.css" media="all">
+</block>
+
+<block name="main">
+  <div id="main">
+    <!-- 导航 开始 -->
+    <ul class="clearfix subnav hetongnav">
+      <li><a><i class="icon"></i><span class="cur_title"><notempty name="id">编辑<else/>新增</notempty>服务项目</span></a></li>
+    </ul>
+    <!-- 导航 结束 -->
+
+    <!-- 内容 开始 -->
+    <div class="subpage jiudianxinzeng">
+      <form method="post" action="{:U('operation')}">
+        <div class="subpage-block">
+          <table class="table table-bordered table-form">
+
+            <tr>
+            <th><font color="red">*</font>服务项目：</th>
+            <td><input type="text" id="userid" name="name" value="{$name}" <notempty name="redonly">disabled</notempty>><span class="errortips"></span></td>
+          </tr>
+          <tr>
+            <th><font color="red">*</font>图标：</th>
+            <td>
+              <dl class="uploadimg-container">
+                <dd class="imgwrap-container">
+                  <if condition="$Hotel.img neq ''">
+                    <div class="imgwrap">
+                      <img class="img-rounded src_file" src="{$Hotel.img}">
+                    </div>
+                    <else/>
+                    <div class="imgwrap">
+                      <img class="img-rounded src_file" style="display: none" src="">
+                    </div>
+                  </if>
+                </dd>
+                <a>
+                  <dt id="test1">
+                    <input type="hidden" name="img" value="{$Hotel.img}">
+                  <div class="item btn-upload" v-show="Hotel.img.length==0" id="hc_file"></div>
+                  </dt>
+                </a>
+              </dl>
+            </td>
+          </tr>
+          <tr>
+            <th><input type="hidden" name="id" value="{$id}"> <input type="hidden" name="img" value="{$himg}" ></th>
+            <td>
+              <empty name="redonly">
+                <button type="button" class="btn btn-tijiao ajax-post">保存</button>
+                <button type="button" class="btn btn-quxiao back">取消</button>
+              <else />
+              </empty>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
+  <!-- 内容 结束 -->
+</div>
+</block>
+</block>
+<block name="js">
+  <script type="text/javascript" src="__UPLOADIFY__/jquery.uploadify.js"></script>
+  <script type="text/javascript" src="__JS__/jquery.cityselect.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/Layui/layui.js"></script>
+  <script type="text/javascript">
+    //酒店字数
+    $("#userid").blur( function() {
+      if($('#userid').val().length > 5){
+          alert('酒店名最多5个字符');
+      }
+    });
+
+    // 上传图片
+    layui.use('upload', function () {
+      var upload = layui.upload;
+      //执行实例
+      var uploadInst = upload.render({
+        elem: '#test1' //绑定元素
+        , accept: 'file' //允许上传的文件类型
+        , url: '{:U("upload_file",array("img_dir"=>"Hcfile"))}' //上传接口
+        , done: function (res) {
+          if (res.status == 1) {
+            $(".src_file").show();
+            $(".src_file").attr('src', res.data);
+            $('input[name="img"]').val(res.data);
+          }else{
+            layer.msg(res.msg, {time: 1000, offset: 0, icon: 2});
+          }
+        }
+        , error: function () {
+        }
+      });
+    });
+
+//    function count_rnum(){
+//      var room_nums = 0;
+//      $(".checkbox-container").each(function(){
+//        if($(this).attr("checked") == "checked"){
+//          if($(this).find("span input").val() != ""){
+//            room_nums += parseInt($(this).find("span input").val());
+//          }
+//        }
+//      })
+//      $(".room_nums").text(room_nums);
+//    }
+
+//    /* 图片上传 */
+//    window.setTimeout(function () { //让上传表单10毫秒之后再加载
+//      $("#HotelHead").uploadify({
+//        height: 90,             //指定删除插件的高和宽
+//        width: 120,
+////                    debug: true,          //是否调试
+//        swf: '__UPLOADIFY__/uploadify.swf',             //指定swf的地址
+//        uploader: '{:U("upload_file",array("img_dir"=>"HotelHead"))}',       //在服务器上处理上传的代码
+//        'buttonText': '上传图片',                       //上传按钮上面的文字
+//        'fileTypeExts': '*.jpg; *.png; *.git; *.jpeg',  //限制上传文件的后缀和类型
+//        //'formData': {'dir': 'avatar'},                   //通过post方式传递的额外参数 ,, dir表示上传到又拍云的空间  itsource_ $dir的值
+//        'multi': true,                                  //是否支持多文件上传
+//        'onUploadSuccess': function (file, data, response) { //上传成功时执行的方法
+//          var data = $.parseJSON(data);
+//          var append_img = "<div class='imgwrap'>\
+//                            <img class='img-rounded' src='"+data.data+"' >\
+//                            <ul class='imgoprate'>\
+//                              <li data-oprate='toleft'><i class='icon'></i></li>\
+//                              <li data-oprate='detele'><i class='icon'></i></li>\
+//                              <li data-oprate='toright'><i class='icon'></i></li>\
+//                            </ul>\
+//                          </div>";
+//          $(".imgwrap-container").append(append_img);
+//          $("input[name='img']").val(data.data);
+//          count_img();
+//        },
+//        'onUploadError': function (file, errorCode, errorMsg, errorString) {   //上传失败时该方法执行
+//          layer.msg('该文件上传失败!错误信息为:' + errorString,{icon:0});
+//        }
+//      });
+//    }, 10);
+  </script>
+</block>
+
+
+
+

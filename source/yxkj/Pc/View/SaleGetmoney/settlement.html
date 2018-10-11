@@ -1,0 +1,173 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>提款</title>
+</block>
+
+<block name="top">
+    <link rel="stylesheet" href="__PUBLIC__/Layui/css/layui.css" media="all">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>提款</a></li>
+        <li class="on">打款</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title">打款详情</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+        <div class="subpage hetongxinxi01">
+            <form method="post" action="{:U('returnedit')}">
+                <div class="subpage-block">
+                    <table class="table table-bordered table-form">
+                        <tbody>
+                        <tr>
+                            <th>申请时间：
+                                <input type='hidden' name='status' value='{$data.status}'>
+                                <input type='hidden' name='sale_id' value='{$data.sale_id}'>
+                                <input type='hidden' name='id' value='{$data.id}'></th>
+                            <td><span class="table-form-text">{$data.ctime|date='Y-m-d H:i:s',###}</span></td>
+                        </tr>
+                        <tr>
+                            <th>申请金额：</th>
+                            <td><span class="table-form-text">{$data.rprice}元</span><br>
+                                <input type="hidden" name="rprice" value="{$data.rprice}" >
+                            </td>
+                        </tr>
+                        <!--<tr>-->
+                            <!--<th>扣款详情：</th>-->
+                            <!--<td> <span class="table-form-text">代扣个人所得税￥{$data.mprice}元</span>-->
+                                <!--<span class="table-form-text"></span>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <tr>
+                            <th>到账金额：</th>
+                           <if condition="$role eq 6">
+                               <td>
+                                   <input type="hidden" name="u_id" value="$data.sale_id">
+                                   <input type="text" name="price" value="{$data.price}" id="rprices">
+                               </td>
+                               <else/>
+                               <td><span class="table-form-text">￥{$data.price}</span>
+
+                               </td>
+                           </if>
+
+                        </tr>
+                        <tr>
+                            <th>提现银行：</th>
+                            <td><span class="table-form-text">{$data.bank_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>卡号：</th>
+                            <td><span class="table-form-text">{$data.bank_num}</span></td>
+                        </tr>
+                        <tr>
+                            <th>提现状态：</th>
+                            <td >
+                                <if condition="$data['status'] eq 1"> 待打款
+                                    <elseif condition="$data['status'] eq 2"/>已打款
+                                    <else/>
+                                </if>
+                            </td>
+                        </tr>
+                        <if condition="$role eq 6">
+                        <tr>
+                            <th><span class="text-orange">*</span>上传打款凭证：</th>
+                            <td>
+                                <dl class="uploadimg-container">
+                                    <dd class="imgwrap-container" id="img">
+                                    </dd>
+                                    <dt>
+                                    <div class="item btn-upload" v-show="uploadImgs.length==0" id="HotelHead"></div>
+                                    </dt>
+                                </dl>
+                            </td>
+                        </tr>
+                            <else/>
+                        </if>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <if condition="$role eq 6">
+                                <button type="button" class="btn btn-tijiao ajax-post">提交</button>
+                                    <else/>
+                                </if>
+                                <button type="button" class="btn btn-quxiao back">取消</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Layui/layui.js"></script>
+    <script type="text/javascript">
+        /* 图片上传 */
+        layui.use('upload', function () {
+            var upload = layui.upload;
+            var uploadInst = upload.render({
+                elem: '#HotelHead' //绑定元素
+                , accept: 'file' //允许上传的文件类型
+                , url: '{:U("upload_file",array("img_dir"=>"SaleGetmoney"))}' //上传接口
+                , done: function (res) {
+                    if (res.status == 1) {
+                        var i =$('#img').children('div').length;
+                        var img = "img"+"[]";
+                        var append_img = "<div class='imgwrap'>\
+                            <img class='img-rounded' src='"+res.data+"' >\
+                            <ul class='imgoprate'>\
+                              <li data-oprate='toleft'><i class='icon'></i></li>\
+                              <li data-oprate='detele'><i class='icon'></i></li>\
+                              <li data-oprate='toright'><i class='icon'></i></li>\
+                              <input type='hidden' name='"+img+"' value='"+res.data+"'>\
+                            </ul>\
+                          </div>";
+                        $(".imgwrap-container").append(append_img);
+                        $("input[name='img']").val(res.data);
+                    }else{
+                        layer.msg(res.msg, {time: 1000, offset: 0, icon: 2});
+                    }
+                }
+                , error: function () {
+                }
+            });
+        });
+        /* 计算图片 */
+        function count_img(){
+            var img_val = "";
+            $(".imgwrap-container div").each(function(i){
+                if(i != 0){
+                    img_val += ",";
+                }
+                img_val += $(this).find("img").attr("src");
+            })
+            $(".img_val").val(img_val);
+        }
+
+        /*图片移动、删除*/
+        $('.imgwrap-container').on('click', '[data-oprate]', function() {
+            var _imgwrap = $(this).closest('.imgwrap');
+            switch($(this).attr('data-oprate')) {
+                case 'toleft':
+                    _imgwrap.prev().before(_imgwrap);
+                    //console.log('左边', $(this).attr('data-oprate'))
+                    break;
+                case 'detele':
+                    _imgwrap.remove();
+                    break;
+                case 'toright':
+                    _imgwrap.next().after(_imgwrap);
+                    break;
+            }
+            count_img();
+        });
+    </script>
+</block>

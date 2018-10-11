@@ -1,0 +1,72 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>促销详情</title>
+</block>
+<block name="css">
+	<link rel="stylesheet" href="__CSS__/LCalendar.css">
+	<style type="text/css">
+		.textarea{
+			width: 100%;
+			resize:none;
+		}
+		.textarea p{
+			word-break: break-word;
+		}
+		.main {
+			background-color: #fff!important;
+		}
+		.has_header .header {
+			border-bottom: 0px solid #e6e6e6!important;
+		}
+		.jinhuaxiaoguo{
+			margin-top: 0.5rem;
+		}
+
+	</style>
+</block>
+
+<block name="main">
+	<style>
+		.logocode_container {
+			width: 62.66vw;
+			margin: auto;
+			text-align: center;
+		}
+		.cuxiaowenzhang img{
+			max-width: 100%;
+			height: auto!important;
+		}
+		.has_header .main {
+			padding-top: 0;
+		}
+	</style>
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="main_body cuxiaoxiangqing">
+			<div class="cuxiaowenzhang">
+				<!--<p style="padding-left: 0.2rem;"><i class="icon w_0007_07 w_07_06" ></i>促销介绍</p>-->
+				<div class="cuxiaozhengwen" escape="false">
+					{$data.content}
+				</div>
+			</div>
+		</div>
+		<div class="main_body jinhuaxiaoguo">
+			<div class="logocode_container">
+				<div class="layoutlr">
+					<div class="col left">
+						<img class="elogo" src="__IMG__/elogo.png">
+					</div>
+					<div class="col right">
+						<img class="ecode" src="__IMG__/ecode2.jpg">
+					</div>
+				</div>
+				<p class="txt">优享空间  联系电话{$tel}</p>
+			</div>
+		</div>
+
+	</div>
+	</div>
+	<!-- 主体内容 结束 -->
+
+</block>
+

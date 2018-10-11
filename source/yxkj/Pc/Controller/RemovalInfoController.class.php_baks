@@ -1,0 +1,295 @@
+<?php
+/**
+ * @author: ' Silent
+ * @time: 2018/1/17 17:37
+ */
+
+namespace Pc\Controller;
+
+
+use Pc\Model\DeviceRunModel;
+use Pc\Model\HotelModel;
+use Pc\Model\RunInfoDataModel;
+use Pc\Model\SalesModel;
+use Pc\Model\UserObjModel;
+use Pc\Server\DateType;
+
+class RemovalInfoController extends BaseController
+{
+    public $model = 'Hotel';
+    protected $user_id;
+    protected $role_id;
+
+    /**
+     * 初始化方法
+     * @author ' Silent <1136359934@qq.com>
+     */
+    public function _initialize()
+    {
+        parent::_initialize();
+        $this->role_id = $this->identity()->getRoleId();
+        $this->user_id = $this->identity()->getUserId();
+        $hotel = $this->getHotel();
+        $this->assign('Hotel', $hotel);
+        $this->assign('role_id', $this->role_id);
+    }
+
+    /**
+     * 获取已签约的酒店
+     * @author ' Silent <1136359934@qq.com>
+     */
+    public function getHotel()
+    {
+        $hotelData = HotelModel::getHotelName();
+        return $hotelData;
+    }
+
+    /**
+     * 获取用户登录对象
+     * @author ' Silent <1136359934@qq.com>
+     * @return UserObjModel
+     */
+    public function identity()
+    {
+        if (!$this->userObj) {
+            $this->userObj = new UserObjModel();
+        }
+        return $this->userObj;
+    }
+
+    /**
+     * 获取所有房间净化数据
+     */
+    public function getHotelRooms()
+    {
+        $result = array('code' => 1, 'message' => '获取数据失败', 'data' => '');
+        $hotel_id = I('post.hotel_id', 0, 'intval');
+        if ($hotel_id) {
+            $roomData = RunInfoDataModel::getHotelRoom($this->user_id);
+            $roomInfo = DeviceRunModel::DeviceRemInfo($roomData);
+            $result['code'] = 0;
+            $result['message'] = '获取数据成功';
+            $result['data'] = $roomInfo;
+        }
+        $this->ajaxReturn($result);
+    }
+
+
+    /**
+     * 首页酒店信息
+     * @author ' Silent <1136359934@qq.com>
+     */
+    public function getListInfo()
+    {
+        // 归属所属酒店
+        $roomdata = RunInfoDataModel::getHotelRoom($this->user_id);
+        $roomInfo = DeviceRunModel::DeviceRemInfo($roomdata);
+        // 统计过去七日的数据
+        $listDatas = DateType::getUpwardDay();
+        $beginToday = strtotime(end($listDatas));
+        $endToday = strtotime($listDatas[0]) + 3600 * 24;
+        $listArray = array();
+        foreach ($roomdata as $key => $val) {
+            $num = ceil(($key + 2) / 100);
+            $where['upload_time'] = array(array('gt', $beginToday), array('lt', $endToday), 'AND');
+            $where['device_code'] = $val['equipment_sno'];
+            $datas = M('UploadDeviceInfo_' . $num)->where($where)->field("upload_times,indoor_pm,outdoor_pm")->select();
+            foreach ($datas as $keys => &$vals) {
+                $vals['sort_times'] = strtotime($vals['upload_times']);
+                $vals['group_times'] = date('Y-m-d', strtotime($vals['upload_times']));
+            }
+            $listArray[] = $datas;
+        }
+        $result = [];
+        array_map(function ($value) use (&$result) {
+            $result = array_merge($result, array_values($value));
+        }, $listArray);
+        $listdata = arraySequence($result, 'sort_times', 'SORT_ASC');
+        $results = array();
+        foreach ($listdata as $k => $v) {
+            $results[$v['group_times']][] = $v;
+        }
+
+        $listAllDatas = array();
+        $listtranslate = '';
+        foreach ($results as $f => $h) {
+            $num = count($h);
+            $listAllDatas[$f]['numone'] = ceil(array_sum(i_array_column($h, 'outdoor_pm')) / $num);
+            $listAllDatas[$f]['numtwo'] = ceil(array_sum(i_array_column($h, 'indoor_pm')) / $num);
+            // 优质天数
+            if ($listAllDatas[$f]['numtwo'] <= 34) {
+                $listtranslate++;
+            }
+            $listAllDatas[$f]['date'] = $h[0]['group_times'];
+        }
+        $newData = array();
+        foreach ($listDatas as $f => $l) {
+            $newData[$f]['numone'] = 0;
+            $newData[$f]['numtwo'] = 0;
+            $newData[$f]['date'] = $l;
+        }
+        $hotelName = HotelModel::getHotelNames($this->user_id);
+        $this->assign('hotelName', $hotelName);
+        $newdatas = array_merge_recursive((array)array_values($listAllDatas), (array)$newData);
+        // 最后获取数据,并排序
+        $datas = arraySequence(SalesModel::listArrayKey($newdatas, 'date'), 'date', 'SORT_ASC');
+        $this->assign('translate', $listtranslate);
+        $this->assign('indoor_pms', DeviceRunModel::DevsRunInPm25($roomdata));
+        $this->assign('indoor_pming', testingPm(DeviceRunModel::DevsRunInPm25($roomdata)));
+        $this->assign('outdoor_pms', DeviceRunModel::DevsRunOutPm25($roomdata));
+        $this->assign('outdoor_pming', testingPm(DeviceRunModel::DevsRunOutPm25($roomdata)));
+        $this->assign('numone', json_encode(i_array_column($datas, 'numone')));
+        $this->assign('numtwo', json_encode(i_array_column($datas, 'numtwo')));
+        $this->assign('date', json_encode(i_array_column($datas, 'date')));
+        $this->assign('roomnums', count($roomInfo));
+        $this->assign('roomInfo', $roomInfo);
+        $this->display('index');
+    }
+
+    /**
+     * 选中酒店信息
+     * @author ' Silent <1136359934@qq.com>
+     */
+    public function getHotelInfo()
+    {
+        $hotel_id = I('post.hotel_id', 0, 'intval');
+        $roomdata = RunInfoDataModel::getHotelRooms($hotel_id);
+        $roomInfo = DeviceRunModel::DeviceRemInfo($roomdata);
+        $hotelName = HotelModel::getHotelNames($this->user_id);
+        // 净化效果数据
+        $listData = $this->getHotelSevenDays($hotel_id);
+        $this->assign('hotelName', $hotelName);
+        $this->assign('id', $hotel_id);
+        $this->assign('translate', $listtranslate);
+        $this->assign('indoor_pms', DeviceRunModel::DevsRunInPm25($roomdata));
+        $this->assign('indoor_pming', testingPm(DeviceRunModel::DevsRunInPm25($roomdata)));
+        $this->assign('outdoor_pms', DeviceRunModel::DevsRunOutPm25($roomdata));
+        $this->assign('outdoor_pming', testingPm(DeviceRunModel::DevsRunOutPm25($roomdata)));
+        $this->assign('numone', json_encode(i_array_column($listData, 'outdoor_pm')));
+        $this->assign('numtwo', json_encode(i_array_column($listData, 'indoor_pm')));
+        $this->assign('date', json_encode(i_array_column($listData, 'time')));
+        $this->assign('roomnums', count($roomInfo));
+        $this->assign('roomInfo', $roomInfo);
+        $this->display('hotelinfo');
+    }
+
+    /**
+     * 单个设备点击
+     * @author ' Silent <1136359934@qq.com>
+     */
+<<<<<<< HEAD
+    public function clickRoom()
+    {
+        $mac = I('get.mac', '', 'trim');
+        $hotel_id = M('Device')->where(array('mac' => $mac))->getField('h_id');
+        $listData = $this->getDeviceSevenDays($hotel_id, $mac);
+        $this->assign('numone', json_encode(i_array_column($listData, 'outdoor_pm')));
+        $this->assign('numtwo', json_encode(i_array_column($listData, 'indoor_pm')));
+        $this->assign('date', json_encode(i_array_column($listData, 'time')));
+        $this->display('OneDevice');
+    }
+
+    /**
+     * 获取过去七天的数据(酒店)
+     * @author ' Silent <1136359934@qq.com>
+     */
+    public function getHotelSevenDays($hotel_id = '')
+    {
+        $listData = DateType::getUpwardDay();
+        $redis = new \Redis();
+        $redis->connect('127.0.0.1');
+        $listAllRun = array();
+        foreach ($listData as $key => $value) {
+            // 组装0-24时数组
+            $dateArray = array(array($value . '/00'), array($value . '/01'), array($value . '/02'), array($value . '/03'), array($value . '/04'), array($value . '/05'), array($value . '/06'), array($value . '/07'), array($value . '/08'), array($value . '/09'), array($value . '/10'), array($value . '/11'), array($value . '/12'), array($value . '/13'), array($value . '/14'), array($value . '/15'), array($value . '/16'), array($value . '/17'), array($value . '/18'), array($value . '/19'), array($value . '/20'), array($value . '/21'), array($value . '/22'), array($value . '/23'));
+            $listRun = array();
+            foreach ($dateArray as $keys => $vals) {
+                $str = $vals[0] . '_' . $hotel_id;
+                if ($redis->exists($str)) {
+                    $listRun[] = $redis->hGetAll($str);
+                }
+=======
+    public function clickRoom($mac){
+        $data = M('OperInfo')->where(array('status' => 1))->field('equipment_sno')->select();
+        foreach ($data as $key => $val) {
+            if ($mac == $val['equipment_sno']) {
+                $keys = $key + 1;
+                break;
+>>>>>>> refs/remotes/origin/master
+            }
+            $listAllRun[] = $listRun;
+        }
+        $listAllDatas = array();
+        foreach ($listAllRun as $keyone => $valtwo) {
+            if (!empty($valtwo)) {
+                $alloutDoor = array_sum(i_array_column($valtwo, 'outdoor_pm'));
+                $allinDoor = array_sum(i_array_column($valtwo, 'indoor_pm'));
+                $allNum = array_sum(i_array_column($valtwo, 'num'));
+                $time = explode('/', $valtwo[0]['time']);
+                $listAllDatas[$keyone]['time'] = $time[0];
+                $listAllDatas[$keyone]['outdoor_pm'] = ceil($alloutDoor / $allNum);
+                $listAllDatas[$keyone]['indoor_pm'] = ceil($allinDoor / $allNum);
+            }
+        }
+        $newDatas = DateType::getUpwardDays();
+        return arraySequence(SalesModel::listArrayKey(array_merge_recursive((array)$listAllDatas, (array)$newDatas), 'time'), 'time', 'SORT_ASC');
+    }
+
+    /**
+     * 获取过去七天的数据(设备)
+     * @author ' Silent <1136359934@qq.com>
+     */
+    public function getDeviceSevenDays($hotel_id = '', $device = '')
+    {
+        $listData = DateType::getUpwardDay();
+        $redis = new \Redis();
+        $redis->connect('127.0.0.1');
+        $listAllRun = array();
+        foreach ($listData as $key => $value) {
+            // 组装0-24时数组
+            $dateArray = array(array($value . '/00'), array($value . '/01'), array($value . '/02'), array($value . '/03'), array($value . '/04'), array($value . '/05'), array($value . '/06'), array($value . '/07'), array($value . '/08'), array($value . '/09'), array($value . '/10'), array($value . '/11'), array($value . '/12'), array($value . '/13'), array($value . '/14'), array($value . '/15'), array($value . '/16'), array($value . '/17'), array($value . '/18'), array($value . '/19'), array($value . '/20'), array($value . '/21'), array($value . '/22'), array($value . '/23'));
+            $listRun = array();
+            foreach ($dateArray as $keys => $vals) {
+                $str = $vals[0] . '_' . $hotel_id . '_' . $device;
+                if ($redis->exists($str)) {
+                    $listRun[] = $redis->hGetAll($str);
+                }
+            }
+            $listAllRun[] = $listRun;
+        }
+        $listAllDatas = array();
+        foreach ($listAllRun as $keyone => $valtwo) {
+            if (!empty($valtwo)) {
+                $alloutDoor = array_sum(i_array_column($valtwo, 'outdoor_pm'));
+                $allinDoor = array_sum(i_array_column($valtwo, 'indoor_pm'));
+                $allNum = array_sum(i_array_column($valtwo, 'num'));
+                $time = explode('/', $valtwo[0]['time']);
+                $listAllDatas[$keyone]['time'] = $time[0];
+                $listAllDatas[$keyone]['outdoor_pm'] = ceil($alloutDoor / $allNum);
+                $listAllDatas[$keyone]['indoor_pm'] = ceil($allinDoor / $allNum);
+            }
+        }
+<<<<<<< HEAD
+        $newDatas = DateType::getUpwardDays();
+        return arraySequence(SalesModel::listArrayKey(array_merge_recursive((array)$listAllDatas, (array)$newDatas), 'time'), 'time', 'SORT_ASC');
+=======
+        $newdatas = array_merge_recursive((array)array_values($listAllDatas), (array)$newData);
+        $datas = arraySequence(SalesModel::listArrayKey($newdatas, 'date'), 'date', 'SORT_ASC');
+        $this->assign('numone', json_encode(i_array_column($datas, 'numone')));
+        $this->assign('numtwo', json_encode(i_array_column($datas, 'numtwo')));
+        $this->assign('date', json_encode(i_array_column($datas, 'date')));
+        $res = $this->fetch('OneDevice');
+        return $res;
+    }
+    public function clickRooms(){
+        $mac = I('post.mac', '', 'trim');
+        $result = array('code'=>0,'message'=>'获取房间净化效果失败');
+        $res = $this->clickRoom($mac);
+        if($res){
+            $result['code'] = 1;
+            $result['message'] = $res;
+        }
+        $this->ajaxReturn($result);
+>>>>>>> refs/remotes/origin/master
+    }
+}

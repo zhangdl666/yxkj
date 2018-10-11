@@ -1,0 +1,248 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>运行信息</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        .yx_from {
+            padding: 22px 15px !important;
+        }
+
+        @media screen and (min-width: 1000px) and (max-width: 1400px) {
+            .jhxg_main .gezi-container-wrap {
+                background-color: #fff;
+                padding: 6px 15px;
+            }
+        }
+
+        @media screen and (min-width: 1600px)  and (max-width: 1680px) {
+            .jhxg_main .gezi-container-wrap {
+                background-color: #fff;
+                padding: 17px 15px !important;
+            }
+        }
+        .yx_right_two_div{
+            width: 170px!important;
+            height: 170px!important;
+        }
+        .yx_details_div {
+            padding-top: 0rem;
+        }
+        .yx_from {
+            width: 100%;
+        }
+        .kq_left_title{
+            color: #19b958;
+            font-size: 18px;
+            font-weight: bold;
+            padding-left: 15px;
+            line-height: 35px;
+            float: left;
+            position: relative;
+            margin-top: -8px;
+        }
+        .kq_left_title:before {
+            content: " ";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            height: 24px;
+            background-color: #19b958;
+            width: 6px;
+            border-radius: 6px;
+        }
+
+        .gezi-container .gezi-group .btn {
+            margin: 11.5px;
+            height: 42px;
+            width: 90px;
+            /*width: calc(6.5% - 10px);*/
+        }
+        .btn_icon{
+            width: 26px;
+            height: 19px;
+            display: block;
+            float: right;
+        }
+        .max_btn_icon{
+            width: 37px;
+            height: 27px;
+            display: block;
+            margin: 10px auto;
+        }
+        .btn_icon_bottom{
+            background: url("__IMG__/wx_kq_bottom_bottom.png");
+            background-size: 100%;
+        }
+        .btn_icon_top{
+            background: url("__IMG__/wx_kq_bottom_top.png");
+            background-size: 100%;
+        }
+        .pc_kq_height{
+            height: 68px;
+            overflow: hidden;
+        }
+        .left_kq{float: left;margin-left: 110px;font-size: 24px;line-height:28px; color: rgb(74,74,74);font-weight: 100}
+        .left_kq span{font-size: 22px;color: rgb(128,128,128);margin-left: 15px;}
+        .kq_icon{
+            width: 30px;
+            height: 30px;
+            float: left;
+            margin-right: 15px;
+            vertical-align: middle;
+        }
+        .kq_icon_01{
+            background: url("__IMG__/kq_001.png");
+            background-size: 100%;
+        }
+        .kq_icon_02{
+            background: url("__IMG__/kq_002.png");
+            background-size: 100%;
+        }
+        .kq_right{
+            vertical-align: middle;
+            float: left;
+            margin-top: -6px;
+            margin-left: 20px;
+        }
+        .pitch_on{
+            background: url("__IMG__/pitch_on.png") no-repeat;
+            background-position: right bottom;
+            color: #4e4e4e!important;
+        }
+        @media screen and (max-width: 1199px) and (min-width: 1000px){
+            .yx_from {
+                width: 100%!important;
+            }
+            .gezi-container .gezi-group .btn {
+                /*width: calc(8.5% - 9.2px);*/
+            }
+            .left_kq{margin-left: 10px;margin-top:9px;font-size: 18px;line-height:20px;}
+            .left_kq span{font-size: 16px;}
+            .kq_icon{
+                width: 20px;
+                height: 20px;
+            }
+            .kq_right{
+                vertical-align: middle;
+                float: left;
+                margin-top: -10px;
+                margin-left: 20px;
+            }
+        }
+
+        @media screen and (max-width: 1400px) and (min-width: 1000px){
+            .left_kq{margin-left: 10px;margin-top:9px;font-size: 18px;line-height:20px;}
+            .left_kq span{font-size: 16px;}
+            .kq_icon{
+                width: 20px;
+                height: 20px;
+            }
+            .gezi-container .gezi-group .btn {
+                margin: 10px;
+                /*width: calc(8% - 10.9px);*/
+            }
+            .kq_right{
+                vertical-align: middle;
+                float: left;
+                margin-top: -10px;
+                margin-left: 20px;
+            }
+
+            .kq_right .left_kq:nth-child(2){
+                margin-left: 30px;
+            }
+        }
+    </style>
+</block>
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li class="on">开启情况</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main" class="jhxg_main" style="background-color:transparent;">
+        <!-- 内容 开始 -->
+        <div class="subpage hetongxinxi02 jhxg">
+            <div class="gezi-container-wrap jhxg-gezi2">
+                <dl class="gezi-container">
+                    <dt class="gezi-title">
+                        <if condition="$role eq 5">
+                            <span class="riqiq" style="float: left;margin-right: 20px;margin-left: 10px">选择日期</span>
+                            <input type="text" class="editdate" name="" id="Time" value="<?php echo date('Y-m-d',time())?>">
+                            <else/>
+                            <span class="riqiq" style="float: left;margin-right: 20px;">选择日期</span>
+                            <input type="text" class="editdate" name="" id="Time" value="<?php echo date('Y-m-d',time())?>">
+                        </if>
+                        <if condition="$role eq 5">
+                            <div class="col right table-form editdate" style="margin-left: 10px">
+                                <select name="hotels" class="hotels">
+                                    <!--<option value="">&#45;&#45;请选择&#45;&#45;</option>-->
+                                    <foreach name="hotelData" item="vo">
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                    </foreach>
+                                </select>
+                            </div>
+                        </if>
+
+                        <div class="kq_right">
+                            <div class="left_kq"><i class="icon kq_icon kq_icon_01"></i>当日开启天次:<span class="numone">{$numone|default=0}天次</span> </div>
+                            <div class="left_kq">  <i class="icon kq_icon kq_icon_02"></i>累计开启天次:<span class="numfour">{$numfour|default=0}天次</span></div>
+                        </div>
+
+                    </dt>
+                    <dd class="gezi-group">
+                        <!--<button type="button" class="btn green">1034</button>-->
+                        <!--<button type="button" class="btn orange">1034</button>-->
+                        <!--<button type="button" class="btn red">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <foreach name="data" item="vo">
+                            <button type="button" class="btn {$vo.status} roomss" value="{$vo.equipment_sno}">
+                                {$vo.room_sno}
+                            </button>
+                        </foreach>
+
+                    </dd>
+                </dl>
+            </div>
+            <div class="sales">
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/laydate/laydate.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".hotels option:first").prop("selected", 'selected');
+            var hotel_id = $(".hotels").val();
+            $.get('getDevicesInfo',{'hotel_id':hotel_id,},function (f) {
+                $(".sales").html(f);
+            },'html')
+        })
+        laydate.render({
+            elem: '#Time' //指定元素
+            , done: function (value, date, endDate) {
+                var hotel_id = $(".hotels").val();
+                $.get('getDevicesInfo', {'hotel_id':hotel_id,'date':value}, function (f) {
+                    $(".sales").html(f)
+                }, 'html')
+            }
+        });
+
+        $('select[name="hotels"]').on('change', function () {
+            var hotel_id = $(this).val();
+            if(hotel_id){
+//                $(".riqiq").show();
+//                $(".editdate").show();
+                $.get('getDevicesInfo',{'hotel_id':hotel_id},function (f) {
+                    $(".sales").html(f);
+                },'html')
+            }
+
+        });
+    </script>
+</block>

@@ -1,0 +1,510 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>订单管理</title>
+  <link rel="stylesheet" href="__PUBLIC__/Layui/css/layui.css">
+</block>
+<block name="css">
+    <style type="text/css">
+        .gezi-container .gezi-group .btn {
+            margin: 14px;
+            height: 42px;
+            width: 90px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+            /*width: calc(6.5% - 10px);*/
+        }
+        .btn_icon{
+            width: 26px;
+            height: 19px;
+            display: block;
+            float: right;
+        }
+        .max_btn_icon{
+            width: 37px;
+            height: 27px;
+            display: block;
+            margin: 10px auto;
+        }
+        .btn_icon_bottom{
+            background: url("__IMG__/wx_kq_bottom_bottom.png");
+            background-size: 100%;
+        }
+        .btn_icon_top{
+            background: url("__IMG__/wx_kq_bottom_top.png");
+            background-size: 100%;
+        }
+        .pc_kq_height{
+            height: 68px;
+            overflow: hidden;
+        }
+        .pitch_on{
+            background: url("__IMG__/pitch_on.png") no-repeat;
+            background-position: right bottom;
+            color: #4e4e4e!important;
+        }
+        .roll_back-div{text-align: center;margin:20px auto;}
+        .roll_back-textarea{width:350px;height:100px;resize:none;border: 1px solid #ccc;border-radius: 4px;padding: 5px;}
+        .roll_back-btn{margin:0px auto;text-align:center;}
+        .roll_back-btn button,.roll_back-btn button:hover{width:110px;height:38px;color:#FFF;}
+    </style>
+</block>
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>订单管理</a></li>
+      <li class="on">维修信息</li>
+    </ol>
+</block>
+<block name="css">
+    <style type="text/css">
+        .gezi-container .gezi-group .btn {
+            margin: 10px;
+            height: 42px;
+            width: 90px;
+        }
+        .btn_icon{
+            width: 26px;
+            height: 19px;
+            display: block;
+            float: right;
+        }
+        .max_btn_icon{
+            width: 37px;
+            height: 27px;
+            display: block;
+            margin: 10px auto;
+        }
+        .btn_icon_bottom{
+            background: url("__IMG__/wx_kq_bottom_bottom.png");
+            background-size: 100%;
+        }
+        .btn_icon_top{
+            background: url("__IMG__/wx_kq_bottom_top.png");
+            background-size: 100%;
+        }
+        .pc_kq_height{
+            height: 68px;
+            overflow: hidden;
+        }
+        .pitch_on{
+            background: url("__IMG__/pitch_on.png") no-repeat;
+            background-position: right bottom;
+            color: #4e4e4e!important;
+        }
+        .roll_back-div{text-align: center;margin:20px auto;}
+        .roll_back-textarea{width:350px;height:100px;resize:none;border: 1px solid #ccc;border-radius: 4px;padding: 5px;}
+        .roll_back-btn{margin:0px auto;text-align:center;}
+        .roll_back-btn button,.roll_back-btn button:hover{width:110px;height:38px;color:#FFF;}
+    </style>
+</block>
+<block name="main">
+  <div id="main">
+      <ul class="clearfix subnav hetongnav">
+        <li>
+          <a><i class="icon"></i>
+            <span class="cur_title">
+              <switch name="status">
+                <case value="1">待分配</case>
+                <case value="2">待维修</case>
+                <case value="3">待确认</case>
+                <case value="4">已维修</case>
+              </switch>
+            </span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- 内容 开始 -->
+      <div class="subpage hetongxinxi02">
+          <form id="" method="post" action="{:U('operation')}">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th>酒店图片：</th>
+                    <td>
+                      <dl class="uploadimg-container">
+                        <dd>
+                          <volist name="h_img" id="imgi">
+                          <div class="imgwrap">
+                            <img class="img-rounded" src="{$imgi}">
+                          </div>
+                          </volist>
+                        </dd>
+                      </dl>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>酒店名称：</th>
+                    <td><span class="table-form-text">{$h_name}</span></td>
+                  </tr>
+                  <tr>
+                    <th>维修数量：</th>
+                    <td><span class="table-form-text">{$now_nume}</span></td>
+                  </tr>
+                  <tr>
+                    <th>维修时间：</th>
+                    <td><span class="table-form-text">
+                      <if condition="!empty($etime)">
+                        {$etime|date='Y-m-d',###}
+                      <elseif condition="!empty($stime)"/>
+                        {$stime|date='Y-m-d',###}
+                      <elseif condition="!empty($rtime)"/>
+                        {$rtime|date='Y-m-d',###}
+                      </if>
+                    </span></td>
+                  </tr>
+                  <tr>
+                    <th>维修人员：</th>
+                    <td><span class="table-form-text">{$u_name}</span></td>
+                  </tr>
+                  <tr>
+                    <th>联系方式：</th>
+                    <td><span class="table-form-text">{$mobile}</span></td>
+                  </tr>
+                  <tr>
+                    <th>维修进度：</th>
+                    <td>
+                      <div class="table-form-text">
+                        <div class="progress-container progress03"><div class="progress" data-width="{$num_ratio}%" style="width: {$num_ratio}%;"></div></div>
+                        <div>{$now_nume}/{$nume}</div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>维修详细：</th>
+                    <td>
+                      <dl class="gezi-container">
+                        <dt class="gezi-title">
+                          <div class="checkbox-container gezi-type1" data-type="checkbox">
+                              <i class="icon icon01 i_radio"></i>
+                              <span class="checkbox_txt">已维修</span>
+                          </div>
+                          <div class="checkbox-container gezi-type2" data-type="checkbox">
+                              <i class="icon icon01 i_radio"></i>
+                              <span class="checkbox_txt">未维修</span>
+                          </div>
+                          <i class="btn_icon btn_kq_icon btn_icon_bottom"></i>
+                        </dt>
+                        <dd class="gezi-group">
+
+                        <div id="kq_height" class="pc_kq_height" >
+                            <volist name="room_arr" id="room">
+                                <button type="button" class="rooms btn <eq name="room.open" value="1">on</eq>" data="{$room.id}">{$room.room_sno}</button>
+                            </volist>
+                        </div>
+                <div style="margin-top:20px;display:none;" class="room_info">
+                <table class="table table-bordered table-form">
+                <tbody>
+                  <tbody>
+                  <tr>
+                    <th>设备ID：</th>
+                    <td><span class="table-form-text equipment"></span></td>
+                  </tr>
+                  <tr>
+                    <th>房间类型：</th>
+                    <td><span class="table-form-text rtype"></span></td>
+                  </tr>
+                  <tr>
+                    <th>楼层：</th>
+                    <td><span class="table-form-text floor"></span></td>
+                  </tr>
+                  <tr>
+                    <th>是否有窗：</th>
+                    <td><span class="table-form-text iswindown"></span></td>
+                  </tr>
+                  <tr>
+                    <th>朝向：</th>
+                    <td><span class="table-form-text orienta"></span></td>
+                  </tr>
+                  <tr>
+                    <th>安装位置：</th>
+                    <td><span class="table-form-text place"></span></td>
+                  </tr>
+                  <tr>
+                    <th>中央空调：</th>
+                    <td><span class="table-form-text air"></span></td>
+                  </tr>
+                  <tr>
+                      <th>净化器类型：</th>
+                      <td><span class="table-form-text e1type"></span></td>
+                  </tr>
+                  <tr>
+                      <th>监控器类型：</th>
+                      <td><span class="table-form-text e2type"></span></td>
+                  </tr>
+                  <tr>
+                      <th>安装时间：</th>
+                      <td><span class="table-form-text installtime"></span></td>
+                  </tr>
+                  <tr>
+                    <th>维修方式：</th>
+                    <td><span class="table-form-text type"></span></td>
+                  </tr>
+                  <tr>
+                    <th>酒店反馈：</th>
+                    <td><span class="table-form-text remark"></span></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+                        </dd>
+                          <dd><i class="max_btn_icon btn_kq_icon btn_icon_bottom"></i></dd>
+                      </dl>
+                    </td>
+                  </tr>
+
+                  <notempty name="roll_back">
+                    
+                  <volist name="roll_back" id="rback">
+                      <tr style="color:red;">
+                        <th>打回原因：</th>
+                        <td><span class="table-form-text">{$rback.content}</span></td>
+                      </tr>
+                  </volist>
+                      
+                  </notempty>
+
+                  <if condition="in_array('EquipmentMaintain/upload',$method_arr) && $status eq 2 && $now_nume gt 0 && empty($readonly)">
+                  <tr>
+                    <th><span class="text-orange">*</span>维修确认单：</th>
+                    <td>
+                      <dl class="uploadimg-container">
+                        <dd class="imgwrap-container">
+                          <volist name="img" id="instatll_img">
+                          <div class="imgwrap">
+                            <img class="img-rounded" src="{$instatll_img|default='__IMG__/head.png'}">
+                            <ul class='imgoprate'>
+                              <li data-oprate='toleft'><i class='icon'></i></li>
+                              <li data-oprate='detele'><i class='icon'></i></li>
+                              <li data-oprate='toright'><i class='icon'></i></li>
+                            </ul>
+                          </div>
+                          </volist>
+                        </dd>
+                        <dt>
+                          <div class="item btn-upload" v-show="uploadImgs.length==0" id="instatll"></div>
+                        </dt>
+                      </dl>
+                      <input type="hidden" name="img" value="{$ok_img}" class="img_val">
+                    </td>
+                  </tr>
+                  </if>
+
+                  <gt name="status" value="2">
+                  <tr>
+                    <th>维修确认单：</th>
+                    <td>
+                      <dl class="uploadimg-container">
+                        <dd>
+                          <volist name="img" id="instatll_img">
+                          <div class="imgwrap">
+                            <img class="img-rounded" src="{$instatll_img}">
+                          </div>
+                          </volist>
+                        </dd>
+                      </dl>
+                    </td>
+                  </tr>
+                  </gt>
+
+                  <tr>
+                    <th>
+                      <input type="hidden" name="id" value="{$id}">
+                      <if condition="in_array('EquipmentMaintain/upload',$method_arr) && $status eq 2 && $now_nume gt 0">
+                        <input type="hidden" name="status" value="3">
+                      </if>
+                      <if condition="in_array('EquipmentMaintain/over',$method_arr) && $status eq 3">
+                       <input type="hidden" name="status" value="4"> 
+                      </if>
+                    </th>
+                    <td>
+                      <empty name="readonly">
+                      <if condition="in_array('EquipmentMaintain/upload',$method_arr) && $status eq 2 && $now_nume gt 0"><button type="button" class="btn btn-tijiao ajax-post">提交</button></if>
+                      <if condition="in_array('EquipmentMaintain/over',$method_arr) && $status eq 3"><button type="button" class="btn btn-tijiao ajax-post">确认</button></if>
+                      <if condition="in_array('EquipmentMaintain/roll_back',$method_arr) && $status eq 3"><button type="button" class="btn btn-tijiao roll_back">打回</button></if>
+                      </empty>
+                      <button type="button" class="btn btn-quxiao back">返回</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <!-- 内容 结束 -->
+    </div>
+    </block>
+<block name="js">
+<script type="text/javascript" src="__PUBLIC__/Layui/layui.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        /***房间数量超出一排显示下拉开关***/
+        function but_show(){
+
+            var kg_btn = $("#kq_height");
+            var btn_icon =$(".btn_kq_icon");
+            var btn_length = kg_btn.children(".btn").length;
+            var btn_num =parseInt(kg_btn.width() / 110);
+            if(btn_length > btn_num){
+                btn_icon.addClass("btn_block");
+                btn_icon.removeClass("btn_none");
+            }else {
+                btn_icon.addClass("btn_none");
+                btn_icon.removeClass("btn_block");
+            }
+        }
+        but_show();
+        /***********浏览器窗口宽度发生变化时执行************/
+        $(window).resize(function() {
+            but_show();
+
+        });
+
+        /********房间下拉图标和向上关闭图标切换********/
+        $(function(){
+            var on_num = 0;
+            $(".btn_kq_icon").click(function(){
+                var this_icon =  $(".btn_kq_icon");
+                if(on_num == 0){
+                    this_icon.removeClass("btn_icon_bottom");
+                    $("#kq_height").removeClass("pc_kq_height");
+                    this_icon.addClass("btn_icon_top");
+                    on_num = 1;
+                }else if(on_num == 1){
+                    $("#kq_height").addClass("pc_kq_height");
+                    this_icon.addClass("btn_icon_bottom");
+                    this_icon.removeClass("btn_icon_top");
+                    on_num = 0;
+                }
+            })
+        });
+    });
+
+$(".rooms").click(function(){
+    $(".rooms").removeClass("pitch_on");
+    $(this).addClass("pitch_on");
+ //是否已经维修  hasClass检查被选元素是否包含指定的 class
+  var id = $(this).attr("data");
+  var room_sno = $(this).html();
+  $.post("{:U('HotelContract/get_oper_room_info')}",{id:id,status:3},function(re_data){
+    re_data = eval("("+re_data+")");
+    $(".equipment").text(re_data.data.equipment_sno);
+    $(".rtype").text(re_data.data.rt_name);
+    $(".floor").text(re_data.data.floor);
+    $(".iswindown").text(re_data.data.iswindow);
+    $(".orienta").text(re_data.data.orienta);
+    $(".place").text(re_data.data.place);
+    $(".air").text(re_data.data.air_name);
+    $(".e1type").text(re_data.data.e1_name);
+    $(".e2type").text(re_data.data.e2_name);
+    $(".installtime").text(re_data.data.install_time);
+    $(".type").text(re_data.data.type_name);
+    $(".remark").text(re_data.data.note);
+    $(".room_info").show();
+  });
+})
+
+/* 图片上传 */
+layui.use('upload', function () {
+    var upload = layui.upload;
+    //执行实例
+    var uploadInst = upload.render({
+        elem: '#instatll' //绑定元素
+        , accept: 'file' //允许上传的文件类型
+        , url: '{:U("upload_file",array("img_dir"=>"Install"))}' //上传接口
+        , done: function (res) {
+            if (res.status == 1) {
+              var append_img = "<div class='imgwrap'>\
+                            <img class='img-rounded' src='"+res.data+"'>\
+                            <ul class='imgoprate'>\
+                              <li data-oprate='toleft'><i class='icon'></i></li>\
+                              <li data-oprate='detele'><i class='icon'></i></li>\
+                              <li data-oprate='toright'><i class='icon'></i></li>\
+                            </ul>\
+                          </div>";
+              $(".imgwrap-container").append(append_img);
+              count_img();
+            }else{
+                layer.msg(res.msg, {time: 1000, offset: 0, icon: 2});
+            }
+        }
+        , error: function () {
+        }
+    });
+});
+
+/* 计算图片 */
+function count_img(){
+  var img_val = "";
+  $(".imgwrap-container div").each(function(i){
+    if(i != 0){
+      img_val += ",";
+    }
+    img_val += $(this).find("img").attr("src");
+  })
+  $(".img_val").val(img_val);
+}
+
+/*图片移动、删除*/
+$('.imgwrap-container').on('click', '[data-oprate]', function() {
+  var _imgwrap = $(this).closest('.imgwrap');
+  switch($(this).attr('data-oprate')) {
+    case 'toleft':
+      _imgwrap.prev().before(_imgwrap);
+      //console.log('左边', $(this).attr('data-oprate'))
+      break;
+    case 'detele':
+      _imgwrap.remove();
+      break;
+    case 'toright':
+      _imgwrap.next().after(_imgwrap);
+      break;
+  }
+  count_img();
+});
+
+
+/**
+ * 打回
+ */
+$(".roll_back").click(function(){
+  var id = $("input[name='id']").val();
+  var html = '<div class="roll_back-div"><textarea name="roll_back" class="roll_back-textarea"></textarea></div>';
+  html += '<div class="roll_back-btn"><button type="button" class="btn btn-tijiao save_remark" data="'+id+'">确定</button><button type="button" class="btn btn-quxiao cancle">取消</button></div>';
+  layer.open({
+    type:1,
+    title:"打回原因",
+    skin: 'layui-layer-rim', //加上边框
+    area: ['420px', '260px'], //宽高
+    content:html,
+  });
+})
+
+/**
+ * 打回处理
+ */
+$("body").on("click",".save_remark",function(){
+  var id = $(this).attr("data");
+  var remark = $("textarea[name='roll_back']").val();
+  $.post("{:U('EquipmentInstall/roll_back')}",{id:id,remark:remark},function(re_data){
+    if(typeof re_data != "object"){
+      re_data = eval("("+re_data+")");
+    }
+    layer.msg(re_data.info,{icon:re_data.status,time:1500})
+    if(re_data.status){
+      layer.closeAll();
+      setTimeout("window.location.href = '"+re_data.data+"'",1500);
+    }
+  });
+})
+
+/**
+ * 关闭打回窗
+ */
+$("body").on("click",".cancle",function(){
+  layer.closeAll();
+});
+</script>
+</block>

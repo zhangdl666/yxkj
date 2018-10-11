@@ -1,0 +1,51 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>滞纳金比例</title>
+</block>
+<block name="top">
+  <ol class="breadcrumb">
+    当前的位置：
+    <li><a>系统设置</a></li>
+    <li class="on"><notempty name="id">编辑<else/>新增</notempty>滞纳金比例</li>
+  </ol>
+</block>
+<block name="main">
+  <div id="main">
+    <!-- 导航 开始 -->
+    <ul class="clearfix subnav hetongnav">
+      <li><a><i class="icon"></i><span class="cur_title"><notempty name="id">编辑<else/>新增</notempty>滞纳金比例</span></a></li>
+    </ul>
+    <!-- 导航 结束 -->
+
+    <!-- 内容 开始 -->
+    <div class="subpage jiudianxinzeng">
+      <form method="post" action="{:U('operation')}">
+        <div class="subpage-block">
+          <table class="table table-bordered table-form">
+
+            <tr>
+            <th><font color="red" size="2">*</font>滞纳金比例：</th>
+            <td><input type="text" name="num" value="{$num}" <notempty name="redonly">disabled</notempty>> <span style="font-size: 24px;margin-left: 4px;position: relative;top: 11px;;">‱</span> <span class="errortips"></span></td>
+          </tr>
+            <tr>
+              <th><input type="hidden" name="id" value="{$id}"> <input type="hidden" name="img" value="{$himg}" ></th>
+              <td>
+                <empty name="redonly">
+                  <button type="button" class="btn btn-tijiao ajax-post">保存</button>
+                  <button type="button" class="btn btn-quxiao back">取消</button>
+                <else />
+                </empty>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+    <!-- 内容 结束 -->
+  </div>
+</block>
+
+
+
+

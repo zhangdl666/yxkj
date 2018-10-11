@@ -1,0 +1,462 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>维修/保养统计</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <li class="on texts">保养统计</li>
+    </ol>
+    <style type="text/css">
+        .container .article {
+            height: 105%;
+        }
+        .subnav > li {
+            width: 116px;
+            padding: 0px 24px;
+        }
+    </style>
+</block>
+
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav xiaoshoutongji">
+            <li><a class="edittext">保养统计</a></li>
+            <li class="on" value="1"><a rel="link" class="active">保养</a><span class="nav_border"></li>
+            <li value="2"><a rel="link">维修</a></li>
+        </ul>
+        <!-- 导航 结束 -->
+
+
+        <!-- 内容 开始 -->
+        <div class="subpage xiaoshoutongji01">
+            <div class="subpage-block">
+                <ul class="screening-container">
+                    <li class="ssqy on">
+                        <div class="col left" style="display: inherit;margin-top: 5px;">所属区域：</div>
+                        <div class="col right screening-btns">
+                            <div class="ssqy-btns" id="provice">
+                                <button class="btn on" value="">全部</button>
+                                <button class="btn" value="北京">北京</button>
+                                <button class="btn" value="天津">天津</button>
+                                <button class="btn" value="河北">河北</button>
+                                <button class="btn" value="山西">山西</button>
+                                <button class="btn" value="内蒙古">内蒙古</button>
+                                <button class="btn" value="辽宁">辽宁</button>
+                                <button class="btn" value="吉林">吉林</button>
+                                <button class="btn" value="黑龙江">黑龙江</button>
+                                <button class="btn" value="上海">上海</button>
+                                <button class="btn" value="江苏">江苏</button>
+                                <button class="btn" value="浙江">浙江</button>
+                                <button class="btn" value="安徽">安徽</button>
+                                <button class="btn" value="福建">福建</button>
+                                <button class="btn" value="江西">江西</button>
+                                <button class="btn" value="山东">山东</button>
+                                <button class="btn" value="河南">河南</button>
+                                <button class="btn" value="湖北">湖北</button>
+                                <button class="btn" value="湖南">湖南</button>
+                                <button class="btn" value="广东">广东</button>
+                                <button class="btn" value="广西">广西</button>
+                                <button class="btn" value="海南">海南</button>
+                                <button class="btn" value="重庆">重庆</button>
+                                <button class="btn" value="四川">四川</button>
+                                <button class="btn" value="贵州">贵州</button>
+                                <button class="btn" value="云南">云南</button>
+                                <button class="btn" value="西藏">西藏</button>
+                                <button class="btn" value="陕西">陕西</button>
+                                <button class="btn" value="甘肃">甘肃</button>
+                                <button class="btn" value="青海">青海</button>
+                                <button class="btn" value="宁夏">宁夏</button>
+                                <button class="btn" value="新疆">新疆</button>
+                                <button class="btn" value="香港">香港</button>
+                                <button class="btn" value="澳门">澳门</button>
+                                <button class="btn" value="台湾">台湾</button>
+                                <button class="btn" value="国外">国外</button>
+                                <a class="show-more"></a>
+                            </div>
+                        </div>
+                    </li>
+                    <!--<li>-->
+                    <!--<div class="col left">渠道人员：</div>-->
+                    <!--<div class="col right screening-btns" id="types">-->
+                    <!--<button class="btn on" value="">全部</button>-->
+                    <!--<button class="btn" value="3">组织</button>-->
+                    <!--<button class="btn" value="1">内聘</button>-->
+                    <!--<button class="btn" value="2">个人</button>-->
+                    <!--</div>-->
+                    <!--</li>-->
+                    <li>
+                        <div class="col left">起止时间：</div>
+                        <div class="col right">
+                            <button class="btn on" id="quanbu">全部</button>
+                            &ensp;<input type="text" class="editdate" name="" id="startTime">
+                            &ensp;~&ensp;
+                            <input type="text" class="editdate" name="" id="endTime">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="col left">酒店</div>
+                        <div class="col right table-form">
+                            <select name="hotels">
+                                <option value="">--请选择--</option>
+                                <foreach name="hotel" item="vo">
+                                    <option value="{$vo.id}">{$vo.name}</option>
+                                </foreach>
+                            </select>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="col left">合同：</div>
+                        <div class="col right table-form">
+                            <select name="hetong">
+                                <option>请选择合同</option>
+                            </select>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="shitu">
+            </div>
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/laydate/laydate.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            // 异步加载页面
+            $.get('/Pc/Maintain/RepairCount', function (f) {
+                $(".shitu").html(f);
+            }, 'html');
+        });
+        // 筛选所需要的数据
+        var quId; //区域姓名
+        var type; //渠道人员
+        var ht_id //合同id
+        // 起止时间
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+
+        // 日期展示
+        laydate.render({
+            elem: '#startTime' //指定元素
+            , done: function () {
+                var startTime = $("#startTime").val();
+                var endTime = $("#endTime").val();
+                if (startTime && endTime) {
+                    if (startTime > endTime) {
+                        //墨绿深蓝风
+                        layer.alert('开始时间不能大于结束时间', {
+                            skin: 'layui-layer-molv' //样式类名
+                            , closeBtn: 0
+                        });
+                        $("#startTime").val('');
+                    }else{
+                        $('.xiaoshoutongji li').each(function () {
+                            if ($(this).hasClass('on')) {
+                                typetongji = $(this).attr('value')
+                            }
+                        })
+                        if (typetongji == 1) {
+                            $.get('/Pc/Maintain/lifterRepair', {
+                                startTime: startTime,
+                                endTime: endTime,
+                                quyu: quId,
+                                type: type,
+                                ht_id: ht_id
+                            }, function (data) {
+                                $(".shitu").html(data);
+                            }, 'html')
+                        } else {
+                            $.get('/Pc/RepairCount/lifterRepair', {
+                                startTime: startTime,
+                                endTime: endTime,
+                                quyu: quId,
+                                type: type,
+                                ht_id: ht_id
+                            }, function (data) {
+                                $(".shitu").html(data);
+                            }, 'html')
+                        }
+                    }
+                } else {
+                    $('.xiaoshoutongji li').each(function () {
+                        if ($(this).hasClass('on')) {
+                            typetongji = $(this).attr('value')
+                        }
+                    })
+                    if (typetongji == 1) {
+                        $.get('/Pc/Maintain/lifterRepair', {
+                            startTime: startTime,
+                            endTime: endTime,
+                            quyu: quId,
+                            type: type,
+                            ht_id: ht_id
+                        }, function (data) {
+                            $(".shitu").html(data);
+                        }, 'html')
+                    } else {
+                        $.get('/Pc/RepairCount/lifterRepair', {
+                            startTime: startTime,
+                            endTime: endTime,
+                            quyu: quId,
+                            type: type,
+                            ht_id: ht_id
+                        }, function (data) {
+                            $(".shitu").html(data);
+                        }, 'html')
+                    }
+                }
+            }
+        });
+
+
+        laydate.render({
+            elem: '#endTime' //指定元素
+            , done: function () {
+                var startTime = $("#startTime").val();
+                var endTime = $("#endTime").val();
+                var startTime = $("#startTime").val();
+                var endTime = $("#endTime").val();
+                if (startTime.length == 0) {
+                    //墨绿深蓝风
+                    layer.alert('请选择开始时间', {
+                        skin: 'layui-layer-molv' //样式类名
+                        , closeBtn: 0
+                    })
+                    return
+                } else {
+                    if (endTime < startTime) {
+                        //墨绿深蓝风
+                        layer.alert('结束时间不能小于开始时间', {
+                            skin: 'layui-layer-molv' //样式类名
+                            , closeBtn: 0
+                        });
+                        $("#endTime").val('');
+                        return;
+                    } else {
+                        $('.xiaoshoutongji li').each(function () {
+                            if ($(this).hasClass('on')) {
+                                typetongji = $(this).attr('value')
+                            }
+                        })
+                        if (typetongji == 1) {
+                            $.get('/Pc/Maintain/lifterRepair', {
+                                startTime: startTime,
+                                endTime: endTime,
+                                quyu: quId,
+                                type: type,
+                                ht_id: ht_id
+                            }, function (data) {
+                                $(".shitu").html(data);
+                            }, 'html')
+                        } else {
+                            $.get('/Pc/RepairCount/lifterRepair', {
+                                startTime: startTime,
+                                endTime: endTime,
+                                quyu: quId,
+                                type: type,
+                                ht_id: ht_id
+                            }, function (data) {
+                                $(".shitu").html(data);
+                            }, 'html')
+                        }
+                    }
+                }
+            }
+        });
+
+        $("#provice").on('click', 'button', function () {
+            quId = $(this).attr('value');
+//            if(quId){
+            $.post('/Pc/RepairCount/getData', {provice: quId}, function (f) {
+                if (f.code == 0) {
+                    $('select[name="hotels"]').empty();
+                    var strings = '<option value="">--请选择酒店--</option>';
+                    for (var i in f.data) {
+                        strings += '<option value="' + f.data[i].id + '">' + f.data[i].name + '</option> ';
+                    }
+                    $('select[name="hotels"]').html(strings);
+                }
+            });
+//            }
+
+            $('.xiaoshoutongji li').each(function () {
+                if ($(this).hasClass('on')) {
+                    typetongji = $(this).attr('value')
+                }
+            })
+            if (typetongji == 1) {
+                $.get('/Pc/Maintain/lifterRepair', {
+                    startTime: startTime,
+                    endTime: endTime,
+                    quyu: quId,
+                    type: type,
+                    ht_id: ht_id
+                }, function (data) {
+                    $(".shitu").html(data);
+                }, 'html')
+            } else {
+                $.get('/Pc/RepairCount/lifterRepair', {
+                    startTime: startTime,
+                    endTime: endTime,
+                    quyu: quId,
+                    type: type,
+                    ht_id: ht_id
+                }, function (data) {
+                    $(".shitu").html(data);
+                }, 'html')
+            }
+
+        });
+
+        $("#quanbu").click(function () {
+            $("#startTime").val('')
+            $('#endTime').val('')
+            $('.xiaoshoutongji li').each(function () {
+                if ($(this).hasClass('on')) {
+                    typetongji = $(this).attr('value')
+                }
+            })
+            if (typetongji == 1) {
+                $.get('/Pc/Maintain/lifterRepair', {quyu: quId, type: type, ht_id: ht_id}, function (data) {
+                    $(".shitu").html(data);
+                }, 'html')
+            } else {
+                $.get('/Pc/RepairCount/lifterRepair', {quyu: quId, type: type, ht_id: ht_id}, function (data) {
+                    $(".shitu").html(data);
+                }, 'html')
+            }
+        })
+        $("#types").on('click', 'button', function () {
+            $('.xiaoshoutongji li').each(function () {
+                if ($(this).hasClass('on')) {
+                    typetongji = $(this).attr('value')
+                }
+            })
+            type = $(this).attr('value');
+            if (typetongji == 1) {
+                $.get('/Pc/Maintain/lifterRepair', {
+                    startTime: startTime,
+                    endTime: endTime,
+                    quyu: quId,
+                    type: type,
+                    ht_id: ht_id
+                }, function (data) {
+                    $(".shitu").html(data);
+                }, 'html')
+            } else {
+                $.get('/Pc/RepairCount/lifterRepair', {
+                    startTime: startTime,
+                    endTime: endTime,
+                    quyu: quId,
+                    type: type,
+                    ht_id: ht_id
+                }, function (data) {
+                    $(".shitu").html(data);
+                }, 'html')
+            }
+        });
+        $('select[name="hetong"]').on('change', function () {
+            // 查看当前是保养还是维修
+            $('.xiaoshoutongji li').each(function () {
+                if ($(this).hasClass('on')) {
+                    typetongji = $(this).attr('value')
+                }
+            })
+            ht_id = $(this).val();
+            if (typetongji == 1) {
+                $.get('/Pc/Maintain/lifterRepair', {
+                    startTime: startTime,
+                    endTime: endTime,
+                    quyu: quId,
+                    type: type,
+                    ht_id: ht_id
+                }, function (data) {
+                    $(".shitu").html(data);
+                }, 'html')
+            } else {
+                ht_id = $(this).val();
+                $.get('/Pc/RepairCount/lifterRepair', {
+                    startTime: startTime,
+                    endTime: endTime,
+                    quyu: quId,
+                    type: type,
+                    ht_id: ht_id
+                }, function (data) {
+                    $(".shitu").html(data);
+                }, 'html')
+            }
+
+        });
+
+
+        $('select[name="hotels"]').on('change', function () {
+            var hotel = $(this).val();
+            if (hotel) {
+                $.post('/Pc/RepairCount/getContaract', {id: hotel}, function (f) {
+                    if (f.code == 1) {
+                        $('select[name="hetong"]').find('option').remove();
+                        var strings = '<option value="">请选择酒店</option>';
+                        $('select[name="hetong"]').html(strings);
+                        layer.msg(f.message, {time: 1000, offset: 0, icon: 2});
+                    } else {
+                        var strings = '<option value="">--请选择合同--</option>';
+                        for (var i in f.data) {
+                            strings += '<option value="' + f.data[i].id + '">' + f.data[i].name + '</option> ';
+                        }
+                        $('select[name="hetong"]').html(strings);
+                    }
+                })
+            } else {
+                $('select[name="hetong"]').find('option').remove();
+                var strings = '<option value="">请选择酒店</option>';
+                $('select[name="hetong"]').html(strings);
+            }
+        });
+        $("ul.xiaoshoutongji").on("click", "li", function () {
+            var Id = $(this).attr('value');
+            if (Id == 1) {
+                $(".edittext").text('保养统计');
+                $(".texts").text('保养统计')
+                if (startTime || endTime || quId || type || ht_id) {
+                    $.get('/Pc/Maintain/lifterRepair', {
+                        startTime: startTime,
+                        endTime: endTime,
+                        quyu: quId,
+                        type: type,
+                        ht_id: ht_id
+                    }, function (data) {
+                        $(".shitu").html(data);
+                    }, 'html')
+                } else {
+                    $.get('/Pc/Maintain/RepairCount', function (f) {
+                        $(".shitu").html(f);
+                    }, 'html')
+                }
+            } else {
+                $(".edittext").text('维修统计');
+                $(".texts").text('维修统计')
+                if (startTime || endTime || quId || type || ht_id) {
+                    $.get('/Pc/RepairCount/lifterRepair', {
+                        startTime: startTime,
+                        endTime: endTime,
+                        quyu: quId,
+                        type: type,
+                        ht_id: ht_id
+                    }, function (data) {
+                        $(".shitu").html(data);
+                    }, 'html')
+                } else {
+                    $.get('/Pc/RepairCount/RepairCount', function (f) {
+                        $(".shitu").html(f);
+                    }, 'html')
+                }
+            }
+        });
+
+    </script>
+</block>

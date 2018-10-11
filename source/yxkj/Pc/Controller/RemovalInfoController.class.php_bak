@@ -1,0 +1,335 @@
+<?php
+/**
+ * Author: ' Silent
+ * Time: 2017/9/12 10:52
+ */
+
+namespace Pc\Controller;
+
+
+use Pc\Model\DeviceRunModel;
+use Pc\Model\HotelModel;
+use Pc\Model\RunInfoDataModel;
+use Pc\Model\RunInfoModel;
+use Pc\Model\SalesModel;
+use Pc\Model\UserObjModel;
+use Pc\Server\DateType;
+
+class RemovalInfoController extends BaseController
+{
+    private $user_id;
+    private $user_data;
+    public $model = 'Hotel';
+
+    /**
+     * 净化效果
+     */
+    public function _initialize()
+    {
+        $this->user_id = $this->identity()->getUserId();
+        // 超级管理员和平台总经理登录可以查看各房间的净化效果
+        $this->user_data = $this->identity()->getUser();
+        $this->assign('role_id', $this->identity()->getRoleId());
+        $hotelData = HotelModel::getHotelName();
+        $this->assign('hotelData', $hotelData);
+        parent::_initialize();
+        $hotelName = HotelModel::getHotelNames($this->user_id);
+        $this->assign('hotelName', $hotelName);
+        if ($this->user_data['role_id'] == 1 || $this->user_data['role_id'] == 9 || $this->user_data['role_id'] == 5) {
+            $Hoteldata = $this->getHotel();
+            $this->assign('Hotel', $Hoteldata);
+            $this->assign('role', 1);
+        }
+    }
+
+    /**
+     * 获取登录用户对象
+     * @return type
+     */
+    public function identity()
+    {
+        if (!$this->userObj) {
+            $this->userObj = new UserObjModel();
+        }
+        return $this->userObj;
+    }
+
+    /**
+     * 查看所有运行正常的酒店
+     */
+    public function getHotel()
+    {
+       $hid = M('OperOrder') ->where(array('status'=>4))->field('h_id')->select();
+        foreach ($hid as $val){
+            $meta[] =$val['h_id'];
+        }
+        if($meta){
+            return M(HotelModel::TABLENAME_HOTEL)->where(array('status' => array('neq', '-1'),'id'=>array('in',$meta)))->field('id,name')->order('ctime desc')->select();
+        }else{
+            return M(HotelModel::TABLENAME_HOTEL)->where(array('status' => array('neq', '-1')))->field('id,name')->order('ctime desc')->select();
+        }
+
+    }
+
+//    public function getListInfo()
+//    {
+//        $data = RunInfoDataModel::getDevicesPm($this->user_id);
+//        // 筛选数据
+//        $room_info = RunInfoDataModel::getHotelRoom($this->user_id);
+//        $item = array();
+//        $listDatas = DateType::getUpwardDay();
+//        foreach ($room_info as $key => $val) {
+//            $datas = RunInfoModel::getDevicesHoures($val['equipment_sno'], 7 * 24);
+//            $beginToday = strtotime(end($listDatas));
+//            $endToday = strtotime($listDatas[0]) + 3600 * 24;
+//            $tongData = $datas['data']['hours'];
+//            foreach ($tongData as $key => $val) {
+//                if ($val['date'] > $beginToday && $val['date'] < $endToday) {
+//                    $item[] = $val;
+//                }
+//            }
+//        }
+//        // 统计一周的数据 相同的则相加
+//        $items = array();
+//        foreach ($item as $keys => &$vals) {
+//            $vals['time'] = date('Y-m-d', $vals['date']);
+//            // 以天为统计的,pm数量相加
+//            if (!isset($items[$vals['time']])) {
+//                $items[$vals['time']] = $vals;
+//            } else {
+//                // 直接取最后一个
+//                $items[$vals['time']]['pm25'] = $vals['pm25'];
+//                $items[$vals['time']]['apm25'] = $vals['apm25'];
+//            }
+//        }
+//        $listDatas = DateType::getUpwardDay();
+//        $newdata = array();
+//        foreach ($listDatas as $k => $v) {
+//            $newdata[$k]['date'] = '';
+//            $newdata[$k]['pm25'] = 0;
+//            $newdata[$k]['apm25'] = 0;
+//            $newdata[$k]['pa'] = '';
+//            $newdata[$k]['tvoc'] = '';
+//            $newdata[$k]['co2'] = '';
+//            $newdata[$k]['temp'] = '';
+//            $newdata[$k]['humi'] = '';
+//            $newdata[$k]['time'] = $v;
+//        }
+//        $newdatas = array_merge_recursive((array)$items, (array)$newdata);
+//        // 最后获取数据,并排序
+//        $datas = arraySequence(SalesModel::listArrayKey($newdatas, 'time'), 'time', 'SORT_DESC');
+//        $this->assign('date', json_encode(i_array_column($datas, 'time')));
+//        $this->assign('spm25', json_encode(i_array_column($datas, 'pm25')));
+//        $this->assign('sapm25', json_encode(i_array_column($datas, 'apm25')));
+//        $this->assign('pm25', $data['pm25']);
+//        $this->assign('apm25', $data['apm25']);
+//        $this->assign('pm25s', $data['pm25s']);
+//        $this->assign('apm25s', $data['apm25s']);
+//        $this->assign('data', $data['data']);
+//        $this->assign('room_num', $data['room_num']);
+//        $this->display('index');
+//    }
+
+    public function getListInfo(){
+        $data = RunInfoDataModel::getDevicesPm($this->user_id);
+        // 筛选数据
+        $room_info = RunInfoDataModel::getHotelRoom($this->user_id);
+        $device = DeviceRunModel::DeviceRemInfo($room_info);
+
+        $item = array();
+        $listDatas = DateType::getUpwardDay();
+        foreach ($room_info as $key => $val) {
+            $datas = RunInfoModel::getDevicesDay($val['equipment_sno'], 30);
+            $item[] = $datas['data']['days'];
+        }
+        $newItem = array_values($item);
+        $item = array();
+        $beginToday = strtotime(end($listDatas));
+        $endToday = strtotime($listDatas[0]) + 3600 * 24;
+        $youzhinum = 0;
+        foreach ($newItem as $tu => $au){
+            foreach ($au as $su){
+                if ($su['date'] > $beginToday && $su['date'] < $endToday) {
+                    if($su['pm25'] <= 34){
+                        $youzhinum++;
+                    }
+                    $item[] = $su;
+                }
+            }
+        }
+        $listDatas = DateType::getUpwardDay();
+        $newdata = array();
+        foreach ($listDatas as $k => $v) {
+            $newdata[$k]['date'] = '';
+            $newdata[$k]['pm25'] = 0;
+            $newdata[$k]['apm25'] = 0;
+            $newdata[$k]['pa'] = '';
+            $newdata[$k]['tvoc'] = '';
+            $newdata[$k]['co2'] = '';
+            $newdata[$k]['temp'] = '';
+            $newdata[$k]['humi'] = '';
+            $newdata[$k]['time'] = $v;
+        }
+        foreach ($item as $keys => &$vals) {
+            $vals['time'] = date('Y-m-d', $vals['date']);
+            // 以天为统计的,pm数量相加
+            if (!isset($items[$vals['time']])) {
+                $items[$vals['time']] = $vals;
+            } else {
+                // 直接取最后一个
+                $items[$vals['time']]['pm25'] = $vals['pm25'];
+                $items[$vals['time']]['apm25'] = $vals['apm25'];
+            }
+        }
+        $newdatas = array_merge_recursive((array)$items, (array)$newdata);
+        // 最后获取数据,并排序
+        $datas = arraySequence(SalesModel::listArrayKey($newdatas, 'time'), 'time', 'SORT_ASC');
+        $this->assign('date', json_encode(i_array_column($datas, 'time')));
+        $this->assign('spm25', json_encode(i_array_column($datas, 'pm25')));
+        $this->assign('sapm25', json_encode(i_array_column($datas, 'apm25')));
+        $this->assign('device',$device);
+        $this->assign('pm25', $data['pm25']);
+        $this->assign('apm25', $data['apm25']);
+        $this->assign('pm25s', $data['pm25s']);
+        $this->assign('apm25s', $data['apm25s']);
+        $this->assign('data', $data['data']);
+        $this->assign('room_num', $data['room_num']);
+        $this->assign('yznum',$youzhinum);
+        $this->display('index');
+    }
+
+    /**
+     * 单个设备运行情况
+     */
+    public function getOneDevice()
+    {
+        $mac = I('get.mac', '', 'trim');
+        $newdata = RunInfoModel::getNewDevicesInfo($mac);
+        $pm25 = $newdata['data']['devices'][0]['data']['pm25'];
+        $datas = RunInfoModel::getDevicesDay($mac, 30);
+        $listDatas = DateType::getUpwardDay();
+        $beginToday = strtotime(end($listDatas));
+        $endToday = strtotime($listDatas[0]) + 3600 * 24;
+        $tongData = $datas['data']['days'];
+        $item = array();
+        $youzhinum = 0;
+        foreach ($tongData as $key => $val) {
+            if ($val['date'] > $beginToday && $val['date'] < $endToday) {
+                if($val['pm25'] <= 34){
+                    $youzhinum++;
+                }
+                $item[] = $val;
+            }
+        }
+        // 统计一周的数据 相同的则相加
+        $items = array();
+        foreach ($item as $keys => &$vals) {
+            $vals['time'] = date('Y-m-d', $vals['date']);
+            // 以天为统计的,pm数量相加
+            if (!isset($items[$vals['time']])) {
+                $items[$vals['time']] = $vals;
+            } else {
+                $items[$vals['time']]['pm25'] = $vals['pm25'];
+                $items[$vals['time']]['apm25'] = $vals['apm25'];
+            }
+        }
+        $listDatas = DateType::getUpwardDay();
+        $newdata = array();
+        foreach ($listDatas as $k => $v) {
+            $newdata[$k]['date'] = '';
+            $newdata[$k]['pm25'] = 0;
+            $newdata[$k]['apm25'] = 0;
+            $newdata[$k]['pa'] = '';
+            $newdata[$k]['tvoc'] = '';
+            $newdata[$k]['co2'] = '';
+            $newdata[$k]['temp'] = '';
+            $newdata[$k]['humi'] = '';
+            $newdata[$k]['time'] = $v;
+        }
+        // 合并数组(数组为空的时候,数组不合并)
+        $newdatas = array_merge_recursive((array)$items, (array)$newdata);
+        // 最后获取数据,并排序
+        $datas = arraySequence(SalesModel::listArrayKey($newdatas, 'time'), 'time', 'SORT_ASC');
+        $this->assign('yznum',$youzhinum);
+        $this->assign('pm', $pm25);
+        $this->assign('date', json_encode(i_array_column($datas, 'time')));
+        $this->assign('pm25', json_encode(i_array_column($datas, 'pm25')));
+        $this->assign('apm25', json_encode(i_array_column($datas, 'apm25')));
+        $this->display('OneDevice');
+    }
+
+    /**
+     * 某一家酒店数据
+     */
+    public function getHotelInfo()
+    {
+        $id = I('post.hotel_id', 0, 'intval');
+        $data = RunInfoDataModel::getDevicesPms($id);
+        $room_info = RunInfoDataModel::getHotelRooms($id);
+        $device = DeviceRunModel::DeviceRemInfo($room_info);
+        // 筛选数据
+        $room_info = RunInfoDataModel::getHotelRooms($id);
+        $item = array();
+        $listDatas = DateType::getUpwardDay();
+        foreach ($room_info as $key => $val) {
+            $datas = RunInfoModel::getDevicesDay($val['equipment_sno'], 30);
+            $item[] = $datas['data']['days'];
+        }
+        $newItem = array_values($item);
+        $item = array();
+        $beginToday = strtotime(end($listDatas));
+        $endToday = strtotime($listDatas[0]) + 3600 * 24;
+        $youzhinum = 0;
+        foreach ($newItem as $tu => $au){
+            foreach ($au as $su){
+                if ($su['date'] > $beginToday && $su['date'] < $endToday) {
+                    if($su['pm25'] <= 34){
+                        $youzhinum++;
+                    }
+                    $item[] = $su;
+                }
+            }
+        }
+        // 统计一周的数据 相同的则相加
+        $items = array();
+        foreach ($item as $keys => &$vals) {
+            $vals['time'] = date('Y-m-d', $vals['date']);
+            // 以天为统计的,pm数量相加
+            if (!isset($items[$vals['time']])) {
+                $items[$vals['time']] = $vals;
+            } else {
+                // 直接取最后一个
+                $items[$vals['time']]['pm25'] = $vals['pm25'];
+                $items[$vals['time']]['apm25'] = $vals['apm25'];
+            }
+        }
+        $listDatas = DateType::getUpwardDay();
+        $newdata = array();
+        foreach ($listDatas as $k => $v) {
+            $newdata[$k]['date'] = '';
+            $newdata[$k]['pm25'] = 0;
+            $newdata[$k]['apm25'] = 0;
+            $newdata[$k]['pa'] = '';
+            $newdata[$k]['tvoc'] = '';
+            $newdata[$k]['co2'] = '';
+            $newdata[$k]['temp'] = '';
+            $newdata[$k]['humi'] = '';
+            $newdata[$k]['time'] = $v;
+        }
+        $newdatas = array_merge_recursive((array)$items, (array)$newdata);
+        // 最后获取数据,并排序
+        $datas = arraySequence(SalesModel::listArrayKey($newdatas, 'time'), 'time', 'SORT_DESC');
+        $this->assign('date', json_encode(i_array_column($datas, 'time')));
+        $this->assign('spm25', json_encode(i_array_column($datas, 'pm25')));
+        $this->assign('sapm25', json_encode(i_array_column($datas, 'apm25')));
+        $this->assign('pm25', $data['pm25']);
+        $this->assign('apm25', $data['apm25']);
+        $this->assign('pm25s', $data['pm25s']);
+        $this->assign('apm25s', $data['apm25s']);
+        $this->assign('data', $device);
+        $this->assign('room_num', $data['room_num']);
+        $this->assign('yznum',$youzhinum);
+        $this->assign('id',$id);
+        $this->display('hotelinfo');
+    }
+}

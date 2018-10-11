@@ -1,0 +1,251 @@
+<div style="min-height: 100px;margin-top: 20px;">
+    <!--<div class="gezi-container-wrap yx_panel yx_c_height" style="min-height: 258px">-->
+        <!--<div style="height: 50px"></div>-->
+        <!--<div class="left_two yx_right_two_div" style="width: 225px;height: 225px" id="cjs">-->
+
+        <!--</div>-->
+        <!--<div class="left_two yx_right_two_div" style="width: 225px;height: 225px" id="cjs1">-->
+
+        <!--</div>-->
+
+    <!--</div>-->
+    <div class="gezi-container-wrap jhxg-gezi2 yx_from yx_height">
+        <dl class="gezi-container ">
+            <dt class="gezi-title" style="border-bottom: 1px solid #dddddd;padding-top: 0px;margin-top: 0px">
+                <div class="kq_left_title">开启房间</div>
+                <div class="checkbox-container gezi-green" data-type="checkbox">
+                    <i class="icon icon01 i_radio"></i>
+                    <span class="checkbox_txt">开启一天次</span>
+                </div>
+                <div class="checkbox-container gezi-red" data-type="checkbox">
+                    <i class="icon icon01 i_radio"></i>
+                    <span class="checkbox_txt">未到达一个天次</span>
+                </div>
+                <div class="checkbox-container gezi-orange" data-type="checkbox">
+                    <i class="icon icon01 i_radio"></i>
+                    <span class="checkbox_txt">离线预警</span>
+                </div>
+            <i class="btn_icon btn_kq_icon btn_icon_bottom"></i>
+            </dt>
+            <dd class="gezi-group pc_kq_height" id="kq_height">
+                <foreach name="rooms" item="vo">
+                    <button type="button" value="{$vo.equipment_sno}" class='room btn <if condition="$vo['
+                            status
+                    '] eq 3">green
+                    <elseif condition="$vo['status'] eq 2"/>
+                    orange
+                    <else/>
+                    red</if>'>{$vo.room_sno}</button>
+                </foreach>
+            </dd>
+            <dd><i class="max_btn_icon btn_kq_icon btn_icon_bottom"></i></dd>
+        </dl>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="panel panel-default yx_details_div sno">
+    <div class="yx_details">
+        <div class="left">月度开启率</div>
+        <div class="right">{$monthsbai|default=0}%</div>
+        <div class="clear"></div>
+    </div>
+    <div class="yx_details">
+        <div class="left">季度开启率</div>
+        <div class="right">{$jidubai|default=0}%</div>
+        <div class="clear"></div>
+    </div>
+    <div class="yx_details">
+        <div class="left">年度开启率</div>
+        <div class="right">{$nainbai|default=0}%</div>
+        <div class="clear"></div>
+    </div>
+    <div class="yx_details">
+        <div class="left">安装日到现在开启率</div>
+        <div class="right">{$anbais|default=0}%</div>
+        <div class="clear"></div>
+    </div>
+    <div class="yx_details">
+        <div class="left">本结算周期开启率</div>
+        <div class="right">{$anbai|default=0}%</div>
+        <div class="clear"></div>
+    </div>
+    <div class="yx_details">
+        <div class="left">结算周期开启天次</div>
+        <div class="right">{$hahdats|default=0}天</div>
+        <div class="clear"></div>
+    </div>
+    <!--<div class="yx_details">-->
+        <!--<div class="left">净化器类型</div>-->
+        <!--<div class="right"></div>-->
+        <!--<div class="clear"></div>-->
+    <!--</div>-->
+    <!--<div class="yx_details">-->
+        <!--<div class="left">监控器类型</div>-->
+        <!--<div class="right"></div>-->
+        <!--<div class="clear"></div>-->
+    <!--</div>-->
+</div>
+<script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        /***房间数量超出一排显示下拉开关***/
+        function but_show(){
+            var kg_btn = $("#kq_height");
+            var btn_icon =$(".btn_kq_icon");
+            var btn_length = kg_btn.children(".btn").length;
+            var btn_num =parseInt(kg_btn.width() / 110);
+            if(btn_length > btn_num){
+                btn_icon.addClass("btn_block");
+                btn_icon.removeClass("btn_none");
+            }else {
+                btn_icon.addClass("btn_none");
+                btn_icon.removeClass("btn_block");
+            }
+        }
+        but_show();
+        /***********浏览器窗口宽度发生变化时执行************/
+        $(window).resize(function() {
+            but_show();
+            console.log($("#kq_height").width());
+
+        });
+
+        /********房间下拉图标和向上关闭图标切换********/
+        $(function(){
+            var on_num = 0;
+            $(".btn_kq_icon").click(function(){
+                var this_icon =  $(".btn_kq_icon");
+                if(on_num == 0){
+                    this_icon.removeClass("btn_icon_bottom");
+                    $("#kq_height").removeClass("pc_kq_height");
+                    this_icon.addClass("btn_icon_top");
+                    on_num = 1;
+                }else if(on_num == 1){
+                    $("#kq_height").addClass("pc_kq_height");
+                    this_icon.addClass("btn_icon_bottom");
+                    this_icon.removeClass("btn_icon_top");
+                    on_num = 0;
+                }
+            })
+        });
+    });
+    $(document).ready(function () {
+        var yx_height = $(".yx_height").outerHeight()
+        var a = $(".yx_c_height").outerHeight(yx_height);
+    });
+    var numone = "{$numone}";
+    var numfour = "{$numfour}";
+    if(numone){
+        $(".numone").text("{$numone}"+'天次');
+    }else{
+        $(".numone").text("0"+'天次');
+    }
+
+    if(numfour){
+        $(".numfour").text("{$numfour}"+'天次');
+    } else{
+        $(".numfour").text("0"+'天次');
+    }
+
+
+
+    $(".room").click(function () {
+        $(".room").removeClass("pitch_on");
+        $(this).addClass("pitch_on");
+        var sno = $(this).attr('value');
+        $.get('/RunInfo/oneDevice', {sno: sno}, function (f) {
+            $('.sno').empty();
+            $('.sno').html(f);
+        }, 'html')
+    })
+    var myCharOne = echarts.init(document.getElementById('cjs'));
+    optionOne = {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            x: 'left',
+        },
+        series: [
+            {
+                name: '当日开启天次',
+                type: 'pie',
+                //给图表添加坐标center : ['50%', '35%'],配合htmldiv的高度为230.4，高度变化就要修改坐标变化
+                center: ['50%', '40%'],
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '16',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data: [
+                    {value: "{$numone}", name: '当日天次'},
+                ],
+                color: ['#6BC35E',]
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myCharOne.setOption(optionOne);
+    var myCharTwo = echarts.init(document.getElementById('cjs1'));
+    optionTwo = {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            x: 'left',
+        },
+        series: [
+            {
+                name: '总开启天次',
+                type: 'pie',
+                //给图表添加坐标center : ['50%', '35%'],配合htmldiv的高度为230.4，高度变化就要修改坐标变化
+                center: ['50%', '40%'],
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '16',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data: [
+                    {value: "{$numfour}", name: '总开启天次'},
+                ],
+                color: ['#6BC35E',]
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myCharTwo.setOption(optionTwo);
+</script>

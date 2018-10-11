@@ -1,0 +1,111 @@
+<extend name="Public:index"/>
+<block name="css">
+	<style type="text/css">
+		.posi{bottom: 0rem;left: 0.6rem;}
+		.EquipmentInstall,.HotelContract{background-position: 0 -2.6rem;}
+		.EquipmentUpkeep{background-position: -1.68rem -6.6rem;}
+		.RepairCount,.RunInfo{background-position: 0 -1.3rem;}
+		.ReturnMoney{background-position: 0 -3.9rem;}
+		.Hotel{background-position: 0 -5.3rem;}
+		.HotelUser{background-position: 0 -6.6rem;}
+		.SaleGetmoney{background-position: -1.68rem -2.6rem;}
+		.Reimbursement{background-position: -1.68rem -3.9rem;}
+		.Earnings{background-position: -1.68rem -2.6rem;}
+		.ClaimHotel{background-position: -1.68rem -5.3rem;}
+		.Sales{background-position: 0 -1.3rem;}
+		.Promotion{background-position: 0 -7.9rem;}
+		.RemovalInfo{background-position: 0 -9.2rem;}
+		.HotelMaintain{background-position: -1.68rem 0;}
+		.msg-flag {
+			right: 12px;
+			left: 0;
+		}
+		.header .right .icon {
+			margin-right: 0rem;
+		}
+	</style>
+</block>
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main">
+		<!-- header 开始 -->
+		<div class="header">
+			<!--<div class="left" onclick="now_href('/Wx/User/getUserInfo')"><i class="icon w_0004_04 w_04_13"></i>个人中心</div>-->
+			<div class="left" onclick="now_href('/Wx/User/getUserInfo')"><i class="icon w_0004_04 w_04_13"></i></div>
+			<!--<div class="right" onclick="now_href('/Wx/Message/index')"><i class="icon w_0004_04 w_04_14"></i>消息</div>-->
+			<div class="right" onclick="now_href('/Wx/Message/index')"><i class="icon w_0004_04 w_04_14"></i><if condition="$flag eq 1 "><i class="msg-flag"></i></if></div>
+		</div>
+		<!-- header 结束 -->
+		<input type="hidden" name="flag" value="{$flag}"/>
+
+		<ul class="index_item" style="padding-bottom: 0.3rem">
+			<volist name="module" id="mleft">
+				<li class="bjkkitem bjkkitem01 b{$key%7+1}" onclick="now_href('{$group_name}{$mleft.method}')">
+					<div class="bjkkitem_main">
+						<div class="icon_wrap"><i class="icon w_0001_01 {$mleft.module} posi"></i></div>
+						 <notempty name="mleft.number"><div class="num">{$mleft.number}<span class="min">个</span></div></notempty>
+						<div class="title_wrap">
+							<div class="title_inner">
+								<span class="title">{$mleft.name}</span>
+								<!-- <button class="btn">立即查看</button> -->
+							</div>
+						</div>
+					</div>
+				</li>
+			</volist>
+		</ul>
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+<block name="js">
+<script src='https://cdn.bootcss.com/socket.io/2.0.3/socket.io.js'></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		console.log($('input[name="flag"]').val());
+    })
+    // 如果服务端不在本机，请把127.0.0.1改成服务端ip
+    var socket = io("http://{$server_ip}:2129");
+    //    var socket = io("http://127.0.0.1:2129");
+    var uid = "{$user_id}";
+    if(uid){
+        // 当连接服务端成功时触发connect默认事件
+        socket.on('connect', function(){
+            socket.emit('login', uid);
+        });
+    }
+    // 后端推送来消息时
+    socket.on('new_msg', function(msg){
+		if(msg == 'message'){	// || msg == 'Alarm/index'
+		    var flag=$('input[name="flag"]').val();
+		    if(flag == 0){
+                $('input[name="flag"]').val(1);
+                var html='<i class="msg-flag"></i>';
+                $('.w_04_14').append(html);
+			}
+		}
+		if(msg == 'look'){
+            var flag=$('input[name="flag"]').val();
+		    if(flag == 1){
+		      	$.post('/Wx/Index/getMessageNum',{id:uid},function(res){
+					if(res.code==1){
+					    var num=res.message;
+					    if(num==1){
+                            $('input[name="flag"]').val(0);
+                            $('.msg-flag').remove();
+						}
+					}
+                })
+			}
+		}
+
+    });
+    // 后端推送来在线数据时
+    socket.on('update_online_count', function(online_stat){
+        //console.log(online_stat);
+    });
+//跳转
+function now_href(url){
+	window.location.href = url;
+}
+</script>
+</block>

@@ -1,0 +1,541 @@
+<extend name="Public:index"/>
+<block name="title">
+  <title>合同管理</title>
+</block>
+<block name="css">
+<link rel="stylesheet" href="__CSS__/LCalendar.css">
+<style type="text/css">
+  .width05{width:0.5rem;}
+  .width10{width:1rem;}
+  .width15{width:1.5rem;}
+  .width25{width:2.5rem;
+    }
+  .right input{
+      font-size: 0.3rem;
+      color: #666666;
+      padding: 0.1rem;
+      border: 0.01rem solid #e8e8e8;
+  }
+   .layoutlr select,.layoutlr input{
+        font-size: 0.3rem;
+        color: #666666;
+        padding: 0.1rem;
+        border: 0.01rem solid #e8e8e8;
+    }
+  .bottom{
+    float: right;
+    padding: 0.2rem 0;
+  }
+  input {
+      line-height: 0.35rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+  }
+  .checkbox_txt{
+      display: inline-block;
+      width: 90%;
+      height: auto!important;
+  }
+  .i_radio{ float: left;}
+  .bordnone{border: 0rem!important;text-align: right}
+
+  .checkbox-container {
+    width: 12em!important;
+}
+ [data-type="radio"][checked] .i_radio {
+    margin-top: 0.06rem!important;
+}
+</style>
+</block>
+
+<block name="main">
+  <!-- 主体内容 开始 -->
+  <div class="main swiper-container-01">
+    <div class="header">
+      <div class="left backs" data-url="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+      <!-- <div class="center">合同管理</div> -->
+    </div>
+
+    <div class="main_body">
+      <div class="swiper-container swiper-tab-nav">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-link on" onclick="now_href('{:U('read',array('id'=>$hcid))}')">基础信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('installe',array('id'=>$hcid))}')">安装信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('return_money',array('id'=>$hcid))}')">结算信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('upkeep',array('id'=>$hcid))}')">保养信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('maintain',array('id'=>$hcid))}')">维修信息</div>
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+      </div>
+
+      <div class="swiper-container swiper-tab-page hetongpage">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-content">
+                <div class="hetong_content">
+                  <div class="btns_wrap">
+                    <button class="btn" onclick="now_href('{:U('read',array('id'=>$hcid))}')">酒店信息</button>
+                    <button class="btn" onclick="now_href('{:U('readuser',array('id'=>$hcid))}')">联系人信息</button>
+                    <button class="btn on" onclick="now_href('{:U('editc',array('id'=>$hcid))}')">合同信息</button>
+                  </div>
+
+                  <!-- 内容 开始 -->
+                  <div class="form_data_wrap jiudianxinxi">
+                    <form method="post" action="{:U('operation')}">
+                    <ul class="form_data">
+                      <li class="layoutlr form_item">
+                        <div class="left">合同名称</div>
+                          <div class="right">
+                              <div><input class="bordnone" type="text" name="name" value="{$name}"><i class="icon w_0000_00 w_00_11"></i></div>
+                          </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left" style="display: inline-block!important;">合同周期</div>
+                        <div class="right">
+                          <input type="text" name="period" readonly style="border:none;text-align:right;" value="{$period}">个月
+                          <div><input type="text" name="stime" id="stime" style="padding: 0.1rem 0.3rem;" class="width15" value="{$stime|date='Y-m-d',###}">&nbsp;至&nbsp;<input type="text" name="etime" id="etime" style="padding: 0.1rem 0.3rem;" class="width15" value="{$etime|date='Y-m-d',###}"></div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">签约客房</div>
+                        <input type="hidden" name="or_num" value="{$or_num}">
+                        <div class="right"><button class="tiuanjia btn" style="background: #35ce85;color: #fff;" type="button">添加</button></div>
+                      </li>
+                      <volist name="hcre_items" id="hcre_item" key="hcrek">
+                      <li class="layoutlr form_item tjcontent">
+                        <div class="bottom">
+                            <select name="rt_id[]" class="rtid width25">
+                              <volist name="hotel_rts" id="hrt">
+                                <option value="{$hrt.id}" data="{$hrt.room_num}" <eq name="hcre_item.id" value="$hrt['id']">selected</eq>>{$hrt.name}</option>
+                              </volist>
+                            </select>
+                            <input type="text" name="r_num[]" value="{$hcre_item['r_num']}" class="rnum width10"><br/>
+                            <select name="e1_id[]" class="width25">
+                              <volist name="equipment_items" id="e1_item">
+                                <eq name="e1_item.type" value="1">
+                                <option value="{$e1_item.id}" <eq name="hcre_item.e1_id" value="$e1_item['id']">selected</eq>>{$e1_item.name}</option>
+                                </eq>
+                              </volist>
+                            </select>
+                            <input type="text" name="e1_num[]" class="width10" value="{$hcre_item.e1_num}"><br/>
+                            <select name="e2_id[]" class="width25">
+                              <volist name="equipment_items" id="e2_item">
+                                <eq name="e2_item.type" value="2">
+                                <option value="{$e2_item.id}" <eq name="hcre_item.e2_id" value="$e2_item['id']">selected</eq>>{$e2_item.name}</option>
+                                </eq>
+                              </volist>
+                            </select>
+                            <input type="text" name="e2_num[]" class="width10" value="{$hcre_item.e2_num}"><br>
+                            <gt name="hcrek" value="1"><button type="button" class="remove btn btn-quxiao" style="width:50px;background-color: #ff9812;color: #fff; float: right; margin-top: 0.1rem;">删除</button></gt>
+                        </div>
+                      </li>
+                      </volist>
+                      <li class="layoutlr form_item">
+                        <div class="left">保养频率</div>
+                        <div class="right">
+                          <div >
+                          <span class="selected">
+                            <select name="maintenance_id">
+                                <option value="{$maintenance_id}">1次/{$maintenance}天</option>
+                                <volist name="maintenance_items" id="maintenance">
+                                  <if condition="$maintenance.id neq $maintenance_id">
+                                    <option value="{$maintenance.id}">1次/{$maintenance.num}天</option>
+                                  </if>
+                              </volist>
+                            </select>
+                          </span>
+                            <i class="icon w_0000_00 w_00_11"></i>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">结算模式</div>
+                        <div class="right">
+                          <div >
+                            <select name="at_id">
+                              <option value="{$at_id}">{$at_name}</option>
+                              <volist name="accounts_type_items" id="at_item">
+                                <if condition="$at_item.id neq $at_id">
+                                <if condition="$at_item.type eq 1">
+                                  <option value="{$at_item.id}">共享&nbsp;{$at_item.price}/天次</option>
+                                <elseif condition="$at_item.type eq 2"/>
+                                  <option value="{$at_item.id}">租赁&nbsp;{$at_item.price}/天</option>
+                                <else/>
+                                  <option value="{$at_item.id}">月租</option>
+                                </if>
+                                </if>
+                              </volist>
+                            </select>
+                            <i class="icon w_0000_00 w_00_11"></i>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item month_price" style="display:none !important;">
+                        <div class="left">月租费</div>
+                        <div class="right">
+                        <div><input class="bordnone hetongmingc" style="line-height: 0.5rem;"  placeholder='请输入月租费用' type="text" name="month_price" ><i class="icon w_0000_00 w_00_11"></i></div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">滞纳金比例</div>
+                        <div class="right">
+                          <div >
+                            <select name="ls_id">
+                              <option value="{$ls_id}">{$ls_num}‱</option>
+                              <volist name="latefees_scale_items" id="ls_item">
+                                <if condition="$ls_item.num neq $ls_num">
+                                <option value="{$ls_item.id}" >{$ls_item.num}‱</option>
+                                </if>
+                              </volist>
+                            </select>
+                            <i class="icon w_0000_00 w_00_11"></i>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="layouttb form_item">
+                        <div class="top">产生滞纳金条件</div>
+                        <div class="bottom" style="text-align: left;float: left;">
+                          <volist name="latefee_items" id="latefee">
+                            <if condition="$key eq 0">
+                            <label class="checkbox-container" data-type="radio" <if condition="empty($ls_remark) || $latefee['id'] eq $ls_remark">checked</if> style="display:block;">
+                              <input class="room-type" type="radio" name="ls_remark" value="{$latefee.id}" <if condition="empty($ls_remark) || $latefee['id'] eq $ls_remark">checked</if>>
+                              <i class="icon icon01 i_radio"></i>
+                              <span class="checkbox_txt">{$latefee.content}</span>
+                            </label>
+                            <else/>
+                              <label class="checkbox-container" data-type="radio" <if condition="$latefee['id'] eq $ls_remark">checked</if> style="display:block;">
+                                <input class="room-type" type="radio" name="ls_remark" value="{$latefee.id}" <if condition="$latefee['id'] eq $ls_remark">checked</if>>
+                                <i class="icon icon01 i_radio"></i>
+                                <span class="checkbox_txt">{$latefee.content}</span>
+                              </label>
+                            </if>
+                          </volist>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">安装日期</div>
+                        <div class="right">
+                          <input type="text" name="rsinstall" id="rstime" style="padding: 0.1rem 0.3rem;" class="width15" value="{$rsinstall|date='Y-m-d',###}">&nbsp;至&nbsp;<input type="text" name="reinstall" style="padding: 0.1rem 0.3rem;" id="retime" class="width15" value="{$reinstall|date='Y-m-d',###}">
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="top">合同附件</div>
+                        <div class="bottom" style="width: 7rem;">
+                        <dl class="uploadimg-container clearfix">
+                          <dd class="imgwrap-container">
+                            <volist name="himgs" id="imgi">
+                            <div class="imgwrap">
+                              <img class="img-rounded" src="{$imgi}">
+                              <ul class="imgoprate">
+                                <li data-oprate="toleft"><i class="icon"></i></li>
+                                <li data-oprate="detele"><i class="icon"></i></li>
+                                <li data-oprate="toright"><i class="icon"></i></li>
+                              </ul>
+                            </div>
+                            </volist>
+                          </dd>
+                          <dt>
+                            <div class="item btn-upload upimg" v-show="uploadImgs.length==0"></div>
+                          </dt>
+                        </dl>
+                        <input type="hidden" name="img" value="{$img}" class="img_val"/>
+                        </div>
+                      </li>
+                    </ul>
+                    <div class="form_data_btns">
+                      <input type="hidden" name="id" value="{$hcid}">
+                      <input type="hidden" name="h_id" value="{$h_id}">
+                      <button class="btn maxbtn ajax-post" style="margin-bottom: 0.4rem">保存</button>
+                    </div>
+                  </form>
+                </div>
+            </div>
+            <!-- 彈窗內容 開始 -->
+            <!--<div class="selected_layer hide" data-relation="upkeep">-->
+              <!--<ul class="options_container" data-relation="upkeep">-->
+                <!--<volist name="maintenance_items" id="maintenance">-->
+                  <!--<li><span data="{$maintenance.id}">1次/{$maintenance.num}天</span></li>-->
+                <!--</volist>-->
+              <!--</ul>-->
+            <!--</div>-->
+
+            <!--<div class="selected_layer hide" data-relation="return_money">-->
+              <!--<ul class="options_container" data-relation="return_money">-->
+                <!--<volist name="accounts_type_items" id="at_item">-->
+                  <!--<eq name="at_item.type" value="1">-->
+                    <!--<li><span data="{$at_item.id}">共享&nbsp;{$at_item.price}/天次</span></li>-->
+                  <!--<else/>-->
+                    <!--<li><span data="{$at_item.id}">租赁&nbsp;{$at_item.price}/天</span></li>-->
+                  <!--</eq>-->
+                <!--</volist>-->
+              <!--</ul>-->
+            <!--</div>-->
+
+
+            <!--<div class="selected_layer hide" data-relation="more_price">-->
+              <!--<ul class="options_container" data-relation="more_price">-->
+                <!--<volist name="latefees_scale_items" id="ls_item">-->
+                  <!--<li onclick="lsnote(this)"><span data="{$ls_item.id}">{$ls_item.num}‱</span></li>-->
+                <!--</volist>-->
+              <!--</ul>-->
+            <!--</div>-->
+            <!-- 彈窗內容 結束 -->
+    </div>
+    <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+<script type="text/javascript" src="__JS__/LCalendar.js"></script>
+<script type="text/javascript">
+/* 计算月数 */
+$("input[name='stime']").blur(function(){
+  window.setTimeout(function(){ MonthsBetw(); },5000);
+  //MonthsBetw();
+});
+$("input[name='etime']").blur(function(){
+  window.setTimeout(function(){ MonthsBetw(); },5000);
+  //MonthsBetw();
+});
+
+//返回两个日期相差的月数
+function MonthsBetw(){
+  var date1 = $("input[name='stime']").val();
+  var date2 = $("input[name='etime']").val();
+  if(date1 == "" || date2 == ""){
+    return false;
+  }else if(date1 >= date2){
+    /*layer.open({content:'合同周期时间不正确'});
+    $("input[name='etime']").val("");*/
+    return false;
+  }
+  //用-分成数组
+  date1 = date1.split("-");
+  date2 = date2.split("-");
+  //获取年,月数
+  var year1 = parseInt(date1[0]),
+  month1 = parseInt(date1[1]),
+  day1 = parseInt(date1[2]),
+  year2 = parseInt(date2[0]),
+  month2 = parseInt(date2[1]),
+  day2 = parseInt(date2[2]),
+  //通过年,月差计算月份差
+  months = (year2 - year1) * 12 + month2 - month1;
+  if(year2==year1 && month2 == month1 ){
+    months = 1;
+  }else if(day2>day1){
+    months+=1;
+  }
+  $("input[name='period']").val(months);
+}
+
+/* 房间类型变化房间数 */
+$(".main").on("change",'.rtid',function(){
+  var rt_data = $(this).find("option:selected").attr("data");
+  $(this).parent().find(".rnum").val(rt_data);
+});
+
+/**
+ * 改变结算模式
+ */
+$("select[name='at_id']").change(function(){
+  var at_text = $("select[name='at_id'] option:selected").text();
+  if(at_text == "月租"){
+     $(".month_price").css("cssText","display:table !important;");
+  }else{
+    $(".month_price").css("cssText","display:none !important;");
+  }
+});
+
+/* 月租 */
+$("input[name='month_price']").blur(function(){
+  var month_price = $(this).val();
+  var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+  if(!reg.test(month_price)){
+    layer.open({content:'请输入正确的月租费用',time:1.5});
+    $("input[name='month_price']").val("");
+  }
+})
+
+/* 改变滞纳金额 */
+$('select[name="ls_id"]').change(function () {
+  $(".lstips").text("次月第四个工作日0点未收到打款，产生滞纳金，金额为本账期应收金额的"+$(this).find("option:selected").text()+"，按天累加");
+
+})
+//function lsnote(obj){
+//  $(".lstips").text("次月第四个工作日0点未收到打款，产生滞纳金，金额为本账期应收金额的"+$(obj).find("span").text()+"，按天累加");
+//}
+
+/* 获取要添加的内容 */
+var tjcontent = "<li class='layoutlr form_item tjcontent'>\
+                  <div class='bottom' style='line-height: 0.55rem;vertical-align: bottom;'>\
+                  <select name='rt_id[]' class='rtid width25'>\
+                    <volist name='hotel_rts' id='hrt'>
+                      <option value='{$hrt.id}' data='{$hrt.room_num}'>{$hrt.name}</option>\
+                    </volist>
+                  </select>\
+                  <input type='text' name='r_num[]' value='{$hotel_rts[0]['room_num']}' class='rnum width10'><br/>\
+                  <select name='e1_id[]' class='width25'>\
+                    <volist name='equipment_items' id='e1_item'>
+                      <eq name='e1_item.type' value='1'>
+                      <option value='{$e1_item.id}'>{$e1_item.name}</option>\
+                      </eq>
+                    </volist>
+                  </select>\
+                  <input type='text' name='e1_num[]' class='width10'><br/>\
+                  <select name='e2_id[]' class='width25'>\
+                    <volist name='equipment_items' id='e2_item'>
+                      <eq name='e2_item.type' value='2'>
+                      <option value='{$e2_item.id}'>{$e2_item.name}</option>\
+                      </eq>
+                    </volist>
+                  </select>\
+                  <input type='text' name='e2_num[]' class='width10'> <br>\
+<button type='button' class='remove btn btn-quxiao' style='width:50px;background-color: #ff9812;color: #fff;float: right;    margin-top: 0.1rem;'>删除</button></div>\
+              </li>";
+$(".tiuanjia").click(function(){
+  console.log($(".tjcontent :last").html());
+  $(".tjcontent :last").after(tjcontent);
+});
+
+/* 删除当前 */
+$(".main").on("click",".remove",function(){
+  $(this).closest("li").remove();
+});
+
+$("#stime").focus(function(){
+    document.activeElement.blur();
+});
+/* 日期控件 */
+var calendars = new LCalendar();
+var date = new Date();
+calendars.init({
+  'trigger': '#stime', //标签id
+  'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+  //'minDate': date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(), //最小日期
+  //'maxDate': date.getFullYear() + '-' + 12 + '-' + 31 //最大日期
+});
+
+$("#etime").focus(function(){
+    document.activeElement.blur();
+});
+var calendare = new LCalendar();
+calendare.init({
+  'trigger': '#etime', //标签id
+  'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+  //'minDate': date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(), //最小日期
+  //'maxDate': date.getFullYear() + '-' + 12 + '-' + 31 //最大日期
+});
+
+$("#rstime").focus(function(){
+    document.activeElement.blur();
+});
+var calendarrs = new LCalendar();
+calendarrs.init({
+  'trigger': '#rstime', //标签id
+  'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+  'minDate': date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(), //最小日期
+  //'maxDate': date.getFullYear() + '-' + 12 + '-' + 31 //最大日期
+});
+
+$("#retime").focus(function(){
+    document.activeElement.blur();
+});
+var calendarre = new LCalendar();
+calendarre.init({
+  'trigger': '#retime', //标签id
+  'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+  'minDate': date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(), //最小日期
+  //'maxDate': date.getFullYear() + '-' + 12 + '-' + 31 //最大日期
+});
+
+
+/* 微信上传图片所需 start */
+wx.config({
+    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: '{$appId}', // 必填，公众号的唯一标识
+    timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+    nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+    signature: '{$signature}',// 必填，签名，见附录1
+    jsApiList: ['chooseImage','uploadImage','hideAllNonBaseMenuItem'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});
+
+wx.ready(function(){
+    wx.error(function(res){
+      layer.open({content:res.errMsg,time:2});
+      return false;
+  });
+
+  //隐藏所有非基础按钮接口
+  wx.hideAllNonBaseMenuItem();
+});
+
+$(".upimg").click(function(){
+  //选择图片
+  wx.chooseImage({
+      count: 1, // 默认9
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+          var localIds = res.localIds; 
+          // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+         
+          //上传图片
+          wx.uploadImage({
+          localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+          isShowProgressTips: 1, // 默认为1，显示进度提示
+          success: function (res) {
+              var serverId = res.serverId; // 返回图片的服务器端ID
+              //上传的图片保存到本地服务器
+              $.post("{:U('saveWXFile')}",{img_dir:'Hcfile',media_id:serverId},function(res_data){
+                if(typeof res_data != "object"){
+                  var res_data = eval("("+res_data+")");
+              }
+              $(".imgwrap-container").append("<div class='imgwrap'>\
+                              <img class='img-rounded' src='"+res_data.data+"'>\
+                              <ul class='imgoprate'>\
+                                <li data-oprate='toleft'><i class='icon'></i></li>\
+                                <li data-oprate='detele'><i class='icon'></i></li>\
+                                <li data-oprate='toright'><i class='icon'></i></li>\
+                              </ul>\
+                            </div>");
+              count_img();
+              })
+          }
+      });
+      }
+  }); 
+})
+/* 微信上传图片所需 end */
+
+
+/* 计算图片 */
+function count_img(){
+  var img_val = "";
+  $(".imgwrap-container div").each(function(i){
+    if(i != 0){
+      img_val += ",";
+    }
+    img_val += $(this).find("img").attr("src");
+  })
+  $(".img_val").val(img_val);
+}
+
+/*图片移动、删除*/
+  $('.imgwrap-container').on('click', '[data-oprate]', function() {
+    var _imgwrap = $(this).closest('.imgwrap');
+    switch($(this).attr('data-oprate')) {
+      case 'toleft':
+        _imgwrap.prev().before(_imgwrap);
+        //console.log('左边', $(this).attr('data-oprate'))
+        break;
+      case 'detele':
+        _imgwrap.remove();
+        break;
+      case 'toright':
+        _imgwrap.next().after(_imgwrap);
+        break;
+    }
+    count_img();
+  });
+
+</script>
+</block>

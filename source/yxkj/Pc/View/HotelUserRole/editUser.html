@@ -1,0 +1,108 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>新增用户角色</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <li class="on">新增用户角色</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title">新增用户角色</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+
+
+        <!-- 内容 开始 -->
+        <div class="subpage jiudianxinzeng">
+            <form id="">
+                <div class="subpage-block">
+                    <table class="table table-bordered table-form">
+                        <tbody>
+                        <tr>
+                            <th><span class="text-orange"></span>用户账号：</th>
+                            <td><input type="text" name="name" value="{$data.loginname}" disabled="disabled" ></td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>用户姓名：</th>
+                            <td><input type="text" name="real_name" value="{$data.real_name}"></td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>联系方式：</th>
+                            <td><input type="text" name="mobile" value="{$data.mobile}"></td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>酒店名称：</th>
+                            <td>
+                                <select name="ht_id" id="hotel_id">
+                                    <foreach name="Hotel" item="vos">
+                                        <option value="{$vos.id}" <if condition="$data['hotel_id'] eq $vos['id']">selected="selected"</if>>{$vos.name}</option>
+                                    </foreach>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>用户类型：</th>
+                            <td>
+                                <select name="ht_id" id="role_id">
+                                    <foreach name="role" item="vo">
+                                        <option value="{$vo.id}" <if condition="$data['role_id'] eq $vo['id']">selected="selected"</if>>{$vo.name}</option>
+                                    </foreach>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange"></span>设置密码：</th>
+                            <td><input type="text" name="password" value="" placeholder="密码为空表示不修改密码"></td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <button type="button" class="btn btn-tijiao" onclick="loggedUser.addUser()">提交
+                                </button>
+                                <button type="button" class="btn btn-quxiao">取消</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__JS__/jquery.cityselect.js"></script>
+    <script type="text/javascript">
+        var loggedUser = {};
+        /**
+         * 增加酒店
+         */
+        loggedUser.addUser = function () {
+            var data = {};
+            data.id = "{$data.id}";
+            data.name = $('input[name="name"]').val();
+            data.real_name = $('input[name="real_name"]').val();
+            data.mobile = $('input[name="mobile"]').val();
+            data.hotel_id = $('#hotel_id').val();
+            data.role_id = $('#role_id').val();
+            data.password = $('input[name="password"]').val();
+            var url = '/Pc/HotelUserRole/editUser';
+            $.post(url, data, function (data) {
+                if(data.code == 1){
+                    alert(data.message);
+                }else{
+                    alert(data.message);
+                    setTimeout(function () {
+                        window.location.href = '/Pc/HotelUserRole/index';
+                    },1500)
+                }
+            })
+        }
+    </script>
+</block>

@@ -1,0 +1,139 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>合同管理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>合同管理</a></li>
+      <li class="on">查看合同</li>
+    </ol>
+</block>
+<block name="css">
+  <style type="text/css">
+    .subnav > li {
+      width: 116px;
+      padding: 0px 24px;
+    }
+    .span_nbsp{margin-left: 20px}
+  </style>
+</block>
+<block name="main">
+<div id="main">
+      <!-- 导航 开始 -->
+      <ul class="clearfix subnav hetongnav">
+        <li><a><i class="icon"></i><span class="cur_title">合同信息</span></a><span class="nav_border"></span></li>
+        <li class="on"><a rel="link" class="active" href="{:U('read',array('id'=>$hcid))}">基础信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('installe',array('id'=>$hcid))}">安装信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('return_money',array('id'=>$hcid))}">结算信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('upkeep',array('id'=>$hcid))}">保养信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('maintain',array('id'=>$hcid))}">维修信息</a></li>
+      </ul>
+      <!-- 导航 结束 -->
+
+      <div class="hetongxinxibtn-wrap">
+        <button class="btn" onclick="now_href('{:U('read',array('id'=>$hcid))}')">酒店信息</button>
+        <button class="btn" onclick="now_href('{:U('readuser',array('id'=>$hcid))}')">联系人信息</button>
+        <button class="btn on" onclick="now_href('{:U('readc',array('id'=>$hcid))}')">合同信息</button>
+      </div>
+      
+      <!-- 内容 开始 -->
+      <div class="subpage hetongxinxi01">
+          <form id="">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th>合同名称：</th>
+                    <td><span class="table-form-text">{$hc_name}</span></td>
+                  </tr>
+                  <tr class="hetongzhouqi">
+                    <th>合同周期：</th>
+                    <td>
+                      <span class="table-form-text">{$period}个月</span>
+                      <span class="table-form-text">{$stime|date='Y-m-d',###}至{$etime|date='Y-m-d',###}</span>
+                    </td>
+                  </tr>
+                  <tr class="shili">
+                    <th>签约客房：</th>
+                    <td>
+                    	<volist name="hcre_items" id="hcre_item">
+                    		<div>
+                    			<span style='width:200px;float: left;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;' class="table-form-text">{$hcre_item.name}:<span class="span_nbsp">{$hcre_item.r_num}</span></span>&emsp;&emsp;&emsp;
+                              <span style='width:200px;float: left;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;' class="table-form-text">{$hcre_item.e1_name}:<span class="span_nbsp">{$hcre_item.e1_num}</span></span>&emsp;&emsp;&emsp;
+                              <span style='width:200px;float: left;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;' class="table-form-text">{$hcre_item.e2_name}:<span class="span_nbsp">{$hcre_item.e2_num}</span></span>
+                    		</div>                    		
+                    	</volist>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>保养频率：</th>
+                    <td>
+                      <span class="table-form-text">1次/{$maintenance}天</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>结算模式：</th>
+                    <td>
+                      <span class="table-form-text">{$at_name}</span> 
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>滞纳金：</th>
+                    <td>
+                      <span class="table-form-text">{$ls_num}‱</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>产生滞纳金的条件：</th>
+                    <td><span class="table-form-text">{$ls_remark}</span></td>
+                  </tr>
+                  <tr class="">
+                    <th>安装日期：</th>
+                    <td>
+                      <span class="table-form-text">
+                        {$oper_time}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>合同附件：</th>
+                    <td>
+                      <dl class="uploadimg-container">
+                        <dd class="imgwrap-container">
+                          <volist name="himgs" id="himg">
+                            <div class="imgwrap">
+                              <img class="img-rounded" src="{$himg}">
+                            </div>
+                          </volist>
+                        </dd>
+                      </dl>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <td>
+                      <button type="button" class="btn btn-quxiao backi">返回</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <!-- 内容 结束 -->
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript">
+//返回
+$(".backi").click(function(){
+  window.location.href = "{:U('index')}";
+});
+
+//下载
+$(".download").click(function(){
+  window.location.href = "{:U('download_file',array('hcid'=>$hcid))}";
+});
+</script>
+</block>

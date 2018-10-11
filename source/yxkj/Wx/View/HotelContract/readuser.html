@@ -1,0 +1,112 @@
+<extend name="Public:index"/>
+<block name="title">
+  <title>合同管理</title>
+</block>
+
+<block name="main">
+  <!-- 主体内容 开始 -->
+  <div class="main swiper-container-01">
+    <div class="header">
+      <div class="left backs" data-url="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+    </div>
+
+    <div class="main_body">
+      <div class="swiper-container swiper-tab-nav">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-link on" onclick="now_href('{:U('read',array('id'=>$hcid))}')">基础信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('installe',array('id'=>$hcid))}')">安装信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('return_money',array('id'=>$hcid))}')">结算信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('upkeep',array('id'=>$hcid))}')">保养信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('maintain',array('id'=>$hcid))}')">维修信息</div>
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+      </div>
+
+      <div class="swiper-container swiper-tab-page hetongpage">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-content">
+                <div class="hetong_content">
+                  <div class="btns_wrap">
+                    <button class="btn" onclick="now_href('{:U('read',array('id'=>$hcid))}')">酒店信息</button>
+                    <button class="btn on" onclick="now_href('{:U('readuser',array('id'=>$hcid))}')">联系人信息</button>
+                    <button class="btn" onclick="now_href('{:U('readc',array('id'=>$hcid))}')">合同信息</button>
+                  </div>
+
+                  <!-- 酒店信息 开始 -->
+                  <div class="form_data_wrap jiudianxinxi">
+                    <form method="post" action="{:U('hoperation')}">
+                    <ul class="form_data">
+                      <li class="layoutlr form_item">
+                        <div class="left">合同负责人</div>
+                        <div class="right">
+                        <div>{$hotel_user_name}</div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">联系方式</div>
+                        <div class="right">
+                        <div>{$tell}</div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">商务负责人</div>
+                        <div class="right">
+                        <div>{$shang_name}</div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">商务负责人联系方式</div>
+                        <div class="right">
+                        <div>{$shang_tell}</div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">酒店总经理</div>
+                        <div class="right">
+                        <div>{$all_name}</div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">酒店总经理联系方式</div>
+                        <div class="right">
+                        <div>{$all_tell}</div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">财务负责人</div>
+                        <div class="right">
+                        <div>{$money_name}</div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">财务负责人联系方式</div>
+                        <div class="right">
+                        <div>{$money_tell}</div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">工程负责人</div>
+                        <div class="right">
+                        <div>{$project_name}</div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">工程负责人联系方式</div>
+                        <div class="right">
+                        <div>{$project_tell}</div>
+                        </div>
+                      </li>
+                    </ul>
+                  </form>
+                  </div>
+                  <!-- 酒店信息 结束 -->
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- 主体内容 结束 -->
+</block>

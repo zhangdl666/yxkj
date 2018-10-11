@@ -1,0 +1,101 @@
+<extend name="Public:index"/>
+
+<block name="head">
+    <title>设备管理列表</title>
+</block>
+
+<block name="css">
+    <link rel="stylesheet" href="__TREETABLE__/jquery.treetable.css">
+    <link rel="stylesheet" href="__TREETABLE__/jquery.treetable.theme.default.css">
+    <style>
+        .handle span:last-child{
+            padding: 0;
+        }
+        .aaa{
+            height: 35px;
+        }
+        .btn-warning{margin-left:20px;}
+        .panel .panel-heading {
+            margin-bottom: 0px;
+        }
+    </style>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>设备管理</a></li>
+        <li class="on">设备管理列表</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main" class="bgfff">
+        <div class="panel panel-default table-datawrap">
+            <div class="panel-heading">
+                <form class="clearfix searchbar" action="index" method="post">
+                    <div class="col">
+                        <input type="text"  placeholder="设备MAC" name="mac" value="{$mac}">
+                    </div>
+                    <div class="col">
+                        <div class="navbar-form navbar-left" style=" margin: 0 20px!important;">
+                            <button type="submit" class="btn btn-warning">搜索</button>
+                        </div>
+                        <div class=" navbar-left">
+                            <a  class="btn btn-warning file-excel-js">设备导入</a>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="panel-body">
+                <table class="table table-condensed table-data" id="treeTable">
+                    <thead>
+                    <tr>
+                        <th>设备MAC</th>
+                        <th>设备id</th>
+                        <th>二维码链接地址</th>
+                        <th>用户uuid</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <notempty name="items">
+                    <volist name="items" id="row">
+                        <tr>
+                            <td>{$row.mac}</td>
+                            <td>{$row.device_id}</td>
+                            <td>{$row.qr}</td>
+                            <td>{$row.uid}</td>
+
+                        </tr>
+                    </volist>
+                    <else/>
+                    <tr><td colspan="4">暂无数据</td></tr>
+                    </notempty>
+                    </tbody>
+                </table>
+                <div class="pagination-container">
+                    <div class="pagination">
+                        {$pageHtml}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript">
+        $('.file-excel-js').click(function(){
+            layer.open({
+                type: 2,
+                title:'设备导入',
+                offset:'lb',
+                shadeClose: true,
+                shade: 0,
+                moveOut: true,
+                content: '/Pc/Device/file.html'
+            })
+        })
+
+    </script>
+</block>

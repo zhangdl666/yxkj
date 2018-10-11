@@ -1,0 +1,115 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>全部设备</title>
+</block>
+<block name="main">
+
+    <style type="text/css">
+        .has_header .main{
+            padding-top: 0;
+            background-color: #f4f4f4;
+            border: 0.01rem solid #f4f4f4;
+
+        }
+        .jiudianinfo{
+            width: 100%;
+            height: 2.04rem;
+            background-color: #fff;
+            margin-top: 0.15rem;
+        }
+
+        .qb_icon{
+            width: 1.3rem;
+            height: 1.3rem;
+            margin-top: 0.37rem;
+            margin-left: 0.4rem;
+            display: inline-block;
+            background: url("__IMG__/qb_002.png");
+            background-size: 100%;
+        }
+
+        .qb_chick{
+            background: url("__IMG__/qb_001.png");
+            background-size: 100%;
+        }
+        .qb_right{
+            width: 70%;
+            float: right;
+            margin-top: 0.34rem;
+        }
+        .qb_right h3{
+            font-size: 0.32rem;
+            color: rgb(51,51,51);
+        }
+        .qb_right p{
+            padding: 0;
+            font-size: 0.26rem;
+            color: rgb(114,114,114);
+            margin: 0.1rem 0;
+        }
+        .qb_right p{
+            padding: 0;
+            margin: 0.1rem 0;
+        }
+        .qb_right .qb_btn div{
+            padding: 0 0.25rem;
+            text-align: center;
+            margin-right: 0.36rem;
+            float: left;
+            height: 0.4rem;
+            line-height: 0.4rem;
+            color: #fff;
+            font-size: 0.24rem;
+            border-radius: 0.2rem;
+        }
+        .qb_orange{
+            background-color:rgb(225,182,14);
+        }
+        .qu_blue{
+            background-color: rgb(11,135,233);
+        }
+        .qb_lavender{
+            background-color:rgb(204,204,204);
+        }
+    </style>
+    <body class="has_header">
+    <!-- 主体内容 开始 -->
+    <div class="main jiudianinfo_main">
+        <!--/*******第一个设备开始***********/-->
+        <volist name="Macinfo" key="key" id="vol">
+            <a href="{:U('clickMac',array('id'=>$key-1,uid=>$uid))}">
+            <if condition="$vol['online'] eq 1">
+                <div class="main_body jiudianinfo" >
+                    <!--/*******设备连接时请选择添加Class= qb_chick 否则就不添加*********/-->
+                    <i class="qb_icon qb_chick"></i>
+                    <div class="qb_right">
+                        <h3>{$vol.userinfo}</h3>
+                        <p>MAC:{$vol.mac}</p>
+                        <div class="qb_btn">
+                            <!--/******设备连接时该Class分别使用qb_orange和qu_blue********/-->
+                            <div class="qb_orange">PM2.5:{$vol.pm25}</div>
+                            <div class="qu_blue">风量:{$vol.speed}级</div>
+                        </div>
+                    </div>
+                </div>
+                <else/>
+                <div class="main_body jiudianinfo" >
+                    <i class="qb_icon"></i>
+                    <div class="qb_right">
+                        <h3>{$vol.userinfo}</h3>
+                        <p>MAC:{$vol.mac}</p>
+                        <div class="qb_btn">
+                            <!--/******离线时该Class使用qb_lavender********/-->
+                            <div class="qb_lavender">PM2.5:{$vol.pm25}</div>
+                            <div class="qb_lavender">离线</div>
+                        </div>
+                    </div>
+                </div>
+            </if>
+            </a>
+        </volist>
+    </div>
+    <!-- 主体内容 结束 -->
+    </body>
+</block>
+

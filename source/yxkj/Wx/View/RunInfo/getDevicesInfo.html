@@ -1,0 +1,199 @@
+<extend name="Public:index"/>
+<block name="css">
+    <style type="text/css">
+        .gc_main{
+            margin-top: 0.82rem;
+        }
+    </style>
+</block>
+<block name="title">
+    <title>开启情况</title>
+</block>
+<block name="main">
+    <div class="header">
+        <div class="left back"><i class="icon w_0000_00 w_00_08"></i><a href="{:U('Wx/Index/index')}">返回</a></div>
+        <!--<div class="center">开启情况</div>-->
+    </div>
+    <div class="main_body anzhuangxiangx gc_main">
+        <div class="anzhuangxiangx_content">
+            <div class="daishenhebiaoxiao-page">
+                <div class="layoutlr white_panel white_header white_panel_gc" style="border-bottom: 0.1rem solid #f4f4f4;">
+                    <div class="left">{$date}开启情况</div>
+                </div>
+                <div class="white_panel">
+                    <div class="layoutlr white_header">
+                        <div class="left">{$date}开启情况统计</div>
+                    </div>
+                    <div class="white_body">
+                        <div class="layoutlr xiaoshoutongji_echart">
+                            <div class="left">
+                                <div class="cj" id="cjs"></div>
+                            </div>
+                            <div class="right">
+                                <ul class="echart_prog">
+                                    <li>
+                                        <i class="icon icon01 gc_radio_type1"></i>
+                                        <span class="checkbox_txt">开始时间：{$date} 00:00:00</span>
+                                    </li>
+                                    <li>
+                                        <i class="icon icon01 gc_radio_type2"></i>
+                                        <span class="checkbox_txt">结束时间：{$time|date="Y-m-d H:i:s",###}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 开启房间 开始 -->
+                <div class="form_data_wrap anzhuangxinxi">
+                    <ul class="form_data">
+                        <li class="layoutlr form_item">
+                            <!-- <div class="left">安装房间</div>
+                            <div class="right"> -->
+                            <dl class="gezi-container">
+
+                                <dt class="left gezi-title"><span class="fll">开启房间</span>
+                                    <div class="checkbox-container gezi-type3" data-type="checkbox">
+                                        <i class="icon icon01 i_radio"></i>
+                                        <span class="checkbox_txt">未到达一个天次</span>
+                                    </div>
+                                    <div class="checkbox-container gezi-type1" data-type="checkbox">
+                                        <i class="icon icon01 i_radio"></i>
+                                        <span class="checkbox_txt">开启一天次</span>
+                                    </div>
+                                    <div class="checkbox-container gezi-type2" data-type="checkbox">
+                                        <i class="icon icon01 i_radio"></i>
+                                        <span class="checkbox_txt">暂未开启</span>
+                                    </div>
+                                </dt>
+                                <dd class="right gezi-group">
+                                    <foreach name="rooms" item="vo">
+                                        <button type="button" value="{$vo.equipment_sno}" class='room btn <if condition="$vo['status'] eq 1"><elseif condition="$vo['status'] eq 2"/>on<else/></if>'>{$vo.room_sno}</button>
+                                    </foreach>
+                                </dd>
+                                <!--<dd class="right gezi-group">-->
+                                    <!--<button type="button" class="btn on">1034</button>-->
+                                    <!--<button type="button" class="btn on">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                    <!--<button type="button" class="btn">1034</button>-->
+                                <!--</dd>-->
+                            </dl>
+                            <!-- </div> -->
+                        </li>
+                        <div class="sno">
+                            <li class="layoutlr form_item">
+                                <div class="left">月度开启率</div>
+                                <div class="right">{$monthsbai|default=0}%</div>
+                            </li>
+                            <li class="layoutlr form_item">
+                                <div class="left">季度开启率</div>
+                                <div class="right">{$jidubai|default=0}%</div>
+                            </li>
+                            <li class="layoutlr form_item">
+                                <div class="left">年度开启率</div>
+                                <div class="right">{$nainbai|default=0}%</div>
+                            </li>
+                            <li class="layoutlr form_item">
+                                <div class="left">安装日到现在开启率</div>
+                                <div class="right">{$anbais|default=0}%</div>
+                            </li>
+                            <li class="layoutlr form_item">
+                                <div class="left">本结算周期开启率</div>
+                                <div class="right">{$aibai|default=0}%</div>
+                            </li>
+                            <li class="layoutlr form_item">
+                                <div class="left">结算周期开启天次</div>
+                                <div class="right">{$hahdats|default=0}天</div>
+                            </li>
+                        </div>
+
+                        <!--<li class="layoutlr form_item">-->
+                            <!--<div class="left">净化器类型</div>-->
+                            <!--<div class="right">净化器类型A</div>-->
+                        <!--</li>-->
+                        <!--<li class="layoutlr form_item">-->
+                            <!--<div class="left">监控器类型</div>-->
+                            <!--<div class="right">监控器类型A</div>-->
+                        <!--</li>-->
+                        <!--<li class="layoutlr form_item">-->
+                            <!--<div class="left">安装时间</div>-->
+                            <!--<div class="right">2017-08-31</div>-->
+                        <!--</li>-->
+
+                    </ul>
+
+                </div>
+                <!-- 开启房间 结束 -->
+            </div>
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+    <script type="text/javascript">
+        $(".room").click(function () {
+            $(".room").removeClass("pitch_on");
+            $(this).addClass("pitch_on");
+            var sno = $(this).attr('value');
+            $.get('/Wx/RunInfo/oneDevice',{sno:sno},function (f) {
+                $('.sno').empty();
+                $('.sno').html(f);
+            },'html')
+        })
+        var myCharOne = echarts.init(document.getElementById('cjs'));
+        optionOne = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+            },
+            series: [
+                {
+//                    name:'北京销售额统计',
+                    type:'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:[
+                        {value:"{$hahdats}", name:'使用天数'},
+                    ],
+                    color:[ '#6BC35E',]
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myCharOne.setOption(optionOne);
+
+    </script>
+</block>

@@ -1,0 +1,31 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>促销信息 </title>
+</block>
+<block name="css">
+	<link rel="stylesheet" href="__CSS__/LCalendar.css">
+</block>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+		</div>
+
+		<div class="main_body cuxiaoxiangqing">
+			<div class="addimg_wrap">
+				<input type="hidden" value="{$data.id}" class="id">
+				<img class="addimg" src="{$data.img}">
+			</div>
+			<div class="cuxiaowenzhang">
+				<div class="cuxiaozhengwen" escape="false">
+					{$data.content}
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+

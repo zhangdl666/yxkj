@@ -1,0 +1,70 @@
+<extend name="Public:index"/>
+<block name="head">
+  <?php if(I('id') == 1){ $equipment = "净化器"; }else if(I('id') == 2){ $equipment = "监控设备"; }else{
+             $equipment = "中央空调品牌"; }?>
+	<title>{$equipment}类型</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>系统设置 </a></li>
+      <li class="on">{$equipment}类型</li>
+    </ol>
+</block>
+
+<block name="main">
+  <div id="main" class="bgfff">
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading">
+        <!-- Single button -->
+        <form class="clearfix searchbar">
+          <div class="col">
+
+            <button type="button" class="btn btn-warning" onclick="now_href('{:U('add',array(id=>I('id')))}')">新增</button>
+          </div>
+        </form>
+    </div>
+
+      <div class="panel-body">
+        <table class="table table-condensed table-data">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <?php if(I('id') == 1){ $name = "净化器"; }else if(I('id') == 2){ $name = "监控设备"; }else{
+             $name = "中央空调品牌"; }?>
+              <th>{$name}类型名称</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          <notempty name="items">
+            <volist name="items" id="item">
+            <tr>
+              <td>{$key+1}</td>
+              <td>{$item.name}</td>
+              <td class="orprate">
+                <a class="text-warning" href="{:U('edit',array('id'=>$item['id'],'redonly'=>1,type =>$item['type']))}">查看</a>丨
+                <a class="text-warning"  href="{:U('edit',array('id'=>$item['id'],type =>$item['type']))}">编辑</a>
+                </td>
+            </tr>
+            </volist>
+            <else/>
+            <tr><td colspan="3">暂无数据</td></tr>
+            </notempty>
+          </tbody>
+        </table>
+        <div class="pagination">
+          {$pageHtml}
+        </div>
+      </div>
+    </div>
+</block>
+<block name="js">
+
+<script type="text/javascript">
+  function now_href(url){
+    window.location.href = url;
+  }
+</script>
+</block>

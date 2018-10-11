@@ -1,0 +1,74 @@
+
+<div class="row">
+    <h3>&nbsp;&nbsp;报销统计图</h3>
+    <div class="pane2" id="onemain" style="height:400px;"></div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min2.js"></script>
+<script type="text/javascript">
+    //获取y|x轴获得数据
+    $.post('/SaleExt/getReimbur', {id: 18},function (data) {
+        var num=data.length;
+        var html =new Array();
+        var htm =new Array();
+        for(var i = 0 ; i < num ; i ++){
+            var j =11-i ;
+            html[i] = data[j].price;
+            htm[i] = data[j].months;
+        }
+    // 基于准备好的dom，初始化echarts实例
+    var myChartTwo= echarts.init(document.getElementById('onemain'));
+        var option1 = {
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data :htm
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+
+            {
+                name:'报销额',
+                type:'line',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top'
+                    }
+                },
+                areaStyle: {normal: {}},
+                data:html
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartTwo.setOption(option1);
+    },'json');
+</script>

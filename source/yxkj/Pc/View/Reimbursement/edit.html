@@ -1,0 +1,177 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>报销</title>
+</block>
+
+<block name="top">
+  <ol class="breadcrumb">
+    当前的位置：
+    <li><a>系统设置</a></li>
+    <li class="on">编辑报销</li>
+  </ol>
+</block>
+
+<block name="main">
+  <div id="main">
+    <!-- 导航 开始 -->
+    <ul class="clearfix subnav hetongnav">
+      <li><a><i class="icon"></i><span class="cur_title">编辑报销</span></a></li>
+    </ul>
+    <!-- 导航 结束 -->
+
+    <!--<div class="subsubnav_wrap">-->
+    <!--<ul class="subsubnav">-->
+    <!--<li class="on"><i class="icon icon_subnav01 subnav01"></i><p>待审核</p></li>-->
+    <!--<li><i class="icon icon_subnav01 subnav02"></i><p>待打款</p></li>-->
+    <!--<li><i class="icon icon_subnav01 subnav03"></i><p>已打款</p></li>-->
+    <!--</ul>-->
+    <!--</div>-->
+
+    <!-- 内容 开始 -->
+    <div class="subpage baoxiaoshenhe">
+      <form method="post" action="{:U('operation')}">
+        <div class="subpage-block">
+          <table class="table table-bordered table-form">
+            <tbody>
+            <tr>
+              <th><span class="text-orange">*</span>报销类型：</th>
+              <td>
+                <span class="table-form-text">
+                  <select name="rt_id" class="rt_id">
+                    <option value="">--请选择--</option>
+                    <volist name="reimbursementTypes" id="type">
+                      <option value="{$type.id}" <eq name="type['id']" value="$rt_id">selected</eq>>{$type.name}</option>
+                    </volist>
+                  </select>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th><span class="text-orange">*</span>报销金额：</th>
+              <td><span class="table-form-text"><input type="text" name="price" value="{$price}"/></span></td>
+            </tr>
+            <tr>
+              <th><span class="text-orange">*</span>选择酒店：</th>
+              <td>
+                <span class="table-form-text">
+                  <select name="h_id" class="h_id">
+                    <option value="">--请选择--</option>
+                    <volist name="hotels" id="val">
+                      <option value="{$val.id}" <eq name="val['id']" value="$h_id">selected</eq>>{$val.name}</option>
+                    </volist>
+                  </select>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>选择合同：</th>
+              <td>
+                <span class="table-form-text">
+                  <select name="hc_id" class="hc_id">
+                    <option value="">--请选择--</option>
+                    <volist name="hotelContracts" id="ht">
+                      <option value="{$ht.id}" <eq name="ht['id']" value="$hc_id">selected</eq>>{$ht.name}</option>
+                    </volist>
+                  </select>
+                </span>
+              </td>
+            </tr>
+            <tr class="beizhu">
+              <th>备注信息：</th>
+              <!--<td>-->
+                <!--<span class="table-form-text">-->
+                  <!--<textarea cols="20" rows="3"  name="remark">{$remark}</textarea>-->
+                <!--</span>-->
+              <!--</td>-->
+              <td><textarea class="form-control" rows="9" name="remark">{$remark}</textarea></td>
+            </tr>
+            <eq name="status" value="4">
+              <tr>
+                <th>审核意见：</th>
+                <td class="yibohui"><span class="table-form-text">已驳回</span></td>
+              </tr>
+            </eq>
+
+            <tr>
+              <td colspan="2" class="table-inner-title kefangyueyue">
+                <h3>报销人基本情况</h3>
+              </td>
+            </tr>
+            <tr>
+              <th>累计申请的报销金额：</th>
+              <td><span class="table-form-text">{$total_price} 元</span></td>
+            </tr>
+            <tr>
+              <th>已认领的酒店数：</th>
+              <td><span class="table-form-text">{$claimed_hotel_num} 个</span></td>
+            </tr>
+            <tr>
+              <th>已签订的合同数：</th>
+              <td><span class="table-form-text">{$sign_contract_num} 个</span></td>
+            </tr>
+            <tr>
+              <th>合同已回款金额：</th>
+              <td><span class="table-form-text">{$payment_money} 元</span></td>
+            </tr>
+            <tr>
+              <th>基本信息提取时间：</th>
+              <td><span class="table-form-text">{$basic_time|date="Y-m-d H:i:s",###}</span></td>
+            </tr>
+
+            <eq name="status" value="4">
+              <tr>
+                <th>驳回原因：</th>
+                <td><span class="table-form-text">{$decline_remark}</span></td>
+              </tr>
+            </eq>
+
+            <tr>
+              <th></th>
+              <td>
+                <input type="hidden" name="id" value="{$id}">
+                <input type="hidden" name="status" value="1">
+                <button type="button" class="btn btn-tijiao ajax-post">提交</button>
+                <button type="button" class="btn btn-quxiao back">返回</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+    <!-- 内容 结束 -->
+  </div>
+</block>
+<block name="js">
+  <script type="text/javascript" src="__DTREE__/dtree.js"></script>
+  <script type="text/javascript">
+  /* 判断报销金额 */
+$("input[name='price']").blur(function(){
+  var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+  var price = $(this).val();
+  if (parseFloat(price)<=0 || !reg.test(price)){
+    layer.msg("报销金额不正确",{icon: 0,offset: 0,time:1000});
+    $(this).val("");
+    return false;
+  }
+});
+    $(function(){
+      $(".h_id").change(function(){
+        var h_id = $(this).val();
+        if(h_id != ''){
+          //获取酒店对应的合同
+          $.get("{:U('get_hotelcontract')}",{h_id:h_id},function(data){
+            console.debug(data);
+            var html = '<option value="">--请选择--</option>';
+            $.each(data,function(i,value){
+              html+='<option value="'+value.id+'">'+value.name+'</option>';
+            });
+            $(".hc_id").html(html);
+          });
+        }
+
+      });
+    });
+  </script>
+</block>
+

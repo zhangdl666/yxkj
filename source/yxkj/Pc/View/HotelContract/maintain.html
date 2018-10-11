@@ -1,0 +1,117 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>合同管理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>合同管理</a></li>
+      <li class="on">维修信息</li>
+    </ol>
+    <style type="text/css">
+    .container .article #main{height:82%;}
+    .panel .panel-heading {
+       margin-bottom: 0px;
+    }
+    .subnav > li {
+      width: 116px;
+      padding: 0px 24px;
+    }
+    </style>
+</block>
+
+<block name="main">
+
+
+  <div id="main" class="bgfff">
+    <!-- 导航 开始 -->
+    <ul class="clearfix subnav hetongnav">
+      <li><a><i class="icon"></i><span class="cur_title">维修信息</span></a><span class="nav_border"></span></li>
+      <li><a rel="link" href="{:U('read',array('id'=>$hcid))}">基础信息</a><span class="nav_border"></span></li>
+      <li><a rel="link" href="{:U('installe',array('id'=>$hcid))}">安装信息</a><span class="nav_border"></span></li>
+      <li><a rel="link" href="{:U('return_money',array('id'=>$hcid))}">结算信息</a><span class="nav_border"></span></li>
+      <li><a rel="link" href="{:U('upkeep',array('id'=>$hcid))}">保养信息</a><span class="nav_border"></span></li>
+      <li class="on"><a rel="link" class="active" href="{:U('maintain',array('id'=>$hcid))}">维修信息</a></li>
+    </ul>
+    <!-- 导航 结束 -->
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading">
+        <!-- Single button -->
+        <form class="clearfix searchbar">
+          <div class="col">
+            <div class="navbar-form navbar-left">
+              <div class="form-group">
+                维修状态：
+                <select name="estatus">
+                  <option value="0">全部</option>
+                  <option value="1" <eq name="estatus" value="1">selected</eq>>待分配</option>
+                  <option value="2" <eq name="estatus" value="2">selected</eq>>待维修</option>
+                  <option value="3" <eq name="estatus" value="3">selected</eq>>待确认</option>
+                  <option value="4" <eq name="estatus" value="4">selected</eq>>已维修</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+    </div>
+
+      <div class="panel-body">
+        <table class="table table-condensed table-data">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>工单编号</th>
+              <th>房间数</th>
+              <th>实际时间</th>
+              <th>负责人</th>
+              <th>负责人联系方式</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <notempty name="items">
+            <volist name="items" id="item">
+            <tr>
+              <td>{$key+1}</td>
+              <td>{$item.sno}</td>
+              <td>{$item.num}</td>
+              <td>{$item.oper_time}</td>
+              <td>{$item.name}</td>
+              <td>{$item.mobile}</td>
+              <td class="orprate"><a class="text-warning" href="{:U('read_info',array('id'=>$item['id']))}">立即查看</a></td>
+            </tr>
+            </volist>
+            <else/>
+            <tr><td colspan="7">暂无数据</td></tr>
+            </notempty>
+
+          </tbody>
+
+<!-------没有数据时，导致页面上间距上下不相等，因此判断没有数据时隐藏----- 开始 ----->
+          
+<!-------没有数据时，导致页面上间距上下不相等，因此判断没有数据时隐藏----- 结束 ----->
+        </table>
+        <notempty name="items">
+          <div class="pagination-container">
+            <div class="pagination">
+                {$pageHtml}
+            </div>
+          </div>
+        </notempty>
+      </div>
+    </div>
+  </div>
+</block>
+<block name="js">
+<script type="text/javascript">
+$("select[name='estatus']").change(function(){
+  var estatus = $(this).val();
+  var url = "{:U('',array('id'=>$hcid))}";
+  if(estatus != 0){
+    url += "?estatus="+estatus;
+  }
+  window.location.href = url;
+});
+</script>
+</block>

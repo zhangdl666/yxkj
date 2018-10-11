@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<block name="css">
+	</block>
+	<block name="title">
+		<title>首页</title>
+	</block>
+	<meta name = "format-detection" content="telephone = no" />
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0, minimum-scale=1.0,maximum-scale=2.0,user-scalable=no;">
+	<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=false">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="__CSS__/swiper.min.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/w_reset.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Layer/mobile/need/layer.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/w_common.css">
+	<link rel="stylesheet prefetch" href="__PUBLIC__/PhotoSwiper/photoswipe.css">
+	<link rel="stylesheet prefetch" href="__PUBLIC__/PhotoSwiper/default-skin/default-skin.css">
+	<block name="css">
+	</block>
+</head>
+<body class="has_header">
+	<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main">
+
+	</div>
+	<!-- 主体内容 结束 -->
+	</block>
+</body>
+<script src="__JS__/jquery-1.9.1.min.js"></script>
+<script src="__PUBLIC__/Layer/mobile/layer.js"></script>
+<script src="__JS__/w_common.js"></script>
+<script src="__JS__/swiper.jquery.min.js"></script>
+<script src="__JS__/wcommon.js"></script>
+<script src="__PUBLIC__/PhotoSwiper/photoswipe.js"></script>
+<script src="__PUBLIC__/PhotoSwiper/photoswipe-ui-default.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/PhotoSwiper/photoload.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript">
+wx.config({
+    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: '{$appId}', // 必填，公众号的唯一标识
+    timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+    nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+    signature: '{$signature}',// 必填，签名，见附录1
+    jsApiList: ['hideAllNonBaseMenuItem'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});
+
+wx.ready(function(){
+    wx.error(function(res){
+//	    layer.open({content:res.errMsg,time:2});
+	    return false;
+	});
+
+    //隐藏所有非基础按钮接口
+	wx.hideAllNonBaseMenuItem();
+});
+</script>
+<block name="js">
+</block>
+</html>

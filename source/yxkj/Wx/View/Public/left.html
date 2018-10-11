@@ -1,0 +1,88 @@
+<!-- 侧边栏 开始 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Bootstrap/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="__CSS__/reset.css">
+<link rel="stylesheet" type="text/css" href="__CSS__/platformSalesman.css">
+<link rel="stylesheet" type="text/css" stylesheet_skin="{$skin}" href="__CSS__/{$skin}.css">
+<!--[if IE]>
+<link href="__CSS__/ie_ca.css" rel="stylesheet" type="text/css">
+<script type="text/javascript"  src="http://www.ijquery.cn/js/html5shiv.js"></script>
+<![endif]-->
+<style>
+  #aside{
+    overflow: auto;
+  }
+  .hscroll{
+    height: calc(100% - 192px);
+    overflow-y: auto;
+  }
+  .aside{top:0px;}
+</style>
+<aside class="aside" id="aside">
+  <div class="user-data">
+    <img class="img-circle head-portrait" src="{$userimg|default='__IMG__/elogo.png'}">
+    <p class="user-name">{$username}</p>
+  </div>
+  <ul class="nav aside-nav hscroll">
+    <volist name="model_left" id="left" key="nkey">
+      <li><a value="{$left.method}" <eq name="nkey" value="1">class="on"</eq> href="{$group_name}{$left.method}" target="right"><i class="icon icon01 {$left.module}"></i>{$left.name}<if condition="$left['is_new'] eq 1"><img style="position: absolute;top: 13px;left: 39px;" src="__IMG__/dot.png"></if></a></li>
+    </volist>
+    </ul>
+</aside>
+<!-- 侧边栏 结束 -->
+<script src="__JS__/jquery-1.11.3.min.js"></script>
+<script src='https://cdn.bootcss.com/socket.io/2.0.3/socket.io.js'></script>
+<script>
+    // 如果服务端不在本机，请把127.0.0.1改成服务端ip
+    var socket = io("http://{$server_ip}:2129");
+//    var socket = io("http://127.0.0.1:2129");
+    var uid = "{$user_id}"
+    if(uid){
+        // 当连接服务端成功时触发connect默认事件
+        socket.on('connect', function(){
+            socket.emit('login', uid);
+        });
+    }
+    // 后端推送来消息时
+    socket.on('new_msg', function(msg){
+//        console.log(msg)
+        $(".aside-nav li").each(function () {
+            var valuese = $(this).find('a').attr('value');
+            if(valuese == msg){
+                // 显示小红点
+                if(!$(this).find('a').find('img').length){
+                    //console.log(11);
+                    $(this).find('a').append('<img style="position: absolute;top: 13px;left: 39px;" src="__IMG__/dot.png">')
+                }//else{
+//                    console.log(22);
+//                    $(this).find('a').append('<img src="/Public/Images/dot.png" style="margin-left: 50px">')
+                //}
+            }else{
+                $(this).find("img").remove();
+            }
+        })
+    });
+    // 后端推送来在线数据时
+    socket.on('update_online_count', function(online_stat){
+        //console.log(online_stat);
+    });
+
+    $(document).ready(function () {
+
+
+        /*$(".nav").on('click', "li", function () {
+            if ($(this).parent().hasClass("menu_on")) {
+                $(".menu .menu_li").removeClass("menu_on");
+                $(this).parent().find("ul").slideUp();
+            } else {
+                $(".menu .menu_li").removeClass("menu_on");
+                $(".menu .menu_li").find("ul").slideUp();
+                $(this).parent().addClass("menu_on");
+                $(this).parent().find("ul").slideDown();
+            }
+        });*/
+        $(".nav").on('click', "li", function () {
+            $('.nav li a').removeClass("on");
+            $(this).find("a").addClass("on");
+        });
+    });
+</script>

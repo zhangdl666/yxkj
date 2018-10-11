@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>登录</title>
+  <link rel="stylesheet" type="text/css" href="__BOOTSTRAP__/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="__CSS__/reset.css">
+  <style type="text/css">
+  .login_wrap .login_container [data-type="checkbox"][checked] .i_radio{background-position: -86px 3px;}
+  </style>
+</head>
+<body>
+  <div class="login_wrap">
+    <div class="login_main">
+      <div class="login_container">
+        <img class="img-circle" src="__IMG__/elogo.png">
+        <h1>优享空间共享净化智能管理云平台</h1>
+        <form>
+          <div class="form-group">
+            <i class="icon icon01 i_username"></i>
+            <input type="text" class="form-control" id="username" placeholder="请输入账号">
+          </div>
+          <div class="form-group">
+            <i class="icon icon01 i_password"></i>
+            <input type="password" class="form-control" id="password" placeholder="请输入密码">
+          </div>
+          <div class="form-group verification">
+            <i class="icon icon01 i_yanzhengm"></i>
+            <input type="text" class="form-control" id="yzm" placeholder="请输入验证码">
+            <div class="verification_code">
+              <!--<img src="__IMG__/a.jpg">-->
+              <img src="{:U('Verify/index')}" onclick="this.src = '{:U('Verify/index')}?hhhhhh='+Math.random()"/>
+            </div>
+          </div>
+          <div class="checkbox">
+            <label class="checkbox-container" data-type="checkbox">
+                <input type="checkbox" name="remember" value="1">
+                <i class="icon icon01 i_radio"></i>
+                <span class="checkbox_txt">记住密码</span>
+            </label>
+          </div>
+          
+          <div class="form-group">
+            <button type="button" class="btn btn-default">立即登录</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="__JS__/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="__BOOTSTRAP__/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="__JS__/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Layer/layer.js"></script>
+<script>
+  $(document).ready(function () {
+    if (window.parent !== window.self) {
+        document.write = '';
+        window.parent.location.href = window.self.location.href;
+        setTimeout(function () {
+            document.body.innerHTML = '';
+        }, 0);
+    }
+
+    //加载页面第一个输入框得到焦点
+    $("input[type='text']:first").focus();
+
+    //点击立即登录
+    $(".btn-default").click(function () {
+      loginSumbmit();
+    });
+
+    //Enter(回车) 登录
+    document.onkeydown = function (e) {
+      if (!e) e = window.event;
+      if ((e.keyCode || e.which) == 13) {
+        loginSumbmit();
+      }
+    }
+
+    //登录
+    function loginSumbmit(){
+      var username = $("#username").val();
+      var password = $("#password").val();
+      var yzm = $("#yzm").val();
+      var remember=$("input[name=remember]:checked").val();
+      if (username == '') {
+        layer.msg("用户姓名不能为空",{time:1000, offset: 0, icon:2});
+        return false;
+      } else if (password == '') {
+        layer.msg("密码不能为空",{time:1000, offset: 0, icon:2});
+        return false;
+      } else if (yzm == '') {
+        layer.msg("验证码不能为空",{time:1000, offset: 0, icon:2});
+        return false;
+      }else{
+
+        $.ajax({
+          url: "{:U('Login/check_login')}",
+          type: "POST",
+          async: false,
+          data: {"captcha":yzm,"remember":remember,"username":username,"password":password},
+          success: function (data) {
+            var data=eval('(' + data + ')');
+            if(data.status == 1){
+              layer.msg("登录成功",{time:1000, offset: 0, icon:1});
+              window.location.href = data.data;
+              return;
+
+            }else{
+              layer.msg(data.info,{time:1000, offset: 0, icon:2});
+              //刷新验证码
+              $(".verification_code img").attr("src","{:U('Verify/index')}?hhhhhh="+Math.random());
+            }
+          }
+        })
+      }
+    }
+  })
+</script>
+</html>

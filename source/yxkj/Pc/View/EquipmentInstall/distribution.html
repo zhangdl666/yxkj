@@ -1,0 +1,241 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>订单管理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>订单管理</a></li>
+      <li class="on">分配订单</li>
+    </ol>
+</block>
+
+<block name="main">
+<div id="main">
+      <!-- 导航 开始 -->
+      <ul class="clearfix subnav hetongnav" style=" line-height: 60px; background: #FFF; padding: 0px 30px;">
+          <span class="table-form-text">工单号：{$osno}&emsp;&emsp;&emsp;提交日期：{$octime|date='Y-m-d',###}</span>
+          <span class="cur_title" style="float:right;">待分配</span>
+      </ul>
+      <!-- 导航 结束 -->
+      
+      <!-- 内容 开始 -->
+      <div class="subpage hetongxinxi01">
+          <form id="">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th>酒店名称：</th>
+                    <td>
+                      <span class="table-form-text">{$h_name}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>酒店类型：</th>
+                    <td>
+                      <span class="table-form-text">{$type_name}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>客房数：</th>
+                    <td><span class="table-form-text">{$room_num}</span></td>
+                  </tr>
+                  <tr>
+                    <th>客房类型：</th>
+                    <td>
+                      <volist name="hrt_items" id="hrt_item">
+                          <span class="checkbox_txt">{$hrt_item.name}({$hrt_item.room_num|default='0'})</span>&emsp;&emsp;&emsp;
+                      </volist>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>所属地区：</th>
+                    <td><span class="table-form-text">{$provice}{$city}{$county}</span></td>
+                  </tr>
+                  <tr>
+                    <th>详细地址：</th>
+                    <td><span class="table-form-text">{$area}</span></td>
+                  </tr>
+                  <tr>
+                    <th>联系方式：</th>
+                    <td><span class="table-form-text">{$tell}</span></td>
+                  </tr>
+                  <tr>
+                    <th>酒店图片：</th>
+                    <td>
+                      <dl class="uploadimg-container">
+                        <dd class="imgwrap-container">
+                        <volist name="himgs" id="himg">
+                          <div class="imgwrap">
+                            <img class="img-rounded" src="{$himg}">
+                          </div>
+                        </volist>
+                        </dd>
+                      </dl>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>认领状态：</th>
+                    <td><span class="table-form-text"><eq name="is_get" value="1">已认领<else/>未认领</eq></span></td>
+                  </tr>
+                  <tr>
+                    <th>认领人：</th>
+                    <td><span class="table-form-text">{$hotel_user_name}</span></td>
+                  </tr>
+                  <tr>
+                    <th>签约状态：</th>
+                    <td><span class="table-form-text"><eq name="is_sign" value="1">已签约<else/>未签约</eq></span></td>
+                  </tr>
+                  <tr>
+                    <th>历史销售人员：</th>
+                    <td><span class="table-form-text">{$sale_name}</span></td>
+                  </tr>
+                  <tr>
+                    <th>商务负责人：</th>
+                    <td><span class="table-form-text">{$shang_name}</span></td>
+                  </tr>
+                  <tr>
+                    <th>商务负责人联系方式：</th>
+                    <td><span class="table-form-text">{$shang_tell}</span></td>
+                  </tr>
+                  <tr>
+                    <th>酒店总经理：</th>
+                    <td><span class="table-form-text">{$all_name}</span></td>
+                  </tr>
+                  <tr>
+                    <th>酒店总经理联系方式：</th>
+                    <td><span class="table-form-text">{$all_tell}</span></td>
+                  </tr>
+                  <tr>
+                    <th>财务负责人：</th>
+                    <td><span class="table-form-text">{$money_name}</span></td>
+                  </tr>
+                  <tr>
+                    <th>财务负责人联系方式：</th>
+                    <td><span class="table-form-text">{$money_tell}</span></td>
+                  </tr>
+                  <tr>
+                    <th>工程负责人：</th>
+                    <td><span class="table-form-text">{$project_name}</span></td>
+                  </tr>
+                  <tr>
+                    <th>工程负责人联系方式：</th>
+                    <td><span class="table-form-text">{$project_tell}</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <div class="subpage hetongxinxi02">
+          <form id="" method="post" action="{:U('operation')}">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th>合同名称：</th>
+                    <td><span class="table-form-text">{$hc_name}</span></td>
+                  </tr>
+                  <tr class="hetongzhouqi">
+                    <th>合同周期：</th>
+                    <td>
+                      <span class="table-form-text">{$period}个月</span>
+                      <span class="table-form-text">{$stime|date='Y-m',###}至{$etime|date='Y-m',###}</span>
+                    </td>
+                  </tr>
+                  <tr class="shili">
+                    <th>签约客房：</th>
+                    <td>
+                      <volist name="hcre_items" id="hcre_item">
+                        <div>
+                          <span class="table-form-text">{$hcre_item.name}: <span class="span_nbsp">{$hcre_item.r_num}</span></span>&emsp;&emsp;&emsp;<span class="table-form-text">{$hcre_item.e1_name}:<span class="span_nbsp">{$hcre_item.e1_num}</span></span>&emsp;&emsp;&emsp;<span class="table-form-text">{$hcre_item.e2_name}:<span class="span_nbsp">{$hcre_item.e2_num}</span></span>
+                        </div>                        
+                      </volist>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>保养频率：</th>
+                    <td>
+                      <span class="table-form-text">{$period}个月</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>结算模式：</th>
+                    <td>
+                      <span class="table-form-text">{$at_name}</span> 
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>滞纳金：</th>
+                    <td>
+                      <span class="table-form-text">{$ls_num}‰</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>产生滞纳金的条件：</th>
+                    <td><span class="table-form-text">次月第四个工作日0点未收到打款，产生滞纳金，金额为本账期应收金额的{$ls_num}‰，按天累加</span></td>
+                  </tr>
+                  <tr class="">
+                    <th>安装日期：</th>
+                    <td>
+                      <span class="table-form-text">{$rsinstall|date='Y-m-d',###}至{$reinstall|date='Y-m-d',###}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>合同附件：</th>
+                    <td>
+                      <dl class="uploadimg-container">
+                        <dd>
+                          <volist name="img" id="hc_img">
+                          <div class="imgwrap">
+                            <img class="img-rounded" src="{$hc_img}">
+                          </div>
+                          </volist>
+                        </dd>
+                      </dl>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>分配工程人员：</th>
+                    <td>
+                      <select name="u_id">
+                        <volist name="user_list" id="user">
+                          <option value="{$user.id}" data="{$user.mobile}" <eq name="user.id" value="$u_id">selected</eq>>工程人员-{$user.name}</option>
+                        </volist>
+                      </select>
+                      &emsp;&emsp;联系方式：<span class="user_mobile">{$user_list[0]['mobile']}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <input type="hidden" name="id" value="{$oid}">
+                      <input type="hidden" name="status" value="2">
+                    </th>
+                    <td>
+                      <button type="button" class="btn btn-tijiao ajax-post">提交</button>
+                      <button type="button" class="btn btn-quxiao back">返回</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <!-- 内容 结束 -->
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript">
+//下载
+$(".download").click(function(){
+  window.location.href = "{:U('HotelContract/download_file',array('hcid'=>$hc_id))}";
+});
+
+//改变工程人员
+$("select[name='u_id']").change(function(){
+  $(".user_mobile").text($("select[name='u_id'] :selected").attr("data"));
+})
+</script>
+</block>

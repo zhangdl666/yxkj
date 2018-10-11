@@ -1,0 +1,145 @@
+<div class="swiper-wrapper">
+    <!-- 销售额 开始 -->
+    <div class="swiper-slide swiper-tab-content">
+        <div class="white_panel">
+            <div class="layoutlr white_header">
+                <div class="left">房间类型占比量</div>
+            </div>
+            <div class="white_body">
+                <div class="layoutlr xiaoshoutongji_echart">
+                    <div class="left" style="width: 207.2px;height: 270.4px" id="onemain">
+
+                    </div>
+                    <div class="right">
+                        <ul class="echart_prog">
+                            <foreach name="roomtypeAlls" item="qd_num" key="key">
+                                <li>
+                                    <div class="text">{$qd_num.type_name}&ensp;{$qd_num.num}
+                                    </div>
+                                    <div class="progress-container progress01">
+                                        <div class="progress" data-width="" style="width: {$qd_num['roportion']}%;"></div>
+                                    </div>
+                                </li>
+                            </foreach>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="white_panel">
+            <div class="layoutlr white_header">
+                <div class="left">全年趋势统计</div>
+            </div>
+            <div class="white_body" id="fourmain">
+            </div>
+        </div>
+    </div>
+    <!-- 销售额 结束 -->
+</div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChartOne = echarts.init(document.getElementById('onemain'));
+    optionOne = {
+        tooltip: {
+            trigger: 'item',
+            position: ['35%', '35%'],
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            x : 'left',
+            y : 'bottom',
+            data:{$type_name_one},
+        },
+        series: [
+            {
+                name:'房间类型占比量',
+                type:'pie',
+                hoverAnimation:false,
+                //给图表添加坐标center : ['50%', '35%'],配合htmldiv的高度为230.4，高度变化就要修改坐标变化
+                center : ['50%', '35%'],
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '15',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:{$room_nums},
+                color:[ '#D97CF1','#F6B55B','#1ED2D6','#5BB0F0','#1DABAD'],
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartOne.setOption(optionOne);
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChartFou = echarts.init(document.getElementById('fourmain'));
+    optionFou = {
+        tooltip: {
+            trigger: 'axis',
+        },
+        grid: {
+            left: '5%',
+            right: '6%',
+            bottom: '7%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data : {$months}
+            }
+        ],
+        legend: {
+            data: ['全年趋势统计图']
+        },
+        yAxis: [
+            {
+                name:'客房数量(个)',
+            <if condition="$num eq '[]'">
+            min: 0,
+        max: 100,
+    </if>
+                type: 'value',
+                    minInterval : 1
+            }
+        ],
+        series: [
+            {
+                name:'全年趋势统计图',
+                type: 'line',
+                smooth: true,
+                areaStyle: {
+                    normal: {
+                    }
+                },
+                // 背景颜色设置
+                lineStyle: {
+                    normal: {
+                        width: 1.5,
+                        // 线条颜色
+                        color: ['#86DDDE']
+                    }
+                },
+                data:{$num},
+                color: ['#75CE68']
+            },
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartFou.setOption(optionFou);
+</script>

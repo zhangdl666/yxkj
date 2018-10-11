@@ -1,0 +1,101 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>销售人员统计</title>
+</block>
+<block name="main">
+    <!-- header 开始 -->
+    <div class="header">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <div class="left"><a href="{:U('index')}">返回</a></div>
+        <div class="center"></div>
+        <div class="right"><a class="s" href="{:U('record')}">
+            提现记录
+        </a>
+        </div>
+    </div>
+    <!-- header 结束 -->
+    <!-- 主体内容 开始 -->
+    <div class="main">
+
+        <!-- header 开始 -->
+        <div class="header">
+            <div class="left"><i class="icon"></i>返回</div>
+            <div class="center">销售人员首页</div>
+            <div class="right"><a class="s"></a></div>
+        </div>
+        <!-- header 结束 -->
+
+        <div class="main_body">
+            <ul class="index_item">
+                <li class="bjkkitem bjkkitem01 b1">
+                    <div class="bjkkitem_main">
+                        <div class="icon_wrap"><i class="icon"></i></div>
+                        <div class="num"><span class="min"></span></div>
+                        <div class="title_wrap">
+                            <div class="title_inner">
+                                <span class="title">您有{$sgmber}个待打款事项</span>
+                                <button class="btn"><a href="{:U('SaleExt/index')}">立即查看 </a></button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="bjkkitem bjkkitem01 b2">
+                    <div class="bjkkitem_main">
+                        <div class="icon_wrap"><i class="icon"></i></div>
+                        <div class="title_wrap">
+                            <div class="title_inner">
+                                <span class="title">您有{$hmber}个认领代办事项</span>
+                                <button class="btn" ><a href="{:U('ClaimHotel/index')}">立即查看</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="bjkkitem bjkkitem01 b3">
+                    <div class="bjkkitem_main">
+                        <div class="icon_wrap"><i class="icon"></i></div>
+                        <div class="title_wrap">
+                            <div class="title_inner">
+                                <span class="title">合同页面</span>
+                                <button class="btn"><a href="{:U('HotelContract/index')}">立即查看</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="bjkkitem bjkkitem01 b4">
+                    <div class="bjkkitem_main">
+                        <div class="icon_wrap"><i class="icon"></i></div>
+                        <div class="title_wrap">
+                            <div class="title_inner">
+                                <span class="title">您有{$rstmber}个报销待处理</span>
+                                <button class="btn"><a href="{:U('Reimbursement/index')}">立即查看</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="bjkkitem bjkkitem01 b5">
+                    <div class="bjkkitem_main">
+                        <div class="icon_wrap"><i class="icon"></i></div>
+                        <div class="title_wrap">
+                            <div class="title_inner">
+                                <span class="title">您有{$rmymber}个结算待处理</span>
+                                <button class="btn"><a href="{:U('ReturnMoney/index')}">立即查看</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="bjkkitem bjkkitem01 b6">
+                    <div class="bjkkitem_main">
+                        <div class="icon_wrap"><i class="icon"></i></div>
+                        <div class="title_wrap">
+                            <div class="title_inner">
+                                <span class="title">酒店角色管理</span>
+                                <button class="btn"><a href="{:U('Hotel/index')}">立即查看</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 主体内容 结束 -->
+</block>

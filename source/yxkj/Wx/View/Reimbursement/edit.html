@@ -1,0 +1,153 @@
+<extend name="Public:index"/>
+
+<block name="title"><title>报销编辑</title></block>
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left backs" data-url="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+
+		</div>
+
+		<div class="main_body">
+			<div class="swiper-container swiper-tab-nav daishenhebiaoxiao-nav">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide swiper-tab-link"><i class="icon w_0006_06 w_06_01"></i>待审核</div>
+					<div class="swiper-slide swiper-tab-link"><i class="icon w_0006_06 w_06_02"></i>待打款</div>
+					<div class="swiper-slide swiper-tab-link"><i class="icon w_0006_06 w_06_03"></i>已打款</div>
+				</div>
+				<!-- Add Pagination -->
+				<div class="swiper-pagination"></div>
+			</div>
+
+
+			<div class="daishenhebiaoxiao-page">
+
+				<div class="form_data_wrap daishenhe">
+					<form method="post" action="{:U('operation')}">
+					<ul class="form_data">
+						<li class="layoutlr form_item">
+							<div class="left"><span class="txt_green">*</span>报销类型：</div>
+							<div class="right">
+								<div>
+								<select name="rt_id" id="">
+									<volist name="reimbursementTypes" id="value">
+										<option value="">请选择</option>
+									<option value="{$value.id}" <eq name="value.id" value="$rt_id">selected</eq>>{$value.name}</option>
+									</volist>
+								</select><i class="icon w_0000_00 w_00_12"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"><span class="txt_green">*</span>报销金额：</div>
+							<div class="right">
+								<div><input style="border: 0rem;text-align: right" type="text" name="price" value="{$price}"><i class="icon w_0000_00 w_00_11"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"><span class="txt_green">*</span>选择酒店：</div>
+							<div class="right">
+								<div>
+								<select name="h_id" id="">
+									<option value="">请选择</option>
+									<volist name="hotels" id="value2">
+									<option value="{$value2.id}" <eq name="value2.id" value="$h_id">selected</eq>>{$value2.name}</option>
+									</volist>
+								</select><i class="icon w_0000_00 w_00_12"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">选择合同：</div>
+							<div class="right">
+								<div>
+								<select name="hc_id" id="">
+									<option value="">请选择</option>
+									<volist name="hotelContracts" id="value3">
+									<option value="{$value3.id}" <eq name="value3.id" value="$hc_id">selected</eq>>{$value3.name}</option>
+									</volist>
+								</select><i class="icon w_0000_00 w_00_12"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="top">备注信息：</div>
+							<div class="bottom"><textarea placeholder="说点什么？" name="remark" id="remark" style="width:100%;height:150px;">{$remark}</textarea>
+							</div>
+						</li>
+						<li class="layoutlr form_item shengheyijian">
+							<div class="left">审核意见：</div>
+							<div class="right"></div>
+						</li>
+						<li class="form_item biaoxiaorenqk" style="margin-bottom: 0.2rem;">
+							<div class="">报销人基本情况：</div>
+							<div class="" style="font-size: 0.24rem;">
+								<p>累计申请的报销金额 {$total_price}</p>
+								<p>已认领的酒店数 {$claimed_hotel_num}</p>
+								<p>已签订的合同数 {$sign_contract_num}</p>
+								<p>合同已回款金额 {$payment_money}</p>
+								<p>基本信息提取时间 {$basic_time|date="Y-m-d H:i:s",###}</p>
+							</div>
+						</li>
+
+
+
+						<eq name="status" value="4">
+							<li class="form_item biaoxiaorenqk" style="border: 0rem;">
+								<div class="">驳回原因：</div>
+								<div style="word-wrap: break-word;">{$decline_remark}</div>
+							</li>
+						</eq>
+
+					</ul>
+					<input type="hidden" name="id" value="{$id}">
+					<input type="hidden" name="status" value="1">
+					<div class="form_data_btns">
+						<button type="button" class="btn maxbtn ajax-post">提交</button>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+
+<block name="js">
+<script type="text/javascript" src="__UPLOADIFY__/jquery.uploadify.js"></script>
+<script type="text/javascript">
+/* 判断报销金额 */
+$("input[name='price']").blur(function(){
+	var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+  var price = $(this).val();
+  if (parseFloat(price)<=0 || !reg.test(price)){
+		layer.open({content:"报销金额不正确",time:2000});
+		$(this).val("");
+		return false;
+	}
+});
+	$(function(){
+		$(".main").on('click','.hotel',function(){
+			//alert(11111);
+			$('.options_container').on('click', 'li', function() {
+				var h_id = $(this).find('span').attr('data');
+				//alert(h_id);
+				if(h_id != ''){
+					//获取酒店对应的合同
+					$.get("{:U('get_hotelcontract')}",{h_id:h_id},function(data){
+						console.debug(data);
+						var html = '';
+						$.each(data,function(i,value){
+							html+='<li><span data="'+value.id+'">'+value.name+'</span></li>';
+						});
+						$(".hotel_contract").html(html);
+					});
+				}
+				$(".hc_name").html('');
+			});
+		});
+
+	});
+
+</script>
+</block>
+

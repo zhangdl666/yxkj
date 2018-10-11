@@ -1,0 +1,111 @@
+<extend name="Public:index"/>
+<block name="title">
+  <title>销售人员统计</title>
+</block>
+<block name="main">
+    <!-- header 开始 -->
+    <div class="header">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <div class="left"><a href="{:U('index')}">返回</a></div>
+        <div class="center"></div>
+        <div class="right"><a class="s" href="{:U('record')}">
+            提现记录
+        </a>
+        </div>
+    </div>
+    <!-- header 结束 -->
+    <!-- 主体内容 开始 -->
+    <div class="main">
+
+        <!-- header 开始 -->
+        <div class="header">
+            <div class="left"><i class="icon"></i>返回</div>
+            <div class="center">首页</div>
+            <div class="right"><a class="s"></a></div>
+        </div>
+        <!-- header 结束 -->
+
+        <div class="main_body">
+        <ul class="index_item">
+            <li class="bjkkitem bjkkitem01 b2">
+                <div class="bjkkitem_main">
+                    <div class="icon_wrap"><i class="icon"></i></div>
+                    <div class="title_wrap">
+                        <div class="title_inner">
+                            <span class="title">销售统计数据</span>
+                            <button class="btn">立即查看</button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="bjkkitem bjkkitem01 b1">
+                <div class="bjkkitem_main">
+                    <div class="icon_wrap"><i class="icon"></i></div>
+                    <div class="num">125<span class="min">个</span></div>
+                    <div class="title_wrap">
+                        <div class="title_inner">
+                            <span class="title">收益待办事项</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="bjkkitem bjkkitem01 b1">
+                <div class="bjkkitem_main">
+                    <div class="icon_wrap"><i class="icon"></i></div>
+                    <div class="num">{$hotel}<span class="min">个</span></div>
+                    <div class="title_wrap">
+                        <div class="title_inner">
+                            <span class="title">认领待办事项</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="bjkkitem bjkkitem01 b1">
+                <div class="bjkkitem_main">
+                    <div class="icon_wrap"><i class="icon"></i></div>
+                    <div class="num">125<span class="min">个</span></div>
+                    <div class="title_wrap">
+                        <div class="title_inner">
+                            <span class="title">合同待办事项</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="bjkkitem bjkkitem01 b1">
+                <div class="bjkkitem_main">
+                    <div class="icon_wrap"><i class="icon"></i></div>
+                    <div class="num">{$rst}<span class="min">个</span></div>
+                    <div class="title_wrap">
+                        <div class="title_inner">
+                            <span class="title">报销待办事项</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="bjkkitem bjkkitem01 b1">
+                <div class="bjkkitem_main">
+                    <div class="icon_wrap"><i class="icon"></i></div>
+                    <div class="num">{$rmy}<span class="min">个</span></div>
+                    <div class="title_wrap">
+                        <div class="title_inner">
+                            <span class="title">结算待办事项</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="bjkkitem bjkkitem01 b1">
+                <div class="bjkkitem_main">
+                    <div class="icon_wrap"><i class="icon"></i></div>
+                    <div class="num">{$daiban|default=0}<span class="min">个</span></div>
+                    <div class="title_wrap">
+                        <div class="title_inner">
+                            <span class="title">酒店角色管理待办事项</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    </div>
+    <!-- 主体内容 结束 -->
+</block>

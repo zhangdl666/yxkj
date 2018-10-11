@@ -1,0 +1,138 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>回款查看</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>回款</a></li>
+        <li class="on">回款查看</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title">回款详情</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+        <div class="subpage hetongxinxi01">
+            <form id="">
+                <div class="subpage-block">
+                    <table class="table table-bordered table-form">
+                        <if>
+                        <tr>
+                            <th>酒店名称：</th>
+                            <td><span class="table-form-text">{$data.name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>合同名称：</th>
+                            <td><span class="table-form-text">{$data.contract_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>合同编号：</th>
+                            <td><span class="table-form-text">{$data.contract_sno}</span></td>
+                        </tr>
+                        <tr>
+                            <th>结算账期：</th>
+                            <td><span class="table-form-text">{$data.etime}</span></td>
+                        </tr>
+                        <tr>
+                            <th>结算模式：</th>
+                            <td >
+                                <if condition="$data['type'] eq 1">
+                                    共享({$data.type_price}元/天次)
+                                    <else />
+                                    租赁({$data.type_price}元/天)
+                                </if>
+                            </td>
+                        </tr>
+                        <tr class="suoshudiqu">
+                            <th>本期使用天次：</th>
+                            <td id="city">
+                               <span>{$data.num}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>应回款金额：
+                            </th>
+                            <td><span class="table-form-text">{$data.rprice}元</span></td>
+                        </tr>
+                        <tr>
+                            <th>应回款日期：
+                            </th>
+                            <td><span class="table-form-text">{$data.rtime|date='Y-m-d',###}</span></td>
+                        </tr>
+                        <tr>
+                            <th>逾期天数：
+                            </th>
+                            <td><span class="table-form-text">{$data.mtime}天</span></td>
+                        </tr>
+                        <tr>
+                            <th>滞纳金：</th>
+                            <td><span class="table-form-text">{$data.mprice}元</span></td>
+                        </tr>
+                        <tr>
+                            <th>实际回款金额：</th>
+
+                            <td><span class="table-form-text">{$data.price}元</span></td>
+                        </tr>
+                            <tr>
+                                <th>实际回款时间：</th>
+                                <td>
+                                    <span class="table-form-text">{$data.time|date='Y-m-d H:i:s',###}</span>
+                                </td>
+                            </tr>
+                        <tr>
+                            <th>打款凭证：</th>
+                            <td>
+                                <notempty name="data['rprice']">
+                                    <dl class="uploadimg-container">
+                                        <dd class="imgwrap-container">
+                                            <volist name="data.arr_giv" id="vol">
+                                                <div class="imgwrap">
+                                                    <img class="img-rounded" src="{$vol}">
+                                                </div>
+                                            </volist>
+                                        </dd>
+                                    </dl>
+                                </notempty>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>到账凭证：</th>
+                            <td>
+                                <notempty name="data['rprice']">
+                                    <dl class="uploadimg-container">
+                                        <dd class="imgwrap-container">
+                                            <volist name="data.arr_git" id="vol">
+                                                <div class="imgwrap">
+                                                    <img class="img-rounded" src="{$vol}">
+                                                </div>
+                                            </volist>
+                                        </dd>
+                                    </dl>
+                                </notempty>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <input type="hidden" id="id" value="{$id}">
+                                <button type="button" class="btn btn-quxiao back">返回</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__JS__/jquery.cityselect.js"></script>
+
+</block>

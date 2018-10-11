@@ -1,0 +1,70 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>酒店住户</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>系统设置 </a></li>
+      <li class="on">住户历史记录</li>
+    </ol>
+</block>
+
+<block name="main">
+  <div id="main" class="bgfff">
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading">
+    </div>
+
+      <div class="panel-body">
+        <table class="table table-condensed table-data">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>时间</th>
+              <th>酒店名</th>
+              <th>房间类型</th>
+              <th>地址</th>
+              <th>PM2.5</th>
+              <th>温度</th>
+              <th>湿度</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <volist name="items" id="item">
+            <tr>
+              <td>{$key+1}</td>
+              <td>{$item.ctime|date='Y-m-d H:i:s',###}</td>
+              <td>{$item.hotel_name}</td>
+              <td>{$item.type_name}</td>
+              <td>{$item.provice}{$item.city}{$item.county}{$item.area}</td>
+              <td>{$item.in_pm}</td>
+              <td>{$item.in_temperature}</td>
+              <td>{$item.in_humidity}</td>
+              <td class="orprate">
+             <a class="text-warning ajax-oper-get" href="{:U('indelate',array('id'=>$item['id']))}">删除</a></td>
+            </tr>
+            </volist>
+
+          </tbody>
+  </tr>
+
+        </table>
+        <div class="pagination">
+          {$pageHtml}
+        </div>
+        <button type="button" class="btn btn-warning back" style="margin: 20px 0px;">返回</button>
+      </div>
+    </div>
+</block>
+<block name="js">
+
+<script type="text/javascript">
+  function now_href(url){
+    window.location.href = url;
+  }
+</script>
+</block>

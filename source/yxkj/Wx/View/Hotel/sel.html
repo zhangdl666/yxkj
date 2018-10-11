@@ -1,0 +1,254 @@
+<extend name="Public:index"/>
+<block name="css">
+	<link rel="stylesheet" href="__CSS__/LArea.min.css">
+	<style type="text/css">
+		.form_data .form_item .right input[type='text']{
+			width: 35vw;
+			border: none;
+			text-align: right;
+			background: #fff;
+		}
+		.checkbox-container-input{float:right;}
+		.checkbox-container-input input[type='text']{
+			width: 12vw;
+			border: 1px solid #ccc;
+			border-radius: 6px;
+			text-indent: 4px;
+			margin-right: 0.1rem;
+		}
+		.checkbox-containers{
+			width: 50%;
+			text-align: left;
+			display:inline-block;
+			float: left;
+		}
+		.ck_room_num{
+			display: inline-block;
+			color: rgb(102,102,102);
+			margin-left: 0.1rem;
+			vertical-align: middle;
+
+		}
+	</style>
+</block>
+<block name="title">
+	<title>查看</title>
+</block>
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main">
+
+		<!-- header 开始 -->
+		<div class="header">
+			<div class="left"><a href="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+			<div class="center"></div>
+			<div class="right">
+				<a href="{:U('jumpedit',array('id'=>$hotel['id']))}"> <?php
+            $role_id = $_SESSION['USERINFO']['role_id'];
+            if($role_id!=9){
+                echo '<i class="icon edit"></i>修改';
+            }
+            ?></a>
+			</div>
+		</div>
+		<!-- header 结束 -->
+		<div class="main_body">
+			<div class="form_data_wrap renlingchakan">
+				<form method="post" action="{:U('edit')}">
+					<ul class="form_data">
+						<li class="layoutlr form_item">
+							<div class="left"> <font color="red">*</font>酒店名称</div>
+							<div class="right">
+								<input type="text" name="name" disabled value="{$hotel.name}">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> <font color="red">*</font>酒店类型</div>
+							<div class="right">
+								<input type="text" name="name" disabled value="{$htype['name']}">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> 客房数</div>
+							<div class="right">
+								<ul class="layoutlr search_select">
+									<input type="text" name="room_num" disabled value="{$hotel.room_num|default=0}"  id="room_numsss">
+								</ul>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="top" style="min-width: 1.3rem"> 客房类型:</div>
+							<div class='bottom' style="text-align: right">
+							<volist name="hrt" id="hrts">
+							<div class="checkbox-containers">
+								<label class="checkbox-container kefangleixing" data-type="radio" <notempty name="hrts['room_num']">checked</notempty>>
+								<input type="checkbox" name="rname[]" value="{$hrts.id}" disabled <notempty name="hrts['room_num']">checked</notempty>>
+								<!--<i class="icon icon01 i_radio"></i>-->
+								<span class="checkbox_txt">{$hrts.name}</span>
+								<span name="rname1[{$hrts.id}][]" class="ck_room_num">{$hrts.room_num}</span>
+								</label>
+								<!------查看时不能输入，也不要框，且显示在左边。因此注释-------->
+								<!--<span class="">-->
+									<!--&lt;!&ndash;<input type="text" name="rname1[{$hrts.id}][]" class="room_num" disabled value="{$hrts.room_num}">&ndash;&gt;-->
+								<!--</span>-->
+							</div>
+							</volist>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> 所属地区</div>
+							<div class="right">
+								<div>
+									{$hotel.provice}
+									<?php if($hotel['city']!='北京市' && $hotel['city']!='天津市' && $hotel['city']!='重庆市'){echo $hotel['city'];}?>
+
+									{$hotel.county}
+								</div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> <font color="red">*</font>详细地址</div>
+							<div class="right">
+								<ul class="layoutlr search_select">
+									<input type="text" disabled name="area" value="{$hotel.area}"></li>
+								</ul>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> <font color="red">*</font>联系方式</div>
+							<div class="right">
+								<ul class="layoutlr search_select">
+									<input type="text" disabled name="tell" value="{$hotel.tell}"></li>
+								</ul>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="top"> 酒店图片</div>
+							<div class="bottom">
+							<dl class="uploadimg-container clearfix">
+                            <dd class="imgwrap-container img">
+								<notempty name="hotel['img']">
+									<volist name="hotel['himgs']" id="imgi">
+										<div class="imgwrap">
+											<img style="width: 80px" src="{$imgi}">
+										</div>
+									</volist>
+								<else/>
+									<div class="imgwrap">
+									<img src="__IMG__/head.png" style="width: 80px"/>
+									</div>
+								</notempty>
+							</dd>
+                          	</dl>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> 商务负责人</div>
+							<div class="right">
+								<input type="text" disabled name="shang_name" value="{$hotel.shang_name}">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> 商务负责人联系方式</div>
+							<div class="right">
+								<input type="text" disabled name="shang_tell" value="{$hotel.shang_tell}">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> 酒店总经理</div>
+							<div class="right">
+								<input type="text" disabled name="all_name" value="{$hotel.all_name}">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">酒店总经理联系方式</div>
+							<div class="right">
+								<input type="text" disabled name="all_tell" value="{$hotel.all_tell}">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> 财务负责人</div>
+							<div class="right">
+								<input type="text" disabled name="money_name" value="{$hotel.money_name}">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> 财务负责人联系方式</div>
+							<div class="right">
+								<input type="text" disabled name="money_tell" value="{$hotel.money_tell}">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> 工程负责人</div>
+							<div class="right">
+								<input type="text" disabled name="project_name" value="{$hotel.project_name}">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> 工程负责人联系方式</div>
+							<div class="right">
+								<input type="text" disabled name="project_tell" value="{$hotel.project_tell}">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> 认领状态</div>
+							<div class="right">
+								<input type="text" disabled name="project_tell" value="<if condition="$hotel['is_get'] eq 1">已认领<else/>未认领</if>">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> 认领人</div>
+							<div class="right">
+								<input type="text" disabled name="project_tell" value="{$sale.name}">
+							</div>
+						</li>
+						<if condition="$date neq ''">
+							<li class="layoutlr form_item">
+								<div class="left"> 认领有效期</div>
+								<div class="right">
+									<input type="text" disabled name="project_tell" value="剩余{$date}天">
+								</div>
+							</li>
+						</if>
+						<li class="layoutlr form_item">
+							<div class="left"> 签约状态</div>
+							<div class="right">
+								<input type="text" disabled name="project_tell" value="<if condition="$hotel['is_sign'] eq 1">已签约<else/>未签约</if>">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"> 历史销售人员</div>
+							<div class="right">
+								<input type="text" disabled name="project_tell" value="{$sale_name}">
+							</div>
+						</li>
+						<!--<li class="layoutlr form_item">-->
+							<!--<div class="left"> 指定销售人员</div>-->
+							<!--<div class="right">-->
+								<!--<input type="text" disabled name="project_tell" value="{$sale['name']}">-->
+							<!--</div>-->
+						<!--</li>-->
+						<li class="layoutlr form_item">
+							<div class="left">酒店状态</div>
+							<div class="right">
+								<?php if($hotel['status']== 1){
+									echo "营业中";
+								}else{
+									echo "已结业";
+								}?>
+							</div>
+						</li>
+					</ul>
+
+					<div class="form_data_btns">
+						<li class="layoutlr">
+							<a href="{:U('index')} " class="btn maxbtn">返回</a></button>
+						</li>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- 主体内容 结束 -->
+
+</block>

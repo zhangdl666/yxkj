@@ -1,0 +1,271 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>合同管理</title>
+  <script type="text/javascript" src="__PUBLIC__/WdatePicker/WdatePicker.js"></script>
+  <link rel="stylesheet" href="__PUBLIC__/Layui/css/layui.css">
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>合同管理</a></li>
+      <li class="on">合同信息</li>
+    </ol>
+</block>
+<block name="css">
+    <style type="text/css">
+        .subnav > li {
+            width: 116px;
+            padding: 0px 24px;
+        }
+        .kefangleixings input {
+            width: 60px;
+            height: 28px;
+            margin-top: 5px;
+            margin-left: 10px;
+            /* margin-right: 20px; */
+            float: right;
+        }
+    </style>
+</block>
+<block name="main">
+	<div id="main">
+      <!-- 导航 开始 -->
+      <ul class="clearfix subnav hetongnav">
+        <li><a><i class="icon"></i><span class="cur_title">合同信息</span></a></li>
+        <li class="on"><a rel="link" class="active" href="{:U('edit',array('id'=>$hcid))}">基础信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('installe',array('id'=>$hcid))}">安装信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('return_money',array('id'=>$hcid))}">结算信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('upkeep',array('id'=>$hcid))}">保养信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('maintain',array('id'=>$hcid))}">维修信息</a><span class="nav_border"></span></li>
+      </ul>
+      <!-- 导航 结束 -->
+
+      <div class="hetongxinxibtn-wrap">
+        <button class="btn on" onclick="now_href('{:U('edit',array('id'=>$hcid))}')">酒店信息</button>
+        <button class="btn" onclick="now_href('{:U('edituser',array('id'=>$hcid))}')">联系人信息</button>
+        <button class="btn" onclick="now_href('{:U('editc',array('id'=>$hcid))}')">合同信息</button>
+      </div>
+
+      <!-- 内容 开始 -->
+      <div class="subpage hetongxinxi01">
+          <form method="post" action="{:U('hoperation')}">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th><span class="text-orange">*</span>酒店名称：</th>
+                    <td>
+                      <input type="text" name="name" value="{$name}" readonly>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>酒店类型：</th>
+                    <td>
+                      <select name="ht_id">
+                        <volist name="ht_items" id="ht_item">
+                          <option value="{$ht_item.id}" <eq name="ht_item['id']" value="$ht_id">selected</eq>>{$ht_item.name}</option>
+                        </volist>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>客房类型：</th>
+                    <td>
+                      
+                      <volist name="rt_items" id="hrts">
+                        <label class="checkbox-container kefangleixing" data-type="checkbox" <eq name="hrts.checked" value="1">checked="checked"</eq>>
+                            <input type="checkbox" name="hrtname[]" value="{$hrts.id}" <eq name="hrts.checked" value="1">checked="checked"</eq>>
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">{$hrts.name}<input type="text" name="room_nums[]"  class="room_num" maxlength="5" value="{$hrts.room_num}"></span>
+                        </label>
+                      </volist>
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>客房数：</th>
+                    <td><input type="text" name="room_num" value="{$room_num}" readonly="readonly"
+                     disabled="disabled" id="room_numsss"></td>
+                  </tr>
+                  <tr class="suoshudiqu">
+                    <th><span class="text-orange">*</span>所属地区：</th>
+                    <td id="city">
+                        <select class="prov" name="provice">
+                            <option></option>
+                        </select>
+                        <select class="city" disabled="disabled" name="city">
+                            <option></option>
+                        </select>
+                        <select class="dist" disabled="disabled" name="county">
+                            <option></option>
+                        </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>详细地址：</th>
+                    <td><input type="text" name="area" value="{$area}"></td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>联系方式：</th>
+                    <td><input type="text" name="tell" value="{$tell}"></td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>酒店图片：</th>
+                    <td>
+                      <dl class="uploadimg-container">
+                        <dd class="imgwrap-container">
+                          
+                          <volist name="himgs" id="himg">
+                          <div class="imgwrap">
+                            <img class="img-rounded" src="{$himg}">
+                            <ul class="imgoprate">
+                              <li data-oprate="toleft"><i class="icon"></i></li>
+                              <li data-oprate="detele"><i class="icon"></i></li>
+                              <li data-oprate="toright"><i class="icon"></i></li>
+                            </ul>
+                          </div>
+                          </volist>
+
+                        </dd>
+                        <dt>
+                          <div class="item btn-upload" v-show="uploadImgs.length==0" id="HotelHead"></div>
+                        </dt>
+                      </dl>
+                      <input type="hidden" name="img" value="{$img}" class="img_val">
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>认领状态：</th>
+                    <td>已认领</td>
+                  </tr>
+                  <tr>
+                    <th>认领人：</th>
+                    <td>{$hotel_user_name}</td>
+                  </tr>
+                  <tr>
+                    <th>历史销售人员：</th>
+                    <td>{$sale_name}</td>
+                  </tr>
+                  <tr>
+                    <th>签约状态：</th>
+                    <td><eq name="is_sign" value="1">已签约<else/>未签约</eq></td>
+                  </tr>
+                  <tr>
+                    <th>酒店状态：</th>
+                    <td><eq name="status" value="1">营业中<else/>已结业</eq></td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <input type="hidden" name="h_id" value="{$id}">
+                      <input type="hidden" name="uhotel" value="1">
+                    </th>
+                    <td>
+                      <button type="button" class="btn btn-tijiao ajax-post">提交</button>
+                      <button type="button" class="btn btn-quxiao backi">返回</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <!-- 内容 结束 -->
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript" src="__PUBLIC__/Layui/layui.js"></script>
+<script type="text/javascript" src="__JS__/jquery.cityselect.js"></script>
+<script type="text/javascript">
+/* 重新选择酒店 */
+$("select[name='h_id']").change(function(){
+  var h_id = $(this).val();
+  window.location.href = "{:U('hinfo')}?hid="+h_id;
+})
+
+/* 计算总的客房数 */
+$('.room_num').blur(function(){
+    if($(this).val() != 0 && $(this).val() != ''){
+        $(this).parents('.checkbox-container').attr('checked','checked');
+        var room_nums = parseInt($('input[name="room_num"]').val());
+        room_nums += parseInt($(this).val())
+        $('input[name="room_num"]').val(room_nums);
+    }
+});
+
+//返回列表
+$(".backi").click(function(){
+  window.location.href = "{:U('index')}";
+});
+
+/* 图片上传 */
+layui.use('upload', function () {
+    var upload = layui.upload;
+    //执行实例
+    var uploadInst = upload.render({
+        elem: '#HotelHead' //绑定元素
+        , accept: 'file' //允许上传的文件类型
+        , url: '{:U("upload_file",array("img_dir"=>"HotelHead"))}' //上传接口
+        , done: function (res) {
+            if (res.status == 1) {
+              var append_img = "<div class='imgwrap'>\
+                            <img class='img-rounded' src='"+res.data+"'>\
+                            <ul class='imgoprate'>\
+                              <li data-oprate='toleft'><i class='icon'></i></li>\
+                              <li data-oprate='detele'><i class='icon'></i></li>\
+                              <li data-oprate='toright'><i class='icon'></i></li>\
+                            </ul>\
+                          </div>";
+              $(".imgwrap-container").append(append_img);
+              count_img();
+            }else{
+                layer.msg(res.msg, {time: 1000, offset: 0, icon: 2});
+            }
+        }
+        , error: function () {
+        }
+    });
+});
+
+/* 计算图片 */
+function count_img(){
+  var img_val = "";
+  $(".imgwrap-container div").each(function(i){
+    if(i != 0){
+      img_val += ",";
+    }
+    img_val += $(this).find("img").attr("src");
+  })
+  $(".img_val").val(img_val);
+}
+
+/*图片移动、删除*/
+  $('.imgwrap-container').on('click', '[data-oprate]', function() {
+    var _imgwrap = $(this).closest('.imgwrap');
+    switch($(this).attr('data-oprate')) {
+      case 'toleft':
+        _imgwrap.prev().before(_imgwrap);
+        //console.log('左边', $(this).attr('data-oprate'))
+        break;
+      case 'detele':
+        _imgwrap.remove();
+        break;
+      case 'toright':
+        _imgwrap.next().after(_imgwrap);
+        break;
+    }
+    count_img();
+  });
+
+/* 省市区三级联运 */
+var hid = "{$id}";
+if(hid){
+    $("#city").citySelect({
+        prov: "{$provice|default='北京'}",
+        city: "{$city|default='东城区'}",
+        dist: "{$county}",
+        nodata: "none"
+    });
+}
+</script>
+</block>

@@ -1,0 +1,573 @@
+<?php
+/**
+ * Author: ' Silent
+ * Time: 2017/9/12 10:45
+ */
+
+namespace Pc\Controller;
+
+
+use Pc\Model\DeviceRunModel;
+use Pc\Model\HotelModel;
+use Pc\Model\RunInfoDataModel;
+use Pc\Model\RunInfoModel;
+use Pc\Model\UserObjModel;
+use Pc\Server\DateType;
+use Wx\Model\SalesModel;
+
+class RunInfoController extends BaseController
+{
+    private $user_id;
+    public $model = 'Hotel';
+
+    /**
+     * 运行信息
+     */
+    public function _initialize()
+    {
+        $this->user_id = $this->identity()->getUserId();
+        // 酒店筛选
+        $this->assign('role_id', $this->identity()->getRoleId());
+        $hotelData = HotelModel::getHotelName();
+        $this->assign('hotelData', $hotelData);
+        parent::_initialize();
+    }
+
+    /**
+     * 获取登录用户对象
+     * @return type
+     */
+    public function identity()
+    {
+        if (!$this->userObj) {
+            $this->userObj = new UserObjModel();
+        }
+        return $this->userObj;
+    }
+
+    /**
+     * 运行信息列表
+     */
+    public function getListInfo()
+    {
+        $roomData =RunInfoDataModel::getHotelRoom($this->user_id);
+        $datas = DeviceRunModel::DevsRunInfos($roomData);
+
+        $data = RunInfoDataModel::getDevicesInfo($this->user_id);
+        $listdatas = RunInfoDataModel::getRunInfoData($this->user_id);
+        $hotelname = HotelModel::getHotelNames($this->user_id);
+        if(empty($listdatas)){
+            $date = json_encode(i_array_column(DateType::getUpwardDate(),'time'));
+            $rpm25list  = json_encode(i_array_column(DateType::getPm25(),'pm25'));
+            $this->assign('rpm25',$rpm25list);
+        }else{
+            $date = json_encode(i_array_column($listdatas, 'fulldate'));
+        }
+        $this->assign('date', $date);
+        $this->assign('rundata', json_encode(i_array_column($listdatas, 'pm25')));
+        $this->assign('hotelname', $hotelname);
+        $this->assign('pm', $data['pm']);
+        $this->assign('data', $data['data']);
+        $this->assign('datas',$datas);
+        $this->assign('hours', $data['allHours']);
+        $this->assign('day', $data['day']);
+        $this->assign('allday', $data['allDay']);
+        $this->display('index');
+    }
+
+    /**
+     * 单个设备运行情况
+     */
+    public function getOneDevice()
+    {
+        $mac = I('get.mac', '', 'trim');
+        $data = RunInfoModel::getDevicesTime($mac);
+        $newdata = RunInfoModel::getNewDevicesInfo($mac);
+        $pm25 = $newdata['data']['devices'][0]['data']['pm25'];
+        $datas = RunInfoModel::getDevicesHoures($mac, 24);
+//        $beginToday = mktime(14, 0, 0, date('m'), date('d'), date('Y'));
+//        $endToday = strtotime(date('Y-m-d H:i:s', strtotime("+1 day", $beginToday)));
+        $beginTodays = mktime(14, 0, 0, date('m'), date('d'), date('Y'));
+        if(time() < $beginTodays){
+            // 获取昨天的数据
+            $beginToday = mktime(14, 0, 0, date('m'), date('d'), date('Y'));
+            $beginToday = strtotime(date('Y-m-d H:i:s', strtotime("-1 day", $beginToday)));
+            $endToday = time();
+        }else{
+            $beginToday = mktime(14, 0, 0, date('m'), date('d'), date('Y'));
+            $endToday = strtotime(date('Y-m-d H:i:s', strtotime("+1 day", $beginToday)));
+        }
+        $tongData = $datas['data']['hours'];
+        $item = array();
+        foreach ($tongData as $key => $val) {
+            if ($val['date'] > $beginToday && $val['date'] < $endToday) {
+                $item[] = $val;
+            }
+        }
+        $this->assign('pm', $pm25);
+        $this->assign('data', $data);
+        $this->assign('date', json_encode(i_array_column($item, 'fulldate')));
+        $this->assign('pm25', json_encode(i_array_column($item, 'pm25')));
+        $this->display('OneDevice');
+    }
+
+    public function roonclick($mac){
+        $time = I('get.time','','trim');
+        if($time){
+            if($time == date('Y-m-d')){
+                $data = RunInfoModel::getDevicesTime($mac);
+                $newdata = RunInfoModel::getNewDevicesInfo($mac);
+                $pm25 = $newdata['data']['devices'][0]['data']['pm25'];
+                $datas = RunInfoModel::getDevicesHoures($mac, 24);
+                $beginTodays = mktime(14, 0, 0, date('m'), date('d'), date('Y'));
+                if(time() < $beginTodays){
+                    // 获取昨天的数据
+                    $beginToday = mktime(14, 0, 0, date('m'), date('d'), date('Y'));
+                    $beginToday = strtotime(date('Y-m-d H:i:s', strtotime("-1 day", $beginToday)));
+                    $endToday = time();
+                }else{
+                    $beginToday = mktime(14, 0, 0, date('m'), date('d'), date('Y'));
+                    $endToday = strtotime(date('Y-m-d H:i:s', strtotime("+1 day", $beginToday)));
+                }
+                $tongData = $datas['data']['hours'];
+                $item = array();
+                foreach ($tongData as $key => $val) {
+                    if ($val['date'] > $beginToday && $val['date'] < $endToday) {
+                        $item[] = $val;
+                    }
+                }
+                if(empty($item)){
+                    $date = json_encode(i_array_column(DateType::getUpwardDate(),'time'));
+                    $rpm25list  = json_encode(i_array_column(DateType::getPm25(),'pm25'));
+                    $this->assign('rpm25',$rpm25list);
+                }else{
+                    $date = json_encode(i_array_column($item, 'fulldate'));
+                }
+                $this->assign('pm', $pm25);
+                $this->assign('data', $data);
+                $this->assign('date', $date);
+                $this->assign('pm25', json_encode(i_array_column($item, 'pm25')));
+                $this->display();
+            }else{
+                $data = RunInfoModel::getDevicesTime($mac);
+                $newdata = RunInfoModel::getNewDevicesInfo($mac);
+                $pm25 = $newdata['data']['devices'][0]['data']['pm25'];
+                $datas = RunInfoModel::getDevicesHoures($mac, 168);
+                $startTime = sprintf('%s 14:00:00', $time);
+                $endTime = date('Y-m-d H:i:s', strtotime("+1 day", strtotime($startTime)));
+                $startTime = strtotime($startTime);
+                $endTime = strtotime($endTime);
+
+                $tongData = $datas['data']['hours'];
+                $item = array();
+                foreach ($tongData as $key => $val) {
+                    if ($val['date'] > $startTime && $val['date'] < $endTime) {
+                        $item[] = $val;
+                    }
+                }
+                if(empty($item)){
+                    $date = json_encode(i_array_column(DateType::getUpwardDate(),'time'));
+                    $rpm25list  = json_encode(i_array_column(DateType::getPm25(),'pm25'));
+                    $this->assign('rpm25',$rpm25list);
+                }else{
+                    $date = json_encode(i_array_column($item, 'fulldate'));
+                }
+                $this->assign('pm', $pm25);
+                $this->assign('data', $data);
+                $this->assign('date', $date);
+                $this->assign('pm25', json_encode(i_array_column($item, 'pm25')));
+                $this->display();
+            }
+        }else{
+            $data = RunInfoModel::getDevicesTime($mac);
+            $newdata = RunInfoModel::getNewDevicesInfo($mac);
+            $pm25 = $newdata['data']['devices'][0]['data']['pm25'];
+            $datas = RunInfoModel::getDevicesHoures($mac, 24);
+            $beginTodays = mktime(14, 0, 0, date('m'), date('d'), date('Y'));
+            if(time() < $beginTodays){
+                // 获取昨天的数据
+                $beginToday = mktime(14, 0, 0, date('m'), date('d'), date('Y'));
+                $beginToday = strtotime(date('Y-m-d H:i:s', strtotime("-1 day", $beginToday)));
+                $endToday = time();
+            }else{
+                $beginToday = mktime(14, 0, 0, date('m'), date('d'), date('Y'));
+                $endToday = strtotime(date('Y-m-d H:i:s', strtotime("+1 day", $beginToday)));
+            }
+            $tongData = $datas['data']['hours'];
+            $item = array();
+            foreach ($tongData as $key => $val) {
+                if ($val['date'] > $beginToday && $val['date'] < $endToday) {
+                    $item[] = $val;
+                }
+            }
+            if(empty($item)){
+                $date = json_encode(i_array_column(DateType::getUpwardDate(),'time'));
+                $rpm25list  = json_encode(i_array_column(DateType::getPm25(),'pm25'));
+                $this->assign('rpm25',$rpm25list);
+            }else{
+                $date = json_encode(i_array_column($item, 'fulldate'));
+            }
+            $this->assign('pm', $pm25);
+            $this->assign('data', $data);
+            $this->assign('date', $date);
+            $this->assign('pm25', json_encode(i_array_column($item, 'pm25')));
+            $this->display();
+        }
+
+    }
+
+    /**
+     * 某日的运行情况
+     */
+    public function getOneData()
+    {
+        $date = I('get.date', '', 'trim');
+        $room = I('get.room_dev', '', 'trim');
+        $hotel_id = I('get.hotel_id');
+        if($hotel_id){
+            $listdatas = RunInfoDataModel::getEchartsDate($this->user_id, $date,$hotel_id,$room);
+            $data = RunInfoDataModel::getDevicesInfo($this->user_id,$hotel_id,$room);
+            $data['hours'] = $data['allHours'];
+            if(empty($listdatas)){
+                $date = json_encode(i_array_column(DateType::getUpwardDate(),'time'));
+                $rpm25list  = json_encode(i_array_column(DateType::getPm25(),'pm25'));
+                $this->assign('rpm25',$rpm25list);
+            }else{
+                $date = json_encode(i_array_column($listdatas, 'fulldate'));
+            }
+            $this->assign('date', $date);
+            $this->assign('rundata', json_encode(i_array_column($listdatas, 'pm25')));
+            $this->display('OneDeviceOne');
+        }else{
+            $listdatas = RunInfoDataModel::getEchartsDate($this->user_id, $date,$hotel_id,$room);
+            if(empty($listdatas)){
+                $date = json_encode(i_array_column(DateType::getUpwardDate(),'time'));
+                $rpm25list  = json_encode(i_array_column(DateType::getPm25(),'pm25'));
+                $this->assign('rpm25',$rpm25list);
+            }else{
+                $date = json_encode(i_array_column($listdatas, 'fulldate'));
+            }
+            $data = RunInfoDataModel::getDevicesInfo($this->user_id,$hotel_id);
+            $data['hours'] = $data['allHours'];
+            $this->assign('date', $date);
+            $this->assign('rundata', json_encode(i_array_column($listdatas, 'pm25')));
+            $this->display('OneDevice');
+        }
+
+    }
+
+    /**
+     * 酒店筛选
+     */
+    public function getHotelData($id)
+    {
+        $data = RunInfoDataModel::getDevicesInfos($id);
+        $listdatas = RunInfoDataModel::getRunInfoDatas($id);
+        if(empty($listdatas)){
+            $date = json_encode(i_array_column(DateType::getUpwardDate(),'time'));
+            $rpm25list  = json_encode(i_array_column(DateType::getPm25(),'pm25'));
+            $this->assign('rpm25',$rpm25list);
+        }else{
+            $date = json_encode(i_array_column($listdatas, 'fulldate'));
+        }
+        $this->assign('date', $date);
+        $this->assign('rundatas', json_encode(i_array_column($listdatas, 'pm25')));
+        $this->assign('pm', $data['pm']);
+        $this->assign('data', $data['data']);
+        $this->assign('hours', $data['allHours']);
+        $this->assign('day', $data['day']);
+        $this->assign('allday', $data['allDay']);
+        $this->display('OneDevices');
+    }
+
+    public function gethotelroom($id)
+    {
+        $roomData =RunInfoDataModel::getHotelRooms($id);
+        $data = DeviceRunModel::DevsRunInfos($roomData);
+        $list['code'] = 1;
+        $list['data'] = $data;
+        $this->ajaxReturn($list);
+    }
+
+    public function getDevicesInfo()
+    {
+        $date = I('get.date');
+        $hotel_id =I('get.hotel_id');
+        if($hotel_id){
+            $HotelRoom = RunInfoDataModel::getHotelRooms($hotel_id);
+        }else{
+            $HotelRoom = RunInfoDataModel::getHotelRoom($this->user_id);
+        }
+
+        // 开始时间
+        $startTime = date('Y-m-d H:i:s', $HotelRoom[0]['ctime']);
+        // 结束时间
+        $endTime = date('Y-m-d H:i:s', time());
+
+
+        $date = date("Y-m-d");
+        $firstday = date('Y-m-01', strtotime($date));
+        $firstdays = strtotime(date('Y-m-01', strtotime($date)));
+        $lastday = strtotime(date('Y-m-d', strtotime("$firstday +1 month -1 day")));
+        // 统计所有房间
+        $monthsbai = 0;
+        $jidubai = 0;
+        $nianbai = 0;
+        $anbai = 0;
+        $anbais = 0;
+        $hahdaya = 0;
+        foreach ($HotelRoom as $key => &$val) {
+            // 获取设备最新状态
+            $data = RunInfoModel::getNewDevicesInfo($val['equipment_sno']);
+            if ($data['data']['devices'][0]['info']['online'] == 0 && $data['data']['devices'][0]['info']['power'] == 0) {
+                $val['status'] = 1;
+            } else {
+                // 算出是否达到了一个天次
+                $dates = $date . ' 14:00:00';
+                $beginToday = strtotime($dates);
+                $endToday = strtotime(date('Y-m-d H:i:s', strtotime("+1 day", $beginToday)));
+                $datas = RunInfoModel::getDevicesHoures($val['equipment_sno'], 7 * 24);
+                $infodata = array();
+                foreach ($datas['data']['hours'] as $keys => $vals) {
+                    if ($vals['date'] > $beginToday && $vals['date'] < $endToday) {
+                        $infodata[] = $vals;
+                    }
+                }
+                if ($infodata == 24) {
+                    $val['status'] = 2;
+                } else {
+                    $val['status'] = 3;
+                }
+
+                $deviceData = RunInfoModel::getDevicesHoures($val['equipment_sno']);
+                $monthDay = $deviceData['data']['hours'];
+                $monthDays = array();
+                // 算出开启天数
+
+                // 算出本月度开启率
+                $num = 0;
+                foreach ($monthDay as $month => &$days) {
+                    if ($days['date'] > $firstdays && $days['date'] < $lastday) {
+                        $days['key'] = $num++;
+                        $monthDays[] = $days;
+                    }
+                }
+                $numone = ($this->chaifenshuzu($monthDays, 1));
+                $monthsbai +=  ($numone / 30);
+                // 算出本季度开启率
+                $season = ceil(date('n') / 3);
+                $startTimeone = strtotime(date('Y-m-01', mktime(0, 0, 0, ($season - 1) * 3 + 1, 1, date('Y'))));
+                $endTimeone = strtotime(date('Y-m-t', mktime(0, 0, 0, $season * 3, 1, date('Y'))));
+                $jiduDays = array();
+                foreach ($monthDay as $months => &$dayss) {
+                    if ($dayss['date'] > $startTimeone && $dayss['date'] < $endTimeone) {
+                        $days['key'] = $num++;
+                        $jiduDays[] = $dayss;
+                    }
+                }
+                $numtwo = ($this->chaifenshuzu($jiduDays));
+                $jidubai += ($numtwo / 120);
+                // 算出本年度开启率
+                $startTimetwo = strtotime(date('Y-01-01'));
+                $endTimetwo = strtotime(date('Y-12-31'));
+                $nianDays = array();
+                foreach ($monthDay as $nians => &$n){
+                    if ($n['date'] > $startTimetwo && $n['date'] < $endTimetwo) {
+                        $n['key'] = $num++;
+                        $nianDays[] = $n;
+                    }
+                }
+                $numthree = ($this->chaifenshuzu($nianDays));
+                $nianbai += ($numthree / 365);
+                // 安装日到现在开启率
+                $startThree = $val['ctime'];
+                $endThree = time();
+                $anzhuanDays = array();
+                foreach ($monthDay as $nianss => &$ns){
+                    if ($ns['date'] > $startThree && $ns['date'] < $endThree) {
+                        $ns['key'] = $num++;
+                        $anzhuanDays[] = $ns;
+                    }
+                }
+                $numfour = ($this->chaifenshuzu($anzhuanDays));
+                $dayxx =($endThree - $startThree) / 86400;
+                $anbai += ($numfour / $dayxx);
+                // 结算周期开启率
+                $date = date("Y-m-d");
+                $startfour = strtotime(date('Y-m-01', strtotime($date)));
+                $endfour = time();
+                $anzhuanDa = array();
+                foreach ($monthDay as $niansss => &$nss){
+                    if ($nss['date'] > $startfour && $nss['date'] < $endfour) {
+                        $nss['key'] = $num++;
+                        $anzhuanDa[] = $nss;
+                    }
+                }
+                // 结算周期开启天次
+                $numfive = ($this->chaifenshuzu($anzhuanDa));
+                $hahdaya += $numfive;
+                $dayxxx =($endfour - $startfour) / 86400;
+                $anbais += ($numfive/ $dayxxx);
+            }
+        }
+        $this->assign('rooms',$HotelRoom);
+        $this->assign('monthsbai',filter_money($monthsbai));
+        $this->assign('jidubai',filter_money($jidubai));
+        $this->assign('nainbai',filter_money($nianbai));
+        $this->assign('anbai',filter_money($anbai));
+        $this->assign('anbais',filter_money($anbais));
+        $this->assign('hahdats',$hahdaya);
+        $this->assign('time',time());
+        $this->assign('date',$date);
+        $this->display('getDevicesInfo');
+    }
+
+    public function oneDevice($sno){
+        $date = I('get.date');
+        $date = date("Y-m-d");
+        $firstday = date('Y-m-01', strtotime($date));
+        $firstdays = strtotime(date('Y-m-01', strtotime($date)));
+        $lastday = strtotime(date('Y-m-d', strtotime("$firstday +1 month -1 day")));
+        // 获取设备最新状态
+        $data = RunInfoModel::getNewDevicesInfo($sno);
+        $deviceDatas = M('OperInfo')->where(array('equipment_sno'=>$sno))->find();
+        if ($data['data']['devices'][0]['info']['online'] == 0 && $data['data']['devices'][0]['info']['power'] == 0) {
+            $val['status'] = 1;
+        } else {
+            // 算出是否达到了一个天次
+            $dates = $date . ' 14:00:00';
+            $beginToday = strtotime($dates);
+            $endToday = strtotime(date('Y-m-d H:i:s', strtotime("+1 day", $beginToday)));
+            $datas = RunInfoModel::getDevicesHoures($sno, 7 * 24);
+            $infodata = array();
+            foreach ($datas['data']['hours'] as $keys => $vals) {
+                if ($vals['date'] > $beginToday && $vals['date'] < $endToday) {
+                    $infodata[] = $vals;
+                }
+            }
+            if ($infodata == 24) {
+                $val['status'] = 2;
+            } else {
+                $val['status'] = 3;
+            }
+
+            $deviceData = RunInfoModel::getDevicesHoures($sno);
+            $monthDay = $deviceData['data']['hours'];
+            $monthDays = array();
+            // 算出本月度开启率
+            $num = 0;
+            foreach ($monthDay as $month => &$days) {
+                if ($days['date'] > $firstdays && $days['date'] < $lastday) {
+                    $days['key'] = $num++;
+                    $monthDays[] = $days;
+                }
+            }
+            $numone = ($this->chaifenshuzu($monthDays, 1));
+            $monthsbai = ($numone / 30);
+            // 算出本季度开启率
+            $season = ceil(date('n') / 3);
+            $startTimeone = strtotime(date('Y-m-01', mktime(0, 0, 0, ($season - 1) * 3 + 1, 1, date('Y'))));
+            $endTimeone = strtotime(date('Y-m-t', mktime(0, 0, 0, $season * 3, 1, date('Y'))));
+            $jiduDays = array();
+            foreach ($monthDay as $months => &$dayss) {
+                if ($dayss['date'] > $startTimeone && $dayss['date'] < $endTimeone) {
+                    $days['key'] = $num++;
+                    $jiduDays[] = $dayss;
+                }
+            }
+            $numtwo = ($this->chaifenshuzu($jiduDays));
+            $jidubai = ($numtwo / 120);
+            // 算出本年度开启率
+            $startTimetwo = strtotime(date('Y-01-01'));
+            $endTimetwo = strtotime(date('Y-12-31'));
+            $nianDays = array();
+            foreach ($monthDay as $nians => &$n) {
+                if ($n['date'] > $startTimetwo && $n['date'] < $endTimetwo) {
+                    $n['key'] = $num++;
+                    $nianDays[] = $n;
+                }
+            }
+            $numthree = ($this->chaifenshuzu($nianDays));
+            $nianbai = ($numthree / 365);
+            // 安装日到现在开启率
+            $startThree = $val['ctime'];
+            $endThree = time();
+            $anzhuanDays = array();
+            foreach ($monthDay as $nianss => &$ns) {
+                if ($ns['date'] > $startThree && $ns['date'] < $endThree) {
+                    $ns['key'] = $num++;
+                    $anzhuanDays[] = $ns;
+                }
+            }
+            $numfour = ($this->chaifenshuzu($anzhuanDays));
+//            $hahdaya = $numfour;
+            $dayxx = ($endThree - $startThree) / 86400;
+            $anbai = ($numfour / $dayxx);
+            // 结算周期开启率
+            $date = date("Y-m-d");
+            $startfour = strtotime(date('Y-m-01', strtotime($date)));
+            $endfour = time();
+            $anzhuanDa = array();
+            foreach ($monthDay as $niansss => &$nss) {
+                if ($nss['date'] > $startfour && $nss['date'] < $endfour) {
+                    $nss['key'] = $num++;
+                    $anzhuanDa[] = $nss;
+                }
+            }
+            // 结算周期开启天次
+            $numfive = ($this->chaifenshuzu($anzhuanDa));
+            $hahdaya = $numfive;
+            $dayxxx = ($endfour - $startfour) / 86400;
+            $anbais = ($numfive / $dayxxx);
+        }
+        // 净化器,监控器类型
+        $rt_id = M(\Pc\Model\SalesModel::TABLENAME_OPER)->where(array('equipment_sno'=>$sno))->getField('rt_id');
+        $map = array();
+        $map['l.equipment_sno'] = $sno;
+        $map['h.rt_id'] = $rt_id;
+        $e1_name = M(\Pc\Model\SalesModel::TABLENAME_OPER)->alias('l')
+            ->join('left join ' . C('DB_PREFIX') . \Pc\Model\SalesModel::TABLENAME_ORDER . ' as z on z.id = l.oo_id')
+            ->join('left join ' . C('DB_PREFIX') . \Pc\Model\SalesModel::TABLENAME_EMENT . ' as h on h.hc_id = z.hc_id')
+            ->join('left join ' . C('DB_PREFIX') . \Pc\Model\SalesModel::TABLENAME_TYPE . ' as s on s.id = h.e1_id')
+            ->where($map)
+            ->field('s.name')->find();
+        $e2_name = M(\Pc\Model\SalesModel::TABLENAME_OPER)->alias('l')
+            ->join('left join ' . C('DB_PREFIX') . \Pc\Model\SalesModel::TABLENAME_ORDER . ' as z on z.id = l.oo_id')
+            ->join('left join ' . C('DB_PREFIX') . \Pc\Model\SalesModel::TABLENAME_EMENT . ' as h on h.hc_id = z.hc_id')
+            ->join('left join ' . C('DB_PREFIX') . \Pc\Model\SalesModel::TABLENAME_TYPE . ' as s on s.id = h.e2_id')
+            ->where($map)
+            ->field('s.name')->find();
+        $this->assign('e1_name',$e1_name);
+        $this->assign('e2_name',$e2_name);
+        $this->assign('devicesData',$deviceDatas);
+        $this->assign('monthsbai',filter_money($monthsbai));
+        $this->assign('jidubai',filter_money($jidubai));
+        $this->assign('nainbai',filter_money($nianbai));
+        $this->assign('anbai',filter_money($anbai));
+        $this->assign('anbais',filter_money($anbais));
+        $this->assign('hahdats',$hahdaya);
+        $this->assign('time',time());
+        $this->assign('date',$date);
+        $this->display('onedevse');
+    }
+    /**
+     * 拆分数组
+     * @param $data
+     * @param $type
+     */
+    public function chaifenshuzu($data)
+    {
+        $num = 0;
+        // 规则从今天14点到明天14点
+        foreach ($data as $key => $val) {
+            // 截取字符串,开始到结束
+            if (substr($val['fulldate'], 11, 2) == 14 && substr($data[$key + 24]['fulldate'], 11, 2) == 14) {
+                $num++;
+            }
+        }
+        return $num;
+    }
+
+
+
+}

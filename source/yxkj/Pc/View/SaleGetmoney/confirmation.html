@@ -1,0 +1,102 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>提款</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>提款</a></li>
+        <li class="on">查看</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title">打款详情</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+        <div class="subpage hetongxinxi01">
+            <form method="post" action="{:U('returnedit')}">
+                <div class="subpage-block">
+                    <table class="table table-bordered table-form">
+                        <tbody>
+                        <tr>
+                            <th>申请时间：
+                                <input type='hidden' name='status' value='{$data.status}'>
+                                <input type='hidden' name='sale_id' value='{$data.sale_id}'>
+                                <input type='hidden' name='id' value='{$data.id}'></th>
+                            <td><span class="table-form-text">{$data.ctime|date='Y-m-d H:i:s',###}</span></td>
+                        </tr>
+                        <tr>
+                            <th>申请金额：</th>
+                            <td><span class="table-form-text">{$data.rprice}元</span><br>
+
+                            </td>
+                        </tr>
+                        <!--<tr>-->
+                            <!--<th>扣款详情：</th>-->
+                            <!--<td> <span class="table-form-text">代扣个人所得税￥{$data.mprice}元</span>-->
+                                <!--<span class="table-form-text"></span>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <tr>
+                            <th>到账金额：</th>
+                            <td><span class="table-form-text">{$data.price}元</span>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>提现银行：</th>
+                            <td><span class="table-form-text">{$data.bank_name }</span></td>
+                        </tr>
+                        <tr>
+                            <th>卡号：</th>
+                            <td><span class="table-form-text">{$data.bank_num}</span></td>
+                        </tr>
+                        <tr>
+                            <th>提现状态：</th>
+                            <td >
+                                <if condition="$data['status'] eq 1"> 待打款
+                                    <elseif condition="$data['status'] eq 2"/>已打款
+                                    <else/>
+                                </if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>打款凭证：</th>
+                            <td>
+                                <dl class="uploadimg-container">
+                                    <dd class="imgwrap-container">
+                                        <volist name="data.arr_img" id="himg">
+                                            <div class="imgwrap">
+                                                <img class="img-rounded" src="{$himg}">
+                                            </div>
+                                        </volist>
+                                    </dd>
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>打款时间：</th>
+                            <td>
+                                <span class="table-form-text"><notempty name="data.give_time">{$data.give_time|date='Y-m-d H:i:s',###}</notempty></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th></th>
+                            <td>
+                                <button type="button" class="btn btn-quxiao back">返回</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</block>

@@ -1,0 +1,171 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>{$status}详情</title>
+</block>
+<block name="css">
+    <style>
+        input[type='text'] {
+            border: none;
+            text-align: right;
+        }
+        .checkbox-container .i_radio {
+            vertical-align: initial;
+        }
+
+    </style>
+</block>
+<block name="main">
+    <!-- 主体内容 开始 -->
+    <div class="main swiper-container-01">
+        <div class="header">
+            <div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+        </div>
+
+        <div class="main_body anzhuangxiangx">
+            <div class="anzhuangxiangx_content">
+                <div class="daishenhebiaoxiao-page">
+                    <div class="rishscan" style="margin-top:1rem;text-align:center;"><i class="icon w_0004_04 w_04_12"></i>扫一扫</div>
+
+					<!-- 待审核 开始 -->
+					<form id="oiform" method="post" action="{:U('oioperation')}" style="display:none;">
+					<div class="form_data_wrap anzhuangxinxi">
+	        			<ul class="form_data">
+	        				<li class="layoutlr form_item">
+	        					<div class="left">设备MAC</div>
+	        					<div class="right"><input type="text" readonly="true" name="equipment_sno" value="{$sno}"></div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">房间类型</div>
+	        					<div class="right">{$rt_name}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">楼层</div>
+	        					<div class="right">{$floor}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">房间号</div>
+	        					<div class="right">{$room_sno}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">是否有窗</div>
+	        					<div class="right"><eq name="is_window" value="1">有<else/>无</eq></div>
+                                </li>
+                                <li class="layoutlr form_item">
+                                    <div class="left">朝向</div>
+                                    <div class="right">
+                                    <if condition="$orientation eq 1">
+                                        东
+                                    <elseif condition="$orientation eq 2"/>
+                                        南
+                                    <elseif condition="$orientation eq 3"/>
+                                        西
+                                    <else/>
+                                        北
+                                    </if>
+                                    </div>
+                                </li>
+                                <li class="layoutlr form_item">
+                                    <div class="left">安装位置</div>
+                                    <div class="right">
+                                        <if condition="$place eq 1">
+                                            出风口
+                                        <elseif condition="$place eq 2">
+                                            回风口
+                                        <else/>
+                                            其他
+                                        </if>
+                                    </div>
+                                </li>
+                                <li class="layoutlr form_item">
+                                    <div class="left">中央空调品牌</div>
+                                    <div class="right">{$air_name}</div>
+                                </li>
+                                <li class="layoutlr form_item" id="configWXDeviceWiFi" style="border: 0rem;">
+                                    <div class="left">设备配网</div>
+                                    <div class="right">
+                                        <div>
+                                            <i class="icon w_0000_00 w_00_11"></i>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <div class="form_data_btns form_data_btns_tj">
+                            <input type="hidden" name="oo_id" value="{$oo_id}">
+                            <input type="hidden" name="id" value="{$id}">
+                            <button type="button" class="btn maxbtn ajax-post">提交</button>
+                        </div>
+                    </form>
+                    <!-- 待审核 结束 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript">
+// 微信链接wifi
+wx.config({
+    beta: true,
+    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: '{$appId}', // 必填，企业号的唯一标识，此处填写企业号corpid
+    timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+    nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+    signature: '{$signature}',// 必填，签名，见附录1
+    jsApiList: ['configWXDeviceWiFi','hideAllNonBaseMenuItem','scanQRCode'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});
+
+wx.ready(function(){
+    wx.error(function(res){
+//      layer.open({content:res.errMsg,time:2});
+        return false;
+    });
+
+    //隐藏所有非基础按钮接口
+    wx.hideAllNonBaseMenuItem();
+});
+
+document.querySelector('#configWXDeviceWiFi').onclick = function () {
+    document.activeElement.blur();
+    wx.invoke('configWXDeviceWiFi', {}, function (res) {
+        //layer.open(res);
+        // 这里是回调函数
+        /*var err_msg = res.err_msg;
+        if(err_msg == 'configWXDeviceWiFi:ok'){
+            layer.open('连接成功');
+        }else{
+            layer.open(res);
+        }*/
+    });
+};
+
+//扫一扫
+$(".rishscan").click(function(){
+wx.scanQRCode({
+    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+    success: function (res) {
+        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+        var ticket = result.split('/')[4];
+        if(result){
+            $.post("{:U('get_mac')}",{rishscan:encodeURI(result)},function(re_data){
+                if(typeof re_data != "object"){
+                    re_data = eval("("+re_data+")");
+                }
+                if(re_data.status){
+                    $("input[name='equipment_sno']").val(re_data.data);
+                    $("#oiform").show();
+                    $(".rishscan").hide();
+                }else{
+                    layer.open({content:re_data.info,time:2});
+                }
+            })
+        }
+    }
+});
+});
+</script>
+</block>

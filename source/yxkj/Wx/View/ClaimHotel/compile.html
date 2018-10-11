@@ -1,0 +1,560 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>编辑</title>
+</block>
+<block name="css">
+	<link rel="stylesheet" href="__CSS__/LArea.min.css">
+</block>
+
+<block name="main">
+	<style>
+		.form_data_btns .layoutlr .left {
+			padding-right: 0.1rem;
+			width: 50%;
+		}
+		.form_data .form_item .right input{
+			width: 38vw;
+			border: none;
+			text-align: right;
+		}
+		.form_data .layouttb .bottom input[type='text']{
+			width: 11vw;
+			border: 1px solid #ccc;
+			border-radius: 6px;
+			text-indent: 4px;
+			float: right;
+			margin-right: 0.1rem;
+		}
+		.form_data .layouttb .bottom{
+			overflow: hidden;
+			padding-bottom: ;
+		}
+		.form_data .layouttb .bottom label{
+			width: 2.3rem;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			margin-right: 0rem;
+			vertical-align: middle;
+		}
+		.checkbox-container-input {
+			vertical-align: middle;
+			position: relative;
+			top: 0.05rem;
+			display: inline-block;
+		}
+		.checkbox-containers{
+			width: 50%;
+			float: left;
+			margin-bottom: 0.1rem;
+		}
+		.form_data .form_item .left {
+			font-size: 0.26rem;
+		}
+		@media only screen and (max-width:320px){
+			.checkbox-container{
+				width: 1.9rem!important;
+			}
+			.form_data .form_item .right input{
+				width: 36vw;
+				border: none;
+				text-align: right;
+			}
+		}
+		@media screen and (min-width:321px) and (max-width:350px)
+		{
+			.checkbox-containers {
+				width: 50%;
+			}
+			.bordnone ,#larea{
+				width: 60%;}
+			.form_data .form_item .left {
+				min-width: 3rem;
+			}
+			.form_data .layouttb .bottom label {
+				width: 2rem;
+			}
+			.selected{width: auto!important;}
+			select{width: auto!important;}
+			.form_data .form_item .right input {
+				width: 37vw;
+				border: none;
+				text-align: right;
+			}
+		}
+	</style>
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+		</div>
+
+		<div class="main_body">
+			<div class="form_data_wrap renlingchakan">
+				<form method="post" action="{:U('compileIn')}">
+					<ul class="form_data">
+						<li class="layoutlr form_item">
+							<div class="left">酒店名称</div>
+							<div class="right">
+								<div>
+									<input type="text" name="name" value="{$data.name}">
+									<input type="hidden" name="id" value="{$data.id}" class="selectedval">
+									<i class="icon w_0000_00 w_00_11"></i></div>
+
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">酒店类型</div>
+							<div class="right">
+								<div class="" data-relation="hotel_type">
+									<select name="ht_id" style="width: 127px">
+										<volist name="hotel" id="ht_item">
+											<option value="{$ht_item.id}" <if condition="$data['type_name'] eq $ht_item['name']">selected="selected"</if>>{$ht_item.name}</option>
+										</volist>
+									</select>
+									<i class="icon w_0000_00 w_00_11"></i>
+								</div>
+
+							</div>
+						</li>
+						<li class="layouttb form_item">
+							<div class="top">客房类型</div>
+							<div class="bottom">
+								<volist name="data['roomer']" id="hrts">
+								<div class="checkbox-containers">
+									<label class="checkbox-container kefangleixing" data-type="radio" <notempty name="hrts.room_num">checked</notempty>>
+									<input class="room-type" type="checkbox" name="hrtname[]" value="{$hrts.id}" <notempty name="hrts.room_num">checked</notempty>>
+									<i class="icon icon01 i_radio"></i>
+									<span class="checkbox_txt">{$hrts.name}</span></label>
+									<span class="checkbox-container-input"><input type="text" onkeyup="if(event.keyCode !=37 && event.keyCode != 39)value=value.replace(/\D/g,'');if(value==0)value='';" name="room_nums[]" class="room_num" value="{$hrts.room_num}" maxlength="5"></span>
+								</div>
+								</volist>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">客房数</div>
+							<div class="right">
+								<div>
+									<!-- <span class="room_nums">{$data.room_num}</span> -->
+									<input class="bordnone" type="text" name="room_num" value="{$data.room_num|default=0}" id="room_numsss"  readonly="readonly" disabled="disabled">
+								</div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">所属地区</div>
+							<div class="right">
+								<div>
+									<span class="selected"><input type="text" id="larea"  value="{$data.provice}{$data.city}{$data.county}" style="border: none;text-align: right;" ></span>
+									<input id="value" type="hidden" name="pcc_area" value="{$data.provice},{$data.city},{$data.county}"/>
+									<i class="icon w_0000_00 w_00_11"></i>
+								</div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">详细地址</div>
+							<div class="right">
+								<div><input type="text" name="area" value="{$data.area}" ><i class="icon w_0000_00 w_00_11"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">联系方式</div>
+							<div class="right">
+								<div><input type="text" name="tell" value="{$data.tell}"><i class="icon w_0000_00 w_00_11"></i></div>
+							</div>
+						</li>
+
+						<li class="layouttb form_item">
+							<div class="top">酒店图片</div>
+							<div class="bottom">
+								<dl class="uploadimg-container clearfix">
+									<dd class="imgwrap-container">
+										<if condition="$data['imgs'][0] neq ''">
+										<volist name="data.imgs" id="vol">
+											<div class='imgwrap'><img class='img-rounded' src='{$vol}'>
+												<ul class="imgoprate">
+													<li data-oprate="toleft"><i class="icon"></i></li>
+													<li data-oprate="detele"><i class="icon"></i></li>
+													<li data-oprate="toright"><i class="icon"></i></li>
+												</ul>
+											</div>
+										</volist>
+										</if>
+									</dd>
+									<dt>
+									<div class="item btn-upload" v-show="uploadImgs.length==0"></div>
+									</dt>
+								</dl>
+								<input type="hidden" name="img" value="{$data.img}" class="img_val">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">商务负责人</div>
+							<div class="right">
+								<div><input type="text" name="shang_name" value="{$data.shang_name}"><i class="icon w_0000_00 w_00_11"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">商务负责人联系方式</div>
+							<div class="right">
+								<div><input type="text" name="shang_tell" value="{$data.shang_tell}"><i class="icon w_0000_00 w_00_11"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">酒店总经理</div>
+							<div class="right">
+								<div><input type="text" name="all_name" value="{$data.all_name}"><i class="icon w_0000_00 w_00_11"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">酒店总经理联系方式</div>
+							<div class="right">
+								<div><input type="text" name="all_tell" value="{$data.all_tell}"><i class="icon w_0000_00 w_00_11"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">财务负责人</div>
+							<div class="right">
+								<div><input type="text" name="money_name" value="{$data.money_name}"><i class="icon w_0000_00 w_00_11"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">财务负责人联系方式</div>
+							<div class="right">
+								<div><input type="text" name="money_tell" value="{$data.money_tell}"><i class="icon w_0000_00 w_00_11"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">工程负责人</div>
+							<div class="right">
+								<div><input type="text" name="project_name" value="{$data.project_name}"><i class="icon w_0000_00 w_00_11"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">工程负责人联系方式</div>
+							<div class="right">
+								<div><input type="text" name="project_tell" value="{$data.project_tell}"><i class="icon w_0000_00 w_00_11"></i></div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">认领状态</div>
+							<div class="right">
+								<if condition="$data['status_id'] eq 1">
+									已认领
+									<elseif condition="$data['status_id'] eq 2"/>
+									已被其它人认领
+									<else/>
+									未认领
+								</if>
+								</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">认领人</div>
+							<div class="right">{$data.cliam}</div>
+						</li>
+						<if condition="$data['is_get'] eq 1 && $data['is_sign'] eq 0">
+								<li class="layoutlr form_item">
+									<div class="left">认领有效期</div>
+									<div class="right">
+										<div class="input_container">
+											{$data.intime}天
+										</div>
+									</div>
+								</li>
+							<else/>
+						</if>
+						<li class="layoutlr form_item">
+							<div class="left">历史销售人员</div>
+							<div class="right">
+								<div class="input_container">
+									<volist name="data['hostory']" id="val">
+										{$val}<br>
+									</volist>
+								</div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">签约状态</div>
+							<div class="right"><if condition="$data['is_sign'] eq 1">
+								已签约
+								<else />
+								未签约
+							</if>
+
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">酒店状态</div>
+							<div class="right"><span class="selected">
+										<if condition="$data['status'] eq 1">
+											营业中
+											<elseif condition="$data['status'] eq 0"/>
+												未营业
+											<else />
+											已删除
+										</if></span></div>
+						</li>
+					</ul>
+					<div class="form_data_btns btn2">
+						<li class="layoutlr">
+							<if condition="$data['status_id'] eq 3">
+							<div >
+								<button class="btn maxbtn ajax-post">提交</button>
+							</div>
+							<elseif  condition="$data['status_id'] eq 1 && $data['is_sign'] eq 0"/>
+							<div class="left">
+								<button class="btn maxbtn ajax-post">提交</button>
+							</div>
+							<div class="right">
+									<a class="btn maxbtn ajax-posts" onclick="seeHotel.HotelCliam()">取消认领</a>
+							</div>
+							<else/>
+							<div >
+								<button class="btn maxbtn ajax-post">提交</button>
+							</div>
+							</if>
+						</li>
+					</div>
+				</form>
+
+			</div>
+		</div>
+		<!-- 彈窗內容 開始 -->
+
+		<div class="selected_layer hide" data-relation="hotel_type">
+			<ul class="options_container" data-relation="hotel_type">
+				<volist name="hotel" id="ht_item">
+					<li><span data="{$ht_item.id}">{$ht_item.name}</span></li>
+					<input type="hidden" name="ht_id" value="{$ht_item.id}">
+				</volist>
+			</ul>
+		</div>
+		<!-- 彈窗內容 結束 -->
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+<block name="js">
+	<script type="text/javascript" src="__JS__/LAreaData.js"></script>
+	<script type="text/javascript" src="__JS__/LArea.min.js"></script>
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script type="text/javascript">
+		$("#larea").focus(function(){
+			document.activeElement.blur();
+		});
+		/* 计算总的客房数 */
+        $('.room_num').blur(function(){
+            if($(this).val() != 0 && $(this).val() != '' && parseInt($(this).val())>0){
+                $(this).parent('.checkbox-container-input').siblings('.checkbox-container').attr('checked','checked');
+                $(this).closest(".checkbox-containers").find("input[type='checkbox']").prop('checked',true);
+                /*var room_nums = parseInt($('input[name="room_num"]').val());
+                room_nums += parseInt($(this).val())*/
+                var room_nums = 0;
+                $(".kefangleixing").each(function(){
+                    if($(this).closest(".checkbox-containers").find("input[type='checkbox']").prop('checked')){
+                        room_nums += parseInt($(this).closest(".checkbox-containers").find('.checkbox-container-input input').val());
+                    }
+                });
+                $('input[name="room_num"]').val(room_nums);
+            }else {
+                if($(this).parent('.checkbox-container-input').siblings('.checkbox-container').attr('checked') == 'checked'){
+                    $(this).parent('.checkbox-container-input').siblings('.checkbox-container').removeAttr('checked');
+                    $(this).closest(".checkbox-containers").find("input[type='checkbox']").prop('checked',false);
+                    var room_nums = 0;
+                    $(".kefangleixing").each(function(){
+                        if($(this).closest(".checkbox-containers").find("input[type='checkbox']").prop('checked')){
+                            room_nums += parseInt($(this).closest(".checkbox-containers").find('.checkbox-container-input input').val());
+                        }
+                    });
+                    $('input[name="room_num"]').val(room_nums);
+                }
+                if(!($(this).val() == 0 || parseInt($(this).val())==0)){
+                	layer.open({content:'房间数量输入不正确',time:800});
+                	$(this).val("");
+                }
+            }
+        });
+//		$(".room_num").bind('input propertychange', function(){
+//			count_rnum();
+//		})
+//		function count_rnum(){
+//			var room_nums = 0;
+//			$(".checkbox-container").each(function(){
+//				if($(this).attr("checked") == "checked"){
+//					if($(this).closest(".checkbox-containers").find('.checkbox-container-input input').val() != ""){
+//						room_nums += parseInt($(this).closest(".checkbox-containers").find('.checkbox-container-input input').val());
+//					}
+//				}else{
+//					$(this).closest(".checkbox-containers").find('.checkbox-container-input input').val("");
+//				}
+//			})
+//			$("#room_numsss").val(room_nums);
+//		}
+		/**
+		 * 地址选择
+		 */
+		var area1 = new LArea();
+		area1.init({
+			'trigger': '#larea', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+			'valueTo': '#value', //选择完毕后id属性输出到该位置
+			'keys': {
+				id: 'id',
+				name: 'name'
+			}, //绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
+			'type': 1, //数据源类型
+			'data': LAreaData //数据源
+		});
+		area1.value=[0,0,0];//控制初始位置，注意：该方法并不会影响到input的value
+		//取消认领
+		var seeHotel = {};
+		seeHotel.HotelCliam = function () {
+			layer.open({
+				content: '您确定取消认领该酒店么？'
+				,btn: ['确定', '取消']
+				,yes: function(index){
+					var url = '/Wx/ClaimHotel/userNoClaim';
+					var data = {};
+					data.id = $("input[name='id']").val();
+					$.post(url, data, function (data) {
+						if(data.code == 0){
+							layer.open({
+								content: '取消认领成功'
+								,btn: '我知道了'
+								,yes: function(index){
+									window.location.href="/Wx/ClaimHotel/ouser";
+								}
+							});
+						}else{
+							layer.open({
+								content: data.message
+								,btn: '我知道了'
+							});
+						}
+					});
+				}
+			});
+		}
+		//认领
+		seeHotel.AddHotelCliam = function () {
+			layer.open({
+				content: '您确定认领该酒店么？'
+				,btn: ['确定', '取消']
+				,yes: function(index){
+					var url = '/Wx/ClaimHotel/userClaim';
+					var data = {};
+					data.id = $("input[name='id']").val();
+					$.post(url, data, function (data) {
+						if(data.code == 0){
+							layer.open({
+								content:data.massage
+								,btn: ['我知道了']
+								,yes: function(index){
+									window.location.href="/Wx/ClaimHotel/ouser";
+							}
+							});
+
+						}else{
+							layer.open({
+								content: data.massage
+								,btn: '我知道了'
+								,yes: function(index){
+									window.location.href="/Wx/ClaimHotel/ouser";
+								}
+							});
+						}
+					});
+				}
+			});
+		}
+		/* 微信上传图片所需 start */
+		wx.config({
+			debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			appId: '{$appId}', // 必填，公众号的唯一标识
+			timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+			nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+			signature: '{$signature}',// 必填，签名，见附录1
+			jsApiList: ['chooseImage','uploadImage','scanQRCode','hideAllNonBaseMenuItem'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		});
+		wx.ready(function(){
+			wx.error(function(res){
+				layer.open({
+					content: res.errMsg
+					,btn: '我知道了'
+				});
+				return false;
+			});
+
+			wx.hideAllNonBaseMenuItem();
+
+			/*wx.checkJsApi({
+				jsApiList: ['chooseImage','uploadImage','scanQRCode'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+				success: function(res) {
+					// 以键值对的形式返回，可用的api值true，不可用为false
+					// 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+				}
+			});*/
+		});
+		$(".btn-upload").click(function(){
+			//选择图片
+			wx.chooseImage({
+				count: 1, // 默认9
+				sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+				sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+				success: function (res) {
+					var localIds = res.localIds;
+					//上传图片
+					wx.uploadImage({
+						localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+						isShowProgressTips: 1, // 默认为1，显示进度提示
+						success: function (res) {
+							var serverId = res.serverId; // 返回图片的服务器端ID
+							//上传的图片保存到本地服务器
+							$.post("{:U('saveWXFile')}",{img_dir:'ClaimHotel',media_id:serverId},function(res_data){
+								if(typeof res_data != "object"){
+									var res_data = eval("("+res_data+")");
+								}
+								$('.jiudianimgs').remove();
+								$(".imgwrap-container").append("<div class='imgwrap'>\
+                              <img class='img-rounded' src='"+res_data.data+"'>\
+                              <ul class='imgoprate'>\
+                                <li data-oprate='toleft'><i class='icon'></i></li>\
+                                <li data-oprate='detele'><i class='icon'></i></li>\
+                                <li data-oprate='toright'><i class='icon'></i></li>\
+                              </ul>\
+                            </div>");
+								count_img();
+							})
+						}
+					});
+				}
+			});
+		});
+
+		function count_img(){
+			var img_val = "";
+			$(".imgwrap-container div").each(function(i){
+				if(i != 0){
+					img_val += ",";
+				}
+				img_val += $(this).find("img").attr("src");
+			})
+			$(".img_val").val(img_val);
+		}
+
+		/*图片移动、删除*/
+		$('.imgwrap-container').on('click', '[data-oprate]', function() {
+			var _imgwrap = $(this).closest('.imgwrap');
+			switch($(this).attr('data-oprate')) {
+				case 'toleft':
+					_imgwrap.prev().before(_imgwrap);
+					//console.log('左边', $(this).attr('data-oprate'))
+					break;
+				case 'detele':
+					_imgwrap.remove();
+					break;
+				case 'toright':
+					_imgwrap.next().after(_imgwrap);
+					break;
+			}
+			count_img();
+		});
+	</script>
+</block>

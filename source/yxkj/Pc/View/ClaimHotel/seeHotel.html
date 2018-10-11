@@ -1,0 +1,265 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>酒店认领信息</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <li class="on">酒店认领信息</li>
+    </ol>
+</block>
+<block name="css">
+    <style type="text/css">
+        .safari_caret{
+            display: none;
+        }
+    </style>
+</block>
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title">酒店认领信息</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+        <div class="subpage hetongxinxi01">
+            <form id="">
+                <div class="subpage-block">
+                    <table class="table table-bordered table-form">
+                        <tbody>
+                        <tr>
+                            <th>酒店ID：</th>
+                            <td><span class="table-form-text">{$data.sn}</span></td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>酒店名称：</th>
+                            <td><span class="table-form-text">{$data.name}</span></td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>酒店类型：</th>
+                            <td><span class="table-form-text">{$data.type_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>客房数：</th>
+                            <td><span class="table-form-text">{$data.room_num}</span></td>
+                        </tr>
+                        <tr>
+                            <th>客房类型：</th>
+                            <td>
+                                <foreach name="RoomType" item="items">
+                                    <label class="checkbox-container">
+                                        <!--<input type="radio" name="kefangleixing">-->
+                                        <!--<i class="icon icon01 i_radio"></i>-->
+                                        <span class="checkbox_txt">{$items.name}（{$items.room_num|default=0}）</span>
+                                    </label>
+
+                                </foreach>
+
+                            </td>
+                        </tr>
+                        <tr class="suoshudiqu">
+                            <th><span class="text-orange">*</span>所属地区：</th>
+                            <td id="city">
+                                <select class="prov" id="provs" name="provice">
+                                    <option>{$data.provice}</option>
+                                </select>
+                                <select class="city" id="citys" disabled="disabled" name="city">
+                                    <option>{$data.city}</option>
+                                </select>
+                                <if condition="$data['county']">
+                                <select class="dist" id="dists" disabled="disabled" name="county">
+                                    <option>{$data.county}</option>
+                                </select>
+                                </if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>详细地址：</th>
+                            <td><span class="table-form-text">{$data.area}</span></td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>联系方式：</th>
+                            <td><span class="table-form-text">{$data.tell}</span></td>
+                        </tr>
+                        <tr>
+                            <th>酒店图片：</th>
+                            <td>
+                                <dl class="uploadimg-container">
+                                    <dd class="imgwrap-container">
+                                        <if condition="$data.img neq ''">
+                                            <foreach name="data.img" item="img">
+                                                <if condition="$img neq ''">
+                                                <div class="imgwrap">
+                                                    <img class="img-rounded" src="{$img|default='__IMG__/head.png'}">
+                                                </div>
+                                                    <else/>
+                                                    <div class="imgwrap">
+                                                        <img class="img-rounded" src="/Public/Images/head.png">
+                                                    </div>
+                                                </if>
+                                            </foreach>
+                                            <else/>
+                                            <div class="imgwrap">
+                                                <img class="img-rounded" src="/Public/Images/head.png">
+                                            </div>
+                                        </if>
+                                    </dd>
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>商务负责人：</th>
+                            <td><span class="table-form-text">{$data.shang_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>商务负责电话：</th>
+                            <td><span class="table-form-text">{$data.shang_tell}</span></td>
+                        </tr>
+                        <tr>
+                            <th>酒店总经理：</th>
+                            <td><span class="table-form-text">{$data.all_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>酒店总经理电话：</th>
+                            <td><span class="table-form-text">{$data.all_tell}</span></td>
+                        </tr>
+                        <tr>
+                            <th>财务负责人：</th>
+                            <td><span class="table-form-text">{$data.money_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>财务负责人电话：</th>
+                            <td><span class="table-form-text">{$data.money_tell}</span></td>
+                        </tr>
+                        <tr>
+                            <th>工程负责人：</th>
+                            <td><span class="table-form-text">{$data.project_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>工程负责人电话：</th>
+                            <td><span class="table-form-text">{$data.project_tell}</span></td>
+                        </tr>
+                        <tr>
+                            <th>签约状态：</th>
+                            <td><span class="table-form-text">
+                                <if condition="$data['is_sign'] eq 1">
+                                    已签约
+                                    <else/>
+                                    未签约
+                                </if>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <th>认领状态：</th>
+                            <td><span class="table-form-text">
+                                <if condition="$data['is_get'] eq 1">
+                                    已认领
+                                    <else/>
+                                    未认领
+                                </if>
+                            </span>
+                                &nbsp;&nbsp;&nbsp;
+                                <span class="table-form-text">
+                                <if condition="$date neq ''">
+                                    认领有效期:剩余{$date}日
+                                </if>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>认领人：</th>
+                            <td><span class="table-form-text">{$data.hotel_user_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>历史销售人员：</th>
+                            <td><span class="table-form-text">{$data.sale_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>酒店状态：</th>
+                            <td><span class="table-form-text">
+                                <if condition="$data['status'] eq 1">
+                                    营业中
+                                    <else/>
+                                    已结业
+                                </if>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <input type="hidden" id="id" value="{$id}">
+                                <!--<if condition="$status eq 3">-->
+                                    <!--&lt;!&ndash;<button type="button" class="btn btn-quxiao" onclick="seeHotel.AddHotelCliam()">认领</button>&ndash;&gt;-->
+                                    <!--<elseif condition="$status eq 1"/>-->
+                                    <!--&lt;!&ndash;<button type="button" class="btn btn-quxiao" onclick="seeHotel.HotelCliam()">取消认领</button>&ndash;&gt;-->
+                                    <!--<else/>-->
+                                <!--</if>-->
+                                <button type="button" class="btn btn-quxiao" id="quxiao">返回</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__JS__/jquery.cityselect.js"></script>
+    <script type="text/javascript">
+//        $("#city").citySelect({
+//            prov: "{$data.provice}",
+//            city: "{$data.city}",
+//            dist: "{$data.county}",
+//            nodata: "none"
+//        });
+$(function () {
+    $("#provs").attr("disabled","disabled").css("background-color","#EEEEEE;");
+    $("#citys").attr("disabled","disabled").css("background-color","#EEEEEE;");
+    $("#dists").attr("disabled","disabled").css("background-color","#EEEEEE;");
+});
+        var seeHotel = {};
+        seeHotel.HotelCliam = function () {
+                layer.confirm('你确定要取消认领该酒店吗?', {
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    var url = '/Pc/ClaimHotel/userNoClaim';
+                    var data = {};
+                    data.id = $("#id").val();
+                    $.post(url, data, function (data) {
+                        if (data.code == 0) {
+                            $(".btn-quxiao").attr("disabled", true);
+                            layer.msg(data.message, {time: 1500, offset: 0, icon: 1});
+                            setTimeout(function () {
+                                window.location.href = '/Pc/ClaimHotel/index';
+                            }, 1500)
+                        } else {
+                            $(".btn-quxiao").attr("disabled", false);
+                            layer.msg(data.message, {time: 1500, offset: 0, icon: 2});
+                        }
+                    });
+                }, function () {
+                    layer.closeAll()
+                });
+        }
+
+        seeHotel.AddHotelCliam = function () {
+            var url = '/Pc/ClaimHotel/userClaim';
+            var data = {};
+            data.id = $("#id").val();
+            $.post(url, data, function (data) {
+                if(data.code == 0){
+                    alert(data.message);
+                }else{
+                    alert(data.message);
+                }
+            });
+        }
+
+        $("#quxiao").click(function () {
+            window.location.href= "/Pc/ClaimHotel/index";
+        })
+    </script>
+</block>

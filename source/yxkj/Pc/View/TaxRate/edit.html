@@ -1,0 +1,85 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>个人所得税税率编辑</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>系统设置 </a></li>
+      <li class="on"><notempty name="id">编辑<else/>新增</notempty>个人所得税税率</li>
+    </ol>
+</block>
+
+<block name="main">
+	<div id="main">
+      <!-- 导航 开始 -->
+      <ul class="clearfix subnav hetongnav">
+        <li><a><i class="icon"></i><span class="cur_title"><notempty name="id">编辑<else/>新增</notempty>个人所得税税率</span></a></li>
+      </ul>
+      <!-- 导航 结束 -->
+
+      <!-- 内容 开始 -->
+          <form method="post" action="{:U('operation')}">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th><span class="text-orange">*</span>税起征点：</th>
+                    <td>
+                      <input type="text" name="min_price" value="{$min_price}"  <notempty name="redonly">disabled</notempty>>
+                    </td>
+                  </tr>
+                  <tr>
+                      <th><span class="text-orange">*</span>税结束点：</th>
+                      <td>
+                          <input type="text" name="max_price" value="{$max_price}"  <notempty name="redonly">disabled</notempty>>
+                      </td>
+                  </tr>
+                  <tr>
+                      <th><span class="text-orange">*</span>税率：</th>
+                      <td>
+                          <input type="text" name="rate" value="{$rate}"  <notempty name="redonly">disabled</notempty>><span style="font-size: 24px;margin-left: 4px;position: relative;top: 11px;;">‱</span>
+                      </td>
+                  </tr>
+                  <tr>
+                    <th><input type="hidden" name="id" value="{$id}"></th>
+                    <td>
+                        <empty name="redonly">
+                            <button type="button" class="btn btn-tijiao ajax-post">保存</button>
+                            <button type="button" class="btn btn-quxiao back">取消</button>
+                            <else />
+                            <button type="button" class="btn btn-quxiao back">返回</button>
+                        </empty>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      <!-- 内容 结束 -->
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript">
+        function showLayer(data){
+            if(typeof data != "object"){
+                var data = eval("("+data+")");
+            }
+            if(data.status == 0){
+                $(".btn-tijiao").attr("disabled", false)
+            }
+            layer.msg(data.info, {
+                icon: data.status ? 1 : 0,
+                offset: 0,
+                //shift: 6,
+                time: 1500   //1.5秒钟之后执行下面的函数
+            }, function () {
+                if (data.status) {  //成功的时候跳转到指定的url地址
+                    location.href = data.data;
+                }
+            });
+        }
+    </script>
+</block>
+

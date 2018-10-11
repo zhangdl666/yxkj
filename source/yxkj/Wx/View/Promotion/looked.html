@@ -1,0 +1,145 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>促销详情</title>
+</block>
+<block name="css">
+	<link rel="stylesheet" href="__CSS__/LCalendar.css">
+	<style type="text/css">
+		.textarea{
+			 width: 89vw!important;
+			 resize:none;
+		 }
+		.textarea img{
+			width: 90vw!important;
+			height: auto!important;
+		}
+		.textarea p{
+			word-break: break-word;
+		}
+		.renlingchakan{
+			padding: 0;
+		}
+		.form_data .form_item {
+
+			padding: 0 0.2rem;
+		}
+		a.btn, a.btn:hover, a.btn:active, a.btn:visited, a.btn:link, a.btn:focus {
+			background: #ff9812;
+		}
+		.layoutlr {
+			padding: 0 5% 0.5rem 5%;
+		}
+
+	</style>
+</block>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+			<div class="right" onclick="delate()"><i class="icon del"></i>删除</div>
+		</div>
+
+		<div class="main_body">
+			<div class="form_data_wrap renlingchakan">
+				<form method="post" action="{:U('undercarriage')}">
+					<ul class="form_data">
+						<li class="layoutlr form_item">
+							<div class="left">促销名称:</div>
+							<div class="right">
+								<div>{$data.title}</div>
+							</div>
+						</li>
+						<input type="hidden" name="id" value="{$data.id}">
+						<input type="hidden" name="status" value="{$data.status}">
+						<li class="layoutlr form_item">
+							<div class="left">促销编号:</div>
+							<div class="right">
+								<div>{$data.sno}</div>
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">促销状态:</div>
+							<div class="right">
+								<div><if condition="$data.status eq 1">
+									上架
+									<else/>
+									下架
+								</if></div>
+							</div>
+						</li>
+						<li class="layouttb form_item" style="background-color: #ffffff;padding-left: 0.2rem">
+							<div class="top" style="padding-top: 0.15rem">促销封面:</div>
+							<div class="bottom">
+								<dl class="uploadimg-container clearfix">
+									<dd class="imgwrap-container">
+										<div class="imgwrap">
+											<img class="img-rounded" src="{$data.img}">
+										</div>
+									</dd>
+
+								</dl>
+								<input type="hidden" name="img" value="{$img}" class="img_val">
+							</div>
+						</li>
+						<li class="layoutlr form_item" style="margin-top: 0.3rem;padding-top: 0.2rem;padding-left: 0.2rem;padding-right: 0.2rem">
+							<div class="cuxiaowenzhang">
+								<div class="cuxiaozhengwen textarea" escape="false" class=""style="padding:0 0 0.2rem  0">
+									{$data.content}
+								</div>
+							</div>
+						</li>
+					</ul>
+
+					<div class="form_data_btns">
+						<li class="layoutlr">
+							<div class="left">
+							<a href="{:U('edit',array(id =>$data['id']))}" class="btn maxbtn">修改</a>
+								</div>
+							<div class="right">
+							<a href="{:U('preview',array(id =>$data['id']))}" class="btn maxbtn">预览</a>
+							</div>
+						</li>
+                     </div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+
+<block name="js">
+	<script type="text/javascript">
+		function delate() {
+			layer.open({
+				content:'你确定要删除促销信息么?',
+				btn:['确定','取消'],
+				yes:function () {
+					var url = "{:U('del',array('id'=>$data['id']))}";
+					$.get(url,function (data) {
+						if(typeof data != "object"){
+							var data = eval("("+data+")");
+						}
+						if(data.status == 1){
+							layer.open({
+								content: '删除成功'
+								,btn: '我知道了'
+								,yes: function(index){
+									window.location.href="/Wx/Promotion";
+								}
+							});
+						}else{
+							layer.open({
+								content: '删除失败'
+								,btn: '我知道了'
+							});
+						}
+					})
+				}
+			})
+		}
+//		$('.textarea img').css('height','ahto');
+	</script>
+</block>

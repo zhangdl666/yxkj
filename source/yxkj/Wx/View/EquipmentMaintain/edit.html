@@ -1,0 +1,182 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>申请维修</title>
+</block>
+<block name="css">
+<style type="text/css">
+	.loading{text-align: center;display: none;}
+	.input_fj{border: 0px;text-align: right;}
+	.opction_inline{
+		width: 2.3rem;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
+		margin-right: 0rem;
+	}
+	.pitch_on{
+		background: url("__IMG__/pitch_on.png") no-repeat;
+		background-size: 40%;
+		background-position: right bottom;
+		color: #4e4e4e!important;
+	}
+</style>
+</block>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+			<!-- <div class="center">申请维修</div> -->
+		</div>
+
+		<div class="main_body anzhuangxiangx">
+			<div class="anzhuangxiangx_content">
+				<div class="daishenhebiaoxiao-page">
+					<!-- 待审核 开始 -->
+						
+					<form id="" method="post" action="{:U('operation')}">
+					<div class="form_data_wrap anzhuangxinxi" style="padding-bottom: 0.1rem">
+	        			<ul class="form_data">
+	        				<li class="layoutlr form_item">
+	        					<div class="left">酒店名称</div>
+	        					<div class="right">{$name}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">联系方式</div>
+	        					<div class="right">{$tell}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">合同</div>
+	        					<div class="right">
+									<div class="in_this_select" data-relation="hotel_type">
+										<select name="hc_id" class="opction_inline">
+											<volist name="hc_items" id="hc_item">
+												<option  value="{$hc_item.id}" <eq name="key" value="0">selected</eq>>{$hc_item.name}</option>
+											</volist>
+										</select>
+										<i class="icon w_0000_00 w_00_12"></i>
+									</div>
+
+	        					</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<dl class="gezi-container">
+									<dt class="left gezi-title" style="height: 0.5rem">
+										<span class="fll">房间号</span>
+									</dt>
+									<dd class="right gezi-group roomss" style="width: 100%">
+										<volist name="al_equipment" id="room">
+				                            <button type="button" class="rooms btn on" data="{$room.oi_id}">{$room.room_sno}</button>
+				                        </volist>
+									</dd>
+								</dl>
+	        				</li>
+	        				<li style="display:none;" class="room_info">
+	        					<ul>
+
+			        			</ul>
+			        		</li>
+
+	        			</ul>
+	        			<div class="form_data_btns">
+	        				<input type="hidden" name="h_id" value="{$id}">
+                      		<input type="hidden" name="type" value="3">
+		    				<button type="button" class="btn maxbtn ajax-post">提交</button>
+		    			</div>
+	        		</div>
+	        	</form>
+					<!-- 待审核 结束
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+<block name="js">
+<script type="text/javascript">
+var arr = [];
+$(".main").on("click",".rooms",function(){
+ //是否已经维修  hasClass检查被选元素是否包含指定的 class
+	$(".room").removeClass("pitch_on");
+	$(this).addClass("pitch_on");
+  var room_sno = $(this).html();
+  var equipment_sno = $(this).attr("data");
+  layer.open({content:"是否为此房间报维修？",btn:['是','否'],yes:function(){
+    //是否已经添加
+    var index = $.inArray(room_sno,arr);
+    if(index >= 0){
+        layer.open({content:"此房间已在报修列表",time:2});
+        return false;
+    }
+
+    //是否已经有维修单未完成
+    var bool = true;
+    $.ajax({
+      url:"{:U('is_maintian')}",
+      data:{sno:equipment_sno},
+      dataType:"json",
+      type:"post",
+      async:false,
+      success:function(re_sult){
+        if(typeof re_sult != "object"){
+          re_sult = eval("("+re_sult+")");
+        }
+        if(re_sult.status){
+          layer.open({content:"此房间正在维修中,请耐心等待",time:2});
+          bool = false;
+        }
+      }
+    })
+
+    if(!bool){
+      return false;
+    }
+    /*$.post("{:U('is_maintian')}",{sno:equipment_sno},function(re_sult){
+      if(typeof re_sult != "object"){
+        re_sult = eval("("+re_sult+")");
+      }
+      if(re_sult.status){
+        layer.msg("此房间正在维修中,请稍候");
+        return false;
+      }
+    })*/
+
+    arr.push(room_sno);
+    $(".room_info").find('ul').append("<li class='layoutlr form_item'>\
+			        					<div class='left'>"+room_sno+"<input type='hidden' name='room_sno[]' value='"+equipment_sno+"'></div>\
+			        					<div class='right'>\
+			        					<div>\
+			<input type='text' class='input_fj' name='note[]'>\
+			  <i class='icon w_0000_00 w_00_11'></i></div>\
+			        					</div>\
+			        				</li>");
+    $(".room_info").show();
+    layer.open({content:"已添加",time:2});
+  }})
+})
+
+//改变合同
+$("select[name='hc_id']").change(function(){
+  arr = [];
+  $(".room_info").find('tbody').html("");
+  $(".room_info").closest("tr").hide();
+
+  var html = "";
+  $(".roomss").html(html);
+
+  var hc_val = $("select[name='hc_id'] option:selected").val();
+  $.post("{:U('get_rooms')}",{hcid:hc_val},function(re_data){
+    if(typeof re_data != "object"){
+      re_data = eval("("+re_data+")");
+    }
+    if(re_data.status){
+      $(re_data.data).each(function(){
+        html += "<button type='button' class='rooms btn on' data='"+$(this).attr("oi_id")+"'>"+$(this).attr("room_sno")+"</button>";
+      })
+      $(".roomss").html(html);
+    }
+  })
+});
+</script>
+</block>

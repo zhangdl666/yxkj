@@ -1,0 +1,189 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>维修列表</title>
+</block>
+<block name="css">
+<style type="text/css">
+	.loading{text-align: center;display: none;}
+	.w_07_05 {
+		top: 0.08rem;
+		margin-right: 0.1rem;
+	}
+
+	.w_07_06 {
+		top: 0.08rem;
+		vertical-align:inherit;
+		margin-right: 0.1rem; }
+
+	.w_07_07 {
+		top: 0.08rem;
+		margin-right: 0.1rem; }
+
+	.w_07_08 {
+		top: 0.08rem;
+		margin-right: 0.1rem; }
+	.jiudianinfo .jiudiandata .time{
+		width: 60%;
+		float: left;
+		min-width: 60% !important;
+		margin-right: 0.2rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.jiudian_list .jiudianinfo .jiudiandata .num{
+		width: 36%;float: right;
+	}
+	.jiudian_list .jiudianinfo .jiudiandata .prog{
+		width: 36%;float: right;
+	}
+	.jiudian_list .jiudianinfo .jiudiandata .title{
+		/*min-width: 40%;*/
+		width: 100%;
+		margin-bottom: 0.1rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		font-size: 0.3rem;
+		color: rgb(51,51,51);
+	}
+	.jiudiandata{
+		color: #666;
+	}
+	.jiudian_list .jiudianinfo .jiudiandata .no{
+		width: 60%;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.pitch_on{
+		background: url("__IMG__/pitch_on.png") no-repeat;
+		background-size: 40%;
+		background-position: right bottom;
+		color: #4e4e4e!important;
+	}
+</style>
+</block>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left backs" data-url="{:U('Index/index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+			<!-- <div class="center">维修列表</div> -->
+			<if condition="in_array('EquipmentMaintain/add',$method_arr)"><div class="right" onclick="now_href('{:U('add')}')"><i class="icon add"></i>申请维修</div></if>
+		</div>
+
+		<div class="main_body">
+		    <div class="swiper-container swiper-tab-nav">
+		        <div class="swiper-wrapper">
+		            <empty name="install"><div class="swiper-slide swiper-tab-link <eq name='estatus' value='1'>on</eq>" onclick="now_href('{:U('',array('estatus'=>1))}')">待分配<if condition="$flagOne eq 1"><i class="msg-flag"></i></if></div></empty>
+		            <div class="swiper-slide swiper-tab-link <eq name='estatus' value='2'>on</eq>" onclick="now_href('{:U('',array('estatus'=>2))}')">待维修<if condition="$flagTwo eq 1"><i class="msg-flag"></i></if></div>
+		            <div class="swiper-slide swiper-tab-link <eq name='estatus' value='3'>on</eq>" onclick="now_href('{:U('',array('estatus'=>3))}')">待确认<if condition="$flagThree eq 1"><i class="msg-flag"></i></if></div>
+		            <div class="swiper-slide swiper-tab-link <eq name='estatus' value='4'>on</eq>" onclick="now_href('{:U('',array('estatus'=>4))}')">已维修</div>
+		        </div>
+		        <!-- Add Pagination -->
+		        <div class="swiper-pagination"></div>
+		    </div>
+
+			<div class="swiper-container swiper-tab-page anzhuangjiudian" style="-webkit-overflow-scrolling : touch;">
+			    <div class="swiper-wrapper">
+				    <!-- 保养信息 开始 -->
+			        <div class="swiper-slide swiper-tab-content">
+			        	<ul class="jiudian_list">
+			        	<notempty name="datas">
+			        		<volist name="datas" id="data">
+			        		<li class="clearfix jiudianinfo" onclick="now_href('{:U('read',array('id'=>$data['id'],'status'=>$estatus))}')">
+			        			<div class="imgwarp"><img src="{$data.h_img|default='__IMG__/head.png'}"></div>
+			        			<div class="jiudiandata" <eq name="data.roll_back" value="1">style="color:red;"</eq>>
+				        			<div class="title" <eq name="data.roll_back" value="1">style="color:red;"</eq>>{$data.h_name}</div>
+				        			<div class="no"><i class="icon w_0007_07 w_07_06"></i>工单编号:{$data.sno}</div>
+
+				        			<div class="num"><i class="icon w_0007_07 w_07_08"></i>数量:{$data.now_nume}</div>
+									<div class="time"><i class="icon w_0007_07 w_07_07"></i>时间:<notempty name="data['datetime']">{$data.datetime}</notempty></div>
+				        			<div class="prog"><i class="icon w_0007_07 w_07_05"></i>进度:{$data.now_nume}/{$data.nume}</div>
+			        			</div>
+			        		</li>
+			        		</volist>
+			        	<else/>
+                            <li class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></li>
+                        </notempty>
+			        	</ul>
+			        	<div class="col-xs-12 loading">
+	                        <img src="__IMG__/loading.gif" alt="">
+	                    </div>
+			        </div>
+				    <!-- 保养信息 结束 -->
+			    </div>
+			</div>
+		</div>
+	</div>
+	<!-- 主体内容 结束 -->
+
+<!--装页码的div-->
+<div style="display:none" key="1" class="key"></div>
+<div style="display:none" key="1" class="list-page"></div>
+
+</block>
+<block name="js">
+<script type="text/javascript">
+//下拉显示更多
+//当前的数据一定要超过页面显示的
+$(".anzhuangjiudian").scroll(function () {
+    var docHei = $(".anzhuangjiudian").prop("scrollHeight"), winHei = $(".anzhuangjiudian").height(), scrHei = $(".anzhuangjiudian").scrollTop();
+    if (scrHei >= docHei - winHei) {
+        $(".loading").show();
+        var key = $('.key').attr('key');//当前页码
+        key = key * 1 + 1;
+        //获取加载数据
+        $.ajax({
+            type:"POST",
+            url:"{:U('show_more_data')}?page="+$(".list-page").attr('key'),
+            async:false,
+            data:{key:key},
+            success:function(info){
+                info = eval("("+info+")");
+                if (info.status) {
+                    var re_data = info.data;
+                    $('.key').attr('key', re_data.key);         //添加最新显示页码
+                    $(".list-page").attr('key',re_data.page);   //添加最新查询页码
+
+                    //显示加载的数据
+                    showHtml(re_data.datas);
+
+                    //>>隐藏加载图
+                    setTimeout(function () {
+                        $(".loading").hide();
+                    }, 1000);
+                } else {
+                    $(".loading").empty();
+                    $(".loading").text("已全部加载完");
+                }
+            }
+        });
+    }
+});
+
+//显示加载的数据
+function showHtml(datas){
+    $(datas).each(function () {
+    	var himg = $(this).attr("h_img");
+    	var datetime = $(this).attr('datetime');
+    	if(himg == ""){
+    		himg = "__IMG__/head.png";
+    	}
+        var html  = "<li class='clearfix jiudianinfo' onclick='now_href('{:U('read',array('status'=>$estatus))}?id='"+$(this).attr("id")+")'>\
+	        			<div class='imgwarp'><img src='"+himg+"'></div>\
+	        			<div class='jiudiandata'>\
+		        			<div class='title'>"+$(this).attr("h_name")+"</div>\
+		        			<div class='no'><i class='icon w_0007_07 w_07_05'></i>工单编号:"+$(this).attr("sno")+"</div>\
+		        			<div class='time'><i class='icon w_0007_07 w_07_06'></i>时间:"+datetime+"</div>\
+		        			<div class='num'><i class='icon w_0007_07 w_07_07'></i>数量:"+$(this).attr("now_nume")+"</div>\
+		        			<div class='prog'><i class='icon w_0007_07 w_07_08'></i>进度:"+$(this).attr("now_nume")+"/"+$(this).attr("nume")+"</div>\
+	        			</div>\
+	        		</li>";
+        $(".jiudian_list").append(html);
+    });
+}
+</script>
+</block>

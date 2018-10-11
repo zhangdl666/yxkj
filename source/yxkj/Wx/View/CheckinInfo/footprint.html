@@ -1,0 +1,123 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title> 我的足迹 </title>
+</block>
+<block name="main">
+	<!-- header 开始 -->
+	<div class="header">
+		<div class="left back"><i class="icon"></i>返回</div>
+		<div class="center">我的足迹</div>
+	</div>
+	<!-- header 结束 -->
+	<!-- 主体内容 开始 -->
+		<div class="main swiper-container-01">
+		<div class="main_body">
+			<ul class="zuji">
+				<volist name="items" id="vol">
+					<a href="{:U('details',array(id =>$vol['id']))}">
+							<li class="layoutlr zuji_item">
+								<div class="col left">
+									<div class="goodsimg">
+										<img src="{$vol.img}">
+									</div>
+								</div>
+								<div class="col center">
+									<div class="layoutlr zuji_inner">
+										<div class="left">
+											<h1>{$vol.hotel_name}</h1>
+											<div class="lev">{$vol.type_name}</div>
+											<div class="addr">{$vol.provice}{$vol.city}{$vol.coubty}</div>
+											<div class="time">{$vol.ctime|date='Y-m-d H:i:s',###}</div>
+										</div>
+										<div class="right">
+											<div class="radius">
+												<div class="top"><span class="num">{$vol.in_pm}</span>{$vol.in_air}</div>
+												<div class="btm">空气质量</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+					</a>
+				</volist>
+			</ul>
+			<!--<div class="col-xs-12 loading">-->
+				<!--<img src="__IMG__/loading.gif" alt="">-->
+			<!--</div>-->
+			<!--装页码的div-->
+			<div style="display:none" key="1" class="key"></div>
+			<div style="display:none" key="1" class="list-page"></div>
+			<!-- 主体内容 结束 -->
+		</div>
+
+		</div>
+	<!-- 主体内容 结束 -->
+</block>
+<block name="js">
+	<script type="text/javascript">
+		//下拉显示更多
+		//当前的数据一定要超过页面显示的
+		$(window).scroll(function () {
+			var docHei = $(document).height(), winHei = $(window).height(), scrHei = $(document).scrollTop();
+			if (scrHei >= docHei - winHei) {
+				$(".loading").show();
+				var key = $('.key').attr('key');//当前页码
+				key = key * 1 + 1;
+				//获取加载数据
+				$.ajax({
+					type:"POST",
+					url:"{:U('show_more_data')}?page="+$(".list-page").attr('key'),
+					data:{key:key},
+					success:function(info){
+						info = eval("("+info+")");
+						if (info.status) {
+							var re_data = info.data;
+							$('.key').attr('key', re_data.key);          //添加最新显示页码
+							$(".list-page").attr('key',re_data.page);   //添加最新查询页码
+							//显示加载的数据
+							showHtml(re_data.datas,25);
+							//>>隐藏加载图
+							setTimeout(function () {
+								$(".loading").hide();
+							}, 1000);
+						} else {
+							$(".loading").empty();
+							$(".loading").text("已全部加载完");
+						}
+					}
+				});
+			}
+		});
+
+		//显示加载的数据
+		function showHtml(datas,show_content_div_num){
+			$(datas).each(function () {
+				var status = $(this).attr('type');
+				var etime = ($(this).attr("ctime"));
+				var id = $(this).attr("id");
+				var html  ="<a href="+'ReturnMoney/edit/id/'+id+">\
+				<div class='row' style='background:#1b6d85;'>\
+				<span class='text_left'>酒店名称："+$(this).attr("name")+"</span>\
+				<span class='text-right' style='color:red;'>逾期："+$(this).attr("mtime")+"天</span>\
+				</div>\
+						<li class='layoutlr renling_item hc' data='"+$(this).attr("id")+"'>\
+		        	<div class='left'>\
+		        		<div class='goodsimg'>\
+		        			<img src='"+$(this).attr("img")+"'  >\
+		        		</div>\
+		        	</div>\
+		        	<div class='right'>\
+		        		<ul class='showdata'>\
+							<li>结算编号："+$(this).attr("sno")+" </li>\
+							<li>应回款金额："+'￥'+$(this).attr("rprice")+"元 </li>\
+							<li>结账日期："+$(this).attr("etime")+" </li>\
+							<li>应回款日期："+$(this).attr("rtime")+" </li>\
+							</ul>\
+						</div>\
+					</li>\
+				</a>\	";
+				$(".renling").append(html);
+			});
+		}
+	</script>
+</block>

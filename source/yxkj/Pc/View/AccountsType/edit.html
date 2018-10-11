@@ -1,0 +1,91 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>结算模式</title>
+</block>
+<block name="top">
+  <ol class="breadcrumb">
+    当前的位置：
+    <li><a>系统设置</a></li>
+    <li class="on"><notempty name="id">编辑<else/>新增</notempty>结算模式</li>
+  </ol>
+</block>
+
+<block name="main">
+  <div id="main">
+    <!-- 导航 开始 -->
+    <ul class="clearfix subnav hetongnav">
+      <li><a><i class="icon"></i><span class="cur_title"><notempty name="id">编辑<else/>新增</notempty>结算模式</span></a></li>
+    </ul>
+    <!-- 导航 结束 -->
+
+    <!-- 内容 开始 -->
+    <div class="subpage jiudianxinzeng">
+      <form method="post" action="{:U('operationer')}">
+        <div class="subpage-block">
+          <table class="table table-bordered table-form">
+
+            <tr>
+              <th><font color="red">*</font>结算模式：</th>
+              <td>
+                <select name="type">
+                  <option  value = "1" <eq name="type" value="1">selected</eq>>共享</option>
+                  <option  value = "2" <eq name="type" value="2">selected</eq>>租赁</option>
+                  <option  value = "3" <eq name="type" value="3">selected</eq>>月租</option>
+                </select >
+              </td>
+
+            </tr>
+            <tr class="price" <eq name="type" value="3">style="display:none;"</eq>>
+              <th><font color="red">*</font>结算价格：</th>
+              <td>
+                <input type="text" name="price" value="{$price}" onkeyup="clearNoNum(this)">
+                <span style="color:#CCC;">(价格精确到小数点后两位)</span>
+              </td>
+            </tr>
+            <tr>
+              <th><font color="red">*</font>结算模式说明：</th>
+              <td>
+                <textarea rows="7" cols="43" name="remark">{$remark}</textarea>
+              </td>
+            </tr>
+            <tr>
+              <th><input type="hidden" name="id" value="{$id}"></th>
+              <td>
+                <empty name="redonly">
+                  <button type="button" class="btn btn-tijiao ajax-post">保存</button>
+                  <button type="button" class="btn btn-quxiao back">取消</button>
+                <else />
+                </empty>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+    <!-- 内容 结束 -->
+  </div>
+</block>
+<block name="js">
+<script type="text/javascript">
+//价格限制
+function clearNoNum(obj){
+  obj.value = obj.value.replace(/[^\d.]/g,""); //清除"数字"和"."以外的字符
+  obj.value = obj.value.replace(/^\./g,""); //验证第一个字符是数字而不是
+  obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+  obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+  obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
+}
+
+//变更结算类型
+$("select[name='type']").change(function(){
+  var type_id = $("select[name='type'] option:selected").val();
+  if(type_id == 3){
+    $(".price").hide();
+  }else{
+    $(".price").show();
+  }
+})
+
+</script>
+</block>

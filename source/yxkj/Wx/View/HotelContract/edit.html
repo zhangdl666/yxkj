@@ -1,0 +1,343 @@
+<extend name="Public:index"/>
+<block name="title">
+  <title>合同管理</title>
+</block>
+<block name="css">
+<link rel="stylesheet" href="__CSS__/LArea.min.css">
+<style type="text/css">
+   .width15{width:1.5rem;}
+   label input[type='text']{
+       width: 1rem;
+       border: 1px solid #ccc;
+       border-radius: 0.1rem;
+       line-height: 0.4rem;
+       float: right;
+       margin-right: 0.2rem;
+       text-indent: 0.1rem;
+   }
+    /*.checkbox-container-input{float:right;}*/
+    .checkbox-container-input input[type='text']{
+      width: 12vw;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      text-indent: 4px;
+      margin-right: 0.1rem;
+    }
+   [data-type="radio"] .i_radio {
+       top: 0em;
+   }
+    .checkbox-containers{
+      width: 50%;
+      text-align: left;
+      display:inline-block;
+    }
+   .form_data .form_item .right input{
+       border: none;
+       text-align: right;
+       background: #fff;
+   }
+   .form_data .layouttb {
+       margin-bottom: 0rem;
+   }
+   .class_text{
+       color: #666666!important;
+       font-size: 0.3rem!important;
+   }
+    .right input{
+        font-size: 0.3rem;
+        color: #666666;
+    }
+</style>
+</block>
+
+<block name="main">
+  <!-- 主体内容 开始 -->
+  <div class="main swiper-container-01">
+    <div class="header">
+      <div class="left backs" data-url="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+      <!-- <div class="center">合同管理</div> -->
+    </div>
+
+    <div class="main_body">
+      <div class="swiper-container swiper-tab-nav">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-link on" onclick="now_href('{:U('read',array('id'=>$hcid))}')">基础信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('installe',array('id'=>$hcid))}')">安装信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('return_money',array('id'=>$hcid))}')">结算信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('upkeep',array('id'=>$hcid))}')">保养信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('maintain',array('id'=>$hcid))}')">维修信息</div>
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+      </div>
+
+      <div class="swiper-container swiper-tab-page hetongpage">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-content">
+                <div class="hetong_content">
+                  <div class="btns_wrap">
+                    <button class="btn on" onclick="now_href('{:U('edit',array('id'=>$hcid))}')">酒店信息</button>
+                    <button class="btn" onclick="now_href('{:U('edituser',array('id'=>$hcid))}')">联系人信息</button>
+                    <button class="btn" onclick="now_href('{:U('editc',array('id'=>$hcid))}')">合同信息</button>
+                  </div>
+
+                  <!-- 酒店信息 开始 -->
+                  <div class="form_data_wrap jiudianxinxi">
+                    <form method="post" action="{:U('hoperation')}">
+                    <ul class="form_data">
+                      <li class="layoutlr form_item">
+                        <div class="left">酒店名称</div>
+                        <div class="right">{$name}</div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">酒店类型</div>
+                        <div class="right">{$type_name}</div>
+                      </li>
+                      <li class="layouttb form_item">
+                        <div class="top">客房类型</div>
+                        <div class="bottom">
+                          <volist name="hrt_items" id="hrts">
+                          <div class="checkbox-containers">
+                            <label class="checkbox-container kefangleixing" data-type="radio" <notempty name="hrts.room_num">checked="checked"</notempty>>
+                              <input type="checkbox" name="hrtname[]" value="{$hrts.id}" <notempty name="hrts.room_num">checked="checked"</notempty>>
+                              <i class="icon icon01 i_radio"></i>
+                              <span class="checkbox_txt class_text">{$hrts.name}</span></label>
+                              <span class="checkbox-container-input"><input type="text" name="room_nums[]" class="room_num width15" value="{$hrts.room_num}"></span>
+                          </div>
+                          </volist>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">客房数</div>
+                        <div class="right">
+                        <div>
+                          <!-- <span class="room_nums">{$room_num}</span> -->
+                          <input type="text" name="room_num" id="room_numsss" value="{$room_num}" disabled="true" readonly="true">
+                        </div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">所属地区</div>
+                        <div class="right">
+                        <div>
+                          <span class="selected"><input type="text" id="larea" value="{$provice}{$city}{$county}" style="border: none;text-align: right;"></span>
+                          <input id="value" type="hidden" name="pcc_area" value="{$provice},{$city},{$county}"/>
+                          <i class="icon w_0000_00 w_00_11"></i>
+                        </div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">详细地址</div>
+                        <div class="right">
+                        <div><input type="text" name="area" value="{$area}"></div>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">联系方式</div>
+                        <div class="right">
+                        <div><input type="text" name="tell" value="{$tell}"></div>
+                        </div>
+                      </li>
+
+                      <li class="layouttb form_item">
+                        <div class="top">酒店图片</div>
+                        <div class="bottom">
+                        <dl class="uploadimg-container clearfix">
+                          <dd class="imgwrap-container">
+                            <volist name="himgs" id="imgi">
+                            <div class="imgwrap">
+                              <img class="img-rounded" src="{$imgi}">
+                              <ul class="imgoprate">
+                                <li data-oprate="toleft"><i class="icon"></i></li>
+                                <li data-oprate="detele"><i class="icon"></i></li>
+                                <li data-oprate="toright"><i class="icon"></i></li>
+                              </ul>
+                            </div>
+                            </volist>
+                          </dd>
+                          <dt>
+                            <div class="item btn-upload upimg" v-show="uploadImgs.length==0"></div>
+                          </dt>
+                        </dl>
+                        <input type="hidden" name="img" value="{$img}" class="img_val"/>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">认领状态</div>
+                        <div class="right"><eq name="is_get" value="1">已认领<else/>未认领</eq></div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">认领人</div>
+                        <div class="right">{$hotel_user_name}</div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">历史销售人员</div>
+                        <div class="right">{$sale_name}</div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">签约状态</div>
+                        <div class="right"><eq name="is_sign" value="1">已签约<else/>未签约</eq></div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">酒店状态</div>
+                        <div class="right"><eq name="status" value="1">营业中<else/>已结业</eq></div>
+                      </li>
+                    </ul>
+                    <div class="form_data_btns">
+                      <input type="hidden" name="hc_id" value="{$hcid}">
+                      <input type="hidden" name="h_id" value="{$id}">
+                      <input type="hidden" name="uhotel" value="1">
+                      <button class="btn maxbtn ajax-post" style="margin-bottom: 0.4rem">保存</button>
+                    </div>
+                  </form>
+                  </div>
+                  <!-- 酒店信息 结束 -->
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+<script src="__JS__/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="__JS__/LAreaData.js"></script>
+<script type="text/javascript" src="__JS__/LArea.min.js"></script>
+<script type="text/javascript">
+/* 计算总的客房数 */
+$(".room_num").blur(function(){
+  count_rnum();
+})
+
+function count_rnum(){
+  var room_nums = 0;
+  $(".checkbox-container").each(function(){
+    if($(this).attr("checked") == "checked"){
+      if($(this).closest(".checkbox-containers").find('.checkbox-container-input input').val() != ""){
+        room_nums += parseInt($(this).closest(".checkbox-containers").find('.checkbox-container-input input').val());
+      }
+    }
+  })
+  $("input[name='room_num']").val(room_nums);
+  $(".room_nums").text(room_nums);
+}
+
+/* 微信上传图片所需 start */
+wx.config({
+    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: '{$appId}', // 必填，公众号的唯一标识
+    timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+    nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+    signature: '{$signature}',// 必填，签名，见附录1
+    jsApiList: ['chooseImage','uploadImage','scanQRCode','hideAllNonBaseMenuItem'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});
+
+wx.ready(function(){
+    wx.error(function(res){
+      layer.open({content:res.errMsg,time:2});
+      return false;
+  });
+
+  //隐藏所有非基础按钮接口
+  wx.hideAllNonBaseMenuItem();
+});
+
+$(".upimg").click(function(){
+  //选择图片
+  wx.chooseImage({
+      count: 1, // 默认9
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+          var localIds = res.localIds; 
+          // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+         
+          //上传图片
+          wx.uploadImage({
+          localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+          isShowProgressTips: 1, // 默认为1，显示进度提示
+          success: function (res) {
+              var serverId = res.serverId; // 返回图片的服务器端ID
+              //上传的图片保存到本地服务器
+              $.post("{:U('saveWXFile')}",{img_dir:'EquipmentInstall',media_id:serverId},function(res_data){
+                if(typeof res_data != "object"){
+                  var res_data = eval("("+res_data+")");
+              }
+              $(".imgwrap-container").append("<div class='imgwrap'>\
+                              <img class='img-rounded' src='"+res_data.data+"'>\
+                              <ul class='imgoprate'>\
+                                <li data-oprate='toleft'><i class='icon'></i></li>\
+                                <li data-oprate='detele'><i class='icon'></i></li>\
+                                <li data-oprate='toright'><i class='icon'></i></li>\
+                              </ul>\
+                            </div>");
+              count_img();
+              /*var img_val = $(".img_val").val();
+              if(img_val == ""){
+                $(".img_val").val(res_data.data);
+              }else{
+                img_val += ','+res_data.data; 
+                $(".img_val").val(img_val);
+              }*/
+              
+              })
+          }
+      });
+      }
+  }); 
+})
+/* 微信上传图片所需 end */
+
+/* 计算图片 */
+function count_img(){
+  var img_val = "";
+  $(".imgwrap-container div").each(function(i){
+    if(i != 0){
+      img_val += ",";
+    }
+    img_val += $(this).find("img").attr("src");
+  })
+  $(".img_val").val(img_val);
+}
+
+/*图片移动、删除*/
+  $('.imgwrap-container').on('click', '[data-oprate]', function() {
+    var _imgwrap = $(this).closest('.imgwrap');
+    switch($(this).attr('data-oprate')) {
+      case 'toleft':
+        _imgwrap.prev().before(_imgwrap);
+        //console.log('左边', $(this).attr('data-oprate'))
+        break;
+      case 'detele':
+        _imgwrap.remove();
+        break;
+      case 'toright':
+        _imgwrap.next().after(_imgwrap);
+        break;
+    }
+    count_img();
+  });
+
+
+$("#larea").focus(function(){
+    document.activeElement.blur();
+});
+/**
+ * 地址选择
+ */
+var area1 = new LArea();
+area1.init({
+  'trigger': '#larea', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+  'valueTo': '#value', //选择完毕后id属性输出到该位置
+  'keys': {
+    id: 'id',
+    name: 'name'
+  }, //绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
+  'type': 1, //数据源类型
+  'data': LAreaData //数据源
+});
+area1.value=[0,0,0];//控制初始位置，注意：该方法并不会影响到input的value
+</script>
+</block>

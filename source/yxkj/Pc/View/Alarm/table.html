@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<table class="table table-condensed table-data" >
+    <thead>
+    <tr>
+        <th>告警房间</th>
+        <th>告警等级</th>
+        <th>PM2.5</th>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>持续时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <notempty name="items">
+        <volist name="items" id="row2">
+            <tr>
+                <td>{$row2.room_sno}</td>
+                <td>{$row2.name}</td>
+                <td>{$row2.start_pm25}—{$row2.end_pm25}</td>
+                <td>{$row2.start_time|date='Y-m-d H:i:s',###}</td>
+                <td>{$row2.end_time|date='Y-m-d H:i:s',###}</td>
+                <td>{$row2.len_time}</td>
+            </tr>
+        </volist>
+        <else/>
+        <tr><td colspan="5">暂无数据</td></tr>
+    </notempty>
+    </tbody>
+</table>
+<div class="pagination-container">
+    <div class="pagination">
+        {$pageHtml}
+    </div>
+</div>
+<input type="hidden" value="{$h_id}" id="h_id">
+<script type="text/javascript" src="__JS__/jquery-1.9.1.min.js"></script>
+<script>
+    $(function(){
+        //历史告警上一页、下一页局部刷新
+        $(".pagination").on('click','a',function(){
+            var h_id = $("#h_id").val();
+            var page_id = $.trim($(this).attr('page-id'));
+            var url = 'pieceslist/p/'+page_id;
+            $('#history').load(url,{"h_id":h_id});
+            return false;
+        });
+
+
+
+    });
+
+</script>
+</body>
+</html>

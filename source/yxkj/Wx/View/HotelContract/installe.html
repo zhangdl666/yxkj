@@ -1,0 +1,334 @@
+<extend name="Public:index"/>
+<block name="title">
+  <title>合同管理</title>
+</block>
+
+<block name="main">
+  <style type="text/css">
+    .btn_icon_top .icon{background: url('__IMG__/contraction.png');
+      background-repeat: no-repeat;
+      background-size: contain;
+      top: 0.05rem;}
+    .btn_icon_bottom .icon{background: url('__IMG__/open.png');
+      background-repeat: no-repeat;
+      background-size: contain;
+      top: 0.05rem;}
+    .pc_kq_height{
+      height: 0.88rem;
+      overflow: hidden;
+    }
+
+    .progress-container-jd{
+      width: 80%;
+      float: left;
+      margin-top: 0.18rem;
+      background-color: rgb(230,230,230);
+    }
+    .progress-container-num{
+      width: 20%;
+      float: right;
+    }
+
+  .gezi-container .gezi-title .checkbox-container .i_radio {
+    top: 0rem;
+  }
+    .pitch_on{
+      background: url("__IMG__/pitch_on.png") no-repeat;
+      background-size: 40%;
+      background-position: right bottom;
+      color: #4e4e4e!important;
+    }
+  </style>
+  <!-- 主体内容 开始 -->
+  <div class="main swiper-container-01">
+    <div class="header">
+      <div class="left backs" data-url="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+      <!-- <div class="center">合同管理</div> -->
+    </div>
+
+    <div class="main_body">
+      <div class="swiper-container swiper-tab-nav">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('read',array('id'=>$hcid))}')">基础信息</div>
+              <div class="swiper-slide swiper-tab-link on" onclick="now_href('{:U('installe',array('id'=>$hcid))}')">安装信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('return_money',array('id'=>$hcid))}')">结算信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('upkeep',array('id'=>$hcid))}')">保养信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('maintain',array('id'=>$hcid))}')">维修信息</div>
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+      </div>
+
+      <div class="swiper-container swiper-tab-page hetongpage">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-content">
+                <div class="hetong_content">
+
+                  <!-- 安装信息 开始 -->
+                  <div class="swiper-slide swiper-tab-content anzhuangxinxi">
+                      <div class="form_data_wrap anzhuangxinxi">
+                        <ul class="form_data">
+                          <li class="layoutlr form_item">
+                            <div class="left">工单编号</div>
+                            <div class="right">{$sno}</div>
+                          </li>
+                          <li class="layoutlr form_item">
+                            <div class="left">安装状态</div>
+                            <div class="right"><if condition="$status eq 1">待分配<elseif condition="$status eq 2"/>待安装<elseif condition="$status eq 3"/>待确认<else/>已完成</if></div>
+                          </li>
+                          <li class="layoutlr form_item">
+                            <div class="left">预计安装时间</div>
+                            <div class="right">{$rsinstall|date='Y-m-d',###}&emsp;至&emsp;{$reinstall|date='Y-m-d',###}</div>
+                          </li>
+
+                          <gt name="status" value="1">
+                          <notempty name="stime">
+                            <li class="layoutlr form_item">
+                              <div class="left">实际安装时间</div>
+                              <div class="right">{$stime|date='Y-m-d',###}</div>
+                            </li>
+                          </notempty>
+
+                          <notempty name="etime">
+                          <li class="layoutlr form_item">
+                            <div class="left">实际结束时间</div>
+                            <div class="right">{$etime|date='Y-m-d',###}</div>
+                          </li>
+                          </notempty>
+
+                          <li class="layoutlr form_item">
+                            <div class="left">安装负责人</div>
+                            <div class="right">{$name}</div>
+                          </li>
+                          <li class="layoutlr form_item">
+                            <div class="left">安装负责人联系电话</div>
+                            <div class="right">{$mobile}</div>
+                          </li>
+                          </gt>
+
+                          <notempty name="img">
+                          <li class="layouttb form_item">
+                            <div class="top">安装确认单</div>
+                            <div class="bottom">
+                              <dl class="uploadimg-container clearfix">
+                                <dd class="imgwrap-container">
+                                  <volist name="img" id="imgi">
+                                  <div class="imgwrap">
+                                    <img class="img-rounded" src="{$imgi}">
+                                  </div>
+                                  </volist>
+                                </dd>
+                              </dl>
+                            </div>
+                          </li>
+                          </notempty>
+
+                          <li class="layoutlr form_item">
+                            <div class="left" style="width: 50%">安装进度</div>
+                            <div class="right">
+                          <div class="table-form-text">
+                          <div class="progress-container progress03 progress-container-jd"><div class="progress" data-width="{$num_ratio}%" style="width: {$num_ratio}%;"></div></div>
+                          <div class="progress-container-num">{$now_nume}/{$nume}</div>
+                          </div>
+                        </div>
+                          </li>
+                          <li class="layoutlr form_item">
+                            <!-- <div class="left">安装房间</div>
+                            <div class="right"> -->
+                              <dl class="gezi-container">
+                            <dt class="left gezi-title"><span class="fll">安装房间</span>
+                              <div class="checkbox-container gezi-type1" data-type="checkbox">
+                                <i class="icon icon01 i_radio"></i>
+                                <span class="checkbox_txt">已安装</span>
+                              </div>
+                              <div class="checkbox-container gezi-type2" data-type="checkbox">
+                                <i class="icon icon01 i_radio"></i>
+                                <span class="checkbox_txt">未安装</span>
+                              </div>
+                              <div class="btn_kq_icon btn_icon_bottom"><i class="icon" style="float: right;margin-top: 0.2rem;"></i></div>
+                            </dt>
+                            <dd class="right gezi-group pc_kq_height" id="kq_height">
+                              <volist name="room_arr" id="room">
+                                <button type="button" class="rooms btn <eq name="room.open" value="1">on</eq>" data="{$room.id}">{$room.room_sno|default="&nbsp;"}</button>
+                              </volist>
+                            </dd>
+                            <div class="btn_kq_icon btn_icon_bottom" style="text-align:center;"><i class="icon"></i></div>
+                          </dl>
+                            <!-- </div> -->
+                          </li>
+                          <li class="rooms_info" style="display:none;">
+                            <ul>
+                              <li class="layoutlr form_item">
+                                <div class="left">设备ID</div>
+                                <div class="right equipment"></div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">房间类型</div>
+                                <div class="right rtype"></div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">楼层</div>
+                                <div class="right floor"></div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">是否有窗</div>
+                                <div class="right iswindown"></div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">朝向</div>
+                                <div class="right orienta"></div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">安装位置</div>
+                                <div class="right place"></div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">中央空调品牌</div>
+                                <div class="right air"></div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">净化器类型</div>
+                                <div class="right e1_type"></div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">监控器类型</div>
+                                <div class="right e2_type"></div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">安装时间</div>
+                                <div class="right installtime"></div>
+                              </li>
+                            </ul>
+                            
+                          </li>
+
+                          <notempty name="roll_back">
+                          <volist name="roll_back" id="rback">
+                            <li class="layoutlr form_item">
+                              <div class="left" style="color:red;">打回原因</div>
+                              <div class="left" style="color:red;">{$rback.content}</div>
+                            </li>
+                          </volist>
+                          </notempty>
+
+                        </ul>
+                      </div>
+                  </div>
+                <!-- 安装信息 结束 -->
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+<script src="__PUBLIC__/Swiper-3.4.1/js/swiper.jquery.min.js"></script>
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    /***房间数量超出一排显示下拉开关***/
+    function but_show(){
+      var kg_btn = $("#kq_height");
+      var btn_icon =$(".btn_kq_icon");
+      var btn_length = kg_btn.children(".btn").length;
+      var btn_num =parseInt(kg_btn.width() / 54);
+      if(btn_length > btn_num){
+        btn_icon.addClass("btn_block");
+        btn_icon.removeClass("btn_none");
+      }else {
+        btn_icon.addClass("btn_none");
+        btn_icon.removeClass("btn_block");
+      }
+    }
+    but_show();
+
+    /********房间下拉图标和向上关闭图标切换********/
+    $(function(){
+      var on_num = 0;
+      $(".btn_kq_icon").click(function(){
+        var this_icon =  $(".btn_kq_icon");
+        if(on_num == 0){
+          this_icon.removeClass("btn_icon_bottom");
+          $("#kq_height").removeClass("pc_kq_height");
+          this_icon.addClass("btn_icon_top");
+          on_num = 1;
+        }else if(on_num == 1){
+          $("#kq_height").addClass("pc_kq_height");
+          this_icon.addClass("btn_icon_bottom");
+          this_icon.removeClass("btn_icon_top");
+          on_num = 0;
+        }
+      })
+    });
+  });
+
+var swiperNav = new Swiper('.swiper-tab-nav', {
+    // pagination: '.swiper-pagination',
+    slidesPerView: 'auto',
+    // centeredSlides: true,
+    // paginationClickable: true,
+    // spaceBetween: 30
+    // slidesPerView: 3,
+    paginationClickable: true,
+    // spaceBetween: 30,
+    onInit: function(swiper) { // 初始化回调函数
+    },
+    onClick: function(swiper) {
+    /*swiperPage.slideTo($(swiper.clickedSlide).index(), 500, false);*///切换到第一个slide，速度为1秒
+    },
+});
+
+var swiperPage = new Swiper ('.swiper-tab-page', {
+  // loop: true,
+  onInit: function(swiper) { // 初始化回调函数
+  },
+  onTouchEnd: function(swiper) { // 初始化回调函数
+    /*swiperNav.slideTo(swiper.previousIndex, 500, false);//切换到第一个slide，速度为1秒
+    setTimeout(function() {
+      if($('.swiper-tab-link.on').index() != swiperPage.activeIndex) {
+        $('.swiper-tab-link').removeClass('on');
+        $($('.swiper-tab-link')[swiperPage.activeIndex]).addClass('on');
+      }
+    }, 100);*/
+  },
+});
+
+/* 跳转 */
+function now_href(url){
+  window.location.href = url;
+}
+
+/* 返回 */
+$(".backs").click(function(){
+  window.location.href = "{:U('index')}";
+})
+
+$(".rooms").click(function(){
+ //是否已经安装  hasClass检查被选元素是否包含指定的 class
+ $(".rooms").removeClass("pitch_on");
+ if($(this).hasClass("on")){
+   $(this).addClass("pitch_on");
+  var id = $(this).attr("data");
+  $.post("{:U('get_install_room_info')}",{id:id},function(re_data){
+    re_data = eval("("+re_data+")");
+    $(".equipment").text(re_data.data.equipment_sno);
+    $(".rtype").text(re_data.data.rt_name);
+    $(".floor").text(re_data.data.floor);
+    $(".iswindown").text(re_data.data.iswindow);
+    $(".orienta").text(re_data.data.orienta);
+    $(".place").text(re_data.data.place);
+    $(".air").text(re_data.data.air_name);
+    $(".e1_type").text(re_data.data.e1_name);
+    $(".e2_type").text(re_data.data.e2_name);
+    $(".installtime").text(re_data.data.install_time);
+    $(".rooms_info").show();
+  });
+ }else{
+  $(".rooms_info").hide();
+ }
+})
+</script>
+</block>

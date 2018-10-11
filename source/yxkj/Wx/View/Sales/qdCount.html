@@ -1,0 +1,183 @@
+<div class="swiper-wrapper">
+    <!-- 销售额 开始 -->
+    <div class="swiper-slide swiper-tab-content">
+        <div class="white_panel">
+            <div class="layoutlr white_header">
+                <div class="left">各渠道占比</div>
+            </div>
+            <div class="white_body">
+                <div class="layoutlr xiaoshoutongji_echart">
+                    <div class="left" style="width: 207.2px;height: 230.4px" id="onemain">
+
+                    </div>
+                    <div class="right">
+                        <ul class="echart_prog">
+                            <foreach name="qdtypeAlls" item="qd_num" key="key">
+                                <li>
+                                    <div class="text">{$qd_num.user_type_name}&ensp;{$qd_num.num}
+                                    </div>
+                                    <div class="progress-container progress01">
+                                        <div class="progress" data-width="{$qd_num['num'] / 2}" style="width: {$qd_num['roportion']}%;"></div>
+                                    </div>
+                                </li>
+                            </foreach>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="white_panel">
+            <div class="layoutlr white_header">
+                <div class="left">全年趋势统计</div>
+            </div>
+            <div class="white_body" id="fourmain">
+            </div>
+        </div>
+
+    </div>
+    <!-- 销售额 结束 -->
+</div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChartOne = echarts.init(document.getElementById('onemain'));
+    optionOne = {
+        tooltip: {
+            trigger: 'item',
+            position: ['35%', '35%'],
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            x : 'left',
+            y : 'bottom',
+            data:{$type_name_one}
+        },
+        series: [
+            {
+                name:'各渠道占比',
+                type:'pie',
+                hoverAnimation:false,
+                //给图表添加坐标center : ['50%', '35%'],配合htmldiv的高度为230.4，高度变化就要修改坐标变化
+                center : ['50%', '40%'],
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '15',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:{$qd_nums},
+                color:[ '#D97CF1','#F6B55B','#1ED2D6','#5BB0F0','#1DABAD'],
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartOne.setOption(optionOne);
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChartFou = echarts.init(document.getElementById('fourmain'));
+    optionFou = {
+        tooltip: {
+            trigger: 'axis',
+        },
+        grid: {
+            left: '3%',
+            right: '6%',
+            bottom: '7%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data : {$monthones}
+            }
+        ],
+        legend: {
+        <if condition="$qdid neq ''">
+            data: ["{$qdid}"]
+    <else/>
+    data: ['个人', '内聘', '团队']
+    </if>
+        },
+        yAxis: [
+            {
+                name:'用户数量(个)',
+            <if condition="($numones eq '[]') AND ($numtwos eq '[]') AND ($numthes eq '[]') ">
+        min: 0,
+        max: 100,
+    </if>
+                type: 'value',
+                    minInterval : 1
+            }
+        ],
+        series : [
+            {
+            <if condition="$qdid neq ''">
+                name: "{$qdid}",
+        <else/>
+               name:'个人',
+            </if>
+                type:'line',
+                smooth: true,
+//                areaStyle: {
+//                    normal: {
+//                    }
+//                },
+                lineStyle: {
+                    normal: {
+                        width: 1.5
+                    }
+                },
+                data:{$numones},
+//               color:[ '#43CCCE',]
+            },
+            {
+                name: '内聘',
+                type: 'line',
+                smooth: true,
+//                areaStyle: {
+//                    normal: {
+//                    }
+//                },
+                lineStyle: {
+                    normal: {
+                        width: 1.5
+                    }
+                },
+                data:{$numtwos},
+//                color:[ '#D7F5F5',]
+            },
+            {
+                name: '团队',
+                type: 'line',
+                smooth: true,
+//                areaStyle: {
+//                    normal: {
+//                    }
+//                },
+                lineStyle: {
+                    normal: {
+                        width: 1.5
+                    }
+                },
+                data:{$numthes},
+//                color:[ '#A0E1E3',]
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartFou.setOption(optionFou);
+</script>

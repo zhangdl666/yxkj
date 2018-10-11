@@ -1,0 +1,146 @@
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Bootstrap/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="__CSS__/reset.css">
+<link rel="stylesheet" type="text/css" href="__CSS__/platformSalesman.css">
+<link rel="stylesheet" type="text/css" stylesheet_skin="{$skin}" href="__CSS__/{$skin}.css">
+<style type="text/css">
+  #header .dropdown{display: inline-block;}
+  #header .dropdown button{    position: relative;
+    background: transparent;
+    border: none;
+    color: rgba(256,256,256,.8);
+    outline: none;
+    top: 5px;}
+  #header .dropdown-menu{
+    min-width: 85px
+  }
+  .pifu{
+    position: fixed;
+    width: 100%;
+    z-index: 9999;
+    height: 68px;
+    background-size: 100vw 100vh;
+    background-image: url(__IMG__/{$skin}.jpg);
+  }
+  </style>
+<block name="css"> 
+</block>
+<div class='pifu'>
+  </div> 
+<nav class="navbar navbar-default" id="header">
+   
+  
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header"><img style="margin-top: 20px;" class="version" src="__IMG__/logo.png">
+    </div>
+      <div class="pull-right navbar-right">
+         <div class="dropdown">
+            <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="icon" style="width: 20px;height: 23px; background:  url('__IMG__/yf.png');background-repeat: no-repeat;background-size: contain;top: 8px;}"></i>
+              背景换肤
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dLabel">
+              <li><a class="skin" data="a">绛紫</a></li>
+              <li><a class="skin" data="b">丁香</a></li>
+              <li><a class="skin" data="c">伽罗</a></li>
+              <li><a class="skin" data="d">雪青</a></li>
+              <li><a class="skin" data="e">藕合</a></li>
+              <li><a class="skin" data="f">紫红</a></li>
+              <li><a class="skin" data="g">妖姬</a></li>
+              <li><a class="skin" data="h">香橙</a></li>
+              <li><a class="skin" data="i">蔚蓝</a></li>
+              <li><a class="skin" data="j">橄榄</a></li>
+            </ul>
+          </div>
+        <button onclick="now_href('{:U('Message/index')}')" target="right" type="button" class="btn mynews"><i class="icon icon01 headnav2"></i>我的消息<span class="badge" style="top: 17px;right: -3px">{$messageNum}</span></button>
+        <button type="button" class="btn" id="loginout"><i class="icon icon01 headnav1"></i>退出系统</button>
+      </div>
+    </div><!-- /.navbar-collapse -->
+    
+  </div><!-- /.container-fluid -->
+</nav>
+<!-- header 结束 -->
+<script type="text/javascript" src="__JS__/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Layer/layer.js"></script>
+<script type="text/javascript" src="__JS__/acommon.js"></script>
+<script src='https://cdn.bootcss.com/socket.io/2.0.3/socket.io.js'></script>
+<script>
+    // 如果服务端不在本机，请把127.0.0.1改成服务端ip
+    var socket = io("http://{$server_ip}:2129");
+//    var socket = io("http://127.0.0.1:2129");
+    var uid = "{$user_id}";
+    var role_id='{$role}';
+    if(uid){
+        // 当连接服务端成功时触发connect默认事件
+        socket.on('connect', function(){
+            socket.emit('login', uid);
+        });
+    }
+    // 后端推送来消息时
+    socket.on('new_msg', function(msg){
+        $(".aside-nav li").each(function () {
+            var valuese = $(this).find('a').attr('value');
+            if(valuese == msg){
+                // 显示小红点
+                if(!$(this).find('a').find('img').length){
+                    console.log(11);
+                    $(this).find('a').append('<img style="position: absolute;top: 13px;left: 39px;" src="__IMG__/dot.png">')
+                }else{
+//                    console.log(22);
+//                    $(this).find('a').append('<img src="/Public/Images/dot.png" style="margin-left: 50px">')
+                }
+            }
+        });
+        console.log($('.badge').text());
+        console.log(parseInt($('.badge').text()));
+        console.log(role_id);
+        var num= parseInt($('.badge').text());
+        if(msg == 'message' && role_id !=1){
+
+            if(isNaN(num)){
+                num = 1;
+            }else {
+                num += 1;
+            }
+            $('.badge').text(num);
+        }
+        if(msg == 'look' && role_id != 1){
+            if(num>1){
+                num-=1;
+                $('.badge').text(num);
+            }else {
+                $('.badge').text();
+            }
+        }
+    });
+    // 后端推送来在线数据时
+    socket.on('update_online_count', function(online_stat){
+        console.log(online_stat);
+    });
+
+
+$(".skin").click(function(){
+  var val = $(this).attr("data");
+  $.post("{:U(upskin)}",{skin:val},function(data){
+    showLayer(data);
+  })
+});
+
+$(document).ready(function(){
+    var getBrowser = function() {
+        var ua = window.navigator.userAgent;
+        var isSafari = ua.indexOf("Safari") != -1 && ua.indexOf("Version") != -1;
+       if (isSafari) {
+            $("select").addClass('safari_se');
+            $("select").after("<span class='caret safari_caret'></span>");
+            return "Safari";
+        } else {
+            return "Unkown";
+        }
+    };
+
+    getBrowser();
+})
+</script>

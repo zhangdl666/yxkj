@@ -1,0 +1,142 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>合同管理</title>
+</block>
+<block name="css">
+  <style type="text/css">
+    .hetongnav li{
+      position: relative;
+    }
+    .subnav > li {
+      width: 116px;
+      padding: 0px 24px;
+    }
+
+  </style>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>合同管理</a></li>
+      <li class="on">查看合同</li>
+    </ol>
+</block>
+
+<block name="main">
+<div id="main">
+      <!-- 导航 开始 -->
+      <ul class="clearfix subnav hetongnav">
+        <li><a><i class="icon"></i><span class="cur_title">合同信息</span></a></li>
+        <li class="on"><a rel="link" class="active" href="{:U('read',array('id'=>$hcid))}">基础信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('installe',array('id'=>$hcid))}">安装信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('return_money',array('id'=>$hcid))}">结算信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('upkeep',array('id'=>$hcid))}">保养信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('maintain',array('id'=>$hcid))}">维修信息</a></li>
+      </ul>
+      <!-- 导航 结束 -->
+
+      <div class="hetongxinxibtn-wrap">
+        <button class="btn on" onclick="now_href('{:U('read',array('id'=>$hcid))}')">酒店信息</button>
+        <button class="btn" onclick="now_href('{:U('readuser',array('id'=>$hcid))}')">联系人信息</button>
+        <button class="btn" onclick="<if condition="in_array('HotelContract/edit',$method_arr) && empty($einstall)">now_href('{:U('editc',array('id'=>$hcid))}')<else/>now_href('{:U('readc',array('id'=>$hcid))}')</if>">合同信息</button>
+      </div>
+
+      <!-- 内容 开始 -->
+      <div class="subpage hetongxinxi01">
+          <form id="">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th>酒店名称：</th>
+                    <td>
+                      <span class="table-form-text">{$name}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>酒店类型：</th>
+                    <td>
+                      <span class="table-form-text">{$type_name}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>客房数：</th>
+                    <td><span class="table-form-text">{$room_num}</span></td>
+                  </tr>
+                  <tr>
+                    <th>客房类型：</th>
+                    <td>
+                    	<volist name="hrt_items" id="hrt_item">
+	                        <span class="checkbox_txt">{$hrt_item.name}({$hrt_item.room_num|default='0'})</span>&emsp;&emsp;&emsp;
+                  		</volist>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>所属地区：</th>
+                    <td><span class="table-form-text">{$provice}{$city}{$county}</span></td>
+                  </tr>
+                  <tr>
+                    <th>详细地址：</th>
+                    <td><span class="table-form-text">{$area}</span></td>
+                  </tr>
+                  <tr>
+                    <th>联系方式：</th>
+                    <td><span class="table-form-text">{$tell}</span></td>
+                  </tr>
+                  <tr>
+                    <th>酒店图片：</th>
+                    <td>
+                      <dl class="uploadimg-container">
+                        <dd class="imgwrap-container">
+                        <volist name="himgs" id="himg">
+                          <div class="imgwrap">
+                            <img class="img-rounded" src="{$himg}">
+                          </div>
+                        </volist>
+                        </dd>
+                      </dl>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>认领状态：</th>
+                    <td><span class="table-form-text"><eq name="is_get" value="1">已认领<else/>未认领</eq></span></td>
+                  </tr>
+                  <tr>
+                    <th>认领人：</th>
+                    <td><span class="table-form-text">{$hotel_user_name}</span></td>
+                  </tr>
+                  <tr>
+                    <th>签约状态：</th>
+                    <td><span class="table-form-text"><eq name="is_sign" value="1">已签约<else/>未签约</eq></span></td>
+                  </tr>
+                  <tr>
+                    <th>历史销售人员：</th>
+                    <td><span class="table-form-text">{$sale_name}</span></td>
+                  </tr>
+                  <tr>
+                    <th>酒店状态：</th>
+                    <td><span class="table-form-text"><eq name="status" value="1">营业中<else/>已结业</eq></span></td>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <td>
+                      <button type="button" class="btn btn-quxiao backi">返回</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <!-- 内容 结束 -->
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript">
+//返回
+$(".backi").click(function(){
+  window.location.href = "{:U('index')}";
+});
+</script>
+</block>

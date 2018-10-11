@@ -1,0 +1,188 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>报销</title>
+</block>
+<block name="css">
+  <style type="text/css">
+    h3 {
+       margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .subsubnav_wrap .subsubnav {
+      margin-top: 22px;
+    }
+  </style>
+</block>
+<block name="top">
+  <ol class="breadcrumb">
+    当前的位置：
+    <li><a>系统设置</a></li>
+    <li class="on">查看报销</li>
+  </ol>
+</block>
+
+<block name="main">
+  <div id="main">
+    <!-- 导航 开始 -->
+    <ul class="clearfix subnav hetongnav">
+      <li><a><i class="icon"></i><span class="cur_title">报销审核</span></a></li>
+    </ul>
+    <!-- 导航 结束 -->
+
+    <div class="subsubnav_wrap">
+      <ul class="subsubnav">
+        <switch name="status">
+          <case value="1">
+            <li class="on"><i class="icon icon_subnav01 subnav01"></i><p>待审核</p></li>
+            <li><i class="icon icon_subnav01 subnav02"></i><p>待打款</p></li>
+            <li><i class="icon icon_subnav01 subnav03"></i><p>已打款</p></li>
+          </case>
+          <case value="2">
+            <li class="on"><i class="icon icon_subnav01 subnav01"></i><p>待审核</p></li>
+            <li class="on"><i class="icon icon_subnav01 subnav02"></i><p>待打款</p></li>
+            <li><i class="icon icon_subnav01 subnav03"></i><p>已打款</p></li>
+          </case>
+          <case value="3">
+            <li class="on"><i class="icon icon_subnav01 subnav01"></i><p>待审核</p></li>
+            <li class="on"><i class="icon icon_subnav01 subnav02"></i><p>待打款</p></li>
+            <li class="on"><i class="icon icon_subnav01 subnav03"></i><p>已打款</p></li>
+          </case>
+          <default />
+            <li><i class="icon icon_subnav01 subnav01"></i><p>待审核</p></li>
+            <li><i class="icon icon_subnav01 subnav02"></i><p>待打款</p></li>
+            <li><i class="icon icon_subnav01 subnav03"></i><p>已打款</p></li>
+        </switch>
+      </ul>
+    </div>
+
+    <!-- 内容 开始 -->
+    <div class="subpage baoxiaoshenhe">
+      <form method="post" action="{:U('operation')}">
+        <div class="subpage-block">
+          <table class="table table-bordered table-form">
+            <tbody>
+            <tr>
+              <th>报销类型：</th>
+              <td><span class="table-form-text">{$reimbursement_type_name}</span></td>
+            </tr>
+            <tr>
+              <th>报销金额：</th>
+              <td><span class="table-form-text">{$price} 元</span><span style="display: none; font-size: 14px;color: rgb(153,153,153);margin-left: 80px">本月可报销额度剩余¥100.00</span></td>
+            </tr>
+            <tr>
+              <th>酒店名称：</th>
+              <td><span class="table-form-text">{$hotel_name}</span></td>
+            </tr>
+            <tr>
+              <th>合同名称：</th>
+              <td><span class="table-form-text">{$hotel_contract_name}</span></td>
+            </tr>
+            <tr class="beizhu">
+              <th>备注信息：</th>
+              <td><span class="table-form-text">{$remark}</span></td>
+            </tr>
+            <tr>
+              <switch name="status">
+                <case value="2">
+                  <th>审核意见：</th>
+                  <td class="tongyi"><span class="table-form-text">同意</span></td>
+                </case>
+                <case value="3">
+                  <th>审核意见：</th>
+                  <td class="tongyi"><span class="table-form-text">同意</span></td>
+                </case>
+                <case value="4">
+                  <th>审核意见：</th>
+                  <td class="yibohui"><span class="table-form-text">已驳回</span></td>
+                </case>
+              </switch>
+            </tr>
+
+            <neq name="status" value="1">
+              <tr>
+                <td colspan="2" class="table-inner-title kefangyueyue">
+                  <h3>报销人基本情况</h3>
+                </td>
+              </tr>
+              <tr>
+                <th>累计申请的报销金额：</th>
+                <td><span class="table-form-text">{$total_price} 元</span></td>
+              </tr>
+              <tr>
+                <th>已认领的酒店数：</th>
+                <td><span class="table-form-text">{$claimed_hotel_num} 个</span></td>
+              </tr>
+              <tr>
+                <th>已签订的合同数：</th>
+                <td><span class="table-form-text">{$sign_contract_num} 个</span></td>
+              </tr>
+              <tr>
+                <th>合同已回款金额：</th>
+                <td><span class="table-form-text">{$payment_money} 元</span></td>
+              </tr>
+              <tr>
+                <th>基本信息提取时间：</th>
+                <td><span class="table-form-text">{$basic_time|date="Y-m-d H:i:s",###}</span></td>
+              </tr>
+
+            </neq>
+
+            <eq name="status" value="3">
+              <tr>
+                <th>确认凭证：</th>
+                <td>
+                  <dl class="uploadimg-container">
+                    <dd class="imgwrap-container">
+                      <volist name="imgs" id="img">
+                        <div class="imgwrap">
+                          <img class="img-rounded" src="{$img.voucher_img}">
+                          <!-- <ul class="imgoprate">
+                            <li data-oprate="toleft"><i class="icon"></i></li>
+                            <li data-oprate="detele"><i class="icon"></i></li>
+                            <li data-oprate="toright"><i class="icon"></i></li>
+                          </ul> -->
+                        </div>
+                      </volist>
+                    </dd>
+                  </dl>
+                </td>
+              </tr>
+            </eq>
+
+            <eq name="status" value="4">
+              <tr>
+                <th>驳回原因：</th>
+                <td><span class="table-form-text">{$decline_remark}</span></td>
+              </tr>
+            </eq>
+
+            <tr>
+              <th></th>
+              <td>
+                <input type="hidden" name="id" value="{$id}">
+                <input type="hidden" name="status" value="5">
+                <if condition="($role_id eq 2) && ($status eq 1)">
+                  <button type="button" class="btn btn-tijiao ajax-post">撤回</button>
+                <elseif condition="($role_id eq 2) && (($status eq 4) || ($status eq 5))"/>
+                  <a href="{:U('edit',array('id'=>$id))}"><button type="button" class="btn btn-tijiao">编辑 </button></a>
+                <else />
+
+                </if>
+                <button type="button" class="btn btn-quxiao back">返回</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+    <!-- 内容 结束 -->
+  </div>
+</block>
+<block name="js">
+  <script type="text/javascript" src="__DTREE__/dtree.js"></script>
+  <script type="text/javascript">
+
+  </script>
+</block>
+

@@ -1,0 +1,106 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>酒店录入</title>
+    <link rel="stylesheet" href="__PUBLIC__/Layui/css/layui.css" media="all">
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <li class="on">酒店导入</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main" class="bgfff jiudianluru">
+        <div class="subpage jiudianxinzeng">
+            <form id="">
+                <div class="subpage-block">
+                    <table class="table table-bordered table-form">
+                        <tr>
+                            <th><span class="text-orange">*</span>文件选择：</th>
+                            <td>
+                                <button type="button" class="layui-btn" id="test1">
+                                    <i class="layui-icon">&#xe67c;</i>上传文件
+                                </button>
+                                <span style="color: red">(注:用wps表格上传稍慢)</span>
+                                <span style="color: green;display: none" id="file_src"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <input type="hidden" class="src" value="">
+                                <button type="button" class="btn btn-tijiao tijiao">提交</button>
+                                <button type="button" class="btn btn-quxiao quxiao">取消</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Layui/layui.js"></script>
+    <script type="text/javascript">
+        layui.use('upload', function () {
+            var upload = layui.upload;
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#test1' //绑定元素
+                , accept: 'file' //允许上传的文件类型
+                , url: '/Pc/Upload/uploadImg?path=Import' //上传接口
+                , done: function (res) {
+                    $("#file_src").show();
+                    $("#file_src").text(res.message);
+                    $(".src").val(res.message)
+                    layer.msg('文件添加成功,请点击提交按钮导入', {time: 2000, offset: 0, icon: 1});
+                }
+                , error: function () {
+                    //请求异常回调
+                    layer.msg('文件添加失败', {time: 2000, offset: 0, icon: 2});
+                }
+            });
+        });
+
+        $(".tijiao").click(function () {
+            $(".btn-tijiao").attr("disabled", true)
+            $(".btn-quxiao").attr("disabled", true)
+            var src = $('.src').val();
+            if (src.length == 0) {
+                layer.msg('清先添加导入文件', {time: 2000, offset: 0, icon: 2});
+            }
+            $.post('/Pc/Import/importHotel', {src: src}, function (data) {
+                if (data.code == 0) {
+                    $(".btn-tijiao").attr("disabled", false)
+                    $(".btn-quxiao").attr("disabled", false)
+                    var src = $('.src').val();
+                    layer.confirm('文件导入成功,是否继续导入？', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
+                        $("#file_src").text('');
+                        $(".src").val('');
+//                        layer.closeAll();
+                        window.location.href = '/Pc/Hotel/index'
+                    }, function () {
+                        window.location.href = '/Pc/Hotel/index'
+                    });
+                } else {
+                    $(".btn-tijiao").attr("disabled", false)
+                    $(".btn-quxiao").attr("disabled", false)
+                    var src = $('.src').val();
+                    layer.alert(data.msg, {
+                        icon: 2,
+                        skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                    })
+                }
+            })
+        })
+
+        $(".quxiao").click(function () {
+            window.location.href = '/Pc/Hotel/index'
+        })
+    </script>
+</block>

@@ -1,0 +1,315 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>酒店角色</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        .loading{text-align: center;display: none;}
+        .aaa{
+            height:28px;
+            width:200px;
+            margin-top:-8px;
+        }
+        .bbb{
+            text-align:center
+        }
+        .jiesuan .jiesuan_item .jiesuan_title .right {
+            padding-top: 0.15rem;
+        }
+        .jiesuan .jiesuan_item .jiesuan_content .right .showdata li{
+            width: 4.3rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        /*.col{*/
+            /*width: 50%;*/
+        /*}*/
+        /*.jiesuan .jiesuan_item .jiesuan_title .right {*/
+            /*padding-top: 0.15rem;}*/
+        /*select::-ms-expand { display: none; }*/
+        /*select{*/
+            /*appearance:none;*/
+            /*-moz-appearance:none;*/
+            /*-webkit-appearance:none;*/
+            /*border: 0px;*/
+            /*background-color:#ffffff;*/
+
+        /*}*/
+        /*.selected{*/
+            /*position: relative;*/
+            /*right: 0rem;*/
+        /*}*/
+        /*.w_00_12{*/
+             /*position: relative;*/
+             /*top: -0.07rem;*/
+             /*left: 0.3rem;*/
+         /*}*/
+        /*.select option{*/
+            /*text-align: center;*/
+        /*}*/
+
+        .search_container .search_select .col{
+            width: 50%;
+        }
+        .search_container .search_select .col + .col:before{
+            display: none;
+        }
+        .search_container .search_input_wrap {
+            padding: 0.2rem 0.2rem 0.2rem 0;
+        }
+        .loading{
+            padding: 0.5rem 0;
+            font-size: 0.3rem;
+        }
+        .selected select{
+            width: 50%;
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            overflow: hidden!important;
+        }
+        select::-ms-expand {
+            display: none;
+        }
+        select option {
+            direction: ltr;
+            width: 50%;
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            overflow: hidden!important;
+        }
+        select{
+            appearance:none;
+            -moz-appearance:none;
+            -webkit-appearance:none;
+            border: 0px;
+            background-color:#ffffff;
+            width: 50%;
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            overflow: hidden!important;
+        }
+        .w_00_12{
+            position: relative;
+            top: -0.07rem;
+            left: 0.06rem;
+        }
+        .jiesuan .jiesuan_item .jiesuan_content {
+             padding: 0.2rem 0 0.2rem 0.2rem;
+        }
+        .jiesuan .jiesuan_item .jiesuan_content .right {
+             padding-right: 0rem;
+        }
+        /*.jiesuan .jiesuan_item .jiesuan_content .right .showdata li {*/
+             /*width: auto;*/
+        /*}*/
+
+    </style>
+</block>
+<block name="main">
+    <!-- header 开始 -->
+    <div class="header">
+        <div class="left"></i><a href="{:U('Index/index')}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+        <div class="center"></div>
+        <div class="right"><a class="s">
+            <if condition="$role_id eq 3 || $role_id eq 9">
+                <else/>
+                <a href="{:U('add')}">
+                <if condition="in_array('HotelUser/add',$method_arr)"><i class="icon add"></i>新增</if>
+                </a>
+            </if>
+            </a>
+        </div>
+    </div>
+    <!-- header 结束 -->
+    <!-- 主体内容 开始 -->
+    <div class="main swiper-container-01" id="hetongpage">
+        <div class="main_body" >
+            <!--<form id="" method="post" action="{:U('HotelUser/index')}">-->
+                <div class='search_container' style="background: #fff; color: #5C5C5C;">
+                    <ul class="layoutlr search_select">
+                    <li class="col">
+                        <span class="selected" >
+                        <select name="is_get">
+                            <option value="">酒店名称</option>
+                            <volist name="hotel" id="vo">
+                                <option value="{$vo.id}" <eq name="vo.id" value="$whotel_id">selected</eq>>{$vo.name}</option>
+                            </volist>
+                        </select>
+                            </span><i class="icon w_0000_00 w_00_12"></i>
+                        <span style="border-right: 0.01rem solid #cfcfcf;width:0.01rem;height:0.16rem;margin-top: 0.13rem;display:inline-block;float: right"></span>
+                    </li>
+
+                    <li class="col">
+                        <span  class="selected">
+                        <select  name="ht_id" style="">
+                            <option value="">用户类型</option>
+                            <volist name="role" id="rvo">
+                                <option value="{$rvo.id}" <eq name="rvo.id" value="$wtype_id">selected</eq>>{$rvo.name}</option>
+                            </volist>
+                        </select></span><i class="icon w_0000_00 w_00_12"></i>
+                    </li>
+                </ul>
+                    <!--<div class="search_input_wrap">-->
+                        <!--<div class="search_input"><div style="float: right"><i class="icon w_0000_00 w_00_01"></i></div><div class="contenteditable on" contenteditable="" placeholder="{$wlike|default='输入关键词进行搜索'}"></div></div>-->
+                        <!--&lt;!&ndash; <input type="text" class="search_input" name="" placeholder="输入关键词进行搜索"> &ndash;&gt;-->
+                    <!--</div>-->
+                </div>
+            <div class='search_container' style=" color: #5C5C5C; margin-top: 0.15rem;padding: 0rem 0.2rem">
+                <div class="search_input_wrap" style="background: #fff;padding: 0rem 0.2rem">
+                    <div class="search_input"><div style="float: right"><i class="icon w_0000_00 w_00_01"></i></div><div class="contenteditable on" contenteditable="" placeholder="{$wlike|default='输入用户姓名进行搜索'}"></div></div>
+                    <!-- <input type="text" class="search_input" name="" placeholder="输入关键词进行搜索"> -->
+                </div>
+            </div>
+                
+                <!--<div class="bbb">-->
+                    <!--<input class="aaa" type="text" name="like"  placeholder="请输入账号进行搜索">-->
+                    <!--<button class="btn btn-sm onlineBtn">搜索</button>                -->
+                <!--</div>-->
+
+            <!--</form>-->
+            <div class="jiesuan">
+                <notempty name="rows">
+                <volist name="rows" id="row">
+                <dl class="jiesuan_item">
+                    <dt class="layoutlr jiesuan_title">
+                    <div class="left"><i class="icon w_0004_04 w_04_08"></i>{$row.hname}</div>
+                    <div class="right">ID：NO{$row.id}</div>
+                    </dt>
+                    <dd class="layoutlr jiesuan_content">
+                        <div class="left">
+                            <div class="goodsimg">
+                                <img src="{$row['img']|default='__IMG__/elogo.png'}"/>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <a class="text-warning" href="{:U('modify',array('id'=>$row['id']))}">
+                            <ul class="showdata">
+                                <li><span class="label">用户账号：</span>{$row.name}</li>
+                                <li><span class="label">用户姓名：</span>{$row.real_name}</li>
+                                <li><span class="label">用户类型：</span>{$row.rname}</li>
+                                <li><span class="label">联系方式：</span>{$row.mobile}</li>
+                            </ul>
+                            </a>
+                        </div>
+                    </dd>
+                </dl>
+               </volist>
+               <else/>
+                    <dl class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></dl>
+                </notempty>
+            </div>
+            <div class="col-xs-12 loading">
+                <img src="__IMG__/loading.gif" alt="">
+            </div>
+        </div>
+
+    </div>
+    <!-- 主体内容 结束 -->
+    <!--装页码的div-->
+    <div style="display:none" key="1" class="key"></div>
+    <div style="display:none" key="1" class="list-page"></div>
+</block>
+
+
+<block name="js">
+    <script type="text/javascript">
+        //搜索
+        $("select[name='is_get']").change(function(){
+            select_fun();
+        })
+        $("select[name='ht_id']").change(function(){
+            select_fun();
+        })
+
+        function select_fun(){
+            var hotel_id = $("select[name='is_get'] option:selected").val();
+            var ht_id = $("select[name='ht_id'] option:selected").val();
+            var sousuo=$('.search_input').text();
+            self.location.href ='/Wx/HotelUser/index/type/'+ht_id+'/hotel/'+hotel_id+'/like/'+sousuo;
+        }
+        $(".contenteditable").blur( function() {
+            select_fun();
+        });
+
+
+        /*if($(".jiesuan").height() >= 667 ){
+            //下拉显示更多
+            //当前的数据一定要超过页面显示的
+            $(window).scroll(function () {
+                var docHei = $(document).height(), winHei = $(window).height(), scrHei = $(document).scrollTop();
+                if (scrHei >= docHei - winHei) {
+                    $(".loading").show();
+                    var key = $('.key').attr('key');//当前页码
+                    key = key * 1 + 1;
+                    //获取加载数据
+                    $.ajax({
+                        type:"POST",
+                        url:"{:U('HotelUser/show_more_data')}?page="+$(".list-page").attr('key'),
+                        data:{key:key},
+                        async:false,
+                        success:function(info){
+                            //alert(info);
+                            info = eval("("+info+")");
+                            if (info.status) {
+                                var re_data = info.data;
+                                $('.key').attr('key', re_data.key);          //添加最新显示页码
+                                $(".list-page").attr('key',re_data.page);   //添加最新查询页码
+                                //显示加载的数据
+                                showHtml(re_data.datas);
+                                //>>隐藏加载图
+                                setTimeout(function () {
+                                    $(".loading").hide();
+                                }, 1000);
+                            } else {
+                                $(".loading").empty();
+                                $(".loading").text("已全部加载完");
+                            }
+                        }
+                    });
+                }
+            });
+
+            //显示加载的数据
+            function showHtml(datas){
+                $(datas).each(function () {
+                    var status = $(this).attr('type');
+                    var id = $(this).attr("id")+'.html';
+                    var html = "<dl class='jiesuan_item'>\
+                            <dt class='layoutlr jiesuan_title'>\
+                            <div class='left'><i class='icon'></i>"+$(this).attr("hname")+"</div>\
+                    <div class='right'>ID：NO"+$(this).attr("id")+"</div>\
+                    </dt>\
+                    <dd class='layoutlr jiesuan_content'>\
+                            <div class='left'>\
+                            <div class='goodsimg'>";
+                    var himg = $(this).attr("himg");
+                    if(himg){
+                        html += "<img src="+himg+"/>";
+                    }else{
+                        html += "<img src='__IMG__/head.png'/>";
+                    }
+                            
+                            html +="</div>\
+                            </div>\
+                            <div class='right'>\
+                            <a class='text-warning' href="+'modify/id/'+id+">\
+                            <ul class='showdata'>\
+                            <li><span class='label'>账号：</span>"+$(this).attr("name")+"</li>\
+                    <li><span class='label'>用户姓名：</span>"+$(this).attr("real_name")+"</li>\
+                    <li><span class='label'>用户类型：</span>"+$(this).attr("rname")+"</li>\
+                    <li><span class='label'>联系方式：</span>"+$(this).attr("mobile")+"</li>\
+                    </ul>\
+                    </a>\
+                    </div>\
+                    </dd>\
+                    </dl>";
+                    $('.jiesuan').append(html);
+                });
+            }
+        }else {
+            $(".loading").empty();
+            $(".loading").text("已全部加载完");
+        }*/
+    </script>
+</block>

@@ -1,0 +1,247 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>净化效果分享</title>
+</block>
+<block name="css">
+	<style type="text/css">
+		.jinhuaxiaoguo .jinhua_block {
+			margin:0 0 0.2rem 0;
+			padding-bottom: 0.64rem;
+		}
+		.layoutlr {
+
+			 line-height: 1.5em;
+		}
+		.jinhuaxiaoguo .bjkkitem02_wrap .bjkkitem02 .title_wrap {
+			color: rgb(102,102,102);
+		}
+		.jinhuaxiaoguo .jinhua_block {
+			padding-top: 0.36rem;
+		}
+		.logocode_container_div{
+			width: 100%;
+			background-color: white;
+			padding-top: 0.64rem;
+		}
+		.jinhuaxiaoguo .logocode_container .txt {
+			color: rgb(163,163,163)!important;
+		}
+		.has_header .main {
+			padding-top: 0px; }
+		.air_container {
+			background: url(__IMG__/yuan01.png) no-repeat;
+			background-size: 60vw 60vw;
+			border-radius: 60vw;
+			background-position: 0.75rem;
+		}
+		.air_main{
+			padding-top: 0.85rem;
+		}
+		.air_container {
+			height: 5rem;
+		}
+		.white_header .left {
+			color: #666;
+			padding-left: 0.2rem;
+			font-size: 0.26rem;
+			padding-bottom: 0.36rem;
+		}
+
+	</style>
+</block>
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<!--<div class="header">-->
+			<!--&lt;!&ndash;<div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>&ndash;&gt;-->
+			<!--<div class="center"></div>-->
+			<!--&lt;!&ndash;<div class="right"><a class="s">...</a></div>&ndash;&gt;-->
+		<!--</div>-->
+
+		<div class="main_body jinhuaxiaoguo">
+			<notempty name="promotion">
+				<div class="fx_As">
+					<div class="addimg_wrap imgs">
+							<a href="{:U('/Wx/Promotion/preview',array('id'=>$promotion['id']))}">
+								<img class="addimg" src="{$promotion.img}" alt="" style="width: 100%;height:1rem">
+							</a>
+						<button class="close"><i class="icon w_0000_00 w_00_05 delete"></i></button>
+					</div>
+				</div>
+				<else/>
+
+			</notempty>
+			<!--<div class="banner">-->
+
+			<!--</div>-->
+			<div class="layoutlr jinhua_title">
+				<div class="col left">{$hotel_name}</div>
+				<div class="col right">{$hotel_city} {$hotel_county}</div>
+			</div>
+			<div class="jinhua_block">
+				<div class="air_container">
+					<div class="air_main">
+						<div class="num">{$pm25}</div>
+						<div class="within">室内平均空气质量</div>
+						<div class="abroad">室外空气质量 {$apm25}</div>
+					</div>
+				</div>
+			</div>
+			<div class="layoutlr bjkkitem02_wrap jinhua_block">
+				<div class="col left">
+					<div class="bjkkitem bjkkitem02">
+						<div class="bjkkitem_main">
+							<div class="icon_wrap"><i class="icon w_0002_02 w_02_05"></i></div>
+							<div class="num">{$room_num}<span class="min">个</span></div>
+							<div class="title_wrap">
+								<div class="title_inner">
+									<span class="title">优享客房数</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col right">
+					<div class="bjkkitem bjkkitem02">
+						<div class="bjkkitem_main">
+							<div class="icon_wrap"><i class="icon w_0002_02 w_02_06"></i></div>
+							<div class="num">{$yznum}<span class="min">天</span></div>
+							<div class="title_wrap">
+								<div class="title_inner">
+									<span class="title" style="margin-left: -0.1rem;">室内累计优质天数</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 图表 开始 -->
+			<div class="jinhua_block">
+				<div class="layoutlr white_header">
+					<div class="left" style="text-align: center;font-size: 0.36rem;margin-bottom: 0.2rem;">近7日空气质量走势统计</div>
+				</div>
+				<!--【图表】-->
+				<div id="onemain" style="height: 300px;"></div>
+			</div>
+			<!-- 图表 结束 -->
+			<div class="logocode_container_div">
+				<div class="logocode_container">
+					<div class="layoutlr">
+						<div class="col left">
+							<img class="elogo" src="__IMG__/elogo.png">
+						</div>
+						<div class="col right">
+							<img class="ecode" src="__IMG__/ecode2.jpg">
+						</div>
+					</div>
+					<p class="txt">优享空间  联系电话{$tel}</p>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+	<!-- 主体内容 结束 -->
+
+</block>
+
+<block name="js">
+	<script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+	<script type="text/javascript">
+		$(".delete").click(function () {
+			$(".fx_As").remove();
+        })
+		// 基于准备好的dom，初始化echarts实例
+		var myChartOne= echarts.init(document.getElementById('onemain'));
+		optionOne = {
+			tooltip : {
+				trigger: 'axis',
+			},
+//			toolbox: {
+//				show : true,
+//				feature : {
+//					mark : {show: true},
+//					dataView : {show: true, readOnly: false},
+//					magicType : {
+//						show: true,
+//						type: ['pie', 'funnel']
+//					},
+//					restore : {show: true},
+//					saveAsImage : {show: true}
+//				}
+//			},
+			grid: {
+				left: '5%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			xAxis : [
+				{
+					type : 'category',
+					boundaryGap : false,
+					data : {$date}
+				}
+			],
+			legend: {
+				data: ['室内空气质量均值','室外空气质量均值']
+			},
+			yAxis : [
+				{
+                    name:'PM2.5(μg/m3)',
+                <if condition="($spm25 eq '[]') AND ($sapm25 eq '[]')">
+                min: 0,
+            max: 100,
+        </if>
+					type : 'value',
+						nameRotate:0.2,
+                }
+			],
+			series : [
+				{
+					name: '室内空气质量均值',
+					type:'line',
+					smooth: true,
+					areaStyle: {
+						normal: {
+						}
+					},
+					// 背景颜色设置
+					lineStyle: {
+						normal: {
+							width: 1.5,
+							// 线条颜色
+							color: ['#B9A7DE']
+						}
+					},
+					data:{$spm25},
+					color: ['#B9A7DE']
+				},
+				{
+					name: '室外空气质量均值',
+					type:'line',
+					smooth: true,
+					areaStyle: {
+						normal: {
+						}
+					},
+					// 背景颜色设置
+					lineStyle: {
+						normal: {
+							width: 1.5,
+							// 线条颜色
+							color: ['#7DD9B2']
+						}
+					},
+					data:{$sapm25},
+					color: ['#7DD9B2']
+				},
+			]
+		};
+		// 使用刚指定的配置项和数据显示图表。
+		myChartOne.setOption(optionOne);
+
+	</script>
+</block>
+

@@ -1,0 +1,158 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>促销详情</title>
+</block>
+<block name="css">
+	<link rel="stylesheet" href="__CSS__/LCalendar.css">
+	<style type="text/css">
+		.textarea{
+			width: 100%;
+			resize:none;
+		}
+		.textarea img{
+			width: 100%!important;
+			height: auto!important;
+		}
+		.textarea p{
+			word-break: break-word;
+		}
+		.has_header .header {
+			border-bottom: 0px solid #e6e6e6!important;
+		}
+		.w_0004_04 {
+			top: 0.08rem;
+		}
+	</style>
+</block>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+			<div class="right" id="share"><i class="icon w_0004_04 w_04_07"></i>分享</div>
+		</div>
+
+		<div class="main_body cuxiaoxiangqing">
+			<!--<div class="addimg_wrap">-->
+				<!--<input type="hidden" value="{$data.id}" class="id">-->
+				<!--<img class="addimg" src="{$data.img}">-->
+			<!--</div>-->
+			<!--<p style="padding-left: 0.2rem;"><i class="icon w_0007_07 w_07_06" ></i>{$data.title}</p>-->
+			<div class="cuxiaowenzhang">
+				<div class="cuxiaozhengwen textarea" escape="false" class=""style="padding: 0.2rem 0">
+					{$data.content}
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+<block name="js">
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script type="text/javascript">
+		$("#share").click(function () {
+			layer.open({
+				content: '请点击右上角三个点进行分享'
+			});
+		})
+		//微信配置
+		wx.config({
+			debug: false,
+			appId: '{$appId}',
+			timestamp:'{$timestamp}',
+			nonceStr:'{$nonceStr}',
+			signature:'{$signature}',
+			jsApiList : ['checkJsApi','onMenuShareQQ','onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQZone','onMenuShareWeibo']
+		});//end_config
+
+		wx.error(function(res) {
+			pop.msg("出错了：" + res.errMsg);
+		});
+
+		wx.ready(function() {
+			wx.checkJsApi({
+				jsApiList : ['onMenuShareQQ','onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQZone','onMenuShareWeibo'],
+				success : function(res) {
+				}
+			});
+
+			// 2.3 监听“分享到QQ”按钮点击、自定义分享内容及分享结果接口
+			wx.onMenuShareQQ({
+				title: '{$title}',
+				desc: '{$summary}',
+				link: "{$web_url}{:U('share',array('id'=>$data['id']))}",
+				imgUrl: "{$web_url}__IMG__/elogo.png",
+				success: function (res) {
+					//pop.msg('分享成功');
+				},
+				cancel: function (res) {
+					pop.msg('您已取消');
+				}
+			});
+
+
+			//分享到朋友
+			wx.onMenuShareAppMessage({
+				title: '{$title}',
+				desc: '{$summary}',
+				link: "{$web_url}{:U('share',array('id'=>$data['id']))}",
+				imgUrl: "{$web_url}__IMG__/elogo.png",
+				type: '', // 分享类型,music、video或link，不填默认为link
+				dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+				success: function (res) {
+					//pop.msg('分享成功');
+				},
+				cancel: function (res) {
+					pop.msg('您已取消');
+				}
+			});
+
+			//分享到朋友圈
+			wx.onMenuShareTimeline({
+				title: '{$title}',
+				desc: '{$summary}',
+				link: "{$web_url}{:U('share',array('id'=>$data['id']))}",
+				imgUrl: "{$web_url}__IMG__/elogo.png",
+				success: function (res) {
+					//pop.msg('分享成功');
+				},
+				cancel: function (res) {
+					pop.msg('您已取消');
+				}
+			});
+
+
+			//分享到QQ空间
+			wx.onMenuShareQZone({
+				title: '{$title}',
+				desc: '{$summary}',
+				link: "{$web_url}{:U('share',array('id'=>$data['id']))}",
+				imgUrl: "{$web_url}__IMG__/elogo.png",
+				success: function (res) {
+					//pop.msg('分享成功');
+				},
+				cancel: function (res) {
+					pop.msg('您已取消');
+				}
+			});
+
+			//分享到腾讯微博
+			wx.onMenuShareWeibo({
+				title: '{$title}',
+				desc: '{$summary}',
+				link: "{$web_url}{:U('share',array('id'=>$data['id']))}",
+				imgUrl: "{$web_url}__IMG__/elogo.png",
+				success: function (res) {
+					//pop.msg('分享成功');
+				},
+				cancel: function (res) {
+					pop.msg('您已取消');
+				}
+			});
+
+		});//end_ready
+
+	</script>
+</block>

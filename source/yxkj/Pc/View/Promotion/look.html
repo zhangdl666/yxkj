@@ -1,0 +1,108 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>促销管理</title>
+</block>
+<block name="top">
+    <style type="text/css">
+        .textclass p{
+           width: 500px;
+        }
+        .textclass img{
+          width: 100%!important;
+          max-height: 300px;
+        }
+    </style>
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>系统设置</a></li>
+        <li class="on">促销管理</li>
+    </ol>
+</block>
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title">促销管理</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+
+        <!-- 内容 开始 -->
+        <div class="subpage jiudianxinzeng">
+                <div class="subpage-block">
+                    <table class="table table-bordered table-form">
+                        <tr><notempty name="id">
+                                <input type="hidden" name="utime" value="<?php echo date(time());?>">
+                              <else/>
+                                <input type="hidden" name="ctime" value="<?php echo date(time());?>">
+                            </notempty>
+                            <th>促销编号：</th>
+                            <td><span>{$data.sno}</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>促销标题：</th>
+                            <td>{$data.title}</td>
+                        </tr>
+                        <tr>
+                            <th>促销状态：</th>
+                            <td>
+                               <if condition="$data.status eq '1'">
+                                   上架
+                                   <else/>
+                                   下架
+                               </if>
+                            </td>
+                        </tr>
+                            <tr>
+                                <th>促销图片：</th>
+                                <td>
+                                    <dl class="uploadimg-container">
+                                        <dd class="imgwrap-container" >
+                                                <div class="imgwrap">
+                                                    <img class="img-rounded" src="{$data.img}">
+                                                </div>
+                                        </dd>
+
+                                    </dl>
+                                </td>
+                            </tr>
+
+                        <tr>
+                            <th>正文内容：</th>
+                            <td class="textclass">
+                                {$data.content}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                    <button type="button" class="btn btn-quxiao back">返回</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+        <!-- 内容 结束 -->
+    </div>
+</block>
+
+<block name="js">
+    <script type="text/javascript" src="__UPLOADIFY__/jquery.uploadify.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/laydate/laydate.js"></script>
+    <script type="text/javascript">CKEDITOR.replace('content');</script>
+    <script type="text/javascript">
+        $(function () {
+            // 日期展示
+            laydate.render({
+                elem: '#startTime' //指定元素
+            });
+            laydate.render({
+                elem: '#endTime' //指定元素
+            });
+        });
+
+    </script>
+</block>

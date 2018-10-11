@@ -1,0 +1,75 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>重置密码</title>
+</block>
+
+<block name="main">
+    <div class="main">
+
+        <!-- header 开始 -->
+        <div class="header">
+            <div class="left backs" data-url="{:U('getUserInfo')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+            <!--<div class="right changePwd-js"  data-url="{:U('changePwd')}"><a class="s">保存</a></div>-->
+        </div>
+        <!-- header 结束 -->
+
+        <div class="main_body zhaohuimm">
+            <form>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="oldPwd" placeholder="请输入旧密码">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="newPwd" placeholder="请输入新密码">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="newPwds" placeholder="请确认新密码">
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-default changePwd-js" data-url="{:U('changePwd')}">提交</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript">
+        $('.back').click(function(){
+            var url=$(this).data('url');
+            window.location.href=url;
+        });
+        $('.changePwd-js').on('click',function(){
+            var oldPwd=$('input[name="oldPwd"]').val();
+            var newPwd=$('input[name="newPwd"]').val();
+            var newPwds=$('input[name="newPwds"]').val();
+            if(oldPwd == '' || newPwd == '' || newPwds==''){
+                layer.open({content:'请填写完整',time:2});
+                 return;
+            }
+            if(oldPwd == newPwd){
+                layer.open({content:'新密码和旧密码一致',time:2});
+                return;
+            }
+            if(newPwd != newPwds){
+                layer.open({content:'新密码和重复密码不一致',time:2});
+                return;
+            }
+            $.post('/Wx/User/changePwd',{oldPwd:oldPwd,newPwd:newPwd,newPwds:newPwds},function (res){
+                if(res.code==1){
+                    layer.open({content:res.message,time:2});
+                    window.location.href='/Wx/User/getUserInfo';
+                }else {
+                    layer.open({content:res.message,time:2});
+                }
+                /*if(typeof res != "object"){
+                    var res = eval("("+res+")");
+                }
+                layer.open({content:res.info,time:2});
+                if (res.status) {  //成功的时候跳转到指定的url地址
+                    window.location.href='/Wx/User/getUserInfo';
+                }*/
+            })
+        })
+    </script>
+</block>

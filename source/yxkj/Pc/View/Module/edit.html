@@ -1,0 +1,105 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>模块管理</title>
+</block>
+
+<block name="top">
+  <ol class="breadcrumb">
+    当前的位置：
+    <li><a>系统设置</a></li>
+    <li class="on"><notempty name="id">编辑<else/>新增</notempty>模块</li>
+  </ol>
+</block>
+
+<block name="main">
+  <div id="main">
+    <!-- 导航 开始 -->
+    <ul class="clearfix subnav hetongnav">
+      <li><a><i class="icon"></i><span class="cur_title"><notempty name="id">编辑<else/>新增</notempty>模块</span></a></li>
+    </ul>
+    <!-- 导航 结束 -->
+
+    <!-- 内容 开始 -->
+    <div class="subpage jiudianxinzeng">
+      <form method="post" action="{:U('operation')}">
+        <div class="subpage-block">
+          <table class="table table-bordered table-form">
+            <tbody>
+            <tr>
+              <th>菜单名称：</th>
+              <td><input type="text" name="name" value="{$name}" <notempty name="redonly">disabled</notempty>><span class="errortips"></span></td>
+            </tr>
+            <tr>
+              <th>URL地址：</th>
+              <td><input type="text" name="method" value="{$method}" <notempty name="redonly">disabled</notempty>><span class="errortips"></span></td>
+            </tr>
+            <tr>
+              <th>父菜单：</th>
+              <td>
+                <input type="hidden" name="parent_id" value="{$parent_id|default=0}" class="parent_id"><span class="errortips"></span>
+                <input type="text" name="parent_text" class="parent_text" maxlength="60" value="{$parent_name|default='顶级菜单'}" disabled>
+                <div id="tree" class="dtree"></div>
+              </td>
+            </tr>
+            <tr>
+              <th>备注：</th>
+              <td><input type="text" name="remark" value="{$remark}" <notempty name="redonly">disabled</notempty>><span class="errortips"></span></td>
+            </tr>
+            <tr>
+              <th>是否显示：</th>
+              <td>
+                <label><input type="radio" name="is_show" value="1" <if condition="$is_show eq '1' || !isset($is_show)">checked</if> <notempty name="redonly">disabled</notempty>> 显示</label>
+                <label><input type="radio" name="is_show" value="0" <eq name="is_show" value="0">checked</eq> <notempty name="redonly">disabled</notempty>> 隐藏</label>
+              </td>
+            </tr>
+            <tr>
+              <th>排序：</th>
+              <td><input type="text" name="sort" value="{$sort}" <notempty name="redonly">disabled</notempty>><span class="errortips"></span></td>
+            </tr>
+            <tr>
+              <th><input type="hidden" name="id" value="{$id}"></th>
+              <td>
+                <empty name="redonly">
+                  <button type="button" class="btn btn-tijiao ajax-post">保存</button>
+                  <button type="button" class="btn btn-quxiao back">取消</button>
+                <else />
+                  <button type="button" class="btn btn-quxiao back">返回</button>
+                </empty>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+    <!-- 内容 结束 -->
+  </div>
+</block>
+
+<block name="js">
+  <script type="text/javascript" src="__DTREE__/dtree.js"></script>
+  <script type="text/javascript">
+    //菜单数据
+    var menu=eval('(' + '{$menu}' + ')');
+    //console.log(menu);
+    //菜单树
+    dtree = new dTree('dtree');
+    //console.log(dtree);
+    dtree.add(0,-1,'<span>顶级菜单</span>',"javascript:void(0)");
+    for(var i=0;i<menu.length;i++){
+      if(menu[i].parent_id==0){
+        dtree.add(menu[i].id,menu[i].parent_id,"<input type='hidden' value='"+menu[i].id+"'/><span>"+menu[i].name+"</span>","javascript:void(0)");
+      }else {
+        dtree.add(menu[i].id,menu[i].parent_id,menu[i].name,"");
+      }
+    }
+    $("#tree").html(dtree.toString());
+    dtree.openAll();
+    dtree.s=function(node){
+      var id='#sdtree'+node;
+      $('.parent_id').val($(id).find('input').val());
+      $('.parent_text').val($(id).find('span').text());
+    }
+
+  </script>
+</block>

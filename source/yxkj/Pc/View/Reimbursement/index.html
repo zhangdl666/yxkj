@@ -1,0 +1,385 @@
+<extend name="Public/index"/>
+
+<block name="head">
+  <title>报销</title>
+</block>
+
+<block name="top">
+  <ol class="breadcrumb">
+    当前的位置：
+    <li><a>报销</a></li>
+    <li class="on">报销列表</li>
+  </ol>
+</block>
+
+<block name="main">
+  <style type="text/css">
+  .table-datawrap .panel-heading .search-wrap .search,.btn-warning{margin-left:20px;margin-right:0px}
+  /*.danzi li{*/
+    /*width: calc(25% - 18px)!important;*/
+  /*}*/
+  .panel .panel-heading {
+    margin-bottom: 0px;
+  }
+  @media screen and (max-width: 1199px) and (min-width: 1000px){
+    .danzi li {
+      width: calc(16.6% - 18px)!important;
+    }
+  }
+  @media screen and (max-width: 1500px) and (min-width: 1200px){
+    .danzi li {
+      width: calc(16.6% - 18px)!important;
+    }
+  }
+
+  </style>
+  <div id="main" class="bgfff">
+    <switch name="role_id">
+      <case value="1">
+        <ul class="clearfix danzi">
+          <li>
+            <div class="danzidata dan1">
+              <i class="icon dan_icon i_dan1"></i>
+              <div class="danzinum"><span>{$ddk_num}</span>个</div>
+              <div class="danziname">待打款报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan2">
+              <i class="icon dan_icon i_dan2"></i>
+              <div class="danzinum"><span>{$dsh_num}</span>个</div>
+              <div class="danziname">待审核报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan3">
+              <i class="icon dan_icon i_dan3"></i>
+              <div class="danzinum"><span>{$ybh_num}</span>个</div>
+              <div class="danziname">已驳回报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan4">
+              <i class="icon dan_icon i_dan4"></i>
+              <div class="danzinum"><span>{$qb_num}</span>个</div>
+              <div class="danziname">全部报销工单</div>
+            </div>
+          </li>
+        </ul>
+      </case>
+      <case value="2">
+        <ul class="clearfix danzi">
+          <li>
+            <div class="danzidata dan1">
+              <i class="icon dan_icon i_dan1"></i>
+              <div class="danzinum"><span>{$ddk_num}</span>个</div>
+              <div class="danziname">待打款报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan2">
+              <i class="icon dan_icon i_dan2"></i>
+              <div class="danzinum"><span>{$dsh_num}</span>个</div>
+              <div class="danziname">待审核报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan3">
+              <i class="icon dan_icon i_dan3"></i>
+              <div class="danzinum"><span>{$ybh_num}</span>个</div>
+              <div class="danziname">已驳回报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan4">
+              <i class="icon dan_icon i_dan4"></i>
+              <div class="danzinum"><span>{$qb_num}</span>个</div>
+              <div class="danziname">全部报销工单</div>
+            </div>
+          </li>
+        </ul>
+      </case>
+      <case value="6">
+        <ul class="clearfix danzi">
+          <li>
+            <div class="danzidata dan1">
+              <i class="icon dan_icon i_dan1"></i>
+              <div class="danzinum"><span>{$ddk_num}</span>个</div>
+              <div class="danziname">待打款报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan2">
+              <i class="icon dan_icon i_dan2"></i>
+              <div class="danzinum"><span>{$ydk_num}</span>个</div>
+              <div class="danziname">已打款报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan3">
+              <i class="icon dan_icon i_dan3"></i>
+              <div class="danzinum"><span>{$qb_num}</span>个</div>
+              <div class="danziname">报销总工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan4">
+              <i class="icon dan_icon i_dan4"></i>
+              <div class="danzinum"><span>{$ddk_money}</span>元</div>
+              <div class="danziname">待打款金额</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan4">
+              <i class="icon dan_icon i_dan4"></i>
+              <div class="danzinum"><span>{$ydk_money}</span>元</div>
+              <div class="danziname">已打款金额</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan4">
+              <i class="icon dan_icon i_dan4"></i>
+              <div class="danzinum"><span>{$total_money}</span>元</div>
+              <div class="danziname">报销申请总金额</div>
+            </div>
+          </li>
+        </ul>
+      </case>
+      <case value="3">
+        <ul class="clearfix danzi">
+          <li>
+            <div class="danzidata dan1">
+              <i class="icon dan_icon i_dan1"></i>
+              <div class="danzinum"><span>{$ddk_num}</span>个</div>
+              <div class="danziname">待打款报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan2">
+              <i class="icon dan_icon i_dan2"></i>
+              <div class="danzinum"><span>{$dsh_num}</span>个</div>
+              <div class="danziname">待审核报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan3">
+              <i class="icon dan_icon i_dan3"></i>
+              <div class="danzinum"><span>{$ybh_num}</span>个</div>
+              <div class="danziname">已驳回报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan4">
+              <i class="icon dan_icon i_dan4"></i>
+              <div class="danzinum"><span>{$qb_num}</span>个</div>
+              <div class="danziname">全部报销工单</div>
+            </div>
+          </li>
+        </ul>
+      </case>
+      <case value="9">
+        <ul class="clearfix danzi">
+          <li>
+            <div class="danzidata dan1">
+              <i class="icon dan_icon i_dan1"></i>
+              <div class="danzinum"><span>{$ddk_num}</span>个</div>
+              <div class="danziname">待打款报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan2">
+              <i class="icon dan_icon i_dan2"></i>
+              <div class="danzinum"><span>{$dsh_num}</span>个</div>
+              <div class="danziname">待审核报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan3">
+              <i class="icon dan_icon i_dan3"></i>
+              <div class="danzinum"><span>{$ybh_num}</span>个</div>
+              <div class="danziname">已驳回报销工单</div>
+            </div>
+          </li>
+          <li>
+            <div class="danzidata dan4">
+              <i class="icon dan_icon i_dan4"></i>
+              <div class="danzinum"><span>{$qb_num}</span>个</div>
+              <div class="danziname">全部报销工单</div>
+            </div>
+          </li>
+        </ul>
+      </case>
+    </switch>
+
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading" style="padding:25px 0px;">
+        <!-- Single button -->
+        <form class="clearfix searchbar searchForm" name="searchForm" action="{:U()}" method="get">
+          <div class="col">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="text"><span class="default" flag="{$kstatus|default=0}">{$statusname|default='全部'}</span></span> <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <volist name="statusdatas" id="sd">
+                  <li><a><span class="status" flag="{$sd.status}" statusname="{$sd.name}">{$sd.name}</span></a></li>
+                </volist>
+              </ul>
+            </div>
+          </div>
+          <div class="col">
+            <if condition="$role_id neq 2">
+              <div class="navbar-form navbar-left">
+                <div class="form-group search-wrap">
+                  <input type="text" class="form-control search" name="keyword" value="{$keyword}" placeholder="输入报销人姓名">
+                </div>
+              </div>
+            </if>
+            <div class="navbar-form navbar-left">
+                <button type="button" class="btn btn-warning btn-search">搜索</button>
+                <eq name="role_id" value="2">
+                <button type="button" class="btn btn-warning" onclick="now_href('{:U('add')}')">新增报销</button>
+              </eq>
+            </div>
+          </div>
+          <input type="hidden" name="kstatus" value="{$kstatus}">
+          <input type="hidden" name="statusname" value="{$statusname}">
+        </form>
+      </div>
+
+      <div class="panel-body" style="padding:0px 15px;">
+        <table class="table table-condensed table-data">
+          <thead>
+          <tr>
+            <th>序号</th>
+            <if condition="$role_id neq 2">
+              <th>报销人</th>
+            </if>
+            <th>报销时间</th>
+            <th>报销状态</th>
+            <th>报销金额</th>
+            <th>报销类型</th>
+            <th>归属酒店</th>
+            <th>归属合同</th>
+            <!--<th>报销编号</th>-->
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <notempty name="items">
+            <volist name="items" id="row">
+              <tr>
+                <td>{$key+1}</td>
+                <if condition="$role_id neq 2">
+                  <td>{$row.submitter}</td>
+                </if>
+                <td>{$row.ctime|date="Y-m-d H:i:s",###}</td>
+                <switch name="row.status">
+                  <case value="1"><td class="text-warning">
+                    <!--<i class="icon icon01 status1"></i>-->
+                    待审核</td></case>
+                  <case value="2"><td class="daidk">
+                    <!--<i class="icon icon01 status2"></i>-->
+                    待打款</td></case>
+                  <case value="3"><td class="ydk">
+                    <!--<i class="icon icon01 status2"></i>-->
+                    已打款</td></case>
+                  <case value="4"><td class="ybh">
+                    <!--<i class="icon icon01 status2"></i>-->
+                    已驳回</td></case>
+                  <case value="5"><td class="ybh">
+                    <!--<i class="icon icon01 status2"></i>-->
+                    已撤回</td></case>
+                </switch>
+                <td>{$row.price}</td>
+                <td>{$row.reimbursement_type_name}</td>
+                <td>{$row.hotel_name}</td>
+                <td>{$row.hotel_contract_name}</td>
+                <!--<td>{$row.sno}</td>-->
+                <switch name="row.status">
+                  <case value="1">
+                    <td class="orprate">
+                      <if condition="($role_id eq 2) OR ($role_id eq 9) OR ($role_id eq 1)"> <a class="text-warning" href="{:U('cat',array('id'=>$row['id'],'role_id'=>$role_id))}">立即查看</a>
+                        <elseif condition="$role_id eq 3"/><a class="text-warning" href="{:U('audit',array('id'=>$row['id']))}">审核</a>
+                        <else />
+                      </if>
+                    </td>
+                  </case>
+                  <case value="2">
+                    <td class="orprate">
+                      <if condition="($role_id eq 2) OR ($role_id eq 3) OR ($role_id eq 9) OR ($role_id eq 1)"> <a class="text-warning" href="{:U('cat',array('id'=>$row['id'],'role_id'=>$role_id))}">立即查看</a>
+                        <elseif condition="$role_id eq 6"/><a class="text-warning" href="{:U('play_money',array('id'=>$row['id']))}">打款</a>
+                        <else />
+                      </if>
+                    </td>
+                  </case>
+                  <case value="3">
+                    <td class="orprate"><a class="text-warning" href="{:U('cat',array('id'=>$row['id'],'role_id'=>$role_id))}">立即查看</a></td>
+                  </case>
+                  <case value="4">
+                    <td class="orprate">
+                      <if condition="($role_id eq 2)"> <a class="text-warning" href="{:U('cat',array('id'=>$row['id'],'role_id'=>$role_id))}">立即查看</a> 丨 <a class="text-warning" href="{:U('edit',array('id'=>$row['id']))}">编辑信息</a>
+                        <elseif condition="($role_id eq 3) OR ($role_id eq 9) OR ($role_id eq 1)"/><a class="text-warning" href="{:U('cat',array('id'=>$row['id'],'role_id'=>$role_id))}">立即查看</a>
+                        <else />
+                      </if>
+                    </td>
+                  </case>
+                  <case value="5">
+                    <td class="orprate"><eq name="role_id" value="2"><a class="text-warning" href="{:U('cat',array('id'=>$row['id'],'role_id'=>$role_id))}">立即查看</a> 丨 <a class="text-warning" href="{:U('edit',array('id'=>$row['id']))}">编辑信息</a></eq></td>
+                  </case>
+                </switch>
+              </tr>
+            </volist>
+            <else/>
+
+            <tr>
+              <if condition="$role_id neq 2">
+                <td colspan="9">暂无数据</td>
+                <else/>
+                <td colspan="8">暂无数据</td>
+              </if>
+             </tr>
+            </notempty>
+          </tbody>
+        </table>
+        <div class="pagination-container">
+          <div class="pagination">
+            {$page}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</block>
+
+<block name="js">
+  <script type="text/javascript">
+    function now_href(url){
+      window.location.href = url;
+    }
+
+    $('.dropdown-menu a').click(function() {
+      $(this).closest('.btn-group').find('.text').html($(this).html());
+      var status = $(this).find(".status").attr('flag');
+      var statusname = $(this).find(".status").attr('statusname');
+      $("input[name='kstatus']").val(status);
+      $("input[name='statusname']").val(statusname);
+    });
+
+    $('.btn-search').click(function(){
+      $('.searchForm').submit();
+    })
+
+    $(document).ready(function () {
+      var dan_zi = $(".danzi li");
+      var danzi_num = dan_zi.length;
+      if(danzi_num == 4){
+
+        dan_zi.addClass("four_dan_zi");
+
+      }else if(danzi_num == 6){
+        dan_zi.addClass("six_dan_zi");
+      }
+    });
+  </script>
+</block>

@@ -1,0 +1,168 @@
+  <extend name="Public:index"/>
+<block name="head">
+	<title>平台财务经理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>提现</a></li>
+      <li class="on">金额数据账单</li>
+    </ol>
+</block>
+<block name="css">
+  <style type="text/css">
+    .panel .panel-heading { margin-bottom: 0px!important;  }
+    .danzi li{
+      width: calc(20% - 18px)!important;
+    }
+    @media screen and (max-width: 1199px) and (min-width: 1000px){
+      .danzi .dan_icon {
+        display: none;
+      }
+    }
+  </style>
+</block>
+<block name="main">
+  <div id="main" class="bgfff">
+    <ul class="clearfix danzi">
+      <li>
+        <div class="danzidata dan1">
+          <i class="icon dan_icon i_dan1"></i>
+          <div class="danzinum"><span>{$count.num}</span>个</div>
+          <div class="danziname">待打款单数
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan1">
+          <i class="icon dan_icon i_dan1"></i>
+          <div class="danzinum"><span>{$count.timeNum}</span>个</div>
+          <div class="danziname">已打款单数
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan1">
+          <i class="icon dan_icon i_dan1"></i>
+          <div class="danzinum"><span>{$count.allNum}</span>个</div>
+          <div class="danziname">总单数
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan2">
+          <i class="icon dan_icon i_dan2"></i>
+          <div class="danzinum">￥<span>{$count.allMoney}</span></div>
+          <div class="danziname">待打款金额
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="danzidata dan3">
+          <i class="icon dan_icon i_dan3"></i>
+          <div class="danzinum">￥<span>{$count.MtimeMoney}</span></div>
+          <div class="danziname">已打款金额
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading" style="padding:25px 0px;">
+        <!-- Single button -->
+        <div class="" >
+          <span class="table-form-text" style="float: left;margin-top:8px; ">提现状态：</span>
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+              <span class="text search"><span class="default">{$type|default='全部'}</span></span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a>全部</a></li>
+              <li><a>待打款</a></li>
+              <li><a>已打款</a></li>
+            </ul>
+          </div>
+          <div class="navbar-form navbar-left">
+            <button type="button" class="btn btn-warning" id="allsearch" style="margin-left: 20px">搜索</button>
+          </div>
+          <br><br>
+          </div>
+    </div>
+
+      <div class="panel-body" style="padding:0px 15px;">
+        <table class="table table-condensed table-data">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>提现编号</th>
+              <th>申请提现金额</th>
+              <th>申请时间</th>
+              <th>提现状态</th>
+              <th>申请人</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="data">
+          <notempty name="items">
+            <volist name="items" id="item">
+            <tr>
+              <td>{$key+1}</td>
+              <td>{$item.sno}</td>
+              <td>{$item.rprice}</td>
+              <td>{$item.ctime|date='Y-m-d H:i:s',###}</td>
+              <td><if condition="$item['status'] eq 1"> 待打款
+                <elseif condition="$item['status'] eq 2"/>已打款
+                <else/>
+              </if>
+              </td>
+              <td>{$item.real_name}</td>
+
+              <td class="orprate">
+                <if condition="$item['status'] eq 1">
+                  <if condition="$role eq 6">
+                    <a class="text-warning" href="{:U('settlement',array('id'=>$item['id']))}">打款</a>
+                    <else/>
+                    <a class="text-warning" href="{:U('confirmation',array('id'=>$item['id']))}">查看</a>
+                  </if>
+               <elseif condition="$item['status'] eq 2"/>
+                  <a class="text-warning" href="{:U('confirmation',array('id'=>$item['id']))}">查看</a>
+                  <else/>
+                </if>
+              </td>
+            </tr>
+            </volist>
+            <else/>
+            <tr><td colspan="7">暂无数据</td></tr>
+          </notempty>
+          </tbody>
+
+        </table>
+        <div class="pagination-container">
+            <div class="pagination">
+                {$pageHtml}
+            </div>
+        </div>
+      </div>
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript" src="__PUBLIC__/WdatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+  $('#allsearch').click(function () {
+   var value = $('.search ').html();
+
+    if(value == "待打款"){
+     var roth =1;
+    }
+    if(value == '已打款'){
+      var roth = 2;
+    }
+    if(value == "全部" ){
+      var  roth =0;
+    }
+    self.location.href ='/Pc/SaleGetmoney/index/id/'+roth;
+  })
+</script>
+</block>

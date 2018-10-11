@@ -1,0 +1,122 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>销售经理统计</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>销售经理</a></li>
+      <li class="on">销售经理统计列表</li>
+    </ol>
+</block>
+
+<block name="main">
+  <style type="text/css">
+    .btn-warning{margin-left:20px;}
+    .searchbar select{width:180px;}
+    .panel .panel-heading {
+       margin-bottom: 0px;
+    }
+    .danzi li{
+      width: calc(25% - 18px)!important;
+    }
+    @media screen and (max-width: 1199px) and (min-width: 1000px){
+      .danzi .dan_icon {
+        display: none;
+      }
+    }
+    </style>
+  <div id="main" class="bgfff">
+    <ul class="clearfix danzi">
+      <li>
+        <div class="danzidata dan1">
+          <i class="icon dan_icon i_dan1"></i>
+          <div class="danzinum"><span>{$pn}</span>人</div>
+          <div class="danziname">获取收益的人数</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan2">
+          <i class="icon dan_icon i_dan2"></i>
+          <div class="danzinum"><span>{$ag}</span>￥</div>
+          <div class="danziname">平均每人获取的收益额</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan3">
+          <i class="icon dan_icon i_dan3"></i>
+          <div class="danzinum"><span>{$ca}</span>￥</div>
+          <div class="danziname">渠道收益总额</div>
+        </div>
+      </li>
+    </ul>
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading" style="padding-left: 0px;">
+        <!-- Single button -->
+        <form class="clearfix searchbar" name="searchForm" action="{:U('Earnings/index')}" method="get">
+          <div class="col">
+            <div class="navbar-form navbar-left" style="padding:0px;">
+              <div class="form-group">
+                <input type="text" class="form-control search" name="keyword" value="{$filter.keyword}" placeholder="输入渠道名">
+
+                <!--<input type="text" class="form-control search" placeholder="{$placeholder}" value="输入渠道名">-->
+              </div>
+            </div>
+            <div class="btn-group" style="margin-left:20px;">
+              排序方式:
+              <select name="order">
+                  <option <if condition="$filter['order'] == desc">selected</if> value="desc">收益金额由高到低</option>
+                <option <if condition="$filter['order'] == asc">selected</if> value="asc">收益金额由低到高</option>
+            </select>
+            </div>
+            <button class="btn btn-warning onlineBtn" >搜索</button>
+          </div>
+        </form>
+    </div>
+
+      <div class="panel-body" style="padding: 0px 15px;">
+        <table class="table table-condensed table-data">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>渠道名</th>
+              <th>渠道类型</th>
+              <th>渠道等级</th>
+              <th>联系方式</th>
+              <th>收益金额</th>
+            </tr>
+          </thead>
+          <tbody>
+          <notempty name='row' >
+              <volist name="row" id="row">
+                  <tr>
+                      <td>{$key+1}</td>
+                      <td>{$row.uname}</td>
+                      <td><?php if($row['channel_type']==1){echo '内聘';}elseif($row['channel_type']==2){echo '个人';}else{echo '团队';}?></td>
+                      <td>{$row.name}</td>
+                      <td>{$row.mobile}</td>
+                      <td>{$row.sprice}</td>
+                  </tr>
+              </volist>
+              <else/>
+              <tr><td colspan="6">暂无数据</td></tr>
+          </notempty>
+          </tbody>
+        </table>
+        <div class="pagination-container">
+            <div class="pagination">
+                {$pageHtml}
+            </div>
+          </div>
+      </div>
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript" src="__PUBLIC__/WdatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+  function now_href(url){
+    window.location.href = url;
+  }
+</script>
+</block>

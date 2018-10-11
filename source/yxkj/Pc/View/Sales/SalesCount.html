@@ -1,0 +1,510 @@
+<div class="shitu">
+    <div class="row">
+        <div class="col-xs-6 subpage-block subpage-block-left">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h1>{$provice|default=""}总售销额统计</h1></div>
+                <div class="panel-body">
+                    <!--<div class="progress-container progress01"><div class="progress" data-width="10%"></div></div>-->
+                    <div class="panel left_two" id="onemain">
+
+                    </div>
+                    <div class="right_two">
+                        <div class="right_two_div">
+
+                        </div>
+                        <div class="progress-div">
+                            <div class="right_two_txt right_two_point">
+                                <div class="point01 point-01 right_two_border"></div>
+                                <span>所属地区：</span><span>{$provice|default="全国"}</span>
+                            </div>
+                        </div>
+                        <div class="progress-div">
+                            <div class="right_two_txt right_two_point">
+                                <div class="point01 point-02 right_two_border"></div>
+                                <span>渠道类型：</span><span>{$qdid|default="全类型"}</span>
+                            </div>
+                        </div>
+                        <div class="progress-div">
+                            <div class="right_two_txt right_two_point">
+                                <div class="point01 point-02 right_two_border"></div>
+                                <if condition="$stime eq ''">
+                                    <span>开始时间：</span><span>{$rctime[0]['time']|date="Y-m-d",###}</span>
+                                    <else/>
+                                    <span>开始时间：</span><span>{$stime|default=''}</span>
+                                </if>
+                            </div>
+                        </div>
+                        <div class="progress-div">
+                            <div class="right_two_txt right_two_point">
+                                <div class="point01 point-02 right_two_border"></div>
+                                <if condition="$etime eq ''">
+                                    <span>结束时间：</span><span><?php echo date('Y-m-d');?></span>
+                                    <else/>
+                                    <span>结束时间：</span><span>{$etime|default=''}</span>
+                                </if>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 subpage-block subpage-block-right">
+            <div class="panel panel-default">
+                <if condition="$provice neq ''">
+                    <div class="panel-heading"><h1>各省数量及金额</h1></div>
+                    <else/>
+                    <div class="panel-heading"><h1>各省占比数量及金额</h1></div>
+                </if>
+
+                <div class="panel-body ">
+                    <div class="panel left_two" id="twomain">
+
+                    </div>
+                    <div class="right_two">
+                        <div class="right_two_div">
+
+                        </div>
+                        <volist name="proviceAlls" id="vo" key="kone">
+                            <if condition="$vo['price'] neq 0">
+                                <if condition="kone egt 6">
+                                    <?php break;?>
+                                </if>
+                            <div class="progress-div">
+                                <div class="right_two_txt">
+                                    <span>{$vo.provice}</span><span>¥{$vo.price}</span>
+                                </div>
+                                <div class="progress-container progress01 progress-from">
+                                    <div class="progress" data-width="%" style="width: {$vo.roportion}%;"></div>
+                                </div>
+                            </div>
+                            </if>
+                        </volist>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6 subpage-block subpage-block-left">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h1>酒店类型占比量及金额</h1></div>
+                <div class="panel-body">
+                    <div class="panel left_two" id="threemain">
+
+                    </div>
+                    <div class="right_two">
+                        <div class="right_two_div">
+
+                        </div>
+                        <volist name="typeAlls" id="vos" key="ktwo">
+                            <if condition="$vos['price'] neq 0">
+                                <if condition="ktwo egt 6">
+                                    <?php break;?>
+                                </if>
+                            <div class="progress-div">
+                                <div class="right_two_txt">
+                                    <span>{$vos.type_name}</span><span>¥{$vos.price}</span>
+                                </div>
+                                <div class="progress-container progress01 progress-from">
+                                    <div class="progress" data-width="%" style="width: {$vos.roportion}%;"></div>
+                                </div>
+                            </div>
+                            </if>
+                        </volist>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 subpage-block subpage-block-right">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h1>各渠道占比及金额</h1></div>
+                <div class="panel-body">
+                    <div class="panel left_two" id="fourmain">
+
+                    </div>
+                    <div class="right_two">
+                        <div class="right_two_div">
+
+                        </div>
+                        <volist name="channelAlls" id="voss" key="kthe">
+                            <if condition="$voss['price'] neq 0">
+                                <if condition="kthe egt 6">
+                                    <?php break;?>
+                                </if>
+                                <div class="progress-div">
+                                    <div class="right_two_txt">
+                                        <span>{$voss.user_type_name}</span><span>¥{$voss.price}</span>
+                                    </div>
+                                    <div class="progress-container progress01 progress-from">
+                                        <div class="progress" data-width="%" style="width: {$voss.roportion}%;"></div>
+                                    </div>
+                                </div>
+                            </if>
+
+                        </volist>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default quannianqushi">
+    <div class="panel-heading"><h1>全年趋势统计</h1></div>
+        <div class="panel" id="fivemain" style="height: 450px">
+
+        </div>
+    </div>
+</div>
+<div class="panel panel-default youxiupaihang">
+    <div class="panel-heading"><h1>优秀销售员排行榜 </h1></div>
+    <div class="panel-body">
+        <table>
+            <tbody>
+            <foreach name="data.rank" item="vos" key="key">
+                <if condition="key gt 10">
+                    <?php break;?>
+                </if>
+            <tr>
+                <td><i class="icon"></i></td>
+                <if condition="$vos['img'] neq ''">
+                    <td><img class="img-circle user-photo" src="{$vos.img}"></td>
+                    <else/>
+                    <td><img class="img-circle user-photo" src="__IMG__/head.png"></td>
+                </if>
+                <td>{$vos.real_name}</td>
+                <td>{$vos.user_name}</td>
+                <td>{$vos.user_type_name}</td>
+                <td>￥{$vos.price}</td>
+                <td><div class="progress-container progress0{$key+1}"><div class="progress" data-width="{$vos.price / 5}%" style="width: {$vos['bai']}%;"></div></div></td>
+            </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChartOne = echarts.init(document.getElementById('onemain'));
+    var optionOne = {
+        title : {
+            text: '{$provice|default=""}总销售额统计',
+            floating:true,
+            x:'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            x : 'center',
+            y : 'bottom',
+            data:{$city_name}
+        },
+
+        series: [
+            {
+                name:'销售额',
+                type:'pie',
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '30',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+//                itemStyle: {
+//                    emphasis: {
+//                        shadowBlur: 10,
+//                        shadowOffsetX: 0,
+//                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+//                    }
+//                },
+                data:{$city_sale},
+                color:[ '#D97CF1','#F6B55B','#1ED2D6','#5BB0F0','#1DABAD'],
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChartOne.setOption(optionOne);
+    // 基于准备好的dom，初始化echarts实例
+    var myChartTwo = echarts.init(document.getElementById('twomain'));
+    optionTwo = {
+        title: {
+            text: '占比数量及金额',
+            x:'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            x : 'center',
+            y : 'bottom',
+            data:{$type_name_one}
+        },
+//        toolbox: {
+//            show : true,
+//            feature : {
+//                mark : {show: true},
+//                dataView : {show: true, readOnly: false},
+//                magicType : {
+//                    show: true,
+//                    type: ['pie', 'funnel']
+//                },
+//                restore : {show: true},
+//                saveAsImage : {show: true}
+//            }
+//        },
+        series: [
+            {
+                name:'各省占比数量及金额',
+                type:'pie',
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '30',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+//                itemStyle: {
+//                    emphasis: {
+//                        shadowBlur: 10,
+//                        shadowOffsetX: 0,
+//                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+//                    }
+//                },
+                data:{$hotel_value_one},
+                color:[ '#D97CF1','#F6B55B','#1ED2D6','#5BB0F0','#1DABAD'],
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartTwo.setOption(optionTwo);
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChartThree = echarts.init(document.getElementById('threemain'));
+    optionThree = {
+        title : {
+            text: '酒店类型占比量',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            x : 'center',
+            y : 'bottom',
+            data: {$type_name_two}
+        },
+//        toolbox: {
+//            show : true,
+//            feature : {
+//                mark : {show: true},
+//                dataView : {show: true, readOnly: false},
+//                magicType : {
+//                    show: true,
+//                    type: ['pie', 'funnel']
+//                },
+//                restore : {show: true},
+//                saveAsImage : {show: true}
+//            }
+//        },
+        series : [
+            {
+                name: '酒店类型占比量',
+                type: 'pie',
+                roseType : 'radius',
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                lableLine: {
+                    normal: {
+                        show: false
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                data: {$hotel_value_two},
+                color:[ '#D97CF1','#F6B55B','#1ED2D6','#5BB0F0','#1DABAD'],
+//                itemStyle: {
+//                    emphasis: {
+//                        shadowBlur: 10,
+//                        shadowOffsetX: 0,
+//                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+//                    }
+//                }
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartThree.setOption(optionThree);
+    // 基于准备好的dom，初始化echarts实例
+    var myChartFour = echarts.init(document.getElementById('fourmain'));
+    optionFour = {
+        title : {
+            text: '各渠道占比',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            x : 'center',
+            y : 'bottom',
+            data:{$type_name_three},
+        },
+//        toolbox: {
+//            show : true,
+//            feature : {
+//                mark : {show: true},
+//                dataView : {show: true, readOnly: false},
+//                magicType : {
+//                    show: true,
+//                    type: ['pie', 'funnel']
+//                },
+//                restore : {show: true},
+//                saveAsImage : {show: true}
+//            }
+//        },
+        series : [
+            {
+                name:'各渠道占比',
+                type:'pie',
+                roseType : 'radius',
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                lableLine: {
+                    normal: {
+                        show: false
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                data:{$hotel_value_three},
+                color:[ '#D97CF1','#F6B55B','#1ED2D6','#5BB0F0','#1DABAD'],
+//                itemStyle: {
+//                    emphasis: {
+//                        shadowBlur: 10,
+//                        shadowOffsetX: 0,
+//                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+//                    }
+//                }
+            },
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartFour.setOption(optionFour);
+    // 基于准备好的dom，初始化echarts实例
+    var myChartFive= echarts.init(document.getElementById('fivemain'));
+    optionFive = {
+        tooltip : {
+            trigger: 'axis',
+        },
+        legend: {
+            data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+        },
+//        toolbox: {
+//            show : true,
+//            feature : {
+//                mark : {show: true},
+//                dataView : {show: true, readOnly: false},
+//                magicType : {
+//                    show: true,
+//                    type: ['pie', 'funnel']
+//                },
+//                restore : {show: true},
+//                saveAsImage : {show: true}
+//            }
+//        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : {$month}
+            }
+        ],
+        yAxis : [
+            {
+                name:'金额(元)',
+            <if condition="$monthdata eq '[]'">
+            min: 0,
+        max: 100,
+    </if>
+                type : 'value',
+                    minInterval : 1
+            }
+        ],
+        series : [
+            {
+                type:'line',
+                smooth: true,
+                areaStyle: {
+                    normal: {
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        width: 1.5
+                    }
+                },
+                data:{$monthdata},
+                color:[ '#A0E1E3',]
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartFive.setOption(optionFive);
+</script>

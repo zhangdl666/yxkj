@@ -1,0 +1,228 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>促销管理</title>
+</block>
+<block name="top">
+    <style>
+        input[type="text"].editdate {
+            width: 240px;
+            height: 38px;
+        }
+    </style>
+    <script type="text/javascript" src="__PUBLIC__/WdatePicker/WdatePicker.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/Layui/css/layui.css" media="all">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>系统设置</a></li>
+        <li class="on"><notempty name="id">编辑<else/>新增</notempty>促销管理</li>
+    </ol>
+</block>
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title"><notempty name="id">编辑<else/>新增</notempty>促销管理</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+
+        <!-- 内容 开始 -->
+        <div class="subpage jiudianxinzeng">
+            <form method="post"action="{:U('handle')}">
+                <div class="subpage-block">
+                    <input type="hidden" name="id" value="{$data.id}">
+                    <table class="table table-bordered table-form">
+                        <tr><notempty name="id">
+                                <input type="hidden" name="utime" value="<?php echo date(time());?>">
+                              <else/>
+                                <input type="hidden" name="ctime" value="<?php echo date(time());?>">
+                            </notempty>
+                        </tr>
+
+                        <tr>
+                            <th><span class="text-orange">*</span>促销标题：</th>
+                            <td><input type="text" name="title" value="{$data.title}" <notempty name="redonly">disabled</notempty>><span class="errortips"></span></td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>促销状态：</th>
+                            <td>
+                                <label class="checkbox-container hotel-type" data-type="radio" value="1"
+                                <if condition="$data.status eq '1' || $data.status eq ''">checked="checked"
+                                </if>
+                                >
+                                <input type="radio" name="status" value="1">
+                                <i class="icon icon01 i_radio"></i>
+                                <span class="checkbox_txt">上架</span>
+                                </label>
+                                <label class="checkbox-container hotel-type" data-type="radio" value="0"
+                                <if condition="$data.status eq '0'">checked="checked"</if>
+                                >
+                                <input type="radio" name="status" value="0">
+                                <i class="icon icon01 i_radio"></i>
+                                <span class="checkbox_txt">下架</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <notempty name="id">
+                            <tr>
+                                <th><span class="text-orange">*</span>促销图片：</th>
+                                <td>
+                                    <dl class="uploadimg-container">
+                                        <dd class="imgwrap-container cilor" id="img">
+                                           <if condition="$data['img'] eq ''">
+                                               <else/>
+                                                   <div class="imgwrap">
+                                                       <img class="img-rounded" src="{$data.img}">
+                                                       <ul class='imgoprate'>
+                                                           <li data-oprate='detele'><i class='icon'></i></li>
+                                                           <input type='hidden' name="img" value="{$data.img}">
+                                                       </ul>
+                                                   </div>
+                                           </if>
+                                        </dd>
+                                        <dt>
+                                        <div class="item btn-upload" v-show="uploadImgs.length==0" id="HotelHead"></div>
+                                        <div style="margin: 10px 0px 5px;color:#ccc;">(建议上传图片不大于2M,格式大小为1920*100)</div>
+                                        </dt>
+                                    </dl>
+                                </td>
+                            </tr>
+                            <else/>
+                            <tr>
+                                <th><span class="text-orange">*</span>促销图片：</th>
+                                <td>
+
+                                    <dl class="uploadimg-container">
+                                        <dd class="imgwrap-container cilor" id="img">
+                                            <input type="hidden" name="img" value="">
+                                        </dd>
+                                        <dt>
+                                        <div class="item btn-upload" v-show="uploadImgs.length==0" id="HotelHead"></div>
+                                        <div style="margin: 10px 0px 5px;color:#ccc;">(建议上传图片不大于2M,格式大小为1920*100)</div>
+                                        </dt>
+                                    </dl>
+                                </td>
+                            </tr>
+                        </notempty>
+
+                        <tr>
+                            <th><span class="text-orange">*</span>正文内容：</th>
+                            <td >
+                                <textarea  id="content">{$data.content}</textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <input type="hidden" name="h_id" value="{$data.h_id}">
+                                <empty name="redonly">
+                                    <button type="button" class="btn btn-tijiao ajax-posts">保存</button>
+                                    <button type="button" class="btn btn-quxiao back">取消</button>
+                                    <else />
+                                </empty>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+        <!-- 内容 结束 -->
+    </div>
+</block>
+
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Layui/layui.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">CKEDITOR.replace('content');</script>
+    <script type="text/javascript">
+        $(function () {
+            //处理CKEDITOR的值
+            function CKupdate() {
+                for (instance in CKEDITOR.instances){
+                    CKEDITOR.instances[instance].updateElement();
+                }
+            }
+            //提交数据
+            $('.ajax-posts').click(function () {
+                CKupdate();
+                var form = $(this).closest('form');//如果找到form,说明提交的是表单
+                var url = form.length==0?$(this).attr('url'):form.attr('action');  //找到form上的action属性作为url
+                var param = form.length==0?$('.id').serialize():form.serialize();  //获取form上的所有请求参数
+                var value =  CKEDITOR.instances[instance].getData();
+                var valuer = nbsp2Space(value);
+                var params =param+"&content="+valuer;
+                // alert(params);return false;
+                //>>2.1发送post请求
+                $.post(url, params, function (data) {
+                    //>>2.使用layer提示
+                    showLayer(data);
+                },'json');
+                return false;//取消默认提交
+            })
+        })
+        function nbsp2Space(str) {
+            var arrEntities = {'nbsp' : ' '};
+            return str.replace(/&(nbsp);/ig, function(all, t){return arrEntities[t]})
+        }
+        /* 图片上传 */
+        layui.use('upload', function () {
+            var upload = layui.upload;
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#HotelHead' //绑定元素
+                , accept: 'file' //允许上传的文件类型
+                , url: '{:U("upload_file",array("img_dir"=>"Promotoin"))}' //上传接口
+                , done: function (res) {
+                    if (res.status == 1) {
+                        var i =$('#img').children('div').length;
+                        var dakuan = "img";
+                        var append_img = "<div class='imgwrap'>\
+                            <img class='img-rounded' src='"+ res.data+"' >\
+                            <ul class='imgoprate'>\
+                                <li data-oprate='detele'><i class='icon'></i></li> \
+                              <input type='hidden' name='img' value='"+ res.data+"'>\
+                            </ul>\
+                          </div>";
+                        $(".imgwrap-container").empty();
+                        $(".imgwrap-container").append(append_img);
+                        $("input[name='dakuan']").val(res.data);
+                    }else{
+                        layer.msg(res.msg, {time: 1000, offset: 0, icon: 2});
+                    }
+                }
+                , error: function () {
+                }
+            });
+        });
+        /* 计算图片 */
+        function count_img(){
+            var img_val = "";
+            $(".imgwrap-container div").each(function(i){
+                if(i != 0){
+                    img_val += ",";
+                }
+                img_val += $(this).find("img").attr("src");
+            })
+            $(".img_val").val(img_val);
+        }
+
+        /*图片移动、删除*/
+        $('.imgwrap-container').on('click', '[data-oprate]', function() {
+            var _imgwrap = $(this).closest('.imgwrap');
+            switch($(this).attr('data-oprate')) {
+                case 'toleft':
+                    _imgwrap.prev().before(_imgwrap);
+                    //console.log('左边', $(this).attr('data-oprate'))
+                    break;
+                case 'detele':
+                    _imgwrap.remove();
+                    break;
+                case 'toright':
+                    _imgwrap.next().after(_imgwrap);
+                    break;
+            }
+            count_img();
+        });
+    </script>
+
+</block>

@@ -1,0 +1,51 @@
+<extend name="Public:index"/>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>系统设置 </a></li>
+        <li class="on"><notempty name="id">编辑<else/>新增</notempty>银行信息</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title"><notempty name="id">编辑<else/>新增</notempty>银行信息</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+
+        <!-- 内容 开始 -->
+        <form method="post" action="{:U('operation')}">
+            <div class="subpage-block">
+                <table class="table table-bordered table-form">
+                    <tbody>
+                    <tr>
+                        <th><span class="text-orange">*</span>银行名称：</th>
+                        <td>
+                            <input type="text" name="name" value="{$name}"  <notempty name="redonly">disabled</notempty>>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <input type="hidden" name="id" value="{$id}">
+                            <input type="hidden" name="token" value="{$token}">
+                        </th>
+                        <td>
+                            <empty name="redonly">
+                                <button type="button" class="btn btn-tijiao ajax-post">保存</button>
+                                <button type="button" class="btn btn-quxiao back">取消</button>
+                                <else />
+                                <button type="button" class="btn btn-quxiao back">返回</button>
+                            </empty>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+        <!-- 内容 结束 -->
+    </div>
+</block>
+

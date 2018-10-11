@@ -1,0 +1,175 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>订单管理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>订单管理</a></li>
+      <li class="on">维修信息</li>
+    </ol>
+</block>
+
+<block name="main">
+  <div id="main">
+      <ul class="clearfix subnav hetongnav">
+        <li>
+          <a><i class="icon"></i>
+            <span class="cur_title">申请维修</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- 内容 开始 -->
+      <div class="subpage hetongxinxi02">
+          <form id="" method="post" action="{:U('operation')}">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th>酒店名称：</th>
+                    <td><span class="table-form-text">{$name}</span></td>
+                  </tr>
+                  <tr>
+                    <th>联系方式：</th>
+                    <td><span class="table-form-text">{$tell}</span></td>
+                  </tr>
+                  <tr>
+                    <th>合同：</th>
+                    <td><select name="hc_id">
+                      <volist name="hc_items" id="hc_item">
+                      <option value="{$hc_item.id}" <eq name="key" value="0">selected</eq>>{$hc_item.name}</option>
+                      </volist>
+                    </select></td>
+                  </tr>
+                  <tr>
+                    <th>房间号：</th>
+                    <td>
+                      <dl class="gezi-container">
+                        <dd class="gezi-group roomss">
+
+                          <volist name="al_equipment" id="room">
+                            <button type="button" class="rooms btn on" data="{$room.oi_id}">{$room.room_sno}</button>
+                          </volist>
+
+                        </dd>
+                      </dl>
+                    </td>
+                  </tr>
+                  <tr style="display:none;">
+                    <th></th>
+                    <td>
+                      <dl>
+                        <dd>
+                      <div style="margin-top:20px;" class="room_info">
+                        <table class="table table-bordered table-form">
+                        <tbody>
+
+                        </tbody>
+                        </table>
+                      </div>
+                        </dd>
+                      </dl>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>
+                      <input type="hidden" name="h_id" value="{$id}">
+                      <input type="hidden" name="type" value="3">
+                    </th>
+                    <td>
+                      <button type="button" class="btn btn-tijiao ajax-post">提交</button>
+                      <button type="button" class="btn btn-quxiao back">返回</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <!-- 内容 结束 -->
+    </div>
+    </block>
+<block name="js">
+<script type="text/javascript">
+var arr = [];
+$("#main").on("click",".rooms",function(){
+ //是否已经维修  hasClass检查被选元素是否包含指定的 class
+  var room_sno = $(this).html();
+  var equipment_sno = $(this).attr("data");
+  layer.confirm("是否为此房间报维修？",function(){
+    //是否已经添加
+    var index = $.inArray(room_sno,arr);
+    if(index >= 0){
+        layer.msg("此房间已在报修列表",{icon:0,time:1500});
+        return false;
+    }
+
+    //是否已经有维修单未完成
+    var bool = true;
+    $.ajax({
+      url:"{:U('is_maintian')}",
+      data:{sno:equipment_sno},
+      dataType:"json",
+      type:"post",
+      async:false,
+      success:function(re_sult){
+        if(typeof re_sult != "object"){
+          re_sult = eval("("+re_sult+")");
+        }
+        if(re_sult.status){
+          layer.msg("此房间正在维修中,请耐心等待");
+          bool = false;
+        }
+      }
+    })
+
+    if(!bool){
+      return false;
+    }
+    /*$.post("{:U('is_maintian')}",{sno:equipment_sno},function(re_sult){
+      if(typeof re_sult != "object"){
+        re_sult = eval("("+re_sult+")");
+      }
+      if(re_sult.status){
+        layer.msg("此房间正在维修中,请稍候");
+        return false;
+      }
+    })*/
+
+    arr.push(room_sno);
+    $(".room_info").find('tbody').append("<tr>\
+                    <th>"+room_sno+"<input type='hidden' name='room_sno[]' value='"+equipment_sno+"'></th>\
+                    <td><input type='text' name='note[]' value=''></td>\
+                  </tr>");
+    $(".room_info").closest('tr').show();
+    layer.msg("已添加",{icon:1,time:10});
+  })
+})
+
+//改变合同
+$("select[name='hc_id']").change(function(){
+  arr = [];
+  $(".room_info").find('tbody').html("");
+  $(".room_info").closest("tr").hide();
+
+  var html = "";
+  $(".roomss").html(html);
+
+  var hc_val = $("select[name='hc_id'] option:selected").val();
+  $.post("{:U('get_rooms')}",{hcid:hc_val},function(re_data){
+    if(typeof re_data != "object"){
+      re_data = eval("("+re_data+")");
+    }
+    if(re_data.status){
+      $(re_data.data).each(function(){
+        html += "<button type='button' class='rooms btn on' data='"+$(this).attr("oi_id")+"'>"+$(this).attr("room_sno")+"</button>";
+      })
+      $(".roomss").html(html);
+    }
+  })  
+});
+</script>
+</block>

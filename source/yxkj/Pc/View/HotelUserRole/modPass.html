@@ -1,0 +1,90 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>酒店角色管理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <li class="on">酒店角色管理</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title">重置密码</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+
+
+        <!-- 内容 开始 -->
+        <div class="subpage hetongxinxi01">
+            <form id="">
+                <div class="subpage-block">
+                    <table class="table table-bordered table-form">
+                        <tbody>
+                        <tr>
+                            <th>用户ID：</th>
+                            <td><span class="table-form-text">10329588753</span></td>
+                        </tr>
+                        <tr>
+                            <th>用户账号：</th>
+                            <td><span class="table-form-text">{$data.loginname}</span></td>
+                        </tr>
+                        <tr>
+                            <th>用户姓名：</th>
+                            <td><span class="table-form-text">{$data.real_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>联系方式：</th>
+                            <td><span class="table-form-text">{$data.mobile}</span></td>
+                        </tr>
+                        <tr>
+                            <th>酒店名称：</th>
+                            <td><span class="table-form-text">{$data.hotel_name}</span></td>
+                        </tr>
+                        <tr class="suoshudiqu">
+                            <th>用户类型：</th>
+                            <td><span class="table-form-text">{$data.role_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>设置密码：</th>
+                            <td><input type="password" name="password"><span class="errortips"></span></td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <input type="hidden" name="id" value="{$id}">
+                                <button type="button" class="btn btn-tijiao" onclick="modpass()">提交</button>
+                                <button type="button" class="btn btn-quxiao">取消</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+        <!-- 内容 结束 -->
+    </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript">
+        function modpass() {
+            var data = {};
+            data.password = $('input[name="password"]').val();
+            data.id = $('input[name="id"]').val();
+            var url = '/Pc/HotelUserRole/resetPass';
+            $.post(url, data, function (f) {
+                if(f.code == 0){
+                    alert(f.message);
+                }else{
+                    alert(f.message);
+                }
+            })
+        }
+    </script>
+</block>

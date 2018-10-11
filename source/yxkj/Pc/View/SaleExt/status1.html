@@ -1,0 +1,60 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>提现详情记录</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>系统设置</a></li>
+        <li class="on">个人提现记录</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title">待打款记录</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+        <!-- 内容 开始 -->
+        <div class="subpage baoxiaoshenhe">
+                <div class="subpage-block">
+                    <table class="table  table-form">
+                        <tbody>
+                        <tr>
+                            <th>申请时间：</th>
+                            <td><span class="table-form-text"><?php echo date('Y-m-d H:i:s',$row['ctime']);?></span></td>
+                        </tr>
+                        <tr>
+                            <th>申请金额：</th>
+                            <td><span class="table-form-text">{$row['rprice']}元</span></td>
+                        </tr>
+                        <!--<tr>-->
+                            <!--<th>代扣个人所得税：</th>-->
+                            <!--<td><span class="table-form-text">{$row['mprice']}元</span></td>-->
+                        <!--</tr>-->
+                        <tr>
+                            <th>到账金额：</th>
+                            <td><span class="table-form-text">{$row['price']}元</span></td>
+                        </tr>
+                        <tr>
+                            <th>提现账户：</th>
+                            <td><span class="table-form-text">{$row1['bname']}<br/>卡号: {$row1['bank_num']}</span></td>
+                        </tr>
+                        <tr>
+                            <th>提现状态：</th>
+                            <td><span class="table-form-text"><?php if($row['status']==1){echo '待打款';}else{echo '已打款';}?></span></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><button type="button" class="btn btn-tijiao back">返回</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+        <!-- 内容 结束 -->
+    </div>
+</block>

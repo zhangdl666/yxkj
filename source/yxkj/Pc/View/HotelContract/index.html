@@ -1,0 +1,139 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>合同管理</title>
+  <script type="text/javascript" src="__PUBLIC__/WdatePicker/WdatePicker.js"></script>
+  <style type="text/css">
+  .danzi li{
+    width: calc(25% - 18px)!important;
+  }
+  .panel .panel-heading { margin-bottom: 0px!important;  }
+  input[disabled], input[readonly]{
+    border: 1px solid #dedede!important;
+    margin-right: 10px;
+  }
+  .table-form .btn {
+    margin-top: 3px;
+  }
+  </style>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>合同管理</a></li>
+      <li class="on">合同列表</li>
+    </ol>
+</block>
+
+<block name="main">
+  <style type="text/css">
+    .btn-warning,.table-datawrap .panel-heading .search-wrap .search{margin-left:20px;margin-right:0px;}
+    </style>
+  <div id="main" class="bgfff">
+    <ul class="clearfix danzi">
+      <li>
+        <div class="danzidata dan1">
+          <i class="icon dan_icon i_dan1"></i>
+          <div class="danzinum"><span>{$all_count}</span>个</div>
+          <div class="danziname">合同总数</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan2">
+          <i class="icon dan_icon i_dan2"></i>
+          <div class="danzinum"><span>{$exsits_count}</span>个</div>
+          <div class="danziname">履约中</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan3">
+          <i class="icon dan_icon i_dan3"></i>
+          <div class="danzinum"><span>{$more_count}</span>个</div>
+          <div class="danziname">已到期</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan4">
+          <i class="icon dan_icon i_dan4"></i>
+          <div class="danzinum"><span>{$nexsits_count}</span>个</div>
+          <div class="danziname">已逾期</div>
+        </div>
+      </li>
+    </ul>
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading" style="padding: 35px 0px 25px 0px;">
+        <!-- Single button -->
+        <form class="clearfix searchbar" style="">
+          <div class="col">
+            <div class="btn-group">
+              <input type="text" class="editdate" name="stime" value="{$stime}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})">&nbsp;&nbsp;至&nbsp;&nbsp;<input type="text" class="editdate" name="etime" value="{$etime}"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+            </div>
+          </div>
+          <div class="col">
+            <div class="navbar-form navbar-left">
+              <div class="form-group search-wrap">
+                <input type="text" style="" class="form-control search" name="keyword" value="{$keyword}" placeholder="{$placeholder}">
+              </div>
+            </div>
+            <div class="navbar-form navbar-left">
+                <button type="button" class="btn btn-warning btn-search">搜索</button>
+                <if condition="in_array('HotelContract/hinfo',$method_arr)"><button type="button" class="btn btn-warning" onclick="now_href('{:U('hinfo')}')">新增合同</button></if>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel-body" style="padding:0px 15px 0px 15px;">
+        <table class="table table-condensed table-data">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>合同名称</th>
+              <th>归属酒店</th>
+              <th>酒店联系方式</th>
+              <th>合同负责人</th>
+              <th>负责人联系方式</th>
+              <th>合同周期(月)</th>
+              <th>签订日期</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          <notempty name="items">
+            <volist name="items" id="item">
+            <tr>
+              <td>{$key+1}</td>
+              <td>{$item.name}</td>
+              <td>{$item.h_name}</td>
+              <td>{$item.h_tell}</td>
+              <td>{$item.uname}</td>
+              <td>{$item.mobile}</td>
+              <td>{$item.period}</td>
+              <td>{$item.ctime|date='Y-m-d',###}</td>
+              <td class="orprate"><a class="text-warning" href="{:U('read',array('id'=>$item['id']))}">立即查看</a><if condition="in_array('HotelContract/edit',$method_arr) && empty($item['einstall'])"> 丨 <a class="text-warning"  href="{:U('editc',array('id'=>$item['id']))}">编辑信息</a></if></td>
+            </tr>
+            </volist>
+            <else/>
+            <tr><td colspan="9">暂无数据</td></tr>
+            </notempty>
+          </tbody>
+        </table>
+        <div class="pagination-container">
+            <div class="pagination">
+                {$pageHtml}
+            </div>
+        </div>
+      </div>
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript">
+//搜索
+$(".btn-search").click(function(){
+  var stime = $("input[name='stime']").val();
+  var etime = $("input[name='etime']").val();
+  var keyw = $("input[name='keyword']").val();
+  window.location.href = "{:U('')}?stime="+stime+"&etime="+etime+"&keyword="+keyw;
+});
+</script>
+</block>

@@ -1,0 +1,28 @@
+<extend name="Public:index"/>
+<block name="css">
+	<link rel="stylesheet" href="__CSS__/LCalendar.css">
+</block>
+<block name="main">
+
+	<!-- 主体内容 开始 -->
+	<div class="main">
+		<!-- 【此处嵌套 header】 -->
+		<input type="hidden" name="data" value="{$data}">
+	</div>
+	<!-- 主体内容 结束 -->
+
+</block>
+<block name="js">
+	<script type="text/javascript" src="__PUBLIC__/Layer/layer.js">  </script>
+	<script type="text/javascript">
+		var value = $('input[name="data"]').val();
+		var url = '/Traveller/CheckinInfo/Relieve';
+
+		layer.msg(value,{
+			time:2000,
+			area: ['260px', '10%'],
+
+		});
+
+	</script>
+</block>

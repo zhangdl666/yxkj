@@ -1,0 +1,209 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>申请提现</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        select {
+            font-size: 0.24rem;
+        }
+        .w_00_12 {
+            top: -3px;
+        }
+        .screening_condition_wrap{
+            /*background-color: white;*/
+        }
+        .screening_bank{
+            width: 100%;
+            margin-top: 1.69rem;
+            padding: 0.2rem 0;
+        }
+        .bank_card{
+            width: 80%;
+            height: 1.8rem;
+            font-size: 0.36rem;
+            color: rgb(255,255,255);
+            margin: 0.2rem auto;
+            border-radius: 0.14rem;
+            /*background-color: #f4f4f4;*/
+            padding: 0rem 0.44rem;
+            background-color: rgb(26,102,164);
+
+        }
+        .bank_card_img{
+            height: 100%;
+            width: 100%;
+            background: url("__IMG__/bank_card.png") right no-repeat;
+            background-size: 40%;
+        }
+        .bank_card:hover{
+            background-color: #4f4f4f;
+        }
+        .bank_card h3{
+            color: rgb(255,255,255);
+            font-size: 0.36rem;
+            padding-top: 0.34rem;
+            margin-bottom: 0.3rem;
+        }
+        .bank_card p{
+            font-size: 0.48rem;
+        }
+        .in_top{
+            position: absolute;
+            top:15%;
+            left:7%;
+            margin-top: -0.2rem;
+            margin-left: -0.25rem;
+        }
+
+        @media only screen and (max-width:320px){
+            .bank_card p{
+                font-size: 0.46rem!important;
+            }
+            .maxbtn {
+                font-size: 0.3rem;
+            }
+            .maxbtn {
+                height: 0.8rem;
+                line-height: 0.8rem;
+            }
+        }
+    </style>
+
+</block>
+<block name="main">
+    <!-- 主体内容 开始 -->
+    <div class="main">
+        <!-- header 开始 -->
+        <div class="header">
+            <div class="left"><a href="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+            <div class="center"></div>
+            <div class="right"><a class="s" href="{:U('jumpbank')}"><i class="icon add"></i>添加新账户</a></div>
+        </div>
+        <!-- header 结束 -->
+
+        <div class="main_body">
+            <div class="form_data_wrap renlingchakan"style="padding-bottom: 0.1rem;">
+                <form id="" method="post" action="{:U('addapply')}">
+                    <ul class="form_data">
+                        <li class="layoutlr form_item">
+                            <div class="left">可提现金额</div>
+                            <div class="right">
+                                <div class="input_container">￥{$row1.price}</div>
+                                <input type="hidden" name="rprices" value="{$row1.price}" id="rprices">
+                            </div>
+                        </li>
+                        <li class="layoutlr form_item">
+                            <div class="left"> <font color="red">*</font>申请金额 （税前）</div>
+                            <div class="right">
+                                <div><input type="text" style="border: 0;text-align: right; width: 1.6rem" name="rprice" value="" id="rprice"><i class="icon w_0000_00 w_00_11"></i></div>
+                                <!--<input type="text" style="border: 0.01rem solid #e8e8e8;padding: 0.1rem 0;text-align: right" name="rprice" id="rprice">-->
+                            </div>
+                        </li>
+                        <!--<li class="layoutlr form_item">-->
+                            <!--<div class="left">到账金额</div>-->
+                            <!--<div class="right">-->
+                                <!--<span class="table-form-text" id="price"></span>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <li class="layoutlr form_item">
+                            <div class="left"> <font color="red">*</font>提现账号</div>
+                            <div class="right card_click" style="width: 75%;">
+                                <input type="hidden" name="shang_name" value="">
+                                <div class="" data-relation="hotel_type">
+                                    <span style="font-size: 0.26rem;" class="table-form-text tx_id"></span>
+                                    <i class="icon w_0000_00 w_00_12"></i>
+                                </div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                    </ul>
+                    <div class="form_data_btns">
+                        <li class="layoutlr">
+                            <div class="right">
+                                <input type="hidden" name="Cash" value="{$Cash}"/>
+                                <!--<input type="submit" class="btn maxbtn" value="确认提现" >-->
+                                <button class="btn maxbtn ajax-post">确认提现</button>
+                            </div>
+                            &nbsp;
+                            <div class="left">
+                                <a class="btn maxbtn back">取消提现</a></button>
+                            </div>
+                        </li>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="screening_condition_wrap01 scr_oo1" style="z-index: 9999;top: 0rem; display: none;">
+        <div class="screening_bank">
+            <notempty name="row">
+                <volist name="row" id="row">
+                    <div class="bank_card Choice_card  bank_num_list" bank_card="{$row.id}">
+                       <div class="bank_card_img">
+                           <h3 class="bname">{$row.bname}</h3>
+                           <p class="bank_num">{$row.bank_num}</p>
+                       </div>
+                    </div>
+                </volist>
+                <else/>
+                <div class="bank_card Choice_card in_top" >
+                    <h3 class="bname" style="text-align: center;">请先添加账号</h3>
+                </div>
+            </notempty>
+        </div>
+    </div>
+    <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+    <script type="text/javascript" src="__JS__/saleext.js"></script>
+    <script type="text/javascript">
+        $(".bank_card").each(function(){
+            var bank_num = $(this).find(".bank_num").text();
+            /\S{5}/.test(bank_num) && $(this).find(".bank_num").text(bank_num.replace(/\s/g,'').replace(/(\d{4})(?=\d)/g, "$1 "));
+        })
+        function showLayer(data){
+            if(typeof data != "object"){
+                var data = eval("("+data+")");
+            }
+            if (data.status == 1) {  //成功的时候跳转到指定的url地址
+                layer.open({content:data.info,time:800});
+                location.href = '/Wx/SaleExt/record';
+            }else {
+                layer.open({content:data.info,time:800});
+            }
+
+
+        }
+        //选择提现账号
+        $(document).ready(function(){
+            $(".card_click").click(function(){
+                    $(".scr_oo1").css('display',' block');
+            });
+            function strim(str){
+                return str.replace(/[ ]/g,"");  //去除字符算中的空格
+            }
+            $(".Choice_card").click(function(){
+               var name = $(this).children().children(".bname").text();
+               var num = strim($(this).children().children(".bank_num").text());
+               if(!num == ''){
+                   $(".tx_id").html(num +"("+ name +")");
+                   $('input[name="shang_name"]').val(num);
+               }else{
+
+               }
+                $(".scr_oo1").css('display',' none');
+            });
+            $(".scr_oo1").click(function(){
+                $(this).css('display',' none');
+            });
+        });
+    </script>
+</block>
+
+

@@ -1,0 +1,85 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>新增提现</title>
+</block>
+<block name="top">
+    <style type="text/css">
+        .in_p{
+            position: relative;
+            top: -2px;
+        }
+    </style>
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>系统设置</a></li>
+        <li class="on">新增提现</li>
+    </ol>
+</block>
+<block name="main">
+    <!-- 内容 开始 -->
+    <div class="subpage">
+        <form id="" method="post" action="{:U('SaleExt/addgetmoney')}">
+            <div class="subpage-block">
+                <table class="table table-bordered table-form">
+                    <tbody>
+                    <tr>
+                        <th>可提现现金额：</th>
+
+                        <td><span class="table-form-text">{$row1.price}&nbsp;元</span>
+                            <input type="hidden" name="rprices" value="{$row1.price}" id="rprices">
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th> <font color="red" size="2">*</font>申请金额：</th>
+                        <td>
+                           <input type="text" name="rprice" id="rprice">
+                            <span style="font-size: 18px;margin-left: 4px;color:#ccc;position: relative;top: 8px;;">（税前）</span>
+                        </td>
+                    </tr>
+                    <!--<tr>-->
+                        <!--<th>到账金额：</th>-->
+                        <!--<td><span class="table-form-text" id="price"></span></td>-->
+                    <!--</tr>-->
+
+                    <tr>
+                        <th><font color="red" size="2">*</font>提现账号：</th>
+                        <td>
+                            <select name="account_id" >
+                                <volist name="row" id="row">
+                                    <option value="{$row.id}">{$row.bname}：{$row.bank_num}</option >
+                                </volist>
+                            </select >
+                            <a class="btn add_btn in_p" href="{:U('selaccount')}"><font color="black" size="3">添加新账户</font></a>
+                        </td>
+                    </tr>
+                    <!--<tr>-->
+                        <!--<th>所属渠道：</th>-->
+                        <!--<td>-->
+                            <!--<select name="channel_type" >-->
+                                    <!--<option value="1">内聘</option >-->
+                                    <!--<option value="2">个人</option >-->
+                                    <!--<option value="3">团队</option >-->
+                            <!--</select >-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <th></th>
+                        <td>
+                            <input type="hidden" name="Cash" value="{$Cash}"/>
+                            <button class="btn btn-tijiao ajax-post">确认提现</button>
+                            <button type="button" class="btn btn-tijiao back">取消</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+    <!-- 内容 结束 -->
+</block>
+<block name="js">
+    <script type="text/javascript" src="__JS__/saleext.js"></script>
+</block>
+
+

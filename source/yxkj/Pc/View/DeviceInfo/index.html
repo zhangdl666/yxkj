@@ -1,0 +1,118 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>房间与设备关系</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>系统设置</a></li>
+      <li class="on">房间与设备关系</li>
+    </ol>
+</block>
+
+<block name="main">
+  <style type="text/css">
+  .btn-warning{margin-left:20px;}
+
+  .panel .panel-heading { margin-bottom: 0px!important;  }
+
+  </style>
+  <div id="main" class="bgfff">
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading">
+        <form class="clearfix searchbar" action="index" method="post">
+          <div class="col">
+            <div class="btn-group" style="margin-left:20px;">
+              酒店名称:
+              <select name="hotel_id" class="aaa">
+                <option  value = "">全部</option >
+                <volist name="hotel_list" id="hotel">
+                  <option value= "{$hotel.id}" <eq name="hotel.id" value="$whotel">selected</eq>>{$hotel.name}</option >
+                </volist>
+              </select >
+            </div>
+            <div class="btn-group" style="margin-left:20px;">
+              合同名称:
+              <select name="hc_id" class="aaa">
+                <option  value = "">全部</option >
+                <volist name="hc_list" id="hc">
+                  <option value= "{$hc.id}" <eq name="hc.id" value="$whc">selected</eq>>{$hc.name}</option >
+                </volist>
+              </select >
+            </div>
+            <div class="btn-group" style="margin-left:20px;">
+              房间号:<input type="text" name="room_sno" value="{$room_sno}" placeholder="请输入房间号">
+            </div>
+            <div class="btn-group" style="margin-left:20px;">
+              MAC地址:<input type="text" name="equipment_sno" value="{$equipment_sno}" placeholder="请输入MAC地址">
+            </div>
+            
+            <div class="navbar-form navbar-left">
+              <button type="submit" class="btn btn-warning">搜索</button>
+            </div>
+          </div>
+        </form>
+    </div>
+
+      <div class="panel-body">
+        <table class="table table-condensed table-data">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>合同名称</th>
+              <th>酒店名称</th>
+              <th>楼层</th>
+              <th>房间号</th>
+              <th>MAC地址</th>
+              <th>空间品牌</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          <notempty name="items">
+            <volist name="items" id="item">
+            <tr>
+              <td>{$key+1}</td>
+              <td>{$item.hc_name}</td>
+              <td>{$item.hotel_name}</td>
+              <td>{$item.floor}</td>
+              <td>{$item.room_sno}</td>
+              <td>{$item.equipment_sno}</td>
+              <td>{$item.equipment_name}</td>
+              <td class="orprate"><a class="text-warning"  href="{:U('edit',array('redonly'=>1,'id'=>$item['id']))}">查看信息</a> 丨 <a class="text-warning"  href="{:U('edit',array('id'=>$item['id']))}">编辑信息</a></td>
+            </tr>
+            </volist>
+          </tbody>
+          <else/>
+          <tr><td colspan="7">暂无数据</td></tr>
+          </notempty>
+        </table>
+        <div class="pagination-container">
+            <div class="pagination">
+                {$pageHtml}
+            </div>
+        </div>
+      </div>
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript">
+$("select[name='hotel_id']").change(function(){
+  var hotel_id = $("select[name='hotel_id'] option:selected").val();
+  //获取合同
+  $.post("{:U('get_hc')}",{hotel:hotel_id},function(re_data){
+    if(typeof re_data != "object"){
+        var re_data = eval("("+re_data+")");
+    }
+    if(re_data.status){
+      var option = "<option value=''>全部</option>";
+      $(re_data.data).each(function(){
+        option += "<option value='"+$(this).attr('id')+"'>"+$(this).attr('name')+"</option>";
+      })
+      $("select[name='hc_id']").html(option);
+    }
+  })
+})
+</script>
+</block>

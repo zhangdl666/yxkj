@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>提现</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="__CSS__/w_reset.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Swiper-3.4.1/css/swiper.min.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/w_common.css">
+	<style type="text/css">
+	</style>
+</head>
+<body class="has_header">
+	<!-- 主体内容 开始 -->
+	<div class="main">
+		【此处嵌套 header】
+
+		<div class="main_body tixianyemian">
+			<div class="tixiantitle"><i class="icon"></i>收益统计</div>
+			<div class="tixian_mk tixian_yuan">
+				<div class="layoutlr">
+					<div class="col left">
+						<div class="block">
+							<div class="radius">￥1356.87</div>
+							<p>渠道总收益</p>
+						</div>
+					</div>
+					<div class="col center">
+						<div class="block">
+							<div class="radius">￥1356.87</div>
+							<p>报销总额</p>
+						</div>
+					</div>
+					<div class="col right">
+						<div class="block">
+							<div class="radius">￥1356.87</div>
+							<p>可提现收益</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tixian_mk layoutlr bjkkitem02_wrap">
+				<div class="col left">
+					<div class="bjkkitem bjkkitem02">
+						<div class="bjkkitem_main">
+							<div class="icon_wrap"><i class="icon"></i></div>
+							<div class="num">125<span class="min">个</span></div>
+							<div class="title_wrap">
+								<div class="title_inner">
+									<span class="title">签约酒店数</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col center">
+					<div class="bjkkitem bjkkitem02">
+						<div class="bjkkitem_main">
+							<div class="icon_wrap"><i class="icon"></i></div>
+							<div class="num">125<span class="min">个</span></div>
+							<div class="title_wrap">
+								<div class="title_inner">
+									<span class="title">签约房间数</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col right">
+					<div class="bjkkitem bjkkitem02">
+						<div class="bjkkitem_main">
+							<div class="icon_wrap"><i class="icon"></i></div>
+							<div class="num">125<span class="min">个</span></div>
+							<div class="title_wrap">
+								<div class="title_inner">
+									<span class="title">签约设备数</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		    <div class="tixian_mk shouyitongji_block bgfff qian_block">
+		      <table>
+		        <thead>
+		          <tr>
+		            <th>已回款金额</th>
+		            <th></th>
+		            <th>渠道等级</th>
+		            <th></th>
+		            <th>收益</th>
+		          </tr>
+		        </thead>
+		        <tbody>
+		          <tr>
+		            <td>
+		              <div class="qian_img"><i class="icon qian01 i_qian01"></i></div>
+		              <div class="qian_num"><span class="min">￥</span>6246.12</div>
+		            </td>
+		            <td><i class="icon icon02 i_icon02_01"></i></td>
+		            <td>
+		              <div class="qian_img"><i class="icon qian01 i_qian04"></i></div>
+		              <div class="qian_num"><span class="min">￥</span>6246.12</div>
+		              <i class="icon icon02 i_icon02_03"></i>
+		              <div class="qian_img"><i class="icon qian01 i_qian02"></i></div>
+		              <div class="qian_num"><span class="min">￥</span>6246.12</div>
+		              <div class="tb-lr">距离钻石等级只差500间</div>
+		            </td>
+		            <td><i class="icon icon02 i_icon02_02"></i><i class="icon icon02 i_icon02_02"></i></td>
+		            <td>
+		              <div class="qian_img"><i class="icon qian01 i_qian03"></i></div>
+		              <div class="qian_num"><span class="min">￥</span>6246.12</div>
+		              <i class="icon icon02 i_icon02_03" style="visibility: hidden;"></i>
+		              <div class="qian_img"><i class="icon qian01 i_qian01"></i></div>
+		              <div class="qian_num"><span class="min">￥</span>6246.12</div>
+		            </td>
+		          </tr>
+		        </tbody>
+		      </table>
+		    </div>
+		    <div class="tixian_mk shouyitongji_block bgfff qian_block">
+		      <table>
+		        <thead>
+		          <tr>
+		            <th>已回款金额</th>
+		            <th></th>
+		            <th>渠道等级</th>
+		            <th></th>
+		            <th>收益</th>
+		          </tr>
+		        </thead>
+		        <tbody>
+		          <tr>
+		            <td>
+		              <div class="qian_img"><i class="icon qian01 i_qian01"></i></div>
+		              <div class="qian_num"><span class="min">￥</span>6246.12</div>
+		            </td>
+		            <td><i class="icon icon02 i_icon02_01"></i></td>
+		            <td>
+		              <div class="qian_img"><i class="icon qian01 i_qian04"></i></div>
+		              <div class="qian_num"><span class="min">￥</span>6246.12</div>
+		            </td>
+		            <td><i class="icon icon02 i_icon02_02"></i></td>
+		            <td>
+		              <div class="qian_img"><i class="icon qian01 i_qian03"></i></div>
+		              <div class="qian_num"><span class="min">￥</span>6246.12</div>
+		            </td>
+		          </tr>
+		        </tbody>
+		      </table>
+		    </div>
+		</div>
+	</div>
+	<!-- 主体内容 结束 -->
+</body>
+<script src="__JS__/jquery-1.11.3.min.js"></script>
+<script src="__PUBLIC__/Swiper-3.4.1/js/swiper.jquery.min.js"></script>
+<script type="text/javascript">
+</script>
+</html>

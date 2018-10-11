@@ -1,0 +1,105 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>销售经理统计</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>销售经理</a></li>
+      <li class="on">销售经理统计列表</li>
+    </ol>
+</block>
+
+<block name="main">
+  <div id="main" class="bgfff">
+    <ul class="clearfix danzi">
+      <li>
+        <div class="danzidata dan1">
+          <div class="danzinum"><span>{$pn}</span>人</div>
+          <div class="danziname">获取收益的人数</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan2">
+          <div class="danzinum"><span>{$ag}</span>￥</div>
+          <div class="danziname">平均每人获取的收益额</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan3">
+          <div class="danzinum"><span>{$ca}</span>￥</div>
+          <div class="danziname">渠道收益总额</div>
+        </div>
+      </li>
+    </ul>
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading">
+        <!-- Single button -->
+        <form class="clearfix searchbar" name="searchForm" action="{:U('Earnings/index')}" method="get">
+          <div class="col">
+            <div class="navbar-form navbar-left">
+              <div class="form-group">
+                <input type="text" class="form-control search" name="keyword" value="{$keyword}" placeholder="输入渠道名">
+
+                <!--<input type="text" class="form-control search" placeholder="{$placeholder}" value="输入渠道名">-->
+              </div>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;排序方式
+            </div>
+
+            <div class="btn-group">
+              <div class="" data-relation="hotel_type">
+                <select class="form-control " name="order">
+                  <option value="desc">收益金额由高到底</option>
+                  <option value="asc">收益金额由底到高</option>
+                </select>
+                <i class="icon w_0000_00 w_00_12"></i>
+              </div>
+
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-tijiao onlineBtn" >搜索</button>
+          </div>
+        </form>
+    </div>
+
+      <div class="panel-body">
+        <table class="table table-condensed table-data">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>渠道名</th>
+              <th>渠道类型</th>
+              <th>渠道等级</th>
+              <th>联系方式</th>
+              <th>收益金额</th>
+            </tr>
+          </thead>
+          <tbody>
+          <?php foreach($row1 as $row){ ?>
+            <volist name="row" id="row">
+            <tr>
+              <td>{$key+1}</td>
+              <td>{$row.uname}</td>
+              <td><?php if($row['channel_type']==1){echo '内聘';}elseif($row['channel_type']==2){echo '个人';}else{echo '团队';}?></td>
+              <td>{$row.name}</td>
+              <td>{$row.mobile}</td>
+              <td>{$row.price}</td>
+            </tr>
+            </volist>
+          <?php }?>
+          </tbody>
+        </table>
+        <div class="pagination">
+          {$pageHtml}
+        </div>
+      </div>
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript" src="__PUBLIC__/WdatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+  function now_href(url){
+    window.location.href = url;
+  }
+</script>
+</block>

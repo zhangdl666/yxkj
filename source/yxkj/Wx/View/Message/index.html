@@ -1,0 +1,148 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>消息</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        .time{
+            font-size: 0.22rem;
+            color: rgb(138,141,143);
+        }
+        .loading{text-align: center;display: none;}
+        .layoutlr > .right {
+           padding-top: 0.15rem;
+        }
+    </style>
+</block>
+
+<block name="main">
+    <!-- 主体内容 开始 -->
+    <div class="main">
+
+         <div class="header">
+            <div class="left backs" data-url="{:U('Index/index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+        </div>
+
+        <div class="main_body xiaoxi">
+            <ul class="message_list">
+                <notempty name="datas">
+                <volist name="datas" id="data">
+                    <li class="message" >
+                        <h1 class="title" style="font-size: 0.32rem;color: rgb(58,65,68)">您收到一个{$data.type}</h1>
+                        <p class="time">{$data.ctime}</p>
+                        <div class="content">{$data.title}</div>
+                        <notempty name="data.oper_url">
+                            <div class="layoutlr oprate" onclick="now_href('/Wx/{$data.oper_url}')">
+                                <div class="left">去处理</div>
+                                <div class="right txtr"><i class="icon w_0000_00 w_00_11"></i></div>
+                            </div>
+                        <else/>
+                          <div class="layoutlr oprate info-js" data-id="{$data.id}">
+                            <div class="left">点击查看</div>
+                            <div class="right txtr"><i class="icon w_0000_00 w_00_11"></i></div>
+                          </div>
+                        </notempty>
+                    </li>
+                </volist>
+                <else/>
+                    <li class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></li>
+                </notempty>
+            </ul>
+        </div>
+    </div>
+    <!-- 主体内容 结束 -->
+    <div class="col-xs-12 loading" style="text-align: center;display: none;">
+        <img src="__IMG__/loading.gif" alt="">
+    </div>
+    <!--装页码的div-->
+    <div style="display:none" key="1" class="key"></div>
+    <div style="display:none" key="1" class="list-page"></div>
+
+</block>
+<block name="js">
+    <script type="text/javascript">
+        $('.info-js').click(function (){
+            var id=$(this).data('id');
+            window.location.href='/Wx/Message/getInfo/id/'+id;
+        });
+        //下拉显示更多
+        //当前的数据一定要超过页面显示的
+        $(window).scroll(function () {
+            var docHei = $(document).height(), winHei = $(window).height(), scrHei = $(document).scrollTop();
+            if (scrHei >= docHei - winHei) {
+                $(".loading").show();
+                var key = $('.key').attr('key');//当前页码
+                key = key * 1 + 1;
+                //获取加载数据
+                $.ajax({
+                    type:"POST",
+                    async: false,
+                    url:"{:U('show_more_data')}?page="+$(".list-page").attr('key'),
+                    data:{key:key},
+                    success:function(info){
+                        info = eval("("+info+")");
+                        if (info.status) {
+                            var re_data = info.data;
+                            $('.key').attr('key', re_data.key);          //添加最新显示页码
+                            $(".list-page").attr('key',re_data.page);   //添加最新查询页码
+                            //显示加载的数据
+                            showMessageHtml(re_data.datas);
+                            //>>隐藏加载图
+                            setTimeout(function () {
+                                $(".loading").hide();
+                            }, 1000);
+                        } else {
+                            $(".loading").empty();
+                            $(".loading").text("已全部加载完");
+                        }
+                    }
+                });
+            }
+        });
+
+        //显示加载的数据
+        function showMessageHtml(datas) {
+            $(datas).each(function(){
+                var html=
+                    '<li class="message" >\
+                        <h1 class="title">您收到一个'+$(this).attr('type')+'</h1>\
+                        <p class="time">'+$(this).attr('ctime')+'</p>\
+                        <div class="content">'+$(this).attr('content')+'</div>';
+                var oper_url = $(this).attr('oper_url');
+                if(oper_url){
+                    html += '<div class="layoutlr oprate" onclick="now_href(\'/Wx/'+oper_url+'\')">\
+                                <div class="left">去处理</div>\
+                                <div class="right txtr"><i class="icon w_0000_00 w_00_11"></i></div>\
+                            </div>';
+                }else{
+                    html += '<div class="layoutlr oprate info-js" data-id="'+$(this).attr('id')+'">\
+                            <div class="left">点击查看</div>\
+                            <div class="right txtr"><i class="icon"></i></div>\
+                        </div>';
+                }
+                        
+                    html += '</li>';
+                $(".message_list").append(html);
+            })
+        }
+        //将时间戳转换
+        function getMyDate(str){
+            var oDate = new Date(str),
+                oYear = oDate.getFullYear(),
+                oMonth = oDate.getMonth()+1,
+                oDay = oDate.getDate(),
+                oHour = oDate.getHours(),
+                oMin = oDate.getMinutes(),
+                oSen = oDate.getSeconds(),
+                oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay) +' '+ getzf(oHour) +':'+ getzf(oMin) +':'+getzf(oSen);//最后拼接时间
+            return oTime;
+        };
+        //补0操作
+        function getzf(num){
+            if(parseInt(num) < 10){
+                num = '0'+num;
+            }
+            return num;
+        }
+    </script>
+</block>

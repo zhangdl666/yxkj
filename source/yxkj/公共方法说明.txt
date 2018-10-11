@@ -1,0 +1,12 @@
+\Common\Common\function.php
+
+1、文件上传  upload($dir)   $dir文件存放目录
+
+2、AJAX返回数据  ajax_return($status,$info,$data='') $status 状态；$info 提示信息；$data 数据
+
+3、返回数组中某个单一列的值  i_array_column($arr, $columnKey, $indexKey=null)  $arr 数组；$columnKey 列；$indexKey 数组的索引/键的列
+
+4、判断是否为ajax请求  get_request_type()
+
+5、生成编号  get_reimbursement_sn()
+

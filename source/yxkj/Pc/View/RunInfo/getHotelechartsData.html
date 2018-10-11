@@ -1,0 +1,64 @@
+<div class="panel-heading"><h1>当天室内空气质量统计</h1></div>
+<div class="panel-body">
+    <div class="panel" id="onemain" style="height: 350px">
+
+    </div>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+<script type="text/javascript">
+   // 基于准备好的dom，初始化echarts实例
+    var myChartOnes = echarts.init(document.getElementById('onemain'));
+    optionOnes = {
+        tooltip: {
+            trigger: 'axis',
+        },
+        grid: {
+            left: '5%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: {$date}
+            }
+        ],
+        legend: {
+//            data: ['清洗']
+        },
+        yAxis: [
+            {
+                name:'空气指数PM2.5(μg/m3)',
+            <if condition="$rpm25 neq ''">
+            type: 'value',
+        min: 0,
+        max: 100,
+    <else/>
+    type: 'value',
+    </if>
+    }
+    ],
+    series: [
+        {
+//                name: '清洗',
+            type: 'line',
+            smooth: true,
+            // 背景颜色设置
+            lineStyle: {
+                normal: {
+                    width: 1.5,
+                    // 线条颜色
+                    color: ['#75CE68']
+                }
+            },
+            data: {$num},
+            color: ['#75CE68']
+        },
+    ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartOnes.setOption(optionOnes);
+</script>

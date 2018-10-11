@@ -1,0 +1,112 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>酒店工作人员管理</title>
+</block>
+
+<block name="top">
+  <ol class="breadcrumb">
+    当前的位置：
+    <li><a>系统设置</a></li>
+    <li class="on"><notempty name="id">编辑<else/>新增</notempty>角色</li>
+  </ol>
+</block>
+<block name="css">
+  <style type="text/css">
+    input{
+      margin-right: 20px;
+    }
+  </style>
+</block>
+<block name="main">
+  <div id="main">
+    <!-- 导航 开始 -->
+    <ul class="clearfix subnav hetongnav">
+      <li><a><i class="icon"></i><span class="cur_title"><notempty name="id">编辑<else/>新增</notempty>角色</span></a></li>
+    </ul>
+    <!-- 导航 结束 -->
+
+    <!-- 内容 开始 -->
+    <div class="subpage jiudianxinzeng">
+      <form method="post" action="{:U('hotelUserOperation')}">
+        <div class="subpage-block">
+          <table class="table table-bordered table-form">
+            <empty name="name">
+              <tr><th><font color="red" size="2">*</font>用户账号：</th><td><input type="text" name="name" <notempty name="redonly"></notempty><span class="errortips"></span></td></tr>
+              <tr>
+                <th><font color="red" size="2">*</font>用户姓名：</th>
+                <td><input type="text" name="real_name" value="{$real_name}" <notempty name="redonly">disabled</notempty>><span class="errortips"></span></td>
+              </tr>
+              <tr><th><font color="red" size="2">*</font>密码：</th><td> <input type="password" name="password" <notempty name="redonly"></notempty><span class="errortips"></span></td></tr>
+              <else/>
+              <tr><th>用户账号：</th><td><input type='text' name='name' value='{$name}'/><span class='errortips'></span></td></tr>
+              <tr>
+                <th><font color="red" size="2">*</font>用户姓名：</th>
+                <td><input type="text" name="real_name" value="{$real_name}" <notempty name="redonly">disabled</notempty>><span class="errortips"></span></td>
+              </tr>
+              <tr><th><font color="red" size="2">*</font>密码：</th><td> <input type="password" name="password" <notempty name="redonly"></notempty><font color="blue" size="1">(不填写则为旧密码)</font></td></tr>
+            </empty>
+            <input type="hidden" name="paw" value="{$password}" <notempty name="redonly">disabled</notempty>><span class="errortips"></span>
+
+            <tr>
+              <th><font color="red" size="2">*</font> 联系方式：</th>
+              <td>
+                <input type="text" name="mobile" value="{$mobile}"/>
+              </td>
+            </tr>
+
+
+            <tr>
+              <th><font color="red" size="2">*</font>酒店名称：</th>
+              <td><select name="hotel_id">
+                <volist name="row" id="row">
+                  <option  value = "{$row.id}" <eq name="row.id" value="$hotel_id">selected</eq>>{$row.name}</option >
+                </volist>
+              </select >
+              </td>
+            </tr>
+            <tr>
+              <th><font color="red" size="2">*</font>用户类型：</th>
+              <td><select name="role_id">
+                <volist name="role" id="role">
+                  <option  value = "{$role.id}" <eq name="role.id" value="$role_id">selected</eq> >{$role.name}</option >
+                </volist>
+              </select >
+              </td>
+            </tr>
+
+            <tr>
+              <th>绑定微信号：</th>
+              <td>
+                <input type="text" value="{$uuid}" disabled='disabled'/>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <input type="hidden" name="id" value="{$id}">
+                <input type="hidden" name="type" value="2">
+              </th>
+
+              <td>
+                <input type="hidden" name="session" value="{$operation}"/>
+                <if condition="$id eq null">
+                  <button type="button" class="btn btn-tijiao ajax-post">保存</button>
+                  <button type="button" class="btn btn-quxiao back">取消</button>
+                  <else/>
+                  <button type="button" class="btn btn-tijiao ajax-post">保存</button>
+                  <button type="button" class="btn btn-quxiao back">取消</button>
+                  <if condition="$uuid neq ''">
+                    <a class="btn btn-yellow" href="{:U('wxdel',array('id'=>$id))}">解除微信</a>
+                  </if>
+
+                </if>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+    <!-- 内容 结束 -->
+  </div>
+</block>
+

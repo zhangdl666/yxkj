@@ -1,0 +1,215 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>结算</title>
+</block>
+<block name="css">
+  <style type="text/css">
+    .danzi li{
+      width: calc(16.6% - 16px)!important;
+    }
+    .danzi li:nth-child(6) {
+     margin-right: 0px;
+    }
+    .panel .panel-heading {
+      margin-bottom: 0px;
+    }
+    @media screen and (max-width: 1199px) and (min-width: 1000px){
+      .danzi .dan_icon {
+        display: none;
+      }
+    }
+
+
+  </style>
+</block>
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>结算</a></li>
+      <li class="on">结算账单数据</li>
+    </ol>
+</block>
+
+<block name="main">
+  <div id="main" class="bgfff">
+    <ul class="clearfix danzi">
+      <li>
+        <div class="danzidata dan1">
+          <i class="icon dan_icon i_dan1"></i>
+          <div class="danzinum"><span>{$count.num}</span>次</div>
+          <div class="danziname">未结算账单数
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan2">
+          <i class="icon dan_icon i_dan2"></i>
+          <div class="danzinum"><span>{$count.timeNum}</span>次</div>
+          <div class="danziname">已结算账单数
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan3">
+          <i class="icon dan_icon i_dan3"></i>
+          <div class="danzinum"><span>{$count.allNum}</span>次</div>
+          <div class="danziname">总账单数
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan4">
+          <i class="icon dan_icon i_dan4"></i>
+          <div class="danzinum">￥<span>{$count.noMoney}</span></div>
+          <div class="danziname">未结算金额
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan4">
+          <i class="icon dan_icon i_dan4"></i>
+          <div class="danzinum">￥<span>{$count.inMoney}</span></div>
+          <div class="danziname">已结算金额
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan4">
+          <i class="icon dan_icon i_dan4"></i>
+          <div class="danzinum">￥<span>{$count.allMoney}</span></div>
+          <div class="danziname">账单总金额
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading" style="padding:25px 0px;">
+        <!-- Single button -->
+        <div class="">
+          <span class="table-form-text" style="float: left;margin-top:8px; ">结算状态：</span>
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+              <span class="text search"><span class="default">{$type|default='全部'}</span></span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a>全部</a></li>
+              <li><a>待结算</a></li>
+              <li><a>待确认</a></li>
+              <li><a>已确认</a></li>
+            </ul>
+          </div>
+
+          <div class="navbar-form navbar-left">
+            <button type="button" class="btn btn-warning" id="allsearch" style="margin-left: 20px">搜索</button>
+          </div>
+          <br><br>
+          </div>
+    </div>
+
+      <div class="panel-body" style="padding:0px 15px;" >
+        <table class="table table-condensed table-data">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <if condition="$role neq 10">
+              <th>酒店名称</th>
+              </if>
+              <th>结算账期</th>
+              <th>结算模式</th>
+              <th>本期使用天数</th>
+              <th>应结算金额</th>
+              <th>实际结算金额</th>
+              <th>应结算日期</th>
+              <th>实际结算日期</th>
+              <th>逾期天数</th>
+              <th>滞纳金</th>
+              <th>结算状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="data">
+          <notempty name="items">
+            <volist name="items" id="item">
+            <tr>
+              <td>{$key+1}</td>
+              <if condition="$role neq 10">
+                <td>{$item.name}</td>
+              </if>
+              <td>{$item.etime}</td>
+              <td>
+                <if condition="$item['type'] eq 1">
+                共享({$item.type_price}元/天次)
+                <elseif condition="$item['type'] eq 2"/>
+                租赁({$item.type_price}元/天)
+                <else/>
+                月租({$item.month_price}元/月)
+              </if></td>
+              <td>{$item.num}</td>
+              <td>{$item.rprice}</td>
+              <td>{$item.price}</td>
+              <td>{$item.rtime|date='Y-m-d',###}</td>
+              <td><notempty name="item.time">{$item.time|date='Y-m-d',###}</notempty></td>
+              <td>{$item.mtime}</td>
+              <td>{$item.mprice}</td>
+               <td><if condition="$item['status'] eq 1"> 待结算
+                <elseif condition="$item['status'] eq 2"/>待确认
+                <else />已确认
+              </if></td>
+              <td class="orprate">
+                <if condition="$item['status'] eq 1">
+                  <a class="text-warning" href="{:U('settlement',array('id'=>$item['id']))}">
+                    <if condition="$role eq 10"> 结算
+                      <else />查看</if></a>
+                  <elseif condition="$item['status'] eq 2"/>
+                    <a class="text-warning" href="{:U('confirmation',array('id'=>$item['id']))}">
+                      <if condition="$role eq 6"> 到帐确认
+                        <else />查看</if></a>
+                  <else />
+                    <a class="text-warning" href="{:U('looked',array('id'=>$item['id']))}">查看</a>
+                </if>
+              </td>
+            </tr>
+            </volist>
+            <else/>
+            <tr>
+              <if condition="$role neq 10">
+                <td colspan="13">暂无数据</td>
+                <else/>
+                <td colspan="12">暂无数据</td>
+              </if></tr>
+          </notempty>
+          </tbody>
+        </table>
+        <div class="pagination-container">
+            <div class="pagination">
+                {$pageHtml}
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+</block>
+<block name="js">
+<script type="text/javascript" src="__PUBLIC__/WdatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+  $('#allsearch').click(function () {
+   var value = $('.search ').html();
+
+    if(value == "待结算"){
+     var roth =1;
+    }
+    if(value == '待确认'){
+      var roth = 2;
+    }
+    if(value == "已确认"){
+      var  roth =3;
+    }
+    if(value == "全部" ){
+      var  roth =0;
+    }
+    self.location.href ='/Pc/ReturnMoney/index/id/'+roth;
+  })
+</script>
+</block>

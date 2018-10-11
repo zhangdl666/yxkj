@@ -1,0 +1,69 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>酒店信息</title>
+</block>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left"><i class="icon"></i>返回</div>
+			<div class="center">优享空间</div>
+		</div>
+		<div class="main_body jiudianinfo_main">
+			<div class="swiper-container banner_container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide"><img src="../../../Public/Images/b.jpg"></div>
+					<div class="swiper-slide"><img src="../../../Public/Images/b.jpg"></div>
+				</div>
+				<!-- 如果需要分页器 -->
+				<div class="swiper-pagination"></div>
+				<div class="jiusianinfo">
+					<span class="name">{$data.name}</span>
+					<span class="levl">{$data.type_name}</span>
+				</div>
+			</div>
+
+			<div class="jiudianinfo_content">
+				<div class="layoutlr jiudiannav">
+					<div class="row">
+						<div class="col">
+							<i class="icon"></i>
+							<h1>WIFI</h1>
+						</div>
+						<div class="col">
+							<i class="icon"></i>
+							<h1>宽带</h1>
+						</div>
+						<div class="col">
+							<i class="icon"></i>
+							<h1>寄存</h1>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<i class="icon"></i>
+							<h1>地铁</h1>
+						</div>
+						<div class="col">
+							<i class="icon"></i>
+							<h1>早餐</h1>
+						</div>
+						<div class="col">
+							<i class="icon"></i>
+							<h1>停车场</h1>
+						</div>
+					</div>
+				</div>
+				<div class="lianxi">
+					<div><i class="icon"></i>联系方式：{$data.tell}</div>
+					<div><i class="icon"></i>酒店地址：{$data.provice}{$data.city}{$data.county}{$data.area}</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+

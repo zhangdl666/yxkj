@@ -1,0 +1,215 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>酒店录入</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <li class="on">酒店录入</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title">酒店认领信息</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+        <div class="subpage hetongxinxi01">
+            <form id="">
+                <div class="subpage-block">
+                    <table class="table table-bordered table-form">
+                        <tbody>
+                        <tr>
+                            <th>酒店ID：</th>
+                            <td><span class="table-form-text">{$data.sn}</span></td>
+                        </tr>
+                        <tr>
+                            <th>酒店名称：</th>
+                            <td><span class="table-form-text">{$data.name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>酒店类型：</th>
+                            <td><span class="table-form-text">{$data.type_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>客房数：</th>
+                            <td><span class="table-form-text">{$data.room_num}</span></td>
+                        </tr>
+                        <tr>
+                            <th>客房类型：</th>
+                            <td>
+                                <label class="checkbox-container" data-type="radio">
+                                    <input type="radio" name="kefangleixing">
+                                    <i class="icon icon01 i_radio"></i>
+                                    <span class="checkbox_txt">大床（100）</span>
+                                </label>
+                                <label class="checkbox-container" data-type="radio">
+                                    <input type="radio" name="kefangleixing">
+                                    <i class="icon icon01 i_radio"></i>
+                                    <span class="checkbox_txt">标准间（200）</span>
+                                </label>
+                                <label class="checkbox-container" data-type="radio">
+                                    <input type="radio" name="kefangleixing">
+                                    <i class="icon icon01 i_radio"></i>
+                                    <span class="checkbox_txt">套房（400）</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr class="suoshudiqu">
+                            <th><span class="text-orange">*</span>所属地区：</th>
+                            <td id="city">
+                                <select class="prov" name="provice">
+                                    <option></option>
+                                </select>
+                                <select class="city" disabled="disabled" name="city">
+                                    <option></option>
+                                </select>
+                                <select class="dist" disabled="disabled" name="county">
+                                    <option></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>详细地址：</th>
+                            <td><span class="table-form-text">{$data.area}</span></td>
+                        </tr>
+                        <tr>
+                            <th>联系方式：</th>
+                            <td><span class="table-form-text">{$data.tell}</span></td>
+                        </tr>
+                        <tr>
+                            <th>酒店图片：</th>
+                            <td>
+                                <dl class="uploadimg-container">
+                                    <dd class="imgwrap-container">
+                                        <div class="imgwrap">
+                                            <img class="img-rounded" src="../../imgs/b.jpg">
+                                            <ul class="imgoprate">
+                                                <li data-oprate="toleft"><i class="icon"></i></li>
+                                                <li data-oprate="detele"><i class="icon"></i></li>
+                                                <li data-oprate="toright"><i class="icon"></i></li>
+                                            </ul>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>商务负责人：</th>
+                            <td><span class="table-form-text">{$data.shang_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>商务负责电话：</th>
+                            <td><span class="table-form-text">{$data.shang_tell}</span></td>
+                        </tr>
+                        <tr>
+                            <th>酒店总经理：</th>
+                            <td><span class="table-form-text">{$data.all_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>酒店总经理电话：</th>
+                            <td><span class="table-form-text">{$data.all_tell}</span></td>
+                        </tr>
+                        <tr>
+                            <th>财务负责人：</th>
+                            <td><span class="table-form-text">{$data.money_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>财务负责人电话：</th>
+                            <td><span class="table-form-text">{$data.money_tell}</span></td>
+                        </tr>
+                        <tr>
+                            <th>工程负责人：</th>
+                            <td><span class="table-form-text">{$data.project_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>工程负责人电话：</th>
+                            <td><span class="table-form-text">{$data.project_tell}</span></td>
+                        </tr>
+                        <tr>
+                            <th>签约状态：</th>
+                            <td><span class="table-form-text">
+                                <if condition="$data['is_sign'] eq 1">
+                                    已签约
+                                    <else/>
+                                    未签约
+                                </if>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <th>认领状态：</th>
+                            <td><span class="table-form-text">
+                                <if condition="$data['is_get'] eq 1">
+                                    已认领
+                                    <else/>
+                                    未认领
+                                </if>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <th>认领人：</th>
+                            <td><span class="table-form-text">{$data.hotel_user_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>历史销售人员：</th>
+                            <td><span class="table-form-text">{$data.sale_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <input type="hidden" id="id" value="{$id}">
+                                <button type="button" class="btn btn-quxiao" data-page="{:U('SalesClaim/listClaim',array('p'=>$p))}">返回</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__JS__/jquery.cityselect.js"></script>
+    <script type="text/javascript">
+        $(".btn-quxiao").click(function () {
+            var src = $(this).attr('data-page');
+            window.location.href = src;
+        })
+        $("#city").citySelect({
+            prov: "{$data.provice}",
+            city: "{$data.city}",
+            dist: "{$data.county}",
+            nodata: "none"
+        });
+        var seeHotel = {};
+        seeHotel.HotelCliam = function () {
+            var url = '/Pc/ClaimHotel/userNoClaim';
+            var data = {};
+            data.id = $("#id").val();
+            $.post(url, data, function (data) {
+                if(data.code == 0){
+                    alert(data.message);
+                }else{
+                    alert(data.message);
+                }
+            });
+        }
+
+        seeHotel.AddHotelCliam = function () {
+            var url = '/Pc/ClaimHotel/userClaim';
+            var data = {};
+            data.id = $("#id").val();
+            $.post(url, data, function (data) {
+                if(data.code == 0){
+                    alert(data.message);
+                }else{
+                    alert(data.message);
+                }
+            });
+        }
+    </script>
+</block>

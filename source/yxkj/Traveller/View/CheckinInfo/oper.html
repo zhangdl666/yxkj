@@ -1,0 +1,244 @@
+<extend name="Public:index"/>
+<block name="css">
+    <link rel="stylesheet" href="__CSS__/LCalendar.css">
+</block>
+<block name="main">
+
+    <style type="text/css">
+        .fangjianxinxitanchuang{
+            position: absolute;
+            box-sizing: border-box;
+            bottom: 0;
+            left: 0;
+            height: 5.5rem;
+            width: 94vw;
+            margin:0 3vw 3vh;
+            z-index: 99;
+            border-radius: 0.3rem;
+            background: #F4FAF5;
+            display: none;
+        }
+        .fangjianxinxitanchuang .chuangkoutitle{
+            color: #65A37B;
+            text-align: center;
+            font-size: 0.44rem;
+            padding: 0.4rem 0 0.4rem;
+        }
+        .fangjianxinxitanchuang .tiaojiebox{
+            text-align: center;
+            height: 1.5rem;
+            font-size: 0.44rem;
+        }
+        .fangjianxinxitanchuang .tiaojiebox span{
+            margin: 0 1rem;
+            line-height: 1rem;
+            vertical-align: bottom;
+        }
+        .fangjianxinxitanchuang .tiaojiebox .btn-l,
+        .fangjianxinxitanchuang .tiaojiebox .btn-r{
+            display: inline-block;
+            width: 0.9rem;
+            height: 0.9rem;
+            border-radius: 100%;
+            color: #fff;
+            font-size: 1rem;
+            line-height: 0.9rem;
+        }
+        .fangjianxinxitanchuang .tiaojiebox .btn-l{
+            background: #ACAFAE;
+            line-height: 0.8rem;
+        }
+        .fangjianxinxitanchuang .tiaojiebox .btn-r{
+            background: #FF8800;
+        }
+        .kongqiziliangdi,.kongqizilianggao{
+            text-align: center;
+            height: 0.8rem;
+            line-height: 0.8rem;
+            font-size: 0.32rem;
+            color: #787D7B;
+        }
+        .kongqiback1{
+            background-color: #ff5353!important;
+        }
+        .kongqiback2{
+            background-color: rgba(0, 0, 0, 0.25)!important;
+        }
+        .addimg_wrap .close {
+            position: absolute;
+            top: 0.2rem;
+            right: 0.2rem;
+            background-color: #20d1d5;
+            width: 1.5rem;
+            height: 0.4rem;
+            color: #333;
+        }
+        input{
+            border: none;
+            text-align: center;
+            background: rgba(0,0,0,0);
+        }
+        .fangjianxinxi .fangjian_opreate_wrap .fangjian_opreate .col:first-child .n1 {
+            background-color: rgba(0, 0, 0, 0.25); }
+        .fangjianxinxi .fangjian_opreate_wrap .fangjian_opreate .col:first-child .n1.on{
+            background-color: #ff5353; }
+    </style>
+
+    <!-- 主体内容 开始 -->
+    <div class="main">
+        <!-- 【此处嵌套 header】 -->
+        <!-- header 开始 -->
+        <div class="header">
+            <div class="left"><a href="">返回</a></div>
+            <div class="center">优享空间</div>
+        </div>
+        <div class="main_body fangjianxinxi">
+            <div class="addimg_wrap">
+                <img class="addimg" src="__IMG__/b.jpg">
+            </div>
+            <div class="layoutlr fangjian_title">
+                <div class="col left"><a href="{:U('hotel')}">{$data.hotel_name}</a></div>
+                <div class="col right">{$data.provice}{$data.city}</div>
+            </div>
+            <div class="jinhua_block">
+                <div class="air_container">
+                    <div class="air_main">
+                        <div class="num">{$data.in_pm}</div>
+                        <div class="within">室内平均空气质量{$data.in_air}</div>
+                        <div class="abroad">室外空气质量 {$data.out_pm} {$data.out_air} </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fangjian_btm">
+                <div class="layoutlr fangjian_showdata">
+                    <div class="col">
+                        <div class="n1"><if condition="$data['status'] eq 2">
+                            待维修
+                            <elseif condition="$data['status'] eq 3"/>
+                            待保养
+                            <else/>
+                            正常
+                        </if></div>
+                        <div class="n2">设备</div>
+                    </div>
+                    <div class="col">
+                        <div class="n1">{$data.air_speed}</div>
+                        <div class="n2">风速</div>
+                    </div>
+                    <div class="col">
+                        <div class="n1">{$data.room_sno}</div>
+                        <div class="n2">房间</div>
+                    </div>
+                    <div class="col">
+                        <div class="n1">{$data.in_temperature}℃</div>
+                        <div class="n2">室内温度</div>
+                    </div>
+                    <div class="col">
+                        <div class="n1">{$data.in_humidity}%</div>
+                        <div class="n2">室内湿度</div>
+                        <!--<if condition="$infomation['info']['power'] eq 0">-->
+                            <!--<span class="Openers">关</span><else/><span class="Openers">开</span>-->
+                        <!--</if>-->
+                    </div>
+                </div>
+                <div class="fangjian_opreate_wrap">
+                    <div class="layoutlr fangjian_opreate">
+                        <div class="col Opener"> <input type="hidden" name="Opener" value="{$infomation['info']['power']}">
+                            <div class="n1"><div class="icon_wrap"><i class="icon w_0004_04 w_04_01"></i></div></div>
+                            <div class="n2">设备开关</div>
+                        </div>
+                        <div class="col Devicetime">
+                            <div class="n1 "><div class="icon_wrap"><i class="icon w_0004_04 w_04_02"></i></div></div>
+                            <div class="n2">设备定时</div>
+                        </div>
+                        <div class="col  opener">
+                            <div class="n1"><div class="icon_wrap"><i class="icon w_0004_04 w_04_03"></i></div></div>
+                            <div class="n2">温度设定</div>
+                        </div>
+                        <div class="col  opener">
+                            <div class="n1"><div class="icon_wrap"><i class="icon w_0004_04 w_04_04"></i></div></div>
+                            <div class="n2">湿度设定</div>
+                        </div>
+                        <div class="col  fangjianflow">
+                            <div class="n1"><div class="icon_wrap"><i class="icon w_0004_04 w_04_05"></i></div></div>
+                            <div class="n2">风速设定</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fangjianxinxitanchuang" id="opener">
+                    <p class="chuangkoutitle">设备开关</p>
+                    <div class="tiaojiebox">
+                        <i class="btn-l Opener_left">-</i>
+
+                        <if condition="$infomation['info']['power'] eq 0"> 关<else/>开
+                        </if><i class="btn-r Opener_right">+</i><br>
+                        <button class="btn btn-info in_speed" style="background: #20d1d5;border-radius: 0.2em;"> 确定 </button>
+                    </div>
+                </div>
+                <div class="fangjianxinxitanchuang" id="time">
+                    <p class="chuangkoutitle">设备定时</p>
+                    <p class="chuangkoutitle">开始时间：<input type="text" placeholder="请选择开始时间" name="stime" id="stime" value="{$stime}" readonly="readonly">&nbsp;
+                    </p>
+                    <p class="chuangkoutitle">结束时间：<input type="text" placeholder="请选择结束时间" name="etime" id="etime" value="{$stime}" readonly="readonly">&nbsp;</p>
+                    <button class="btn btn-info" style="background: #20d1d5;border-radius: 0.2em;margin: 0 11em;" onclick="equipmentTime.equipmentTime()"> 确定 </button>
+                </div>
+                <div class="fangjianxinxitanchuang" id="flow">
+                    <p class="chuangkoutitle">调节风速</p>
+                    <div class="tiaojiebox">
+                        <i class="btn-l speed_left">-</i>
+                        <input type="hidden" name="speed" value="{$infomation['info']['speed']}">
+                        <span class="speeding"><if condition="$infomation['info']['speed'] eq 0"> 风机关闭<else/>
+                        {$infomation['info']['speed']}级风速</if></span><i class="btn-r speed_right">+</i>
+                    </div>
+                </div>
+                <div class="swiper-container swiper-tab-nav">
+                    <div class="swiper-wrapper">
+                        <div style="width: 33%;text-align: center;margin:auto;">
+                            <a href="{:U('index')}">房间信息</a>
+                        </div>
+                        <div style="width: 33%;text-align: center;margin:auto;">
+                            <a href="{:U('hotel',array('id'=>$data['h_id']))}">酒店信息</a>
+                        </div>
+                        <div  style="width: 33%;text-align: center;margin:auto;">
+                            <a href="{:U('footprint')}">我的足迹</a>
+                        </div>
+
+                    </div>
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination"></div>
+                </div>
+                <input type="hidden" name="id" value="{$data.id}">
+            </div>
+        </div>
+    </div>
+    <!-- 主体内容 结束 -->
+</block>
+
+<block name="js">
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script type="text/javascript" src="__JS__/fangjian.js">  </script>
+    <script type="text/javascript" src="__JS__/LCalendar.js"></script>
+    <script type="text/javascript">
+        /* 日期控件 */
+        var calendars = new LCalendar();
+        var date = new Date();
+        calendars.init({
+            'trigger': '#stime', //标签id
+            'type': 'time', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+            'minDate': date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(), //最小日期
+            //'maxDate': date.getFullYear() + '-' + 12 + '-' + 31 //最大日期
+        });
+
+        var calendare = new LCalendar();
+        calendare.init({
+            'trigger': '#etime', //标签id
+            'type': 'time', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+            'minDate': date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(), //最小日期
+            //'maxDate': date.getFullYear() + '-' + 12 + '-' + 31 //最大日期
+        });
+
+        $(".Opener").eq(0).click(function () {
+            $('.Opener>.n1').eq(0).toggleClass('on');
+        });
+    </script>
+</block>

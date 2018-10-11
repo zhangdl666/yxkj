@@ -1,0 +1,412 @@
+<div class="swiper-wrapper">
+    <!-- 销售额 开始 -->
+    <div class="swiper-slide swiper-tab-content">
+        <div class="white_panel">
+            <div class="layoutlr white_header">
+                <div class="left">{$provice|default=""}销售额统计</div>
+            </div>
+            <div class="white_body">
+                <div class="layoutlr xiaoshoutongji_echart">
+                    <div class="left ec_div" style="width: 207.2px;height: 230.4px" id="mainone">
+
+                    </div>
+                    <div class="right">
+                        <ul class="echart_data">
+                            <li>
+                                <div class="point01 point-01"></div>
+                                所属地区：{$provice|default="全国"}
+                            </li>
+                            <li>
+                                <div class="point01 point-02"></div>
+                                渠道类型：{$qds_name|default='全类型'}
+                            </li>
+                            <li>
+                                <div class="point01 point-03"></div>
+                                <if condition="$stime eq ''">
+                                    开始时间：{$rctime[0]['time']|date="Y-m-d",###}
+                                    <else/>
+                                    开始时间：{$stime}
+                                </if>
+                            </li>
+                            <li>
+                                <div class="point01 point-04"></div>
+                                <if condition="$etime eq ''">
+                                    结束时间：<?php echo date('Y-m-d');?>
+                                    <else/>
+                                    结束时间：{$etime}
+                                </if>
+
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="white_panel">
+            <div class="layoutlr white_header">
+                <div class="left">各省占比数量及金额</div>
+            </div>
+            <div class="white_body">
+                <div class="layoutlr xiaoshoutongji_echart">
+                    <div class="left" style="width: 207.2px;height: 230.4px" id="maintwo">
+
+                    </div>
+                    <div class="right">
+                        <ul class="echart_prog">
+                            <foreach name="proviceAlls" item="pro_num" key="key">
+                                <li>
+                                    <div class="text">{$pro_num.provice}&ensp;<span class="min">￥</span>{$pro_num.price}</div>
+                                    <div class="progress-container progress01">
+                                        <div class="progress" data-width="" style="width: {$pro_num['roportion']}%;"></div>
+                                    </div>
+                                </li>
+                            </foreach>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="white_panel">
+            <div class="layoutlr white_header">
+                <div class="left">酒店类型占比量及金额</div>
+            </div>
+            <div class="white_body">
+                <div class="layoutlr xiaoshoutongji_echart">
+                    <div class="left" style="width: 207.2px;height: 230.4px" id="mainfou">
+
+                    </div>
+                    <div class="right">
+                        <ul class="echart_prog">
+                            <foreach name="typeAlls" item="type_num" key="key">
+                                <li>
+                                    <div class="text">{$type_num.type_name}&ensp;<span class="min">￥</span>{$type_num.price}</div>
+                                    <div class="progress-container progress01">
+                                        <div class="progress" data-width="" style="width: {$type_num['roportion']}%;"></div>
+                                    </div>
+                                </li>
+                            </foreach>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="white_panel">
+            <div class="layoutlr white_header">
+                <div class="left">各渠道占比及金额</div>
+            </div>
+            <div class="white_body">
+                <div class="layoutlr xiaoshoutongji_echart">
+                    <div class="left" style="width: 207.2px;height: 200.4px" id="mainfive">
+
+                    </div>
+                    <div class="right">
+                        <ul class="echart_prog">
+                            <foreach name="channelAlls" item="qd_num" key="key">
+                                <li>
+                                    <div class="text">{$qd_num.user_type_name}&ensp;<span class="min">￥</span>{$qd_num.price}</div>
+                                    <div class="progress-container progress01">
+                                        <div class="progress" data-width="" style="width: {$qd_num['roportion']}%;"></div>
+                                    </div>
+                                </li>
+                            </foreach>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="white_panel">
+            <div class="layoutlr white_header">
+                <div class="left">全年趋势统计</div>
+            </div>
+            <div class="white_body" id="mainthe">
+            </div>
+        </div>
+        <div class="white_panel paihangbang">
+            <div class="layoutlr white_header">
+                <div class="left">优秀销售员排行榜</div>
+            </div>
+            <div class="white_body">
+                <table>
+                    <tbody>
+                    <foreach name="saleDatas.rank" item="rank" key="key">
+                        <if condition="key gt 10">
+                            <?php break;?>
+                        </if>
+                        <tr>
+                            <td><i class="icon pgb_icon_img"></i></td>
+                            <td><img class="img-circle user-photo" src="{$rank.img}"></td>
+                            <td>{$rank.real_name}</td>
+                            <td>{$rank.user_type_name}</td>
+                            <td>￥{$rank.price}</td>
+                            <td>
+                                <div class="progress-container progress0{$key + 1}">
+                                    <div class="progress" data-width="{$rank['price']}%" style="width: {$rank['bai']}%;"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- 销售额 结束 -->
+</div>
+<script type="text/javascript">
+    // 环形图展示
+    var myCharOne = echarts.init(document.getElementById('mainone'));
+    optionOne = {
+        //注释tooltip，这是提示框内容
+        tooltip: {
+            trigger: 'item',
+            position: ['35%', '35%'],
+//            x:'center',
+            formatter: "{a} <br/>{b}: {c} ({d}%)",
+            howContent:false
+        },
+        legend: {
+           //修改底部文字居左
+            x : 'left',
+            y : 'bottom',
+            data:{$city_name},
+        },
+        series: [
+            {
+                name:'{$provice|default=""}销售额统计',
+                hoverAnimation:false,
+                type:'pie',
+                //给图表添加坐标center : ['50%', '35%'],配合htmldiv的高度为230.4，高度变化就要修改坐标变化
+                center : ['50%', '35%'],
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '15',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:{$city_sale},
+                color:[ '#D97CF1','#F6B55B','#1ED2D6','#5BB0F0','#1DABAD'],
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myCharOne.setOption(optionOne);
+
+    // 环形图展示
+    var myCharTwo = echarts.init(document.getElementById('maintwo'));
+    optionTwo = {
+        tooltip: {
+            trigger: 'item',
+            position: ['35%', '35%'],
+            formatter: "{a} <br/>{b}: {c} ({d}%)",
+            howContent:false
+        },
+        legend: {
+            x : 'left',
+            y : 'bottom',
+            data:{$provice_name},
+        },
+        series: [
+            {
+                name:'各省占比数量及金额',
+                hoverAnimation:false,
+                type:'pie',
+                center : ['50%', '35%'],
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '15',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:{$pro_nums},
+                color:[ '#D97CF1','#F6B55B','#1ED2D6','#5BB0F0','#1DABAD'],
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myCharTwo.setOption(optionTwo);
+
+    // 环形图展示
+    var myCharTwFive = echarts.init(document.getElementById('mainfive'));
+    optionFive = {
+        tooltip: {
+            trigger: 'item',
+            position: ['35%', '35%'],
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            x : 'left',
+            y : 'bottom',
+            data:{$qd_name},
+        },
+        series: [
+            {
+                name:'各渠道及占比金额',
+                type:'pie',
+                hoverAnimation:false,
+                //给图表添加坐标center : ['50%', '35%'],配合htmldiv的高度为230.4，高度变化就要修改坐标变化
+                center : ['50%', '40%'],
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '15',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:{$qd_nums},
+                color:[ '#D97CF1','#F6B55B','#1ED2D6','#5BB0F0','#1DABAD'],
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myCharTwFive.setOption(optionFive);
+
+    // 环形图展示
+    var myCharFou = echarts.init(document.getElementById('mainfou'));
+    optionFou = {
+        tooltip: {
+            trigger: 'item',
+            position: ['35%', '35%'],
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            x : 'left',
+            y : 'bottom',
+            data:{$type_name},
+        },
+        series: [
+            {
+                name:'酒店类型占比量及金额',
+                type:'pie',
+                hoverAnimation:false,
+                center : ['50%', '40%'],
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '15',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:{$type_nums},
+                color:[ '#D97CF1','#F6B55B','#1ED2D6','#5BB0F0','#1DABAD'],
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myCharFou.setOption(optionFou);
+    // 基于准备好的dom，初始化echarts实例
+    var myChartThe = echarts.init(document.getElementById('mainthe'));
+    optionThe = {
+        tooltip: {
+            trigger: 'axis',
+        },
+        grid: {
+            left: '6%',
+            right: '6%',
+            bottom: '2%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data : {$months}
+            }
+        ],
+        legend: {
+            data: ['全年趋势统计图']
+        },
+        yAxis: [
+            {
+                name:'金额(元)',
+            <if condition="$num eq '[]'">
+            min: 0,
+        max: 100,
+    </if>
+                type: 'value',
+                    minInterval : 1
+            }
+        ],
+        series: [
+            {
+                name:'全年趋势统计图',
+                type: 'line',
+                hoverAnimation:false,
+                smooth: true,
+                //给图表添加坐标center : ['50%', '35%'],配合htmldiv的高度为230.4，高度变化就要修改坐标变化
+//                center : ['50%', '35%'],
+//                radius: ['50%', '70%'],
+                areaStyle: {
+                    normal: {
+                    }
+                },
+                // 背景颜色设置
+                lineStyle: {
+                    normal: {
+                        width: 1.5,
+                        // 线条颜色
+                        color: ['#86DDDE']
+                    }
+                },
+                data:{$num},
+                color: ['#75CE68']
+            },
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartThe.setOption(optionThe);
+</script>

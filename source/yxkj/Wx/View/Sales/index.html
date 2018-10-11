@@ -1,0 +1,347 @@
+<extend name="Public:index"/>
+<block name="css">
+    <style type="text/css">
+        .img-circle{
+            width: 0.52rem;
+            height: 0.52rem;
+            margin:0 0.1rem;
+        }
+        .layoutlr {
+
+            height: 0.5rem;
+            line-height: 0.5rem;
+        }
+        .xiaoshoue table tr .icon {
+            width: 0.46rem!important;
+            height: 0.46rem!important;
+        }
+
+        .pgb_icon_img {
+            background-size: 100%!important;
+        }
+
+        .swiper-tab-nav {
+            height: 1.2rem;
+        }
+        .swiper-tab-page {
+            top: 2.01rem;
+        }
+        .header .right .icon {
+            margin-right: 0rem;
+        }
+        .screening_condition_wrap .screening {
+            padding-left: 0.56rem;
+            margin-left: 0!important;
+        }
+        .editdate{
+            background-color: #f4f4f4!important;
+        }
+
+
+        .xiaoshoue table td:first-child + td + td {
+            width: 24vw;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .icon {
+            margin-top: 0.08rem;
+        }
+        .img-circle{
+            margin: 0.04rem 0.1rem 0 0.1rem;
+        }
+       .xiaoshoue .xiaoshoutongji_echart .right {
+            position: relative;
+            right: 0.2rem;
+           top: 0.4rem;
+        }
+        .xiaoshoue .xiaoshoutongji_echart .right {
+            width: 40%;
+        }
+        .js_btn{
+            width: auto!important;
+            padding:0 0.3rem!important;
+        }
+        .screening_condition_wrap .screening{ border-bottom: 0.1rem solid #e6e6e6!important;padding-bottom: 0.27rem                                                                                          }
+        .screening_condition_wrap .screening + .screening{
+            border-top: 0rem solid #e6e6e6!important;
+            border-bottom: 0.1rem solid #e6e6e6!important;
+             margin-top: 0rem;
+            padding-bottom: 0.27rem;
+        }
+        /*.qd_dl{border-top: 0px!important;}*/
+
+    </style>
+    <link rel="stylesheet" href="__CSS__/LCalendar.css">
+</block>
+<block name="title">
+    <title>销售统计</title>
+</block>
+<block name="main">
+    <!-- 主体内容 开始 -->
+    <div class="main swiper-container-02 xiaoshoutongji">
+        <!-- 【此处嵌套 header】 -->
+        <!-- header 开始 -->
+        <div class="header">
+            <div class="left back"><i class="icon w_0000_00 w_00_08"></i><a href="{:U('Wx/Index/index')}">返回</a></div>
+            <!--<div class="center">销售统计</div>-->
+            <div class="right"><i class="icon w_0004_04 w_04_10"></i></div>
+        </div>
+
+        <div class="main_body">
+            <!-- 筛选条件 开始 -->
+            <div class="screening_condition_wrap" style="z-index: 99;display: none;top: -8.36rem;">
+                <div class="screening_condition">
+                    <dl class="screening quyu">
+                        <dt>选择地区</dt>
+                        <dd id="provice">
+                            <button id="all-provice" class="btn on" value="">全部</button>
+                            <button class="btn" value="北京">北京</button>
+                            <button class="btn" value="天津">天津</button>
+                            <button class="btn" value="河北">河北</button>
+                            <button class="btn" value="山西">山西</button>
+                            <button class="btn" value="内蒙古">内蒙古</button>
+                            <button class="btn" value="辽宁">辽宁</button>
+                            <button class="btn" value="吉林">吉林</button>
+                            <button class="btn" value="黑龙江">黑龙江</button>
+                            <button class="btn" value="上海">上海</button>
+                            <button class="btn" value="江苏">江苏</button>
+                            <button class="btn" value="浙江">浙江</button>
+                            <button class="btn" value="安徽">安徽</button>
+                            <button class="btn" value="福建">福建</button>
+                            <button class="btn" value="江西">江西</button>
+                            <button class="btn" value="山东">山东</button>
+                            <button class="btn" value="河南">河南</button>
+                            <button class="btn" value="湖北">湖北</button>
+                            <button class="btn" value="湖南">湖南</button>
+                            <button class="btn" value="广东">广东</button>
+                            <button class="btn" value="广西">广西</button>
+                            <button class="btn" value="海南">海南</button>
+                            <button class="btn" value="重庆">重庆</button>
+                            <button class="btn" value="四川">四川</button>
+                            <button class="btn" value="贵州">贵州</button>
+                            <button class="btn" value="云南">云南</button>
+                            <button class="btn" value="西藏">西藏</button>
+                            <button class="btn" value="陕西">陕西</button>
+                            <button class="btn" value="甘肃">甘肃</button>
+                            <button class="btn" value="青海">青海</button>
+                            <button class="btn" value="宁夏">宁夏</button>
+                            <button class="btn" value="新疆">新疆</button>
+                            <button class="btn" value="香港">香港</button>
+                            <button class="btn" value="澳门">澳门</button>
+                            <button class="btn" value="台湾">台湾</button>
+                            <button class="btn" value="国外">国外</button>
+                        </dd>
+                    </dl>
+                    <dl class="screening qdryun qd_dl">
+                        <dt>渠道类型</dt>
+                        <dd id="provices">
+                            <button class="btn on" id="qdry" value="">全部</button>
+                            <button class="btn" value="1">内聘</button>
+                            <button class="btn" value="2">个人</button>
+                            <button class="btn" value="3">团队</button>
+                        </dd>
+                    </dl>
+                    <!--style="display: none"-->
+                    <dl class="screening jiesuanmoshi" style="display: none" >
+                        <dt>结算模式</dt>
+                        <dd id="provicesss ">
+                            <button class="btn js_title on" value="">全部</button>
+                            <foreach name="data" item="vo">
+                                <button class="btn js_btn" value="{$vo.id}">{$vo.biaoshi}</button>
+                            </foreach>
+                        </dd>
+                    </dl>
+                    <dl class="screening screetime">
+                        <dt>选择时间</dt>
+                        <dd>
+                            <div><label>开始时间</label><input type="text" name="" id="stime" class="editdate" readonly>
+                            </div>
+                            <div><label>结束时间</label><input type="text" name="" id="etime" class="editdate" readonly>
+                            </div>
+                        </dd>
+                    </dl>
+                    </div>
+                    <div class="btns" style="background-color: white;margin: 0">
+                        <button class="btn qks">重置条件</button>
+                        <button class="btn queren">确认</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 筛选条件 结束 -->
+            <div class="swiper-container swiper-tab-nav">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide swiper-tab-link on" value="1">
+                        <div class="text">销售额</div>
+                        <div class="num"><span class="min">￥</span>{$salenum}</div>
+                    </div>
+                    <div class="swiper-slide swiper-tab-link" value="2">
+                        <p class="text">酒店</p>
+                        <p class="num">{$hotelnum}<span class="min">个</span></p>
+                    </div>
+                    <div class="swiper-slide swiper-tab-link" value="3">
+                        <p class="text">客房</p>
+                        <p class="num">{$roomnum}<span class="min">个</span></p>
+                    </div>
+                    <div class="swiper-slide swiper-tab-link" value="4">
+                        <p class="text">产品</p>
+                        <p class="num">{$pronum}<span class="min">个</span></p>
+                    </div>
+                    <div class="swiper-slide swiper-tab-link" value="5">
+                        <p class="text">合同</p>
+                        <p class="num">{$contnum}<span class="min">个</span></p>
+                    </div>
+                    <div class="swiper-slide swiper-tab-link" value="6" style="padding-right: 0.35rem;">
+                        <p class="text">渠道</p>
+                        <p class="num">{$typenum}<span class="min">个</span></p>
+                    </div>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+
+
+            <div class="swiper-container swiper-tab-page xiaoshoue">
+            </div>
+        </div>
+    </div>
+    <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+    <script type="text/javascript" src="__JS__/LCalendar.js"></script>
+    <script type="text/javascript">
+        var sale={};
+        sale.provice=''; //区域姓名
+        sale.qdId=''; //渠道人员
+        sale.htId=''; //合同id
+        sale.jid='';
+        $("#stime").focus(function () {
+            document.activeElement.blur();
+        });
+
+        $(".qks").click(function () {
+            sale.quId = ''; //区域姓名
+            sale.type = ''; //渠道人员
+            sale.ht_id = ''//合同id
+            $("#stime").val('');
+            $("#etime").val('');
+            $("#all-provice").addClass('on').siblings().removeClass('on')
+            $("#qdry").addClass('on').siblings().removeClass('on')
+            $("#hotelsss option:first").prop("selected", 'selected');
+            $("#hetongss option:first").prop("selected", 'selected');
+        })
+
+
+        $("#provice").on('click', 'button', function () {
+            sale.provice = $(this).attr('value');
+        });
+        $("#provices").on('click', 'button', function () {
+            sale.qdId = $(this).attr('value');
+        });
+        $("#provicess").on('click', 'button', function () {
+            sale.htId = $(this).attr('value');
+        });
+        $("#provicesss").on('click', 'button', function () {
+            sale.jid = $(this).attr('value');
+        });
+
+        $(".queren").click(function () {
+//            $("#all-provice").addClass('on').siblings().removeClass('on')
+
+            var startTime = $("#stime").val();
+            var endTime = $("#etime").val();
+            $('.swiper-wrapper div').each(function () {
+                if ($(this).hasClass('on')) {
+                    typetongji = $(this).attr('value');
+                }
+            })
+            $.get('/Wx/Sales/Count', {ids: typetongji,stime:startTime,etime:endTime,provice:sale.provice,qdid:sale.qdId,htid:sale.htId,jid:sale.jid}, function (f) {
+                $(".xiaoshoue").empty();
+                $(".xiaoshoue").html(f);
+            }, 'html')
+            $('.screening_condition_wrap').animate({top: '-8.36rem'}, function () {
+                $('.screening_condition_wrap').css('display', 'none');
+            });
+        })
+        /* 日期控件 */
+        var calendars = new LCalendar();
+        var date = new Date();
+        calendars.init({
+            'trigger': '#stime', //标签id
+            'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+//            'minDate': date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(), //最小日期
+            //'maxDate': date.getFullYear() + '-' + 12 + '-' + 31 //最大日期
+        });
+
+        $("#etime").focus(function () {
+            document.activeElement.blur();
+        });
+        var calendare = new LCalendar();
+        calendare.init({
+            'trigger': '#etime', //标签id
+            'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+//            'minDate': date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(), //最小日期
+            //'maxDate': date.getFullYear() + '-' + 12 + '-' + 31 //最大日期
+        });
+        <!--筛选条件-->
+        var kaiguan = true;
+        $('div.right').on('click', function () {
+            if (kaiguan) {
+                kaiguan = false;
+                $('.screening_condition_wrap').css('display', 'block');
+                $('.screening_condition_wrap').animate({top: '0.84rem'});
+            } else {
+                kaiguan = true;
+                $('.screening_condition_wrap').animate({top: '-8.36rem'}, function () {
+                    $('.screening_condition_wrap').css('display', 'none');
+                });
+            }
+        });
+        $('.main').on('click', '.swiper-tab-link', function () {
+            $("#all-provice").addClass('on').siblings().removeClass('on')
+            $("#qdry").addClass('on').siblings().removeClass('on')
+            $("#stime").val('');
+             $("#etime").val('');
+            // 与pc端保持一致
+            $('.swiper-tab-link').removeClass('on');
+            $(this).addClass('on');
+            var ids = $(this).attr('value');
+            if(ids == 3){
+                $(".screetime").hide()
+            }else{
+                $(".screetime").show()
+            }
+            if(ids == 5){
+                $(".jiesuanmoshi").show()
+            }else{
+                $(".jiesuanmoshi").hide()
+            }
+            if(ids == 6){
+                $(".quyu").hide();
+                $(".qdryun").css('margin-top','0rem');
+            }else{
+                $(".quyu").show()
+            }
+            $.get('/Wx/Sales/Count', {ids: ids}, function (f) {
+                $(".xiaoshoue").empty();
+                $(".xiaoshoue").html(f);
+            }, 'html')
+        });
+        $('#provice .btn').click(function () {
+            $(this).addClass('on').siblings().removeClass('on')
+        });
+        $('#provices .btn').click(function () {
+            $(this).addClass('on').siblings().removeClass('on')
+        });
+        $('#provicesss .btn').click(function () {
+            $(this).addClass('on').siblings().removeClass('on')
+        });
+        $(function () {
+            $.get('/Wx/Sales/Count', {ids: 1}, function (f) {
+                $(".xiaoshoue").empty();
+                $(".xiaoshoue").html(f);
+            }, 'html')
+        })
+    </script>
+</block>

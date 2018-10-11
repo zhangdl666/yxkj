@@ -1,0 +1,106 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>合同管理</title>
+  <script type="text/javascript" src="__PUBLIC__/WdatePicker/WdatePicker.js"></script>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>合同管理</a></li>
+      <li class="on">新增合同内容</li>
+    </ol>
+</block>
+<block name="css">
+  <style type="text/css">
+    .subnav > li {
+      width: 116px;
+      padding: 0px 24px;
+    }
+  </style>
+</block>
+<block name="main">
+	<div id="main">
+      <!-- 导航 开始 -->
+      <ul class="clearfix subnav hetongnav">
+        <li><a><i class="icon"></i><span class="cur_title">合同信息</span></a><span class="nav_border"></span></li>
+        <li class="on"><a rel="link" class="active" href="{:U('edit',array('id'=>$hcid))}">基础信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('installe',array('id'=>$hcid))}">安装信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('return_money',array('id'=>$hcid))}">结算信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('upkeep',array('id'=>$hcid))}">保养信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('maintain',array('id'=>$hcid))}">维修信息</a><span class="nav_border"></span></li>
+      </ul>
+      <!-- 导航 结束 -->
+
+      <div class="hetongxinxibtn-wrap">
+        <button class="btn" onclick="now_href('{:U('edit',array('id'=>$hcid))}')">酒店信息</button>
+        <button class="btn on" onclick="now_href('{:U('edituser',array('id'=>$hcid))}')">联系人信息</button>
+        <button class="btn" onclick="now_href('{:U('editc',array('id'=>$hcid))}')">合同信息</button>
+      </div>
+
+      <!-- 内容 开始 -->
+      <div class="subpage hetongxinxi01">
+          <form method="post" action="{:U('hoperation')}">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th><span class="text-orange">*</span>商务负责人：</th>
+                    <td><input type="text" name="shang_name" value="{$shang_name}"></td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>商务负责人联系方式：</th>
+                    <td><input type="text" name="shang_tell" value="{$shang_tell}" class="tell_mobile" onkeyup="this.value=this.value.replace(/[^\d\-]/g,'')"></td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>酒店总经理：</th>
+                    <td><input type="text" name="all_name" value="{$all_name}"></td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>酒店总经理联系方式：</th>
+                    <td><input type="text" name="all_tell" value="{$all_tell}" class="tell_mobile" onkeyup="this.value=this.value.replace(/[^\d\-]/g,'')"></td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>财务负责人：</th>
+                    <td><input type="text" name="money_name" value="{$money_name}"></td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>财务负责人联系方式：</th>
+                    <td><input type="text" name="money_tell" value="{$money_tell}" class="tell_mobile" onkeyup="this.value=this.value.replace(/[^\d\-]/g,'')"></td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>工程负责人：</th>
+                    <td><input type="text" name="project_name" value="{$project_name}"></td>
+                  </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>工程负责人联系方式：</th>
+                    <td><input type="text" name="project_tell" value="{$project_tell}" class="tell" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"></td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <input type="hidden" name="h_id" value="{$id}">
+                      <input type="hidden" name="uhotel" value="1">
+                      <input type="hidden" name="uhoteluser" value="1">
+                    </th>
+                    <td>
+                      <button type="button" class="btn btn-tijiao ajax-post">提交</button>
+                      <button type="button" class="btn btn-quxiao backi">返回</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <!-- 内容 结束 -->
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript" src="__JS__/regular.js"></script>
+<script type="text/javascript">
+//返回列表
+$(".backi").click(function(){
+  window.location.href = "{:U('index')}";
+});
+</script>
+</block>

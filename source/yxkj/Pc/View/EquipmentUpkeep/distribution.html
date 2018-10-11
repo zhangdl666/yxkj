@@ -1,0 +1,282 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>订单管理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>订单管理</a></li>
+      <li class="on">保养信息</li>
+    </ol>
+</block>
+<block name="css">
+  <style type="text/css">
+    .gezi-container .gezi-group .btn {
+      margin: 14px;
+      height: 42px;
+      width: 90px;
+      /*width: calc(6.5% - 10px);*/
+    }
+    .btn_icon{
+      width: 26px;
+      height: 19px;
+      display: block;
+      float: right;
+    }
+    .max_btn_icon{
+      width: 37px;
+      height: 27px;
+      display: block;
+      margin: 10px auto;
+    }
+    .btn_icon_bottom{
+      background: url("__IMG__/wx_kq_bottom_bottom.png");
+      background-size: 100%;
+    }
+    .btn_icon_top{
+      background: url("__IMG__/wx_kq_bottom_top.png");
+      background-size: 100%;
+    }
+    .pc_kq_height{
+      height: 68px;
+      overflow: hidden;
+    }
+    .pitch_on{
+      background: url("__IMG__/pitch_on.png") no-repeat;
+      background-position: right bottom;
+      color: #4e4e4e!important;
+    }
+  </style>
+</block>
+<block name="main">
+  <div id="main">
+      <ul class="clearfix subnav hetongnav">
+        <li>
+          <a><i class="icon"></i>
+            <span class="cur_title">
+              <switch name="status">
+                <case value="1">待分配</case>
+                <case value="2">待保养</case>
+                <case value="3">待确认</case>
+                <case value="4">已保养</case>
+              </switch>
+            </span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- 内容 开始 -->
+      <div class="subpage hetongxinxi02">
+          <form id="" method="post" action="{:U('operation')}">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th>酒店图片：</th>
+                    <td>
+                      <dl class="uploadimg-container">
+                        <dd>
+                          <volist name="h_img" id="imgi">
+                          <div class="imgwrap">
+                            <img class="img-rounded" src="{$imgi}">
+                          </div>
+                          </volist>
+                        </dd>
+                      </dl>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>酒店名称：</th>
+                    <td><span class="table-form-text">{$h_name}</span></td>
+                  </tr>
+                  <tr>
+                    <th>保养数量：</th>
+                    <td><span class="table-form-text">{$nume}</span></td>
+                  </tr>
+                  <tr>
+                    <th>保养时间：</th>
+                    <td><span class="table-form-text">
+                      <if condition="!empty($etime)">
+                        {$etime|date='Y-m-d',###}
+                      <elseif condition="!empty($stime)"/>
+                        {$stime|date='Y-m-d',###}
+                      <elseif condition="!empty($rtime)"/>
+                        {$rtime|date='Y-m-d',###}
+                      </if>
+                    </span></td>
+                  </tr>
+                  <tr>
+                    <th>保养详细：</th>
+                    <td>
+                      <dl class="gezi-container">
+                        <dt class="gezi-title">
+                          <div class="checkbox-container gezi-type1" data-type="checkbox">
+                              <i class="icon icon01 i_radio"></i>
+                              <span class="checkbox_txt">已保养</span>
+                          </div>
+                          <div class="checkbox-container gezi-type2" data-type="checkbox">
+                              <i class="icon icon01 i_radio"></i>
+                              <span class="checkbox_txt">未保养</span>
+                          </div>
+                        <i class="btn_icon btn_kq_icon btn_icon_bottom"></i>
+                        </dt>
+                        <dd class="gezi-group">
+
+                          <div id="kq_height" class="pc_kq_height">
+                          <volist name="room_arr" id="room">
+                            <button type="button" class="rooms btn <eq name="room.open" value="1">on</eq>" data="{$room.id}">{$room.room_sno}</button>
+                          </volist>
+                        </div>
+                <div style="margin-top:20px;display:none;" class="room_info">
+                <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th>设备ID：</th>
+                    <td><span class="table-form-text equipment"></span></td>
+                  </tr>
+                  <tr>
+                    <th>房间类型：</th>
+                    <td><span class="table-form-text rtype"></span></td>
+                  </tr>
+                  <tr>
+                    <th>楼层：</th>
+                    <td><span class="table-form-text floor"></span></td>
+                  </tr>
+                  <tr>
+                    <th>是否有窗：</th>
+                    <td><span class="table-form-text iswindown"></span></td>
+                  </tr>
+                  <tr>
+                    <th>朝向：</th>
+                    <td><span class="table-form-text orienta"></span></td>
+                  </tr>
+                  <tr>
+                    <th>保养位置：</th>
+                    <td><span class="table-form-text place"></span></td>
+                  </tr>
+                  <tr>
+                    <th>中央空调：</th>
+                    <td><span class="table-form-text air"></span></td>
+                  </tr>
+                  <tr>
+                      <th>净化器类型：</th>
+                      <td><span class="table-form-text e1type"></span></td>
+                  </tr>
+                  <tr>
+                      <th>监控器类型：</th>
+                      <td><span class="table-form-text e2type"></span></td>
+                  </tr>
+                  <tr>
+                      <th>安装时间：</th>
+                      <td><span class="table-form-text installtime"></span></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+                        </dd>
+                        <dd><i class="max_btn_icon btn_kq_icon btn_icon_bottom"></i></dd>
+                      </dl>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>分配工程人员：</th>
+                    <td>
+                      <select name="u_id">
+                        <volist name="user_list" id="user">
+                          <option value="{$user.id}" data="{$user.mobile}" <eq name="user.id" value="$u_id">selected</eq>>工程人员-{$user.name}</option>
+                        </volist>
+                      </select>
+                      &emsp;&emsp;联系方式：<span class="user_mobile">{$user_list[0]['mobile']}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <input type="hidden" name="id" value="{$id}">
+                      <input type="hidden" name="status" value="2">
+                    </th>
+                    <td>
+                      <button type="button" class="btn btn-tijiao ajax-post">提交</button>
+                      <button type="button" class="btn btn-quxiao back">返回</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <!-- 内容 结束 -->
+    </div>
+    </block>
+<block name="js">
+<script type="text/javascript" src="__UPLOADIFY__/jquery.uploadify.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    /***房间数量超出一排显示下拉开关***/
+    function but_show(){
+      var kg_btn = $("#kq_height");
+      var btn_icon =$(".btn_kq_icon");
+      var btn_length = kg_btn.children(".btn").length;
+      var btn_num =parseInt(kg_btn.width() / 110);
+      if(btn_length > btn_num){
+        btn_icon.addClass("btn_block");
+        btn_icon.removeClass("btn_none");
+      }else {
+        btn_icon.addClass("btn_none");
+        btn_icon.removeClass("btn_block");
+      }
+    }
+    but_show();
+    /***********浏览器窗口宽度发生变化时执行************/
+    $(window).resize(function() {
+      but_show();
+
+    });
+
+    /********房间下拉图标和向上关闭图标切换********/
+    $(function(){
+      var on_num = 0;
+      $(".btn_kq_icon").click(function(){
+        var this_icon =  $(".btn_kq_icon");
+        if(on_num == 0){
+          this_icon.removeClass("btn_icon_bottom");
+          $("#kq_height").removeClass("pc_kq_height");
+          this_icon.addClass("btn_icon_top");
+          on_num = 1;
+        }else if(on_num == 1){
+          $("#kq_height").addClass("pc_kq_height");
+          this_icon.addClass("btn_icon_bottom");
+          this_icon.removeClass("btn_icon_top");
+          on_num = 0;
+        }
+      })
+    });
+  });
+
+$(".rooms").click(function(){
+  $(".rooms").removeClass("pitch_on");
+  $(this).addClass("pitch_on");
+ //是否已经保养  hasClass检查被选元素是否包含指定的 class
+  var id = $(this).attr("data");
+  $.post("{:U('HotelContract/get_oper_room_info')}",{id:id,status:2},function(re_data){
+    re_data = eval("("+re_data+")");
+    $(".equipment").text(re_data.data.equipment_sno);
+    $(".rtype").text(re_data.data.rt_name);
+    $(".floor").text(re_data.data.floor);
+    $(".iswindown").text(re_data.data.iswindow);
+    $(".orienta").text(re_data.data.orienta);
+    $(".place").text(re_data.data.place);
+    $(".air").text(re_data.data.air_name);
+    $(".e1type").text(re_data.data.e1_name);
+    $(".e2type").text(re_data.data.e2_name);
+    $(".installtime").text(re_data.data.install_time);
+    $(".room_info").show();
+  });
+})
+
+//改变工程人员
+$("select[name='u_id']").change(function(){
+   $(".user_mobile").text($("select[name='u_id'] :selected").attr("data"));
+})
+</script>
+</block>

@@ -1,0 +1,303 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>查看</title>
+</block>
+<block name="css">
+	<style type="text/css">
+		.input_container{
+			width: 95%;
+			overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+		}
+	</style>
+</block>
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main">
+
+		<!-- header 开始 -->
+		<div class="header">
+			<div class="left back"><i class="icon w_0000_00 w_00_08"></i><a href="{:U('index')}">
+				返回</a></div>
+			<div class="right">
+				<if condition="$data['status_id'] eq 1">
+					<a href="{:U('compile',array(id =>$data['id']))}"><i class="icon edit"></i>编辑</a>
+				</if></div>
+		</div>
+		<!-- header 结束 -->
+
+		<div class="main_body">
+			<div class="form_data_wrap renlingchakan">
+				<ul class="form_data">
+					<li class="layoutlr form_item">
+						<div class="left">酒店名称</div>
+						<div class="right">
+							<input type="hidden" name="id" value="{$data.id}">
+							<div class="input_container">{$data.name}</div>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">酒店类型</div>
+						<div class="right">
+							<div class="input_container">{$data.type_name}</div>
+						</div>
+					</li>
+					<li class="layouttb form_item" style="margin-bottom: 0rem;">
+						<div class="top">客房类型</div>
+						<div class="bottom">
+							<volist name="data['roomer']" id="val">
+								<if condition="$val['room_num'] neq 0">
+									<span class="checkbox_txt"  style="display: block;margin-top: 0.1rem;">{$val.name}:{$val.room_num}间</span>
+								</if>
+							</volist>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">客房数</div>
+						<div class="right">
+							<!-- <div class="input_container">{$data.room_num}</div> -->
+							<input style="border: 0;text-align: right;" class="bordnone" type="text"  name="room_num" value="{$data.room_num|default=0}" id="room_numsss"  readonly="readonly">
+						</div>
+					</li>
+
+					<li class="layoutlr form_item">
+						<div class="left">所属地区</div>
+						<div class="right">
+							<div class="input_container">{$data.provice}{$data.city}{$data.county}</div>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">详细地址</div>
+						<div class="right">
+							<div class="input_container">{$data.area}</div>
+						</div>
+					</li>
+					<li class="layouttb form_item">
+						<div class="top">酒店图片</div>
+						<div class="bottom">
+							<dl class="uploadimg-container clearfix">
+								<dd class="imgwrap-container">
+									<if condition="$data['imgs'][0] eq ''">
+										<div class="imgwrap">
+										<img class="img-rounded" src="__IMG__/head.png">
+										</div>
+									<else/>
+										<volist name="data.imgs" id="vol">
+											<div class="imgwrap">
+												<img class="img-rounded" src="{$vol}">
+											</div>
+										</volist>
+									</if>
+
+								</dd>
+
+							</dl>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">商务负责人</div>
+						<div class="right">
+							<div class="input_container">{$data.shang_name}</div>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">商务负责人联系方式</div>
+						<div class="right">
+							<div class="input_container">{$data.shang_tell}</div>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">酒店总经理</div>
+						<div class="right">
+							<div class="input_container">{$data.all_name}</div>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">酒店总经理联系方式</div>
+						<div class="right">
+							<div class="input_container">{$data.all_tell}</div>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">财务负责人</div>
+						<div class="right">
+							<div class="input_container">{$data.money_name}</div>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">财务负责人联系方式</div>
+						<div class="right">
+							<div class="input_container">{$data.money_tell}</div>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">工程负责人</div>
+						<div class="right">
+							<div class="input_container">{$data.project_name}</div>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">工程负责人联系方式</div>
+						<div class="right">
+							<div class="input_container">{$data.project_tell}</div>
+						</div>
+					</li>
+
+					<li class="layoutlr form_item">
+						<div class="left">认领状态</div>
+						<div class="right">
+							<div class="input_container"><if condition="($data['status_id'] eq 1) OR ($data['status_id'] eq 2)">
+								已认领
+								<else/>
+								未认领
+							</if></div>
+						</div>
+					</li>
+					<if condition="$data['status_id'] eq 1 || 2">
+						<li class="layoutlr form_item">
+							<div class="left">认领人</div>
+							<div class="right">
+								<div class="input_container">{$data.cliam}</div>
+							</div>
+						</li>
+						<else/>
+
+					</if>
+					<if condition="$data['is_get'] eq 1 && $data['is_sign'] eq 0">
+							<li class="layoutlr form_item">
+								<div class="left">认领有效期</div>
+								<div class="right">
+									<div class="input_container">
+										{$data.intime}天
+									</div>
+								</div>
+							</li>
+
+						<else/>
+					</if>
+					<li class="layoutlr form_item">
+						<div class="left">历史销售人员</div>
+						<div class="right">
+							<div class="input_container">
+								<volist name="data['hostory']" id="val">
+								{$val}<br>
+								</volist>
+							</div>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">签约状态</div>
+						<div class="right">
+							<div class="input_container">
+										<if condition="$data['is_sign'] eq 0">
+											未签约
+											<elseif condition="$data['is_sign'] eq 1"/>
+												已签约
+											<else />
+										</if>
+							</div>
+						</div>
+					</li>
+					<li class="layoutlr form_item">
+						<div class="left">酒店状态</div>
+						<div class="right">
+							<div class="input_container">
+										<if condition="$data['status'] eq 1">
+											营业中
+											<elseif condition="$data['status'] eq 0"/>
+												未营业
+											<else />
+											已删除
+										</if>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<div class="form_data_btns">
+					<if condition="$data['role'] eq 2">
+					<if condition="$data['status_id'] eq 3">
+						<button class="btn maxbtn btn-quxiao" onclick="seeHotel.AddHotelCliam()">认领</button>
+						<elseif condition="$data['status_id'] eq 1 &&  $data['is_sign'] eq 0"/>
+						<a class="btn maxbtn ajax-posts" onclick="seeHotel.HotelCliam()">取消认领</a>
+						<else />
+					</if>
+						<else />
+					</if>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+<block name="js">
+	<script type="text/javascript" src="__JS__/jquery.z-pager.js"></script>
+	<script type="text/javascript">
+		$(".pagination").zPager({
+			totalData: 60
+		});
+		//取消认领
+		var seeHotel = {};
+		seeHotel.HotelCliam = function () {
+			layer.open({
+				content: '您确定取消认领该酒店么？'
+				,btn: ['确定', '取消']
+				,yes: function(index){
+					var url = '/Wx/ClaimHotel/userNoClaim';
+					var data = {};
+					data.id = $("input[name='id']").val();
+					$.post(url, data, function (data) {
+						if(data.code == 0){
+							layer.open({
+								content: '取消认领成功'
+								,btn: '我知道了'
+								,yes: function(index){
+									window.location.href="/Wx/ClaimHotel/ouser";
+								}
+							});
+						}else{
+							layer.open({
+								content: data.massage
+								,btn: '我知道了'
+							});
+						}
+					});
+				}
+			});
+		}
+		//认领
+		seeHotel.AddHotelCliam = function () {
+			layer.open({
+				content: '您确定认领该酒店么？'
+				,btn: ['确定', '取消']
+				,yes: function(index){
+					var url = '/Wx/ClaimHotel/userClaim';
+					var data = {};
+					data.id = $("input[name='id']").val();
+					$.post(url, data, function (data) {
+						if(data.code == 0){
+							layer.open({
+								content: '认领成功'
+								,btn: '我知道了'
+								,yes: function(index){
+									window.location.href="/Wx/ClaimHotel/ouser";
+								}
+							});
+						}else{
+							layer.open({
+								content: data.message
+								,btn: '我知道了'
+								,yes: function(index){
+									location.replace(location.href);
+								}
+							});
+						}
+					});
+				}
+			});
+		}
+
+	</script>
+</block>

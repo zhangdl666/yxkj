@@ -1,0 +1,32 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>消息详情</title>
+</block>
+
+<block name="main">
+    <div class="main">
+
+         <div class="header">
+            <div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+        </div>
+
+        <div class="main_body article_detaile">
+            <div class="article_container">
+                <h1 class="title" style="font-weight: normal;">您收到一个{$type}</h1>
+                <p class="time"><if condition="$time eq ''">
+                    {$time|date='Y-m-d H:i:s',###}
+                    <else/>
+                    {$ctime|date='Y-m-d H:i:s',###}
+                </if></p>
+                <div class="content">{$content}</div>
+            </div>
+
+        </div>
+
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript">
+
+    </script>
+</block>

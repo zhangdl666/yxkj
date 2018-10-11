@@ -1,0 +1,108 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>酒店信息</title>
+</block>
+
+<block name="main">
+	<style type="text/css">
+		.jiudianinfo_main .jiudianinfo_content .jiudiannav .col {
+			border: 0.1rem solid #f4f4f4;
+			background-clip: padding-box;
+			height: 1.6rem;
+			float: left;
+			width: calc(33.33% - 10px);
+			padding-top: 0.3rem;
+			display: block !important;
+		}
+		.w_03_10 {
+			width: 0.4rem;
+			height: 0.4rem;
+			background-position: -0.9rem -2.84rem;
+			top: 0.1rem;
+			right: 0.2rem;
+		}
+		.w_03_11 {
+			width: 0.4rem;
+			height: 0.4rem;
+			background-position: -0.9rem -3.45rem;
+			top: 0.1rem;
+			right: 0.2rem;
+		}
+		.jiudiannav{
+			background: rgba(244,244,244,1);
+		}
+		.col{
+			background: white;
+		}
+		.jd_xx_p{
+			font-size: 0.28rem;
+			color: rgb(118,118,118);
+			line-height: 0.3rem;
+			margin-top: -0.18rem;
+		}
+		.jd_xx_p{
+			line-height: 0.6rem;
+		}
+		.lianxi{
+			height: 40vh;
+			font-size: 0.28rem;
+			color: rgb(102,102,102);
+		}
+
+	</style>
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+		</div>
+		<div class="main_body jiudianinfo_main">
+			<div class="swiper-container banner_container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<if condition="$data['img'] eq ''">
+							<img src="__IMG__/head.png">
+						<else/>
+							<img src="{$data.img}" >
+						</if>
+					</div>
+				</div>
+				<!-- 如果需要分页器 -->
+				<div class="swiper-pagination"></div>
+				<div class="jiusianinfo">
+					<span class="name">{$data.name}</span>
+					<span class="levl">{$data.type_name}</span>
+				</div>
+			</div>
+
+			<div class="jiudianinfo_content">
+				<div class="layoutlr jiudiannav">
+					<div class="row">
+						<if condition="$server eq ''">
+							<div class="col">
+								<img src="__IMG__/no_data.png" style="width: 41px;height: 41px;">
+								<p class="jd_xx_p"> 暂无数据 </p>
+							</div>
+							<else/>
+							<volist name="server" id="vol" key="key">
+								<div class="col">
+									<img src="{$vol.img}" alt="" style="width: 41px;height: 41px;">
+									<p class="jd_xx_p"> {$vol.name} </p>
+								</div>
+							</volist>
+						</if>
+
+					</div>
+
+				</div>
+				<div class="lianxi">
+					<div><i class="icon w_0003_03 w_03_10"></i>联系方式：{$data.tell}</div>
+					<div><i class="icon w_0003_03 w_03_11"></i>酒店地址：{$data.provice}{$data.city}{$data.county}{$data.area}</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+

@@ -1,0 +1,168 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>新增报销</title>
+</block>
+<block name="css">
+	<style type="text/css">
+		html {
+			font-size: 50px !important;
+			height: 100vh;
+		}
+		.top{
+			padding: 0.3rem 0.2rem 0.2rem 0.2rem!important;
+		}
+		@media only screen and (max-width:320px){
+			.form_data_btns {
+				margin-top: 0.15rem;
+				margin-bottom: 0rem;
+			}
+		}
+	</style>
+</block>
+<block name="main">
+		<!-- 主体内容 开始 -->
+		<div class="main swiper-container-01">
+			<div class="header">
+				<div class="left backs" data-url="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+			</div>
+
+			<div class="main_body baoxiaoxinzeng">
+				<div class="form_data_wrap form_data_wrap02">
+					<form method="post" action="{:U('operation')}">
+					<ul class="form_data">
+
+						<li class="layoutlr form_item">
+							<div class="left"><span class="txt_red">*</span>报销类型：</div>
+							<div class="right">
+								<!--<div class="dropdown" data-relation="baoxiaoleixing"><span class="selected">{$reimbursementTypes[0]['name']}</span>-->
+								<!--<input type="hidden" name="rt_id" value="{$reimbursementTypes[0]['id']}" class="selectedval"><i class="icon w_0000_00 w_00_12"></i></div>-->
+
+								<div class="" data-relation="hotel_type">
+									<select name="rt_id" style="width:3rem">
+										<volist name="reimbursementTypes" id="value">
+											<option value="{$value.id}">{$value.name}</option>
+										</volist>
+									</select>
+									<i class="icon w_0000_00 w_00_11"></i>
+								</div>
+
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"><span class="txt_red">*</span>报销金额：</div>
+							<div class="right">
+								<input placeholder="请输入报销金额" style="border: none;text-align: right; " type="text" name="price">
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left"><span class="txt_red">*</span>选择酒店：</div>
+							<div class="right">
+								<!--<div class="dropdown hotel" data-relation="xuanzejiudian"><span class="selected">{$hotels[0]['name']}</span>-->
+								<!--<input type="hidden" name="h_id" value="{$hotels[0]['id']}" class="selectedval"><i class="icon w_0000_00 w_00_12"></i></div>-->
+
+								<div class="" data-relation="hotel_type">
+									<select id="hotel" name="h_id" style="width: 180px">
+										<volist name="hotels" id="value2">
+											<option value="{$value2.id}">{$value2.name}</option>
+										</volist>
+									</select>
+									<i class="icon w_0000_00 w_00_11"></i>
+								</div>
+
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">选择合同：</div>
+							<div class="right">
+								<!--<div class="dropdown" data-relation="xuanzehetong"><span class="selected hc_name"></span>-->
+								<!--<input type="hidden" name="hc_id" value="" class="selectedval"><i class="icon w_0000_00 w_00_12"></i></div>-->
+								<div class="" data-relation="hotel_type">
+									<select class="hotel-contracts" name="hc_id" style="width: 127px">
+										<option value="">请选择</option>
+										<volist name="hotelContracts" id="value3">
+											<option value="{$value3.id}">{$value3.name}</option>
+										</volist>
+									</select>
+									<i class="icon w_0000_00 w_00_11"></i>
+								</div>
+
+							</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="top">备注信息：</div>
+							<div class="bottom"><textarea placeholder="说点什么？" name="remark" id="remark" style="width:100%;height:150px;font-size: 0.28rem; color: rgb(153,153,153)"></textarea>
+							</div>
+						</li>
+					</ul>
+					<div class="form_data_btns">
+						<button type="button" class="btn maxbtn ajax-post">提交</button>
+					</div>
+					</form>
+				</div>
+			</div>
+			<!-- 彈窗內容 開始 -->
+			<!--<div class="selected_layer hide" data-relation="baoxiaoleixing">
+				<ul class="options_container" data-relation="baoxiaoleixing">
+					<volist name="reimbursementTypes" id="value">
+						<li><span data="{$value.id}">{$value.name}</span></li>
+					</volist>
+				</ul>
+			</div>
+			<div class="selected_layer hide" data-relation="xuanzejiudian">
+				<ul class="options_container" data-relation="xuanzejiudian">
+					<volist name="hotels" id="value2">
+						<li><span data="{$value2.id}">{$value2.name}</span></li>
+					</volist>
+				</ul>
+			</div>
+			<div class="selected_layer hide" data-relation="xuanzehetong">
+				&lt;!&ndash;<ul class="options_container hotel_contract" data-relation="xuanzehetong">
+					<volist name="hotelContracts" id="value3">
+						<li><span data="{$value3.id}">{$value3.name}</span></li>
+					</volist>
+					&lt;!&ndash;<li><span>选择合同1</span></li>
+					<li><span>选择合同2</span></li>
+					<li><span>选择合同3</span></li>
+					<li><span>选择合同4</span></li>&ndash;&gt;
+				</ul>&ndash;&gt;
+			</div>
+			&lt;!&ndash; 彈窗內容 結束 &ndash;&gt;-->
+
+		</div>
+		<!-- 主体内容 结束 -->
+</block>
+
+<block name="js">
+<script type="text/javascript">
+/* 判断报销金额 */
+$("input[name='price']").blur(function(){
+	var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+  var price = $(this).val();
+  if (parseFloat(price)<=0 || !reg.test(price)){
+		layer.open({content:"报销金额不正确",time:2000});
+		$(this).val("");
+		return false;
+	}
+});
+	$(function(){
+	    $('#hotel').on('change',function(){
+			var h_id=$(this).val();
+            if(h_id != ''){
+                $.get("{:U('get_hotelcontract')}",{h_id:h_id},function(res){
+                    var html = '<option value="">请选择</option>';
+                    if(res.code==1){
+                        $.each(res.message,function(i,value){
+                            html+='<option value="'+value.id+'">'+value.name+'</option>';
+                        });
+					}
+                    $(".hotel-contracts").html(html);
+                });
+			}
+        });
+	});
+
+</script>
+</block>
+
+
+

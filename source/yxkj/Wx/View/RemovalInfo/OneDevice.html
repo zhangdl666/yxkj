@@ -1,0 +1,96 @@
+<div id="room_onemain" style="height: 300px;"></div>
+<script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChartOne= echarts.init(document.getElementById('room_onemain'));
+    optionOne = {
+        tooltip : {
+            trigger: 'axis'
+        },
+//			toolbox: {
+//				show : true,
+//				feature : {
+//					mark : {show: true},
+//					dataView : {show: true, readOnly: false},
+//					magicType : {
+//						show: true,
+//						type: ['pie', 'funnel']
+//					},
+//					restore : {show: true},
+//					saveAsImage : {show: true}
+//				}
+//			},
+        grid: {
+            left: '5%',
+            right: '6%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : {$date}
+            }
+        ],
+        legend: {
+            data: ['室内空气质量均值','室外空气质量均值']
+        },
+        yAxis : [
+            {
+                name:'PM2.5(μg/m3)',
+            <if condition="($spm25 eq '[]') AND ($sapm25 eq '[]')">
+            min: 0,
+        max: 100,
+    </if>
+    type : 'value',
+        nameRotate:0.1,
+    }
+    ],
+    series : [
+        {
+            name: '室内空气质量均值',
+            type:'line',
+            smooth: true,
+            areaStyle: {
+                normal: {
+                }
+            },
+            // 背景颜色设置
+            lineStyle: {
+                normal: {
+                    width: 1.5,
+                    // 线条颜色
+                    color: ['#7DD9B2']
+                }
+            },
+            data:{$spm25},
+            color: ['#7DD9B2']
+        },
+        {
+            name: '室外空气质量均值',
+            type:'line',
+            smooth: true,
+            areaStyle: {
+                normal: {
+                }
+            },
+            // 背景颜色设置
+            lineStyle: {
+                normal: {
+                    width: 1.5,
+                    // 线条颜色
+
+                    color: ['#B9A7DE']
+                }
+            },
+            data:{$sapm25},
+            color: ['#B9A7DE']
+        },
+    ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartOne.setOption(optionOne);
+
+
+</script>

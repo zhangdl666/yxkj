@@ -1,0 +1,530 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>保养详情</title>
+</block>
+<block name="css">
+<style type="text/css">
+	.loading{text-align: center;display: none;}
+	.btn_icon_top .icon{background: url('__IMG__/contraction.png');
+		background-repeat: no-repeat;
+		background-size: contain;
+		top: 0.05rem;}
+	.btn_icon_bottom .icon{background: url('__IMG__/open.png');
+		background-repeat: no-repeat;
+		background-size: contain;
+		top: 0.05rem;}
+	.pc_kq_height{
+		height: 0.88rem;
+		overflow: hidden;
+	}
+	.pitch_on{
+		background: url("__IMG__/pitch_on.png") no-repeat;
+		background-size: 40%;
+		background-position: right bottom;
+		color: #4e4e4e!important;
+	}
+	.two-btn{width:44%;margin:0px;}
+	.two-btn:last-child{margin-left:5px;}
+	.form_data_btns{text-align:center;}
+	.roll_back-div{text-align: center;margin:20px auto;}
+    .roll_back-textarea{width:100%;height:100px;resize:none;border: 1px solid #ccc;border-radius: 4px;}
+    .roll_back-btn{margin:0px auto;text-align:center;}
+    .roll_back-btn button{width:40%;height:5vh;color:#FFF;line-height: 5vh;}
+    .roll_back-btn button:last-child{margin-left:0.3rem;}
+    .layui-m-layercont{padding:10px !important;}
+</style>
+</block>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+			<!-- <div class="center">保养详情</div> -->
+			<if condition="in_array('EquipmentUpkeep/upload',$method_arr) && $status eq 2">
+				<if condition="$now_nume lt $nume || $roll_back_status eq 1">
+					<div class="right rishscan"><i class="icon w_0004_04 w_04_12"></i>扫一扫</div>
+				</if>
+				<gt name="now_nume" value="0"><div class="right ajax-posts" style="margin-right: 0.3rem;"><i class="icon over"></i>完成保养</div></gt>
+			</if>
+		</div>
+
+		<div class="main_body anzhuangxiangx">
+		    <div class="swiper-container banner_container">
+		      <div class="swiper-wrapper">
+				  <volist name="h_img" offset="0" length="1" id="himg">
+					  <div class="swiper-slide"><img src="{$himg|default='__IMG__/head.png'}"></div>
+				  </volist>
+		      </div>
+		      <!-- 如果需要分页器 -->
+		      <div class="swiper-pagination"></div>
+		      <div class="jiusianinfo">
+		      	<span class="name">{$h_name}</span>
+		      	<span class="levl">{$type_name}</span>
+		      </div>
+		    </div>
+
+			<div class="anzhuangxiangx_content">
+			    <div class="swiper-container swiper-tab-nav daishenhebiaoxiao-nav">
+			        <div class="swiper-wrapper">
+			            <div class="swiper-slide swiper-tab-link <egt name='status' value='1'>on</egt>"><i class="<if condition='$status egt 1'>icon w_0006_06 w_06_01<else/>icon w_0006_06 w_06_01</if>"></i>待保养</div>
+			            <div class="swiper-slide swiper-tab-link <egt name='status' value='3'>on</egt>"><i class="<if condition='$status egt 3'>icon w_0006_06 w_06_02<else/>icon w_0006_06 w_06_02</if>"></i>待确认</div>
+			            <div class="swiper-slide swiper-tab-link <egt name='status' value='4'>on</egt>"><i class="<if condition='$status egt 4'>icon w_0006_06 w_06_03<else/>icon w_0006_06 w_06_03</if>"></i>已保养</div>
+			        </div>
+			        <!-- Add Pagination -->
+			        <div class="swiper-pagination"></div>
+			    </div>
+
+				<div class="daishenhebiaoxiao-page">
+					<!-- 待审核 开始 -->
+						
+					<form id="" method="post" action="{:U('operation')}">
+					<div class="form_data_wrap anzhuangxinxi">
+	        			<ul class="form_data">
+	        				<li class="layoutlr form_item">
+	        					<div class="left">工单编号</div>
+	        					<div class="right">{$sno}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">保养数量</div>
+	        					<div class="right">{$now_nume}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">保养时间</div>
+	        					<div class="right">
+									{$datetime}
+	        					</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">工程人员</div>
+	        					<div class="right">{$u_name}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">联系方式</div>
+	        					<div class="right">{$mobile}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left" style="width: 60%;">进度</div>
+	        					<div class="right">
+									<div class="table-form-text">
+									<div class="progress-container progress01" style="width:65%;display:inline-block;"><div class="progress" data-width="{$num_ratio}%" style="width: {$num_ratio}%;"></div></div>
+									<div style="display:inline-block;width:30%;">{$now_num}/{$num}</div>
+									</div>
+								</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<!-- <div class="left">安装房间</div>
+	        					<div class="right"> -->
+	        						<dl class="gezi-container">
+										<dt class="left gezi-title"><span class="fll">保养房间</span>
+											<div class="checkbox-container gezi-type1" data-type="checkbox">
+												<i class="icon icon01 i_radio"></i>
+												<span class="checkbox_txt">已保养</span>
+											</div>
+											<div class="checkbox-container gezi-type2" data-type="checkbox">
+												<i class="icon icon01 i_radio"></i>
+												<span class="checkbox_txt">未保养</span>
+											</div>
+											<div class="btn_kq_icon btn_icon_bottom" style="float: right;"><i class="icon" ></i></div>
+										</dt>
+										<dd class="right gezi-group pc_kq_height" id="kq_height">
+											<volist name="room_arr" id="room">
+					                            <button type="button" class="rooms btn <eq name="room.open" value="1">on</eq>" data="{$room.id}">{$room.room_sno|default="&nbsp;"}</button>
+					                        </volist>
+										</dd>
+										<div class="btn_kq_icon btn_icon_bottom" style="text-align:center;"><i class="icon"></i></div>
+									</dl>
+	        					<!-- </div> -->
+	        				</li>
+	        				<li style="display:none;" class="room_info">
+	        					<ul>
+	        						<li class="layoutlr form_item">
+			        					<div class="left">设备ID</div>
+			        					<div class="right equipment"></div>
+			        				</li>
+			        				<li class="layoutlr form_item">
+			        					<div class="left">房间类型</div>
+			        					<div class="right rtype"></div>
+			        				</li>
+			        				<li class="layoutlr form_item">
+			        					<div class="left">楼层</div>
+			        					<div class="right floor"></div>
+			        				</li>
+			        				<li class="layoutlr form_item">
+			        					<div class="left">是否有窗</div>
+			        					<div class="right iswindown"></div>
+			        				</li>
+			        				<li class="layoutlr form_item">
+			        					<div class="left">朝向</div>
+			        					<div class="right orienta"></div>
+			        				</li>
+			        				<li class="layoutlr form_item">
+			        					<div class="left">安装位置</div>
+			        					<div class="right place"></div>
+			        				</li>
+			        				<li class="layoutlr form_item">
+			        					<div class="left">中央空调</div>
+			        					<div class="right air"></div>
+			        				</li>
+			        				<li class="layoutlr form_item">
+		                                <div class="left">净化器类型</div>
+		                                <div class="right e1_type"></div>
+		                              </li>
+		                              <li class="layoutlr form_item">
+		                                <div class="left">监控器类型</div>
+		                                <div class="right e2_type"></div>
+		                              </li>
+		                              <li class="layoutlr form_item">
+		                                <div class="left">安装时间</div>
+		                                <div class="right installtime"></div>
+		                              </li>
+			        				<li class="layoutlr form_item">
+			        					<div class="left">保养方式</div>
+			        					<div class="right type"></div>
+			        				</li>
+	        					</ul>
+	        				</li>
+
+	        				<notempty name="roll_back">
+	        				<volist name="roll_back" id="rback">
+	        					<li class="layoutlr form_item">
+		        					<div class="left" style="color:red;">打回原因</div>
+		        					<div class="left" style="color:red;">{$rback.content}</div>
+		        				</li>
+	        				</volist>
+	        				</notempty>
+
+	        				<if condition="$status gt 2 && $imgs">
+	        				<li class="layouttb form_item">
+	        					<div class="top">保养凭证</div>
+	        					<div class="bottom">
+									<dl class="uploadimg-container clearfix">
+										<dd class="imgwrap-container">
+											<volist name="imgs" id="imgi">
+											<div class="imgwrap">
+												<img class="img-rounded" src="{$imgi}">
+											</div>
+											</volist>
+										</dd>
+									</dl>
+									<input type="hidden" name="img" value="{$img}" class="img_val">
+	        					</div>
+	        				</li>
+	        				</if>
+
+	        				<if condition="$status eq 2 && in_array('EquipmentUpkeep/upload',$method_arr) && $now_num gt 0">
+	        				<li class="layouttb form_item">
+	        					<div class="top">保养凭证</div>
+	        					<div class="bottom">
+									<dl class="uploadimg-container clearfix">
+										<dd class="imgwrap-container-oper">
+											<volist name="imgs" id="imgi">
+											<div class="imgwrap">
+												<img class="img-rounded" src="{$imgi}">
+												<ul class='imgoprate'>
+					                                <li data-oprate='toleft'><i class='icon'></i></li>
+					                                <li data-oprate='detele'><i class='icon'></i></li>
+					                                <li data-oprate='toright'><i class='icon'></i></li>
+					                            </ul>
+											</div>
+											</volist>
+										</dd>
+
+										<dt>
+											<div class="item btn-upload upimg" v-show="uploadImgs.length==0"></div>
+										</dt>
+
+									</dl>
+									<input type="hidden" name="img" value="{$img}" class="img_val">
+	        					</div>
+	        				</li>
+	        				</if>
+
+	        			</ul>
+	        			<div class="form_data_btns">
+	        				<input type="hidden" name="id" value="{$id}">
+
+	        				<if condition="$status eq 1 && in_array('EquipmentUpkeep/distribution',$method_arr)">
+		    				<button class="btn maxbtn" type="button" onclick="now_href('{:U('distribution',array('id'=>$id))}')">分配</button>
+		    				<elseif condition="$status eq 2 && in_array('EquipmentUpkeep/distribution',$method_arr) && $num_ratio eq 0"/>
+		    				<button class="btn maxbtn" type="button" onclick="now_href('{:U('distribution',array('id'=>$id))}')">重新分配</button>
+		    				</if>
+
+		    				<if condition="in_array('EquipmentUpkeep/roll_back',$method_arr) && in_array('EquipmentUpkeep/over',$method_arr) && $status eq 3">
+		    					<input type="hidden" name="status" value="4">
+		    					<button type="button" class="btn maxbtn two-btn ajax-post">确认</button>
+		    					<button type="button" class="btn maxbtn two-btn roll_back">打回</button>
+		    				<elseif condition="in_array('EquipmentUpkeep/over',$method_arr) && $status eq 3"/>
+		    					<input type="hidden" name="status" value="4">
+		    					<button type="button" class="btn maxbtn ajax-post">确认</button>
+		    				<elseif condition="in_array('EquipmentUpkeep/roll_back',$method_arr) && $status eq 3"/>
+		    					<button type="button" class="btn maxbtn roll_back">打回</button>
+		    				</if>
+
+		    			</div>
+	        		</div>
+	        	</form>
+					<!-- 待审核 结束 -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+<block name="js">
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script src="__PUBLIC__/Swiper-3.4.1/js/swiper.jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		/***房间数量超出一排显示下拉开关***/
+		function but_show(){
+			var kg_btn = $("#kq_height");
+			var btn_icon =$(".btn_kq_icon");
+			var btn_length = kg_btn.children(".btn").length;
+			var btn_num =parseInt(kg_btn.width() / 54);
+			if(btn_length > btn_num){
+				btn_icon.addClass("btn_block");
+				btn_icon.removeClass(" btn_none");
+			}else {
+				btn_icon.addClass("btn_none");
+				btn_icon.removeClass("btn_block");
+			}
+		}
+		but_show();
+
+		/********房间下拉图标和向上关闭图标切换********/
+		$(function(){
+			var on_num = 0;
+			$(".btn_kq_icon").click(function(){
+				var this_icon =  $(".btn_kq_icon");
+				if(on_num == 0){
+					this_icon.removeClass("btn_icon_bottom");
+					$("#kq_height").removeClass("pc_kq_height");
+					this_icon.addClass("btn_icon_top");
+					on_num = 1;
+				}else if(on_num == 1){
+					$("#kq_height").addClass("pc_kq_height");
+					this_icon.addClass("btn_icon_bottom");
+					this_icon.removeClass("btn_icon_top");
+					on_num = 0;
+				}
+			})
+		});
+	});
+
+
+$(".rooms").click(function(){
+ //是否已经保养  hasClass检查被选元素是否包含指定的 class
+// if($(this).hasClass("on")){
+$(".rooms").removeClass("pitch_on");
+  var id = $(this).attr("data");
+	$(this).addClass("pitch_on");
+  $.post("{:U('HotelContract/get_install_room_info')}",{id:id},function(re_data){
+    re_data = eval("("+re_data+")");
+    $(".equipment").text(re_data.data.equipment_sno);
+    $(".rtype").text(re_data.data.rt_name);
+    $(".floor").text(re_data.data.floor);
+    $(".iswindown").text(re_data.data.iswindow);
+    $(".orienta").text(re_data.data.orienta);
+    $(".place").text(re_data.data.place);
+    $(".air").text(re_data.data.air_name);
+    $(".e1_type").text(re_data.data.e1_name);
+    $(".e2_type").text(re_data.data.e2_name);
+    $(".installtime").text(re_data.data.install_time);
+    if(re_data.data.type_name){
+    	$(".type").text(re_data.data.type_name);
+    }else{
+    	$(".type").text("");
+    }
+    
+    $(".room_info").show();
+  });
+
+// }else{
+//  $(".room_info").hide();
+// }
+})
+
+<if condition="in_array('EquipmentUpkeep/upload',$method_arr) && $status eq 2">
+/* 完成保养 */
+$(".ajax-posts").click(function(){
+	var img = $("input[name='img']").val();
+	if(img == ""){
+		layer.open({content:"请上传安装凭证",time:2});
+		return false;
+	}
+	var id = $("input[name='id']").val();
+	var url = "{:U('operover')}";
+	$.post(url, {id:id,img:img}, function (data) {
+        showLayer(data);        
+    });
+});
+
+/* 微信上传图片所需 start */
+wx.config({
+    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: '{$appId}', // 必填，公众号的唯一标识
+    timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+    nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+    signature: '{$signature}',// 必填，签名，见附录1
+    jsApiList: ['chooseImage','uploadImage','scanQRCode'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});
+
+wx.ready(function(){
+    wx.error(function(res){
+	    layer.open({content:res.errMsg,time:2});
+	    return false;
+	});
+
+	wx.checkJsApi({
+	    jsApiList: ['chooseImage','uploadImage','scanQRCode'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+	    success: function(res) {
+	        // 以键值对的形式返回，可用的api值true，不可用为false
+	        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+	    }
+	});
+});
+
+$(".upimg").click(function(){
+	//选择图片
+	wx.chooseImage({
+	    count: 1, // 默认9
+	    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+	    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+	    success: function (res) {
+	        var localIds = res.localIds; 
+	        // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+	        //上传图片
+	        wx.uploadImage({
+			    localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+			    isShowProgressTips: 1, // 默认为1，显示进度提示
+			    success: function (res) {
+			        var serverId = res.serverId; // 返回图片的服务器端ID
+			        //上传的图片保存到本地服务器
+			        $.post("{:U('saveWXFile')}",{img_dir:'EquipmentInstall',media_id:serverId},function(res_data){
+			        	if(typeof res_data != "object"){
+					        var res_data = eval("("+res_data+")");
+					    }
+					    $(".imgwrap-container-oper").append("<div class='imgwrap'>\
+					    	<img class='img-rounded' src='"+res_data.data+"'>\
+					    	<ul class='imgoprate'>\
+                                <li data-oprate='toleft'><i class='icon'></i></li>\
+                                <li data-oprate='detele'><i class='icon'></i></li>\
+                                <li data-oprate='toright'><i class='icon'></i></li>\
+                              </ul>\
+					    	</div>");
+					    count_img();
+					    /*var img_val = $(".img_val").val();
+					    if(img_val == ""){
+					    	$(".img_val").val(res_data.data);
+					    }else{
+					    	img_val += ','+res_data.data; 
+					    	$(".img_val").val(img_val);
+					    }*/
+					    
+			        })
+			    }
+			});
+	    }
+	});	
+})
+/* 微信上传图片所需 end */
+
+/* 微信扫一扫 */
+$(".rishscan").click(function(){
+	var url = "{:U('oper',array('id'=>$id,'status'=>$estatus))}";
+	wx.scanQRCode({
+	    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+	    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+	    success: function (res) {
+	    	var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+	    	$.post("{:U('get_mac')}",{rishscan:encodeURI(result)},function(re_data){
+	    		if(typeof re_data != "object"){
+			        var re_data = eval("("+re_data+")");
+			    }
+			    if(re_data.status){
+			    	window.location.href = url+"?sno="+re_data.data;
+			    }else{
+			    	layer.open({content:re_data.info,time:2});
+			    }
+	    	})
+		}
+	});
+});
+
+/* 计算图片 */
+function count_img(){
+  var img_val = "";
+  $(".imgwrap-container-oper div").each(function(i){
+    if(i != 0){
+      img_val += ",";
+    }
+    img_val += $(this).find("img").attr("src");
+  })
+  $(".img_val").val(img_val);
+}
+
+/*图片移动、删除*/
+  $('.imgwrap-container-oper').on('click', '[data-oprate]', function(event) {
+    var _imgwrap = $(this).closest('.imgwrap');
+    switch($(this).attr('data-oprate')) {
+      case 'toleft':
+        _imgwrap.prev().before(_imgwrap);
+        //console.log('左边', $(this).attr('data-oprate'))
+        break;
+      case 'detele':
+        _imgwrap.remove();
+        break;
+      case 'toright':
+        _imgwrap.next().after(_imgwrap);
+        break;
+    }
+    count_img();
+    event.stopPropagation();
+  });
+</if>
+
+
+/**
+ * 打回
+ */
+$(".roll_back").click(function(){
+  var id = $("input[name='id']").val();
+  var html = '<div class="roll_back-div"><textarea name="roll_back" class="roll_back-textarea"></textarea></div>';
+  html += '<div class="roll_back-btn"><button type="button" class="btn maxbtn two-btn save_remark" data="'+id+'">确定</button><button type="button" class="btn maxbtn two-btn cancle">取消</button></div>';
+  layer.open({
+    //type:1,
+    title:"打回原因",
+    style:"width:90%;",
+    content:html,
+  });
+})
+
+/**
+ * 打回处理
+ */
+$("body").on("click",".save_remark",function(){
+  var id = $(this).attr("data");
+  var remark = $("textarea[name='roll_back']").val();
+  $.post("{:U('EquipmentInstall/roll_back')}",{id:id,remark:remark},function(re_data){
+    if(typeof re_data != "object"){
+      re_data = eval("("+re_data+")");
+    }
+    layer.open({
+	    content: re_data.info,
+	    time: 2 //2秒后自动关闭
+	});
+    if(re_data.status){
+      setTimeout("window.location.href = '"+re_data.data+"'",1500);
+    }
+  });
+})
+
+/**
+ * 关闭打回窗
+ */
+$("body").on("click",".cancle",function(){
+  layer.closeAll();
+});
+</script>
+</block>

@@ -1,0 +1,211 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>个人中心</title>
+</block>
+<block name="css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style TYPE="text/css">
+        .layoutlr {
+            line-height: 0.4rem;
+        }
+        .layoutlr > .right {
+            display: table-cell !important;
+            vertical-align: middle;
+        }
+        .form_data_wrap li{
+            height: 1rem;
+        }
+        .maxbtn {
+            height: 1.02rem;
+            line-height: 1.02rem;
+        }
+        .form_data .form_item .left {
+            color: rgb(69,69,69);
+            min-width: 1.3rem;
+        }
+    </style>
+</block>
+
+<block name="main">
+    <!-- 主体内容 开始 -->
+    <div class="main swiper-container-01">
+         <div class="header">
+            <div class="left backs" data-url="{:U('Wx/Index/index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+        </div>
+
+
+        <div class="main_body gerenzhongxin">
+            <div class="layoutlr userinfo">
+                <div class="left upimg"><img class="img-circle userphoto" src="{$user.img|default='__IMG__/elogo.png'}"></div>
+                <div class="col center">
+                    <div class="username">{$user.real_name}</div>
+                    <div class="userzh">用户账号：{$user.name}</div>
+                </div>
+                <div class="right">
+                    <!--<i class="icon w_0000_00 w_00_11" style="float: right;"></i>-->
+                    <input type="hidden" name="img" value="{$img}" class="img_val">
+                </div>
+            </div>
+            <div class="form_data_wrap">
+                <input type="hidden" name="now_module" value="{$now_module}"/>
+                <input type="hidden" name="group_name" value="{$group_name}"/>
+                <ul class="form_data">
+                    <!-- 文本编辑 开始 -->
+                    <li class="layoutlr form_item" onclick="edit('mobile')">
+                        <div class="left"><i class="icon w_0005_05 w_05_03"></i>联系方式</div>
+                        <div class="right">
+                            <div class="input_container">{$user.mobile}<i class="icon w_0000_00 w_00_11" ></i></div>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left"><i class="icon w_0005_05 w_05_04" style="width: 0.32rem;height: 0.32rem;background-size: 0.36rem 4rem;" ></i>性别</div>
+                        <div class="right">
+                            <div>
+                            <select name="sex" id="">
+                                <option value="1" <eq name="user.sex" value="1">selected</eq>>男</option>
+                                <option value="2" <eq name="user.sex" value="2">selected</eq>>女</option>
+                            </select><i class="icon w_0000_00 w_00_11"></i></div>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item" onclick="edit('age')">
+                        <div class="left"><i class="icon w_0005_05 w_05_06" style="background-size: 0.38rem 4.2rem;"></i>年龄</div>
+                        <div class="right">
+                            <div class="input_container">{$user.age}<i class="icon w_0000_00 w_00_11"></i></div>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left"><i class="icon w_0005_05 w_05_05"></i>用户类型</div>
+                        <div class="right">
+                            <div class="input_container">{$user.role_name}</div>
+                        </div>
+                    </li>
+                    <notin name="user['role_id']" value="1,2,3,4,5,6,7,8,9">
+                        <li class="layoutlr form_item">
+                            <div class="left"><i class="icon w_0005_05 w_05_07"></i>酒店名称</div>
+                            <div class="right">
+                                <div class="input_container">{$user.hotel_name}</div>
+                            </div>
+                        </li>
+                    </notin>
+                    <li class="layoutlr form_item" onclick="window.location.href='/Wx/User/changePwd'">
+                        <div class="left"><i class="icon w_0005_05 w_05_08"></i>重置密码</div>
+                        <div class="right">
+                            <div class="input_container"><i class="icon w_0000_00 w_00_11"></i></div>
+                        </div>
+                    </li>
+                    <!-- 文本编辑 结束 -->
+                </ul>
+            </div>
+            <div class="form_data_btns">
+                <button class="btn maxbtn sign-out-js">退出登录</button>
+            </div>
+        </div>
+    </div>
+    <!-- 主体内容 结束 -->
+
+
+    <!-- <div class="selected_layer hide" data-relation="eoper">
+        <ul id="id" class="options_container" data-relation="eoper">
+
+            <li onclick="getSex(1)"><span data="男">男</span></li>
+            <li onclick="getSex(2)"><span data="女">女</span></li>
+        </ul>
+    </div> -->
+</block>
+<block name="js">
+    <script type="text/javascript">
+        /* 微信上传图片所需 start */
+        wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: '{$appId}', // 必填，公众号的唯一标识
+            timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+            nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+            signature: '{$signature}',// 必填，签名，见附录1
+            jsApiList: ['chooseImage','uploadImage','hideAllNonBaseMenuItem'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        wx.ready(function(){
+            wx.error(function(res){
+                layer.open({content:res.errMsg,time:2});
+                return false;
+            });
+            wx.hideAllNonBaseMenuItem();
+            /*wx.checkJsApi({
+                jsApiList: ['chooseImage','uploadImage','scanQRCode'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                success: function(res) {
+                    // 以键值对的形式返回，可用的api值true，不可用为false
+                    // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+                }
+            });*/
+        });
+
+        $(".upimg").click(function(){
+            //选择图片
+            wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds;
+                    // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    $(".imgwrap-container").append("<div class='imgwrap'><img class='img-rounded' src='"+localIds+"'></div>");
+                    //上传图片
+                    wx.uploadImage({
+                        localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                        success: function (res) {
+                            var serverId = res.serverId; // 返回图片的服务器端ID
+                            //上传的图片保存到本地服务器
+                            $.post("{:U('saveWXFile')}",{img_dir:'EquipmentInstall',media_id:serverId},function(res_data){
+                                if(typeof res_data != "object"){
+                                    var res_data = eval("("+res_data+")");
+                                }
+                                $(".img_val").val(res_data.data);
+                                $.post("{:U('saveImg')}",{img:res_data.data},function (res) {
+                                    if(typeof res != "object"){
+                                        var res = eval("("+res+")");
+                                    }
+                                    /*layer.open({content:res.info,time:2});*/
+                                    if (res.status) {  //成功的时候跳转到指定的url地址
+                                        window.location.reload();
+                                    }
+                                })
+
+                            })
+                        }
+                    });
+                }
+            });
+        })
+        function edit(tpye) {
+            var group_name = $('input[name="group_name"]').val();
+            var now_module = $('input[name="now_module"]').val();
+            var url=group_name+now_module+'/edit/type/'+tpye;
+            window.location.href=url;
+        }
+        function getSex(sex) {
+            $.post('/Wx/User/changeSex',{sex:sex},function(res){
+                if(typeof res != "object"){
+                    var res = eval("("+res+")");
+                }
+                layer.open({content:res.info,time:2});
+                if (res.status) {  //成功的时候跳转到指定的url地址
+                    window.location.reload();
+                }
+            })
+        }
+        $('.sign-out-js').click(function(){
+            $.post('/Wx/User/signOut',function(res){
+                if(typeof res != "object"){
+                    var res = eval("("+res+")");
+                }
+
+                if (res.status) {  //成功的时候跳转到指定的url地址
+                    layer.open({content:'退出成功！',time:2});
+                    window.location.reload();
+                }else {
+                    layer.open({content:'退出失败！',time:2});
+                }
+            })
+        })
+    </script>
+</block>

@@ -1,0 +1,73 @@
+<extend name="Public:index"/>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main">
+		<!-- 【此处嵌套 header】 -->
+
+		<div class="main_body fangjianxinxi fangjianxinxi_fenxiang">
+			<div class="addimg_wrap">
+				<img class="addimg" src="__IMG__/b.jpg">
+				<button class="close"><i class="icon"></i></button>
+			</div>
+			<div class="layoutlr fangjian_title">
+				<div class="col left">{$data.hotel_name}</div>
+				<div class="col right">{$data.provice} {$data.city}</div>
+			</div>
+			<div class="jinhua_block">
+				<div class="air_container">
+					<div class="air_main">
+						<div class="num">{$data.in_pm}</div>
+						<div class="within">室内平均空气质量{$data.in_air}</div>
+						<div class="abroad">室外空气质量 {$data.out_pm}{$data.out_air}</div>
+					</div>
+				</div>
+			</div>
+			<div class="fangjian_btm">
+				<div class="layoutlr fangjian_showdata">
+					<div class="col">
+						<div class="n1"><if condition="$data['status'] eq 2">
+							待维修
+							<elseif condition="$data['status'] eq 3"/>
+							待保养
+							<else/>
+							正常
+						</if></div>
+						<div class="n2">设备</div>
+					</div>
+					<div class="col">
+						<div class="n1">{$data.air_speed}</div>
+						<div class="n2">风速</div>
+					</div>
+					<div class="col">
+						<div class="n1">{$data.room_sno}</div>
+						<div class="n2">房间</div>
+					</div>
+					<div class="col">
+						<div class="n1">{$data.out_temperature}℃</div>
+						<div class="n2">室外温度</div>
+					</div>
+					<div class="col">
+						<div class="n1">{$data.out_humidity}%</div>
+						<div class="n2">室外湿度</div>
+					</div>
+				</div>
+				<div class="fangjian_opreate_wrap">
+					<div class="logocode_container">
+						<div class="layoutlr">
+							<div class="col left">
+								<img class="elogo" src="__IMG__/elogo.png">
+							</div>
+							<div class="col right">
+								<img class="ecode" src="__IMG__/ecode.png">
+							</div>
+						</div>
+						<p class="txt">优享空间  联系电话010-12345678</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 主体内容 结束 -->
+
+</block>

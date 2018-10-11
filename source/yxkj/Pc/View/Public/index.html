@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name=”viewport” content=”width=1080″ />
+    <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″ />
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <block name="head">
+	 <title>首页</title>
+  </block>
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/Bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="__CSS__/reset.css">
+  <link rel="stylesheet" type="text/css" href="__CSS__/platformSalesman.css">
+  <link rel="stylesheet" type="text/css" stylesheet_skin="{$skin}" href="__CSS__/{$skin}.css">
+  <link rel="stylesheet prefetch" href="__PUBLIC__/PhotoSwiper/photoswipe.css">
+  <link rel="stylesheet prefetch" href="__PUBLIC__/PhotoSwiper/default-skin/default-skin.css">
+    <!--[if IE]>
+ <link href="__CSS__/ie_ca.css" rel="stylesheet" type="text/css">
+ <script type="text/javascript"  src="http://www.ijquery.cn/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <block name="css">
+        <style type="text/css">
+            .article{min-height: 100%}
+        </style>
+    </block>
+</head>
+<body>
+<!-- 正文 开始 -->
+<article class="article" id="article">
+  <block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>系统首页</a></li>
+      <li class="on">报销列表</li>
+    </ol>
+  </block>
+
+  <!-- 正文部分 开始 -->
+  <block name="main">
+  <!-- <div id="main">【此处嵌套页面正文部分-#main标签】</div> -->
+  </block>
+  <!-- 正文部分 结束 -->
+</article>
+<!-- 正文 结束 -->
+    <br style="clear:both;" />
+
+</div>
+</body>
+<script type="text/javascript" src="__JS__/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="__JS__/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Layer3.1/layer.js"></script>
+<script type="text/javascript" src="__JS__/acommon.js"></script>
+<script src="__PUBLIC__/PhotoSwiper/photoswipe.js"></script>
+<script src="__PUBLIC__/PhotoSwiper/photoswipe-ui-default.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/PhotoSwiper/photoload_pc.js"></script>
+<script>
+    $(document).ready(function(){
+        var getBrowser = function() {
+            var ua = window.navigator.userAgent;
+//            var isIE = window.ActiveXObject != undefined && ua.indexOf("MSIE") != -1;
+//            var isFirefox = ua.indexOf("Firefox") != -1;
+//            var isOpera = window.opr != undefined;
+//            var isChrome = ua.indexOf("Chrome") && window.chrome;
+            var isSafari = ua.indexOf("Safari") != -1 && ua.indexOf("Version") != -1;
+           if (isSafari) {
+                $("select").addClass('safari_se');
+                $("select").after("<span class='caret safari_caret'></span>");
+                return "Safari";
+            } else {
+                return "Unkown";
+            }
+        };
+
+        getBrowser();
+
+    })
+</script>
+<block name="js">
+</block>
+</html>

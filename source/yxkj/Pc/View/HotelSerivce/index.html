@@ -1,0 +1,71 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>服务项目</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>系统设置</a></li>
+        <li class="on">服务项目列表</li>
+    </ol>
+</block>
+<block name="css">
+    <style type="text/css">
+        .panel .panel-heading {
+            margin-bottom: 0px;
+        }
+    </style>
+</block>
+<block name="main">
+    <div id="main" class="bgfff">
+        <div class="panel panel-default table-datawrap">
+            <div class="panel-heading">
+                <!-- Single button -->
+                <form class="clearfix searchbar">
+                    <div class="col">
+                        <div class="navbar-form navbar-left">
+                            <a href="{:U('add')}"> <button type="button" class="btn btn-warning">新增</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="panel-body">
+                <table class="table table-condensed table-data" id="treeTable">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>服务项目</th>
+                        <th>图标</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <notempty name="items">
+                    <volist name="items" id="row">
+                        <tr>
+                            <td>{$row.id}</td>
+                            <td>{$row.name}</td>
+                            <td><img class="img-rounded" src="{$row.img}" height="80px" /></td>
+                            <td class="orprate">
+                                <a class="text-warning" href="{:U('edit',array('id'=>$row['id']))}">编辑</a> 丨
+                                <a class="text-warning" href="{:U('sel',array('id'=>$row['id']))}">查看</a>
+                        </tr>
+                    </volist>
+                    <else/>
+                    <tr><td colspan="4">暂无数据</td></tr>
+                    </notempty>
+                    </tbody>
+                </table>
+                <div class="pagination-container">
+                    <div class="pagination">
+                        {$pageHtml}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</block>
+

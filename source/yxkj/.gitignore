@@ -1,0 +1,25 @@
+#ignore these files 
+nbproject
+._*
+.~lock.*
+.buildpath
+.DS_Store
+.idea
+.project
+.settings
+composer.lock
+vendor/bin
+*~
+*.swp
+.svn
+dump.rdb
+*.backup
+delete.*
+/Runtime/
+/Uploads/*
+/Upload/
+.tags
+.tags_sorted_by_file
+.phpintel/
+debug.php
+#index.php

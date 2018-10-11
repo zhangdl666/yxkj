@@ -1,0 +1,142 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>足迹详情</title>
+</block>
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main">
+
+		<!-- header 开始 -->
+		<div class="header">
+			<div class="left"><a href="{:U('footprint')}">返回</a></div>
+			<div class="center">优享空间</div>
+			<div class="right">
+				分享
+			</div>
+		</div>
+		<!-- header 结束 -->
+
+		<div class="main_body fangjianxinxi">
+
+			<div class="addimg_wrap">
+				<img class="addimg"  src="../../../../Public/Images/b.jpg">
+				<button class="close"><i class="icon"></i></button>
+			</div>
+			<div class="layoutlr fangjian_title">
+				<div class="col left">设备状态：<if condition="$data['status'] eq 2">
+					待维修
+					<elseif condition="$data['status'] eq 3"/>
+					待保养
+					<else/>
+					正常
+				</if></div>
+				<div class="col right">风速：{$data.air_speed}</div>
+			</div>
+			<div class="layoutlr fangjian_title">
+				<div class="col left">{$data.hotel_name}</div>
+				<div class="col center">{$data.room_sno}室</div>
+				<div class="col right">{$data.room_name}</div>
+			</div>
+			<div class="jinhua_block">
+				<div class="air_container">
+					<div class="air_main">
+						<div class="within">室内空气质量</div>
+						<div class="num">{$data.in_pm}</div>
+
+						<div class="abroad">室外空气质量 {$data.out_air}</div>
+					</div>
+				</div>
+			</div>
+			<div class="layoutlr bjkkitem02_wrap jinhua_block">
+				<div class="col left">
+					<div class="bjkkitem bjkkitem02">
+						<div class="bjkkitem_main">
+							<div class="icon_wrap"></div>
+							<div class="num" style="padding-right: 30px;">{$data.in_temperature}℃</div>
+							<div class="title_wrap">
+								<div class="title_inner">
+									<span class="title">室外温度：{$data.out_temperature}℃</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col right">
+					<div class="bjkkitem bjkkitem02">
+						<div class="bjkkitem_main">
+							<div class="num" style="padding-right: 30px;">{$data.in_humidity}%</div>
+							<div class="title_wrap">
+								<div class="title_inner">
+									<span class="title">室外湿度：{$data.out_humidity}%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 图表 开始 -->
+
+
+		</div>
+	</div>
+	<!-- 主体内容 结束 -->
+
+</block>
+<block name="js">
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script type="text/javascript">
+		/* 微信上传图片所需 start */
+		wx.config({
+			debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			appId: '{$appId}', // 必填，公众号的唯一标识
+			timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+			nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+			signature: '{$signature}',// 必填，签名，见附录1
+			jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		});
+		wx.ready(function(){
+			wx.error(function(res){
+				alert(res.errMsg);
+				return false;
+			});
+			wx.checkJsApi({
+				jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+				success: function(res) {
+					alert(JSON.stringify(res));
+				}
+			});
+		});
+		//分享到朋友圈
+		wx.onMenuShareTimeline({
+			title: '1111111', // 分享标题
+			link:window.location.href,
+			Url: "{:U('outer')}", // 分享出去的页面
+			success: function () {
+				// 分享成功执行此回调函数
+				alert('分享成功');
+			},
+			cancel: function () {
+				alert('分享失败');
+			}
+		});
+		//分享给朋友
+		wx.onMenuShareAppMessage({
+			title: '22222', // 分享标题
+			desc: '22222',
+			link:window.location.href,
+			Url: "{:U('outer')}", // 分享出去的页面
+			success: function (res) {
+				// 分享成功执行此回调函数
+				alert('已分享');
+			},
+			cancel: function (res) {
+				alert('已取消');
+			},
+			fail: function (res) {
+				alert(JSON.stringify(res));
+			}
+		});
+		/* 微信上传图片所需 end */
+	</script>
+</block>

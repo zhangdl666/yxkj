@@ -1,0 +1,55 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>保养维修统计</title>
+</block>
+<block name="main">
+    <!-- 主体内容 开始 -->
+    <div class="main swiper-container-02 xiaoshoutongji">
+        <!-- 【此处嵌套 header】 -->
+        <!-- header 开始 -->
+        <div class="header">
+            <div class="left"><a href="{:U('index')}">返回</a></div>
+            <div class="center"></div>
+        </div>
+
+        <div class="main_body">
+            <div class="swiper-container swiper-tab-nav">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide swiper-tab-link on" value="1">
+                        <p class="text">保养统计</p>
+                    </div>
+                    <div class="swiper-slide swiper-tab-link" value="2">
+                        <p class="text">维修统计</p>
+                    </div>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+
+
+            <div class="swiper-container swiper-tab-page xiaoshoue">
+            </div>
+        </div>
+    </div>
+    <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+    <script type="text/javascript">
+        $('.main').on('click', '.swiper-tab-link', function () {
+            $('.swiper-tab-link').removeClass('on');
+            $(this).addClass('on');
+            var ids = $(this).attr('value');
+            $.get('/Wx/Maintain/Count', {ids: ids}, function (f) {
+                $(".xiaoshoue").empty();
+                $(".xiaoshoue").html(f);
+            }, 'html')
+        });
+        $(function () {
+            $.get('/Wx/Maintain/Count', {ids: 1}, function (f) {
+                $(".xiaoshoue").empty();
+                $(".xiaoshoue").html(f);
+            }, 'html')
+        })
+    </script>
+</block>

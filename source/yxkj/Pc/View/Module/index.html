@@ -1,0 +1,140 @@
+<extend name="Public:index"/>
+
+<block name="head">
+  <title>模块管理</title>
+</block>
+
+<block name="css">
+  <link rel="stylesheet" href="__TREETABLE__/jquery.treetable.css">
+  <link rel="stylesheet" href="__TREETABLE__/jquery.treetable.theme.default.css">
+  <style>
+    #treeTable th {
+      font-family: "PingFang SC","Helvetica Neue",Helvetica,"Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+      font-size: 14px;
+      color: #19b958;
+      border-left: 1px solid #ddd;
+      text-align: center;
+      padding: 5px;
+      line-height: 1.42857143;
+      vertical-align: bottom;
+      border-top: 0;
+      background: #f2f2f2;
+      border-bottom: 2px solid #ddd;
+      font-weight: bold;
+      border-right: 1px solid #ddd;
+    }
+
+    #treeTable td {
+      font-family: "PingFang SC","Helvetica Neue",Helvetica,"Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+      font-size: 14px;
+      color: #555;
+      border-left: 1px solid #ddd;
+      text-align: center;
+      padding: 5px;
+      line-height: 1.42857143;
+      vertical-align: top;
+      border-top: 1px solid #ddd;
+      background-color: #fff;
+    }
+    #treeTable .lleft {
+      font-family: "PingFang SC","Helvetica Neue",Helvetica,"Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+      font-size: 14px;
+      color: #555;
+      border-left: 1px solid #ddd;
+      text-align: left;
+      padding: 5px;
+      line-height: 1.42857143;
+      vertical-align: top;
+      border-top: 1px solid #ddd;
+      background-color: #fff;
+    }
+    .panel .panel-heading {
+      margin-bottom: 0px;
+    }
+  </style>
+</block>
+
+<block name="top">
+  <ol class="breadcrumb">
+    当前的位置：
+    <li><a>系统设置</a></li>
+    <li class="on">{$meta_title}列表</li>
+  </ol>
+</block>
+
+<block name="main">
+  <div id="main" class="bgfff">
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading">
+        <!-- Single button -->
+        <form class="clearfix searchbar">
+          <div class="col">
+            <div class="navbar-form navbar-left">
+              <!--<div class="form-group">
+                <input type="text" class="form-control search" placeholder="输入姓名进行搜索">
+              </div>-->
+              <button type="button" class="btn btn-warning" onclick="now_href('{:U('add')}')">新增模块</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel-body">
+        <table class="table table-condensed table-data" id="treeTable">
+          <thead>
+          <tr>
+            <th>菜单名</th>
+            <th>菜单URL</th>
+            <th>描述</th>
+            <th>排序</th>
+            <th>是否显示</th>
+            <th>添加时间</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <notempty name="items">
+          <volist name="items" id="row">
+            <tr <eq name="row.parent_id" value="0">data-tt-id="{$row.id}"<else/>data-tt-id='{$row.parent_id}-{$row.id}' data-tt-parent-id="{$row.parent_id}"</eq>>
+            <td class="lleft">{$row.name}</td>
+            <td class="lleft">{$row.method}</td>
+            <td class="lleft">{$row.remark}</td>
+            <td class="lleft">{$row.sort}</td>
+            <td><eq name="row.is_show" value="1">显示<else/>隐藏</eq></td>
+            <td>
+              {$row.ctime|date="Y-m-d H:i:s",###}
+            </td>
+            <td class="orprate">
+              <a class="text-warning" href="{:U('edit',array('id'=>$row['id'],'redonly'=>1))}">查看</a> 丨
+              <a class="text-warning" href="{:U('edit',array('id'=>$row['id']))}">编辑</a> 丨
+              <a class="text-warning ajax-oper-get" href="{:U('change_status',array('ids'=>$row['id']))}">删除</a></td>
+            </tr>
+          </volist>
+            <else/>
+            <tr><td colspan="7">暂无数据</td></tr>
+          </notempty>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</block>
+
+<block name="js">
+  <script src="__TREETABLE__/jquery.treetable.js"></script>
+  <script type="text/javascript">
+    function now_href(url){
+      window.location.href = url;
+    }
+
+    $(function(){
+      $("#treeTable").treetable({
+        expandable : true
+      });
+
+
+
+    });
+  </script>
+</block>

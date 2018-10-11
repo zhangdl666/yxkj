@@ -1,0 +1,270 @@
+<div class="anzhuangxiangx_content">
+    <div class="daishenhebiaoxiao-page">
+        <div class="layoutlr white_panel white_header white_panel_gc" style="border-bottom: 0.2rem solid #f4f4f4;">
+            <div class="">{$filterdates}开启情况</div>
+            <div class="kq_title">
+                <div class="left_kq"><i class="icon kq_icon kq_icon_01"></i>当日开启天次: <span>{$numone|default=0}天次</span> </div>
+                <div class="right_kq">  <i class="icon kq_icon kq_icon_02"></i>累计开启天次: <span>{$numfour|default=0}天次</span></div>
+            </div>
+        </div>
+        <!--<div class="white_panel">-->
+            <!--<div class="layoutlr white_header">-->
+                <!--<div class="left">{$date}开启情况统计</div>-->
+            <!--</div>-->
+            <!--<div class="white_body">-->
+                <!--<div class="layoutlr xiaoshoutongji_echart">-->
+                    <!--<div class="left">-->
+                        <!--<div class="cj" id="cjs"></div>-->
+                    <!--</div>-->
+                    <!--<div class="left">-->
+                        <!--<div class="cj" id="cjs2"></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!-- 开启房间 开始 -->
+        <div class="form_data_wrap anzhuangxinxi">
+            <ul class="form_data">
+                <li class="layoutlr form_item" style="padding-right: 0px;">
+                    <!-- <div class="left">安装房间</div>
+                    <div class="right"> -->
+                    <dl class="gezi-container">
+
+                        <dt class="left gezi-title"><span class="fll">开启房间</span>
+                            <div class="checkbox-container gezi-type3" data-type="checkbox">
+                                <i class="icon icon01 i_radio"></i>
+                                <span class="checkbox_txt">未到达一个天次</span>
+                            </div>
+                            <div class="checkbox-container gezi-type1" data-type="checkbox">
+                                <i class="icon icon01 i_radio"></i>
+                                <span class="checkbox_txt">开启一天次</span>
+                            </div>
+                            <div class="checkbox-container gezi-type2" data-type="checkbox">
+                                <i class="icon icon01 i_radio"></i>
+                                <span class="checkbox_txt">暂未开启</span>
+                            </div>
+                        <div class="btn_kq_icon btn_icon_bottom" style="float: right;"><i class="icon" ></i></div>
+                        </dt>
+                        <dd class="right gezi-group pc_kq_height" id="kq_height">
+                            <foreach name="rooms" item="vo">
+                                <button type="button" value="{$vo.equipment_sno}" class='room btn <if condition="$vo['status'] eq 1"><elseif condition="$vo['status'] eq 2"/>on<else/></if>'>{$vo.room_sno}</button>
+                            </foreach>
+                        </dd>
+
+                        <div class="btn_kq_icon btn_icon_bottom" style="text-align:center;"><i class="icon"></i></div>
+                        <!--<dd class="right gezi-group">-->
+                        <!--<button type="button" class="btn on">1034</button>-->
+                        <!--<button type="button" class="btn on">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--<button type="button" class="btn">1034</button>-->
+                        <!--</dd>-->
+                    </dl>
+                    <!-- </div> -->
+                </li>
+                <div class="sno">
+                    <li class="layoutlr form_item">
+                        <div class="left">月度开启率</div>
+                        <div class="right">{$monthsbai|default=0}%</div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">季度开启率</div>
+                        <div class="right">{$jidubai|default=0}%</div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">年度开启率</div>
+                        <div class="right">{$nainbai|default=0}%</div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">安装日到现在开启率</div>
+                        <div class="right">{$anbais|default=0}%</div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">本结算周期开启率</div>
+                        <div class="right">{$aibai|default=0}%</div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">结算周期开启天次</div>
+                        <div class="right">{$hahdats|default=0}天</div>
+                    </li>
+                    <!--<li class="layoutlr form_item">-->
+                        <!--<div class="left">净化器类型</div>-->
+                        <!--<div class="right"></div>-->
+                    <!--</li>-->
+                    <!--<li class="layoutlr form_item">-->
+                        <!--<div class="left">监控器类型</div>-->
+                        <!--<div class="right"></div>-->
+                    <!--</li>-->
+                </div>
+
+
+                <!--<li class="layoutlr form_item">-->
+                <!--<div class="left">净化器类型</div>-->
+                <!--<div class="right">净化器类型A</div>-->
+                <!--</li>-->
+                <!--<li class="layoutlr form_item">-->
+                <!--<div class="left">监控器类型</div>-->
+                <!--<div class="right">监控器类型A</div>-->
+                <!--</li>-->
+                <!--<li class="layoutlr form_item">-->
+                <!--<div class="left">安装时间</div>-->
+                <!--<div class="right">2017-08-31</div>-->
+                <!--</li>-->
+
+            </ul>
+
+        </div>
+        <!-- 开启房间 结束 -->
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        /***房间数量超出一排显示下拉开关***/
+        function but_show(){
+            var kg_btn = $("#kq_height");
+            var btn_icon =$(".btn_kq_icon");
+            var btn_length = kg_btn.children(".btn").length;
+            var btn_num =parseInt(kg_btn.width() / 54);
+            if(btn_length > btn_num){
+                btn_icon.addClass("btn_block");
+                btn_icon.removeClass(" btn_none");
+            }else {
+                btn_icon.addClass("btn_none");
+                btn_icon.removeClass("btn_block");
+            }
+        }
+        but_show();
+
+        /********房间下拉图标和向上关闭图标切换********/
+        $(function(){
+            var on_num = 0;
+            $(".btn_kq_icon").click(function(){
+                var this_icon =  $(".btn_kq_icon");
+                if(on_num == 0){
+                    this_icon.removeClass("btn_icon_bottom");
+                    $("#kq_height").removeClass("pc_kq_height");
+                    this_icon.addClass("btn_icon_top");
+                    on_num = 1;
+                }else if(on_num == 1){
+                    $("#kq_height").addClass("pc_kq_height");
+                    this_icon.addClass("btn_icon_bottom");
+                    this_icon.removeClass("btn_icon_top");
+                    on_num = 0;
+                }
+            })
+        });
+    });
+
+//    <!--筛选条件-->
+
+    $(".room").click(function () {
+        $(".room").removeClass("pitch_on");
+        $(this).addClass("pitch_on");
+        var sno = $(this).attr('value');
+        $.get('/Wx/RunInfo/oneDevice',{sno:sno},function (f) {
+            $('.sno').empty();
+            $('.sno').html(f);
+        },'html')
+    });
+
+    var myCharOne = echarts.init(document.getElementById('cjs'));
+    optionOne = {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)",
+            position: ['35%', '35%'],
+        },
+        legend: {
+            orient: 'vertical',
+            x: 'left',
+        },
+        series: [
+            {
+                name:'当天开启天次',
+                type:'pie',
+                radius: ['50%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '10',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:[
+                    {value:"{$numone}", name:'当天开启天次'},
+                ],
+                color:[ '#6BC35E',]
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myCharOne.setOption(optionOne);
+
+var myCharTwo = echarts.init(document.getElementById('cjs2'));
+optionTwo = {
+    tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c} ({d}%)",
+        position: ['35%', '35%'],
+    },
+    legend: {
+        orient: 'vertical',
+        x: 'left',
+    },
+    series: [
+        {
+                    name:'总开启天次',
+            type:'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: '10',
+                        fontWeight: 'bold'
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+            data:[
+                {value:"{$numfour}", name:'总开启天次'},
+            ],
+            color:[ '#6BC35E',]
+        }
+    ]
+};
+// 使用刚指定的配置项和数据显示图表。
+myCharTwo.setOption(optionTwo);
+</script>

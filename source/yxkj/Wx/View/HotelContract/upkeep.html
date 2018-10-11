@@ -1,0 +1,214 @@
+<extend name="Public:index"/>
+<block name="title">
+  <title>合同管理</title>
+</block>
+<block name="css">
+<style type="text/css">
+  .loading{text-align: center;display: none;}
+    .col{
+        width: 50%;
+    }
+    .w_02_01{
+        top:-0.1rem;
+        margin-left: 0.3rem;
+    }
+    .w_02_02{
+        margin-left: 0.3rem;
+        top:-0.1rem;
+    }
+    .form_data_wrap{
+        padding: 0;
+    }
+  .bjkkitem .icon_wrap {
+      position: absolute;
+      top: 0.4rem;
+  }
+  .bjkkitem .bjkkitem_main {
+      height: 20vw;
+  }
+  .bjkkitem02_wrap .bjkkitem02 {
+      height: 20vw;
+  }
+  .form_data .form_item .left {
+      color: rgb(51,51,51);
+     font-size: 0.28rem;
+  }
+
+    .by_form li{
+        display:block!important;
+    }
+  .green_panel .green_header .right {
+      padding-right: 0.2rem;
+      float: right;
+  }
+  @media only screen and (max-width:320px){
+
+      .bjkkitem .icon_wrap {
+          position: absolute;
+          top: 0.3rem;
+          left: -0.2rem;
+      }
+  }
+</style>
+</block>
+
+<block name="main">
+  <!-- 主体内容 开始 -->
+  <div class="main swiper-container-01">
+    <div class="header">
+      <div class="left backs" data-url="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+      <!-- <div class="center">合同管理</div> -->
+    </div>
+
+    <div class="main_body">
+      <div class="swiper-container swiper-tab-nav">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('read',array('id'=>$hcid))}')">基础信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('installe',array('id'=>$hcid))}')">安装信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('return_money',array('id'=>$hcid))}')">结算信息</div>
+              <div class="swiper-slide swiper-tab-link on" onclick="now_href('{:U('upkeep',array('id'=>$hcid))}')">保养信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('maintain',array('id'=>$hcid))}')">维修信息</div>
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+      </div>
+
+      <div class="swiper-container swiper-tab-page hetongpage">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-content">
+                <div class="hetong_content">
+
+                  <!-- 回款信息 开始 -->
+                  <div class="swiper-slide swiper-tab-content huikuanxinxi renling">
+                    <div class="layoutlr bjkkitem02_wrap" style="background-color: transparent!important;">
+                      <div class="col left">
+                        <div class="bjkkitem bjkkitem02 b2">
+                          <div class="bjkkitem_main">
+                            <div class="icon_wrap"><i class="icon w_0002_02 w_02_01"></i></div>
+                              <div class="num" style="font-size: 0.28rem;height: 0.42rem;padding-left: 1.2rem;overflow: hidden;">{$h_name}</div>
+                            <div class="title_wrap">
+                              <div class="title_inner">
+                                <span class="title">酒店名称</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col right">
+                        <div class="bjkkitem bjkkitem02 b1">
+                          <div class="bjkkitem_main">
+                            <div class="icon_wrap"><i class="icon w_0002_02 w_02_02"></i></div>
+                            <div class="num">{$upkeep_num|default='0'} <span style="font-size: 0.28rem">次</span></div>
+                            <div class="title_wrap" style="margin-top: -0.1rem;">
+                              <div class="title_inner">
+                                <span class="title">累计保养次数</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <notempty name="items">
+                    <volist name="items" id="item">
+                    <dl class="green_panel" onclick="now_href('{:U('read_info',array('id'=>$item['id']))}')">
+                        <dt class="layoutlr green_header">
+                            <div class="left left_gd" style="display: inline-block!important;">保养编号:{$item.sno}</div>
+                            <div style="min-width: 2.5rem;padding-top: 0.2rem;font-size: 0.28rem;color: rgb(254,246,0)" class="right">保养状态:
+                              <switch name="item.status">
+                                <case value="1">待分配</case>
+                                <case value="2">待保养</case>
+                                <case value="3">待确认</case>
+                                <case value="4">已保养</case>
+                              </switch>
+                            </div>
+                        </dt>
+                        <dd class="green_body">
+                          <div class="form_data_wrap">
+                            <ul class="form_data form_by_data by_form">
+                              <li class="layoutlr form_item">
+                                <div class="left">保养房间数：</div>
+                                <div class="right">{$item.num}</div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">保养负责人：</div>
+                                <div class="right">{$item.name}</div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">负责人联系方式：</div>
+                                <div class="right">{$item.mobile}</div>
+                              </li>
+                              <li class="layoutlr form_item">
+                                <div class="left">实际保养时间：</div>
+                                <div class="right">{$item.oper_time}</div>
+                              </li>
+                            </ul>
+                          </div>
+                        </dd>
+                      </dl>
+                      </volist>
+                      <else/>
+                            <dl class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></dl>
+                      </notempty>
+                    </div>
+                    <!-- 回款信息 结束 -->
+                    <div class="col-xs-12 loading">
+                        <img src="__IMG__/loading.gif" alt="">
+                    </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- 主体内容 结束 -->
+
+<!--装页码的div-->
+<div style="display:none" key="1" class="key"></div>
+<div style="display:none" key="1" class="list-page"></div>
+</block>
+<block name="js">
+<script src="__PUBLIC__/Swiper-3.4.1/js/swiper.jquery.min.js"></script>
+<script type="text/javascript">
+var swiperNav = new Swiper('.swiper-tab-nav', {
+    // pagination: '.swiper-pagination',
+    slidesPerView: 'auto',
+    // centeredSlides: true,
+    // paginationClickable: true,
+    // spaceBetween: 30
+    // slidesPerView: 3,
+    paginationClickable: true,
+    // spaceBetween: 30,
+    onInit: function(swiper) { // 初始化回调函数
+    },
+    onClick: function(swiper) {
+    /*swiperPage.slideTo($(swiper.clickedSlide).index(), 500, false);*///切换到第一个slide，速度为1秒
+    },
+});
+
+var swiperPage = new Swiper ('.swiper-tab-page', {
+  // loop: true,
+  onInit: function(swiper) { // 初始化回调函数
+  },
+  onTouchEnd: function(swiper) { // 初始化回调函数
+    /*swiperNav.slideTo(swiper.previousIndex, 500, false);//切换到第一个slide，速度为1秒
+    setTimeout(function() {
+      if($('.swiper-tab-link.on').index() != swiperPage.activeIndex) {
+        $('.swiper-tab-link').removeClass('on');
+        $($('.swiper-tab-link')[swiperPage.activeIndex]).addClass('on');
+      }
+    }, 100);*/
+  },
+});
+
+/* 跳转 */
+function now_href(url){
+  window.location.href = url;
+}
+
+/* 返回 */
+$(".backs").click(function(){
+  window.location.href = "{:U('index')}";
+})
+</script>
+</block>

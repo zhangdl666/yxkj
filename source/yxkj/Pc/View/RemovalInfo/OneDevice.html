@@ -1,0 +1,101 @@
+<!--<div class="panel panel-default">
+    <div class="panel-heading"><h1>近7日空气质量走势统计</h1></div>
+    <div class="panel-body">-->
+        <div class="panel" id="room_onemain" style="height: 350px">
+        <!--</div>
+    </div>
+</div>
+</div>-->
+<script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+<script type="text/javascript">
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChartOne = echarts.init(document.getElementById('room_onemain'));
+    optionOne = {
+        tooltip: {
+            trigger: 'axis',
+        },
+//        toolbox: {
+//            show: true,
+//            feature: {
+//                mark: {show: true},
+//                dataView: {show: true, readOnly: false},
+//                magicType: {
+//                    show: true,
+//                    type: ['pie', 'funnel']
+//                },
+//                restore: {show: true},
+//                saveAsImage: {show: true}
+//            }
+//        },
+        grid: {
+            left: '5%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: {$date}
+            }
+        ],
+        legend: {
+            data: ['室内','室外']
+        },
+        yAxis: [
+            {
+                name:'PM2.5(μg/m3)',
+            <if condition="($pm25 eq '[]') AND ($apm25 eq '[]')">
+            min: 0,
+        max: 100,
+    </if>
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: '室内',
+                type: 'line',
+                smooth: true,
+                // 背景颜色设置
+                areaStyle: {
+                    normal: {
+                    }
+                },
+                lineStyle: {
+                    normal: {
+//                        width: 1.5,
+//                        // 线条颜色
+//                        color: ['#B9A7DE']
+                    }
+                },
+                data:{$numtwo},
+                color: ['#7DD9B2']
+            },
+            {
+                name: '室外',
+                type: 'line',
+                smooth: true,
+                // 背景颜色设置
+                areaStyle: {
+                    normal: {
+                    }
+                },
+                lineStyle: {
+                    normal: {
+//                        width: 1.5,
+//                        // 线条颜色
+//                        color: ['#7DD9B2']
+                    }
+                },
+                data:{$numone},
+                color: ['#B9A7DE']
+            },
+
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartOne.setOption(optionOne);
+</script>

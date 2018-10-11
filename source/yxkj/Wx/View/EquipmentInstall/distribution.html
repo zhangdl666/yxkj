@@ -1,0 +1,75 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>选择工程人员</title>
+</block>
+<block name="css">
+	<style type="text/css">
+		.xuanzerenyuan{
+			padding: 0;
+		}
+		.ry_table_tr{
+			height: 1rem;
+			line-height: 0rem;
+			background-color: white;
+			border-top: 1px solid rgb(232,232,232);
+		}
+		.ry_table_td{
+			padding-left: 0.4rem;
+		}
+		.ry_table_tr td img{
+			margin-top: 0.08rem;
+		}
+		.ry_btn{
+			margin-left: 0.2rem;
+			margin-right: 0.2rem;
+		}
+	</style>
+</block>
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+			<!-- <div class="center">选择工程人员</div> -->
+		</div>
+
+		<div class="main_body">
+			<form method="post" action="{:U('operation')}">
+			<div class="xuanzerenyuan">
+				<notempty name="user_list">
+				<table>
+	                <tbody>
+	                <notempty name="user_list">
+	                  <volist name="user_list" id="user">
+	                  <tr class="ry_table_tr">
+	                    <td class="ry_table_td">
+	                    	<label class="checkbox-container" data-type="radio" <eq name="key" value="0">checked="checked"</eq>>
+								<input type="radio" name="u_id" value="{$user.id}" <eq name="key" value="0">checked="checked"</eq>>
+								<i class="icon icon01 i_radio"></i>
+							</label>
+	                    </td>
+	                    <td><img class="img-circle user-photo" src="{$user.img|default='__IMG__/elogo.png'}"></td>
+	                    <td>{$user.name}</td>
+	                    <td style="padding-left: 0.2rem">{$user.mobile}</td>
+	                  </tr>
+	              	  </volist>
+
+	                </tbody>
+	            </table>
+	            <else/>
+	            	<div class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></div>
+	        	</notempty>
+
+	            <if condition="!empty($status) && !empty($user_list)">
+					<div class="form_data_btns ry_btn">
+						<input type="hidden" name="id" value="{$id}">
+						<input type="hidden" name="status" value="2">
+						<button class="btn maxbtn ajax-post">保存</button>
+					</div>
+    			</if>
+			</div>
+		</form>
+		</div>
+	</div>
+	<!-- 主体内容 结束 -->
+</block>

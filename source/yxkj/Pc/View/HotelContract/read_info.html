@@ -1,0 +1,310 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>合同管理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>合同管理</a></li>
+      <li class="on"><eq name="type" value="2">保养<else/>维修</eq>信息</li>
+    </ol>
+</block>
+<block name="css">
+  <style type="text/css">
+    .gezi-container .gezi-group .btn {
+      margin: 10px;
+      height: 42px;
+      width: 90px;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+    }
+    .btn_icon{
+      width: 26px;
+      height: 19px;
+      display: none;
+      float: right;
+    }
+
+    .max_btn_icon{
+      width: 37px;
+      height: 27px;
+      display: none;
+      margin: 10px auto;
+    }
+    .btn_icon_bottom{
+      background: url("__IMG__/wx_kq_bottom_bottom.png");
+      background-size: 100%;
+    }
+    .btn_icon_top{
+      background: url("__IMG__/wx_kq_bottom_top.png");
+      background-size: 100%;
+    }
+    .pc_kq_height{
+      height: 68px;
+      overflow: hidden;
+    }
+    .subnav > li {
+      width: 116px;
+      padding: 0px 24px;
+    }
+
+    .pitch_on{
+      background: url("__IMG__/pitch_on.png") no-repeat;
+      background-position: right bottom;
+      color: #4e4e4e!important;
+    }
+  </style>
+</block>
+<block name="main">
+  <div id="main">
+      <!-- 导航 开始 -->
+      <ul class="clearfix subnav hetongnav">
+        <li><a><i class="icon"></i><span class="cur_title">安装信息</span></a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('read',array('id'=>$hc_id))}">基础信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('installe',array('id'=>$hc_id))}">安装信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('return_money',array('id'=>$hc_id))}">结算信息</a><span class="nav_border"></span></li>
+        <li <eq name="type" value="2">class="on"</eq>><a rel="link" <eq name="type" value="2">class="active"</eq> href="{:U('upkeep',array('id'=>$hc_id))}">保养信息</a><span class="nav_border"></span></li>
+        <li <eq name="type" value="3">class="on"</eq>><a rel="link" <eq name="type" value="3">class="active"</eq> href="{:U('maintain',array('id'=>$hc_id))}">维修信息</a></li>
+      </ul>
+      <!-- 导航 结束 -->
+
+      <!-- 内容 开始 -->
+      <div class="subpage hetongxinxi02">
+          <form id="">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th>工单编号：</th>
+                    <td><span class="table-form-text">{$sno}</span></td>
+                  </tr>
+                  <notempty name='rtime'>
+                  <tr>
+                    <th>预计<eq name="type" value="2">保养<else/>维修</eq>时间：</th>
+                    <td><span class="table-form-text">{$rtime|date='Y-m-d',###}</span></td>
+                  </tr>
+                </notempty>
+                
+                  <tr>
+                    <th>酒店名称：</th>
+                    <td>
+                      <span class="table-form-text">{$h_name}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><eq name="type" value="2">保养<else/>维修</eq>状态：</th>
+                    <td>
+                      <span class="table-form-text"><if condition="$status eq 1">待分配<elseif condition="$status eq 2"/>待<eq name="type" value="2">保养<else/>维修</eq><elseif condition="$status eq 3"/>待确认<else/>已完成</if></span>
+                    </td>
+                  </tr>
+
+                  <gt name="status" value="1">
+                  <tr>
+                    <th>负责人：</th>
+                    <td>
+                      <span class="table-form-text">{$name}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>负责人联系方式：</th>
+                    <td>
+                      <span class="table-form-text">{$mobile}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>实际<eq name="type" value="2">保养<else/>维修</eq>日期：</th>
+                    <td>
+                      <span class="table-form-text">{$oper_time}</span>
+                    </td>
+                  </tr>
+                  <notempty name="imgs">
+                  <tr>
+                    <th>确认凭证：</th>
+                    <td>
+                      <dl class="uploadimg-container">
+                        <dd class="imgwrap-container">
+                        <volist name="img" id="img_i">
+                          <div class="imgwrap">
+                            <img class="img-rounded" src="{$img_i}">
+                          </div>
+                        </volist>
+                        </dd>
+                      </dl>
+                    </td>
+                  </tr>
+                  </notempty>
+                  </gt>
+
+                  <tr>
+                    <th>房间：</th>
+                    <td>
+                      <span class="table-form-text">{$num}&nbsp;间</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <td>
+
+                      <dl class="gezi-container">
+                        <dt class="gezi-title">
+                        <i class="btn_icon btn_kq_icon btn_icon_bottom"></i>
+                        </dt>
+                        <dd  class="gezi-group">
+
+                        <div id="kq_height" class="pc_kq_height">
+                          <volist name="room_arr" id="room">
+                            <button type="button" class="rooms btn <eq name="room.status" value="4">on</eq>" data="{$room.room_sno}" data-status="{$room.status}">{$room.room_sno}</button>
+                          </volist>
+                        </div>
+
+                <div style="margin-top:20px;display:none;" class="room_info">
+                <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th>房间号：</th>
+                    <td><span class="table-form-text rno"></span></td>
+                  </tr>
+                  <tr>
+                    <th>净化器类型：</th>
+                    <td><span class="table-form-text e1type"></span></td>
+                  </tr>
+                  <tr>
+                    <th>监控器类型：</th>
+                    <td><span class="table-form-text e2type"></span></td>
+                  </tr>
+                  <tr>
+                    <th>安装时间：</th>
+                    <td><span class="table-form-text installtime"></span></td>
+                  </tr>
+
+                  <eq name="type" value="2">
+                    <tr>
+                      <th>累计保养次数：</th>
+                      <td><span class="table-form-text all_count"></span></td>
+                    </tr>
+                    <tr>
+                      <th>上次保养时间：</th>
+                      <td><span class="table-form-text ctime"></span></td>
+                    </tr>
+                  <else/>
+                    <tr>
+                      <th>酒店反馈：</th>
+                      <td><span class="table-form-text note"></span></td>
+                    </tr>
+                  </eq>
+
+                  <tr>
+                    <th><eq name="type" value="2">保养<else/>维修</eq>方式：</th>
+                    <td><span class="table-form-text eo_type"></span></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+                        </dd>
+                        <dd><i class="max_btn_icon btn_kq_icon btn_icon_bottom"></i></dd>
+                      </dl>
+                    </td>
+                  </tr>
+                  
+                  <notempty name="roll_back">
+                  <volist name="roll_back" id="rback">
+                      <tr style="color:red;">
+                        <th>打回原因：</th>
+                        <td><span class="table-form-text">{$rback.content}</span></td>
+                      </tr>
+                  </volist>
+                  </notempty>
+
+                  <tr>
+                      <th></th>
+                      <td>
+                        <button type="button" class="btn btn-quxiao back">返回</button>
+                      </td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <!-- 内容 结束 -->
+    </div>
+    </block>
+<block name="js">
+<script type="text/javascript">
+  $(document).ready(function(){
+    /***房间数量超出一排显示下拉开关***/
+    function but_show(){
+      var kg_btn = $("#kq_height");
+      var btn_icon =$(".btn_kq_icon");
+      var btn_length = kg_btn.children(".btn").length;
+      var btn_num =parseInt(kg_btn.width() / 110);
+      if(btn_length > btn_num){
+        btn_icon.addClass("btn_block");
+        btn_icon.removeClass("btn_none");
+      }else {
+        btn_icon.addClass("btn_none");
+        btn_icon.removeClass("btn_block");
+      }
+    }
+    but_show();
+    /***********浏览器窗口宽度发生变化时执行************/
+    $(window).resize(function() {
+      but_show();
+
+    });
+
+    /********房间下拉图标和向上关闭图标切换********/
+    $(function(){
+      var on_num = 0;
+      $(".btn_kq_icon").click(function(){
+        var this_icon =  $(".btn_kq_icon");
+        if(on_num == 0){
+          this_icon.removeClass("btn_icon_bottom");
+          $("#kq_height").removeClass("pc_kq_height");
+          this_icon.addClass("btn_icon_top");
+          on_num = 1;
+        }else if(on_num == 1){
+          $("#kq_height").addClass("pc_kq_height");
+          this_icon.addClass("btn_icon_bottom");
+          this_icon.removeClass("btn_icon_top");
+          on_num = 0;
+        }
+      })
+    });
+  });
+
+$(".rooms").click(function(){
+  $(".rooms").removeClass("pitch_on");
+  $(this).addClass("pitch_on");
+ //是否已经安装  hasClass检查被选元素是否包含指定的 class
+  var hcid = {$id};
+  var type = {$type};
+  //var status={$status};
+  var status = $(this).attr("data-status");
+  var rno  = $(this).attr("data");
+  $.post("{:U('get_room_info')}",{hc_id:hcid,room_sno:rno,type:type,status:status},function(re_data){
+    re_data = eval("("+re_data+")");
+    $(".rno").text(rno);
+    $(".e1type").text(re_data.data.e1_name);
+    $(".e2type").text(re_data.data.e2_name);
+    $(".installtime").text(re_data.data.install_time);
+    /*if(type == 2){*/
+      $(".all_count").text(re_data.data.all_count);
+      $(".ctime").text(re_data.data.ctime);
+    /*}else{*/
+      $(".note").text(re_data.data.note);
+    /*}*/
+
+    if(status == 4){
+      $(".eo_type").text(re_data.data.type_name);
+    }else{
+      $(".eo_type").text("");
+    }
+    
+    $(".room_info").show();
+  });
+})
+</script>
+</block>

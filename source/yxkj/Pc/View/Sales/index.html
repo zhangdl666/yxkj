@@ -1,0 +1,363 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>销售统计</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        .container .article #main {
+            background-color: transparent;
+        }
+
+        .danzi {
+           padding: 0;
+        }
+        .danzi li{
+            margin-left: 0;
+        }
+        .xs_danzi .danzi li {
+            width: calc(16.6% - 7px)!important;
+        }
+        .xs_danzi {
+            margin-bottom: 5px;
+        }
+        .breadcrumb {
+            margin-bottom: 5px;
+        }
+        .xs_danzi {
+            padding-bottom: 10px;
+        }
+        .btn {
+            padding: 0px;
+            border: 0px;
+        }
+        .danzi li .danzinum {
+            color: #ff8a05;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        /*@media screen and (max-width: 1199px) and (min-width: 1000px){*/
+            /*.danzi .dan_icon {*/
+                /*display: none;*/
+            /*}*/
+        /*}*/
+    </style>
+</block>
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <li class="on">销售统计</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main">
+        <div class="xs_danzi">
+            <ul class="clearfix danzi xiaoshoutongji">
+                <li value="1">
+                    <!--点击选择LI的这个元素，给下面div加xs_click，如下-->
+                    <div class="danzidata xs_click">
+                        <i class="icon xs_ico_01 dan_icon"></i>
+                        <div class="danzinum">¥<span>{$salenum|default='0.00'}</span></div>
+                        <div class="danziname">销售额</div>
+                    </div>
+                </li>
+                <li value="2">
+                    <div class="danzidata ">
+                        <i class="icon xs_ico_02 dan_icon"></i>
+                        <div class="danzinum" style="color: #16c3ee"><span>{$hotelnum|default='0'}</span>个</div>
+                        <div class="danziname">酒店数</div>
+                    </div>
+                </li>
+                <li value="3">
+                    <div class="danzidata ">
+                        <i class="icon xs_ico_03 dan_icon"></i>
+                        <div class="danzinum" style="color: #01cb9c"><span>{$roomnum|default='0'}</span>个</div>
+                        <div class="danziname">客房数</div>
+                    </div>
+                </li>
+                <li value="4">
+                    <div class="danzidata ">
+                        <i class="icon xs_ico_04 dan_icon"></i>
+                        <div class="danzinum" style="color: #ad77ff"><span>{$pronum|default='0'}</span>个</div>
+                        <div class="danziname">产品数</div>
+                    </div>
+                </li>
+                <li value="5">
+                    <div class="danzidata">
+                        <i class="icon xs_ico_05 dan_icon"></i>
+                        <div class="danzinum" style="color: #ff698c"><span>{$contnum|default='0'}</span>个</div>
+                        <div class="danziname">合同数</div>
+                    </div>
+                </li>
+                <li value="6">
+                    <div class="danzidata">
+                        <i class="icon xs_ico_06 dan_icon"></i>
+                        <div class="danzinum" style="color: #bea694"><span>{$typenum|default='0'}</span>个</div>
+                        <div class="danziname">渠道数</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- 导航 开始 -->
+        <!--<ul class="clearfix subnav xiaoshoutongji">-->
+            <!--<li><a>销售统计</a></li>-->
+            <!--<li class="on" value="1"><a rel="link" class="active">销售额</a></li>-->
+            <!--<li value="2"><a rel="link">酒店数</a></li>-->
+            <!--<li value="3"><a rel="link">客房数</a></li>-->
+            <!--<li value="4"><a rel="link">产品数</a></li>-->
+            <!--<li value="5"><a rel="link">合同数</a></li>-->
+            <!--<li value="6"><a rel="link">渠道数</a></li>-->
+        <!--</ul>-->
+        <!-- 导航 结束 -->
+
+
+        <!-- 内容 开始 -->
+        <div class="subpage xiaoshoutongji01">
+            <div class="subpage-block">
+                <ul class="screening-container">
+                    <li class="ssqy on">
+                        <div class="col left">所属区域：</div>
+                        <div class="col right screening-btns" id="provice">
+                            <div class="ssqy-btns">
+                                <button class="btn on" value="" id="all-provice">全部</button>
+                                <button class="btn" value="北京">北京</button>
+                                <button class="btn" value="天津">天津</button>
+                                <button class="btn" value="河北">河北</button>
+                                <button class="btn" value="山西">山西</button>
+                                <button class="btn" value="内蒙古">内蒙古</button>
+                                <button class="btn" value="辽宁">辽宁</button>
+                                <button class="btn" value="吉林">吉林</button>
+                                <button class="btn" value="黑龙江">黑龙江</button>
+                                <button class="btn" value="上海">上海</button>
+                                <button class="btn" value="江苏">江苏</button>
+                                <button class="btn" value="浙江">浙江</button>
+                                <button class="btn" value="安徽">安徽</button>
+                                <button class="btn" value="福建">福建</button>
+                                <button class="btn" value="江西">江西</button>
+                                <button class="btn" value="山东">山东</button>
+                                <button class="btn" value="河南">河南</button>
+                                <button class="btn" value="湖北">湖北</button>
+                                <button class="btn" value="湖南">湖南</button>
+                                <button class="btn" value="广东">广东</button>
+                                <button class="btn" value="广西">广西</button>
+                                <button class="btn" value="海南">海南</button>
+                                <button class="btn" value="重庆">重庆</button>
+                                <button class="btn" value="四川">四川</button>
+                                <button class="btn" value="贵州">贵州</button>
+                                <button class="btn" value="云南">云南</button>
+                                <button class="btn" value="西藏">西藏</button>
+                                <button class="btn" value="陕西">陕西</button>
+                                <button class="btn" value="甘肃">甘肃</button>
+                                <button class="btn" value="青海">青海</button>
+                                <button class="btn" value="宁夏">宁夏</button>
+                                <button class="btn" value="新疆">新疆</button>
+                                <button class="btn" value="香港">香港</button>
+                                <button class="btn" value="澳门">澳门</button>
+                                <button class="btn" value="台湾">台湾</button>
+                                <button class="btn" value="国外">国外</button>
+                                <a class="show-more"></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="qdry">
+                        <div class="col left" style="padding-bottom: 10px">渠道人员：</div>
+                        <div class="col right screening-btns" id="qd">
+                            <button class="btn on" value="0" id="all_qudao">全部</button>
+                            <button class="btn" value="1">内聘</button>
+                            <button class="btn" value="2">个人</button>
+                            <button class="btn" value="3">团队</button>
+                        </div>
+                    </li>
+                    <li class="sdtime">
+                        <div class="col left" style="padding-bottom: 10px">起止时间：</div>
+                        <div class="col right">
+                            <button class="btn on">全部</button>
+                            &ensp;<input type="text" class="editdate" name="" id="startTime">
+                            &ensp;~&ensp;
+                            <input type="text" class="editdate" name="" id="endTime">
+                        </div>
+                    </li>
+                    <li class="jsms" style="display: none">
+                        <div class="col left"  style="padding-bottom: 10px">结算模式：</div>
+                        <div class="col right screening-btns jiesuanmoshi">
+                            <button class="btn on" value="0">全部</button>
+                            <foreach name="data" item="vos">
+                                <button class="btn" style="padding: 0 10px;    margin: 0 10px;" value="{$vos.id}">{$vos.biaoshi}</button>
+                            </foreach>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 统计页面 -->
+            <div class="sales">
+            </div>
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/laydate/laydate.js"></script>
+    <script type="text/javascript">
+        var Slaes = {};
+        var saleId; // 销售统计ID
+        var provice;  // 区域
+        var qdId; // 渠道ID
+        var htID; //合同id
+        var jsmsID;
+        // 起止时间
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+
+        // 加载页面
+        Slaes.count = function () {
+            var startTime = $("#startTime").val();
+            var endTime = $("#endTime").val();
+
+            $.get('/Pc/Sales/count', {
+                saleid: saleId,
+                provice: provice,
+                qdid: qdId,
+                starttime: startTime,
+                endtime: endTime,
+                htId: htID,
+                jid:jsmsID,
+            }, function (f) {
+                $(".sales").html(f);
+            }, 'html')
+        };
+
+        // 加载页面
+        Slaes.counts = function () {
+            saleId = 1;
+            $.get('/Pc/Sales/count', {saleid: saleId,}, function (f) {
+                $(".sales").html(f);
+            }, 'html')
+        };
+
+
+        // 筛选统计
+        $("ul.xiaoshoutongji").on("click", "li", function () {
+            $("#all-provice").addClass('on').siblings().removeClass('on')
+            $("#all_qudao").addClass('on').siblings().removeClass('on')
+            $("#startTime").val('');
+            $("#endTime").val('');
+            $(".danzidata").removeClass('xs_click')
+            $(this).find('div:first').addClass('xs_click');
+//            alert('111');
+            // 销售统计id
+            saleId = $(this).attr('value');
+            if(saleId == 5){
+                $(".jsms").show();
+            }else{
+                $(".jsms").hide();
+            }
+            if(saleId == 3){
+                $(".sdtime").hide();
+            }else{
+                $(".sdtime").show();
+            }
+            if(saleId == 6){
+                $(".ssqy").hide();
+            }else{
+                $(".ssqy").show();
+            }
+            $.get('/Pc/Sales/count', {
+                saleid: saleId,
+            }, function (f) {
+                $(".sales").html(f);
+            }, 'html')
+        });
+        // 结算模式
+        $(".jiesuanmoshi").on("click", "button", function () {
+            if(saleId == 5){
+                $(".jsms").show();
+            }else{
+                $(".jsms").hide();
+            }
+            jsmsID = $(this).attr('value');
+            Slaes.count();
+        })
+        // 筛选区域
+        $("#provice").on("click", 'button', function () {
+            provice = $(this).attr('value');
+            Slaes.count();
+        });
+        // 筛选渠道
+        $("#qd").on("click", 'button', function () {
+            qdId = $(this).attr('value');
+            Slaes.count();
+        });
+
+        $(function () {
+            saleId = 1;
+            Slaes.counts();
+            // 日期展示
+            laydate.render({
+                elem: '#startTime' //指定元素
+                , done: function (value, date, endDate) {
+                    var startTime = $("#startTime").val();
+                    var endTime = $("#endTime").val();
+                    if(startTime && endTime) {
+                        if (startTime > endTime) {
+                            //墨绿深蓝风
+                            layer.alert('开始时间不能大于结束时间', {
+                                skin: 'layui-layer-molv' //样式类名
+                                , closeBtn: 0
+                            })
+                            return
+                        }
+                    }
+                    if (endTime.length != 0) {
+                        $.get('/Pc/Sales/count', {
+                            saleid: saleId,
+                            provice: provice,
+                            qdid: qdId,
+                            jid:jsmsID,
+                            starttime: startTime,
+                            endtime: endTime
+                        }, function (f) {
+                            $(".sales").html(f);
+                        }, 'html')
+                    }
+                }
+            });
+            laydate.render({
+                elem: '#endTime' //指定元素
+                , done: function (value, date, endDate) {
+                    var startTime = $("#startTime").val();
+                    var endTime = $("#endTime").val();
+                    if (startTime.length == 0) {
+                        //墨绿深蓝风
+                        layer.alert('请选择开始时间', {
+                            skin: 'layui-layer-molv' //样式类名
+                            , closeBtn: 0
+                        })
+                    } else {
+                        if(startTime && endTime){
+                            if (startTime > endTime) {
+                                //墨绿深蓝风
+                                layer.alert('开始时间不能大于结束时间', {
+                                    skin: 'layui-layer-molv' //样式类名
+                                    , closeBtn: 0
+                                })
+                                return
+                            }
+                        }
+
+                        $.get('/Pc/Sales/count', {
+                            saleid: saleId,
+                            provice: provice,
+                            qdid: qdId,
+                            jid:jsmsID,
+                            starttime: startTime,
+                            endtime: endTime
+                        }, function (f) {
+                            $(".sales").html(f);
+                        }, 'html')
+                    }
+                }
+            });
+        })
+
+    </script>
+</block>

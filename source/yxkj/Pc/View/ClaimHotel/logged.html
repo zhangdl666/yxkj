@@ -1,0 +1,460 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>
+        <if condition="$id neq ''">
+            酒店认领编辑
+            <else/>
+            酒店录入
+        </if>
+    </title>
+    <link rel="stylesheet" href="__PUBLIC__/Layui/css/layui.css" media="all">
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <if condition="$id neq ''">
+            <li class="on">酒店认领编辑</li>
+            <else/>
+            <li class="on">酒店录入</li>
+        </if>
+    </ol>
+</block>
+<block name="css">
+    <style>
+        .kefangleixings input {
+            width: 60px;
+            height: 28px;
+            margin-top: 5px;
+            margin-left: 10px;
+            float: right;
+        }
+        .kefangleixings label{
+            margin-right: 20px;
+            line-height: 38px;
+        }
+    </style>
+
+</block>
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title">酒店认领编辑</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+
+
+        <!-- 内容 开始 -->
+        <div class="subpage jiudianxinzeng">
+            <form id="">
+                <div class="subpage-block">
+                    <table class="table table-bordered table-form">
+                        <tbody>
+                        <tr>
+                            <th><span class="text-orange">*</span>酒店名称：</th>
+                            <td><input type="text" name="name" value="{$Hotel.name}"></td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>酒店类型：</th>
+                            <td>
+                                <select name="ht_id" id="ht_id">
+                                    <foreach name="HotelType" item="vos">
+                                        <option value="{$vos.id}"
+                                        <if condition="$Hotel['ht_id'] eq $vos['id']">selected="selected"</if>
+                                        >{$vos.name}</option>
+                                    </foreach>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>客房数：</th>
+                            <td><input type="text" name="room_num" value="{$Hotel.room_num}" readonly="readonly"
+                                       disabled="disabled" id="room_numsss"></td>
+                        </tr>
+                        <tr>
+                            <th>客房类型：</th>
+                            <td class='kefangleixings'>
+                                <volist name="RoomType" id="hrts">
+                                    <label class="checkbox-container kefangleixing kef" data-type="checkbox"
+                                    <notempty name="hrts.room_num">checked</notempty>
+                                    >
+                                    <input type="checkbox" name="hrtname[]" value="{$hrts.id}"
+                                    <notempty name="hrts.room_num">checked</notempty>
+                                    >
+                                    <i class="icon icon01 i_radio"></i>
+                                    <span class="checkbox_txt">{$hrts.name}<input type="text" name="room_nums[]" class="room_num" maxlength="5" value="{$hrts.room_num}" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"></span>
+                                    </label>
+                                </volist>
+                            </td>
+
+                        </tr>
+                        <tr class="suoshudiqu">
+                            <th><span class="text-orange">*</span>所属地区：</th>
+                            <td id="city">
+                                <select class="prov" name="provice">
+                                    <option></option>
+                                </select>
+                                <select class="city" disabled="disabled" name="city">
+                                    <option></option>
+                                </select>
+                                <select class="dist" disabled="disabled" name="county">
+                                    <option></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>详细地址：</th>
+                            <td><input type="text" name="area" value="{$Hotel.area}"></td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>联系方式：</th>
+                            <!--<td><input type="text" name="tell" value="{$Hotel.tell}" placeholder="号码格式1XXXXXXXXXX或XXX-XXXXXXXX"></td>-->
+                            <td><input type="text" name="tell" value="{$Hotel.tell}" ></td>
+                        </tr>
+                        <tr>
+                            <th>酒店图片：</th>
+                            <td>
+                                <dl class="uploadimg-container">
+                                    <dd class="imgwrap-container imgsrc">
+                                        <foreach name="Hotel.img" item="img">
+                                            <if condition="$img neq '' ">
+                                                <div class="imgwrap">
+                                                    <img class="img-rounded src_file" src="{$img}">
+                                                    <ul class="imgoprate">
+                                                        <a>
+                                                            <li data-oprate="detele" class="deletes" value="{$img}"><i
+                                                                    class="icon"></i></li>
+                                                        </a>
+                                                    </ul>
+                                                </div>
+                                            </if>
+                                        </foreach>
+                                    </dd>
+                                    <a>
+                                        <dt id="test1">
+                                            <div class="item btn-upload" v-show="Hotel.img.length==0"
+                                                 id="hc_file"></div>
+                                        </dt>
+                                    </a>
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>商务负责人：</th>
+                            <td><input type="text" name="shang_name" value="{$Hotel.shang_name}"></td>
+                        </tr>
+                        <tr>
+                            <th>商务负责电话：</th>
+                            <td><input type="text" name="shang_tell" value="{$Hotel.shang_tell}"></td>
+                        </tr>
+                        <tr>
+                            <th>酒店总经理：</th>
+                            <td><input type="text" name="all_name" value="{$Hotel.all_name}"></td>
+                        </tr>
+                        <tr>
+                            <th>总经理电话：</th>
+                            <td><input type="text" name="all_tell" value="{$Hotel.all_tell}"></td>
+                        </tr>
+                        <tr>
+                            <th>财务负责人：</th>
+                            <td><input type="text" name="money_name" value="{$Hotel.money_name}"></td>
+                        </tr>
+                        <tr>
+                            <th>财务负责人电话：</th>
+                            <td><input type="text" name="money_tell" value="{$Hotel.money_tell}"></td>
+                        </tr>
+                        <tr>
+                            <th>工程负责人：</th>
+                            <td><input type="text" name="project_name" value="{$Hotel.project_name}"></td>
+                        </tr>
+                        <tr>
+                            <th>工程负责人电话：</th>
+                            <td><input type="text" name="project_tell" value="{$Hotel.project_tell}"></td>
+                        </tr>
+                        <tr>
+                            <th>认领状态：</th>
+                            <td><span class="table-form-text">
+                                <if condition="$Hotel['is_get'] eq 1">已认领<else/>未认领</if>
+                            </span> &nbsp;&nbsp;&nbsp;
+                                <span class="table-form-text">
+                                <if condition="$date neq ''">
+                                    认领有效期:剩余{$date}日
+                                </if>
+                                </span></td>
+                        </tr>
+                        <tr>
+                            <th>认领人：</th>
+                            <td><span class="table-form-text">{$Hotel.hotel_user_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>签约状态：</th>
+                            <td><span class="table-form-text">
+                                <if condition="$Hotel['is_sign'] eq 1">已签约<else/>未签约</if>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <th>历史销售人员：</th>
+                            <td><span class="table-form-text">{$Hotel.sale_name}</span></td>
+                        </tr>
+                        <tr>
+                            <th>酒店状态：</th>
+                            <td><span class="table-form-text">
+                                <if condition="$Hotel['status'] eq 1">
+                                    营业中
+                                    <else/>
+                                    已结业
+                                </if>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <input type="hidden" value="{$id}" id="id">
+                                <input type="hidden" value="{$HotelGetId}" id="HotelGetId">
+                                <input type="hidden" value="{$Hotel['sale_id']}" id="HotelUserId">
+                                <input type="hidden" value="{$Hotel['status']}" id="status">
+                                <div class="imghiddensrc">
+                                    <foreach name="Hotel.img" item="img">
+                                        <if condition="$img neq ''">
+                                            <input type="hidden" name="img[]" value="{$img}">
+                                        </if>
+                                    </foreach>
+                                </div>
+                                <button type="button" class="btn btn-tijiao" onclick="loggedHotel.addHotel()">提交
+                                </button>
+                                <button type="button" class="btn btn-quxiao quxiao">取消</button>
+                                <neq name="Hotel.is_sign" value="1">
+                                    <button type="button" class="btn btn-quxiao quxiaorenling">取消认领</button>
+                                </neq>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__JS__/jquery.cityselect.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Layui/layui.js"></script>
+    <script type="text/javascript">
+        $(".quxiaorenling").click(function () {
+            layer.confirm('你确定要取消认领该酒店吗?', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var url = '/Pc/ClaimHotel/userNoClaim';
+                var data = {};
+                data.id = $("#id").val();
+                $.post(url, data, function (data) {
+                    if (data.code == 0) {
+                        $(".btn-tijiao").attr("disabled", true);
+                        $(".btn-quxiao").attr("disabled", true);
+                        layer.msg(data.message, {time: 1500, offset: 0, icon: 1});
+                        setTimeout(function () {
+                            window.location.href = '/Pc/ClaimHotel/index';
+                        }, 1500)
+                    } else {
+                        $(".btn-tijiao").attr("disabled", false);
+                        $(".btn-quxiao").attr("disabled", false);
+                        layer.msg(data.message, {time: 1500, offset: 0, icon: 2});
+                    }
+                });
+            }, function () {
+                layer.closeAll()
+            });
+        })
+
+        // 删除图片
+        $(".deletes").click(function () {
+            // 删除div
+            $(this).closest('.imgwrap').remove();
+            var srcs = $(this).attr('value');
+            // 删除隐藏域
+            i = 0;
+            $('input[name="img[]"]').each(function () {
+                if (srcs == $(this).val()) {
+                    $(this).remove();
+                    return false;
+                }
+                i++;
+            });
+
+        })
+        // 上传图片
+        layui.use('upload', function () {
+            var upload = layui.upload;
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#test1' //绑定元素
+                , accept: 'images' //允许上传的文件类型
+                , url: '{:U("upload_file",array("img_dir"=>"Hcfile"))}' //上传接口
+                , done: function (res) {
+                    if (res.status == 1) {
+                        var classUrl = res.data;
+                        var splitUrl = classUrl.split('/')[4];
+                        var classdur = splitUrl.split('.')[0];
+                        var html = '<div class="imgwrap ' + classdur + '">\n' +
+                            '<img class="img-rounded" src="' + res.data + '">\n' +
+                            '<ul class="imgoprate">\n' +
+                            '<a><li data-oprate="detele" class="delete"><i class="icon deletes" value="' + classdur + '"></i></li></a>\n' +
+                            '</ul>\n' +
+                            '</div>';
+                        var htmls = '<input type="hidden" name="img[]" value="' + res.data + '" class="' + classdur + '">';
+                        $(htmls).appendTo('.imghiddensrc');
+                        $(html).appendTo('.imgsrc');
+                    } else {
+                        layer.msg(res.msg, {time: 1000, offset: 0, icon: 2});
+                    }
+                }
+                , error: function () {
+                }
+            });
+        });
+
+        $("body").on("click", '.deletes', function () {
+            var classUrl = $(this).attr('value');
+            $("." + classUrl).remove();
+        });
+
+
+        $(document).ready(function () {
+            var ids = "{$Hotel.id}";
+            if (ids) {
+                var county = "{$Hotel.county}"
+                if(county){
+                    $("#city").citySelect({
+                        prov: "{$Hotel.provice}",
+                        city: "{$Hotel.city}",
+                        dist: "{$Hotel.county}",
+                        nodata: "none"
+                    });
+                }else{
+                    $(".dist").hide();
+                    $("#city").citySelect({
+                        prov: "{$Hotel.provice}",
+                        city: "{$Hotel.city}",
+                        nodata: "none"
+                    });
+                }
+            } else {
+                $("#city").citySelect({
+                    prov: "北京",
+                    city: "东城区",
+                    dist: "",
+                    nodata: "none"
+                });
+            }
+
+        });
+
+        $(".quxiao").click(function () {
+            window.location.href = '/Pc/ClaimHotel/index';
+        })
+
+
+        // 输入框加数字
+        /*$('.room_num').bind('input propertychange', function () {
+            // 查看用户是否勾选了前面的框,如果没有勾选上,则加上
+            var room_nums = 0;
+            $(".checkbox-container").each(function () {
+                if ($(this).attr('checked') == 'checked') {
+                    var num = $(this).find('.checkbox_txt input').val();
+                    if (num) {
+                        room_nums += parseInt(num);
+                    } else {
+                    }
+                }
+            });
+            $("input[name='room_num']").val(room_nums);
+        });*/
+        $('.room_num').blur(function(){
+            if($(this).val() != 0 && $(this).val() != '' && parseInt($(this).val())>0){
+                $(this).parents('.checkbox-container').attr('checked','checked');
+                $(this).parents('.checkbox-container').find("input[type='checkbox']").prop('checked',true);
+                var room_nums = 0;
+                $(".kefangleixing").each(function(){
+                if($(this).find("input[type='checkbox']").prop('checked')){
+                  room_nums += parseInt($(this).find("input[type='text']").val());
+                }
+                });
+                $('input[name="room_num"]').val(room_nums);
+            }else {
+                if($(this).parents('.checkbox-container').attr('checked') == 'checked'){
+                    $(this).parents('.checkbox-container').removeAttr('checked');
+                    $(this).parents('.checkbox-container').find("input[type='checkbox']").prop('checked',false);
+                    var room_nums = 0;
+                    $(".kefangleixing").each(function(){
+                        if($(this).find("input[type='checkbox']").prop('checked')){
+                            room_nums += parseInt($(this).find("input[type='text']").val());
+                        }
+                    });
+                    $('input[name="room_num"]').val(room_nums);
+                }
+                layer.open({content:'房间数量输入不正确',time:1000});
+                $(this).val("");
+            }
+        });
+
+        var loggedHotel = {};
+        /**
+         * 增加酒店
+         */
+        loggedHotel.addHotel = function () {
+            var data = {};
+            data.name = $('input[name="name"]').val();
+            data.ht_id = $('#ht_id').val();
+            data.room_num = $('input[name="room_num"]').val();
+            data.provice = $('select[name="provice"]').val();
+            data.city = $('select[name="city"]').val();
+            data.county = $('select[name="county"]').val();
+            data.area = $('input[name="area"]').val();
+            data.tell = $('input[name="tell"]').val();
+            data.shangname = $('input[name="shang_name"]').val();
+            data.shang_tell = $('input[name="shang_tell"]').val();
+            data.all_name = $('input[name="all_name"]').val();
+            data.all_tell = $('input[name="all_tell"]').val();
+            data.money_name = $('input[name="money_name"]').val();
+            data.money_tell = $('input[name="money_tell"]').val();
+            data.project_name = $('input[name="project_name"]').val();
+            data.project_tell = $('input[name="project_tell"]').val();
+            data.hotel_user_id = $('#HotelUserId').val();
+            data.status = $("#status").val();
+            data.id = $("#id").val();
+            data.HotelGetId = $('#HotelGetId').val();
+            // 组装数据(客房类型)
+            data.dataroom = [];
+            var i = 0;
+            $(".kef").each(function () {
+                if ($(this).attr('checked') == 'checked') {
+                    var num = $(this).find('.checkbox_txt input').val();
+                    data.dataroom[i] = num;
+                } else {
+                    data.dataroom[i] = 0;
+                }
+                i++;
+            });
+            data.img = [];
+            i = 0;
+            $('input[name="img[]"]').each(function () {
+                data.img[i] = $(this).val();
+                i++;
+            });
+            var url = '/Pc/Hotel/logged';
+            $.post(url, data, function (data) {
+                if (data.code == 1) {
+                    layer.msg(data.message, {time: 1000, offset: 0, icon: 2});
+                } else {
+                    // 获取最新id
+                    $("#HotelGetId").attr('value', data.data);
+                    $(".btn-tijiao").attr("disabled", true)
+                    layer.msg(data.message, {time: 1000, offset: 0, icon: 1});
+                    setTimeout(function () {
+                        window.location.href = document.referrer;
+                    }, 1000)
+                }
+            })
+        }
+    </script>
+</block>

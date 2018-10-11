@@ -1,0 +1,294 @@
+<extend name="Public:index"/>
+<block name="css">
+    <link href="__PUBLIC__/dateItor/css/mobiscroll.css" rel="stylesheet"/>
+    <link href="__PUBLIC__/dateItor/css/mobiscroll_date.css" rel="stylesheet"/>
+    <style type="text/css">
+        .gc_main{
+            margin-top: 0.82rem;
+        }
+        .fj_gezi_cont .i_radio {
+            border-radius: 0.14rem !important;
+            margin-top: 0.05rem;
+        }
+        .hotel_selects {
+            padding: 0.3rem 0rem 0.2rem 3rem;
+            background-color: white;
+        }
+
+        .jiudianxuanze{
+            width: 2.93rem;
+            height: 0.64rem;
+            border-radius: 0.1rem;
+            background-color: #f4f4f4;
+            border: none;
+            color: #666;
+        }
+
+        .select_yx_div{
+            width: 6rem;
+            height: 0.6rem;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+        }
+        .yunxing{
+            background-color: white;
+            padding: 0.2rem 0rem;
+        }
+        .header .right .icon {
+            margin-right: 0rem;
+        }
+        select {
+            width: 6rem;
+            padding-left: 0.2rem;
+            font-size: 0.3rem;
+            line-height: 0.6rem;
+            text-align: left;
+            /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+            border: solid 1px #000;
+            /*很关键：将默认的select选择框样式清除*/
+            appearance:none;
+            -moz-appearance:none;
+            -webkit-appearance:none;
+            /*在选择框的最右侧中间显示小箭头图片*/
+            background: url("") no-repeat scroll right center transparent;
+            /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+            padding-right: 14px;
+        }
+
+
+        /*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+        select::-ms-expand { display: none; }
+        .hotel_selects {
+            text-align: left;
+            padding: 0.1rem 0;
+            height: 0.8rem;
+            background-color: white;
+        }
+        select {
+            direction:inherit;
+        }
+        select option {
+            direction: inherit;
+        }
+        .select_css_div{
+            width: 6rem;
+            height: 0.6rem;
+            margin: 0 auto;
+            background-color: #f4f4f4;
+        }
+        .editdate{
+            background-color: #f4f4f4!important;
+            margin: 0.2rem 0;
+        }
+        .screening_condition_wrap .screening {
+            margin-left: 0rem!important;
+        }
+        .screening_condition_wrap label {
+            padding-right: 0.2rem;
+            font-size: 0.3rem;
+            line-height: 1.1rem;
+            padding-left: 0rem;
+            float: none;
+            margin-right: 0.1rem;
+        }
+        .screening_condition_wrap select, .screening_condition_wrap input {
+            width: 5.50rem;
+            height: 0.7rem;
+            text-align: center;
+        }
+        .checkbox-container span.checkbox_txt {
+            font-size: 0.24rem;
+        }
+        .left_kq{float: left;}
+        .right_kq{float: right;}
+        .kq_title{margin-top: 0.2rem}
+        .kq_title div{
+            width: 50%;
+            text-align: left;
+            font-size: 0.24rem;
+            line-height: 0.35rem;
+            color: rgb(78,78,78);
+        }
+        .kq_title div span{
+            font-size: 0.22rem;
+            color: rgb(142,142,142);
+            text-align: center;
+        }
+        .kq_icon{
+            width: 0.3rem;
+            height: 0.3rem;
+            float: left;
+            margin-right: 0.15rem;
+            vertical-align: middle;
+        }
+        .kq_icon_01{
+            background: url("__IMG__/kq_001.png");
+            background-size: 100%;
+        }
+        .kq_icon_02{
+            background: url("__IMG__/kq_002.png");
+            background-size: 100%;
+        }
+        .form_data .form_item .left {
+           border-bottom: 0.01rem solid #f4f4f4;
+        }
+        .gezi-container .gezi-group .btn {
+            padding: 0;
+            float: left;
+            margin: 6px 3px 0;
+            width: calc(16.666% - 6px);
+            height: 24px;
+            background-color: #f4f4f4;
+            border: none;
+        }
+
+        .btn_icon{
+            width: 0.37rem;
+            height: 0.27rem;
+            display: block;
+            margin: 0.18rem auto;
+        }
+        .btn_min_top{
+
+        }
+
+        .btn_icon_top .icon{background: url('__IMG__/contraction.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            top: 0.05rem;}
+        .btn_icon_bottom .icon{background: url('__IMG__/open.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            top: 0.05rem;}
+        .pc_kq_height{
+            height: 0.88rem;
+            overflow: hidden;
+        }
+        .pitch_on{
+            background: url("__IMG__/pitch_on.png") no-repeat;
+            background-size: 40%;
+            background-position: right bottom;
+            color: #4e4e4e!important;
+        }
+    </style>
+</block>
+<block name="title">
+    <title>开启情况</title>
+</block>
+<block name="main">
+    <div class="header">
+        <div class="left back"><i class="icon w_0000_00 w_00_08"></i><a href="{:U('/Wx/Index/index')}">返回</a></div>
+        <!--<div class="center">开启情况</div>-->
+        <if condition="($role eq 5)">
+        <div class="right">
+            <i class="icon onclick_input w_0004_04 w_04_10"></i></div>
+            <else/>
+            <div class="right">
+                <i class="icon onclick_input w_0004_04 w_04_10"></i></div>
+        </if>
+    </div>
+    <div class="main_body anzhuangxiangx gc_main">
+        <div class="screening_condition_wrap" style="z-index: 99;display: none;top: -8.36rem; ">
+            <div class="screening_condition input_position">
+                    <dl class="screening screetime">
+                        <dd>
+                            <div style="text-align: center;border-bottom: 1px solid #f4f4f4;"><label>选择日期</label><input id="USER_AGEO" value="<?php echo date('Y-m-d',time())?>" type="text" name="" id="stime"
+                                                                                                                        class="editdate" readonly>
+                            </div>
+                        </dd>
+                    </dl>
+            </div>
+        </div>
+        <if condition="($role eq 5)">
+        <div class="hotel_selects" data-relation="hotel_type" style="border-bottom: 0.22rem solid #f4f4f4;padding-top: 0.15rem;height: 0.6rem">
+            <div class="select_css_div">
+                <select name="hotels" id="hotelsss" style="height: 0.6rem;">
+                    <foreach name="hotelData" item="do">
+                        <option value="{$do.id}">{$do.name}</option>
+                    </foreach>
+                </select>
+                <i class="icon w_0000_00 w_00_12" style="position: relative;top: -0.48rem;right: -5.6rem;"></i>
+            </div>
+        </div>
+        </if>
+        <div class="sales">
+        </div>
+
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+    <script src="__PUBLIC__/dateItor/js/mobiscroll_date.js" charset="gb2312"></script>
+    <script src="__PUBLIC__/dateItor/js/mobiscroll.js"></script>
+    <script type="text/javascript">
+        $('.screening_condition_wrap').click(function(){
+            $('.screening_condition_wrap').animate({top: '-8.36rem'}, function () {
+                $('.screening_condition_wrap').css('display', 'none');
+            });
+        })
+        $("#USER_AGEO").focus(function () {
+            document.activeElement.blur();
+        });
+
+        var currYear = (new Date()).getFullYear();
+        var opt = {};
+        opt.date = {preset: 'date'};
+        opt.datetime = {preset: 'datetime'};
+        opt.time = {preset: 'time'};
+        opt.default = {
+            theme: 'android-ics light', //皮肤样式
+            display: 'modal', //显示方式
+            mode: 'scroller', //日期选择模式
+            dateFormat: 'yy-mm-dd',
+            lang: 'zh',
+            showNow: true,
+            nowText: "今天",
+            startYear: currYear - 50, //开始年份
+            endYear: currYear + 10, //结束年份
+            onSelect: function (textVale, inst) { //选中时触发事件
+                $('.screening_condition_wrap').animate({top: '-8.36rem'}, function () {
+                    $('.screening_condition_wrap').css('display', 'none');
+                });
+                // 指定筛选日期
+                var hotel_id= $('select[name="hotels"]').val();
+                $.get('getDevicesInfo', {date: textVale,hotel_id:hotel_id}, function (f) {
+                    $(".sales").html(f)
+                }, 'html')
+            }
+        };
+        $("#USER_AGEO").mobiscroll($.extend(opt['date'], opt['default']));
+
+        var kaiguan = true;
+        $('div.right').on('click', function () {
+            if (kaiguan) {
+                kaiguan = false;
+                $('.screening_condition_wrap').css('display', 'block');
+                $('.screening_condition_wrap').animate({top: '0.84rem'});
+            } else {
+                kaiguan = true;
+                $('.screening_condition_wrap').animate({top: '-8.36rem'}, function () {
+                    $('.screening_condition_wrap').css('display', 'none');
+                });
+            }
+        });
+
+        $(function () {
+            $("#hotelsss option:first").prop("selected", 'selected');
+            var hotel_id = $("#hotelsss").val();
+            $.get('getDevicesInfo',{'hotel_id':hotel_id},function (f) {
+                $(".sales").html(f);
+            },'html')
+        });
+
+
+        $('select[name="hotels"]').on('change', function () {
+            var hotel_id = $(this).val();
+            if(hotel_id){
+//                $(".right").show();
+                $.get('getDevicesInfo',{'hotel_id':hotel_id},function (f) {
+                    $(".sales").html(f);
+                },'html')
+            }
+        });
+    </script>
+</block>

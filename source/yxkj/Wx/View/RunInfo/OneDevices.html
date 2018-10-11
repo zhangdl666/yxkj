@@ -1,0 +1,122 @@
+<!-- 图表 开始 -->
+<div class="jinhua_block">
+    <div class="white_panel">
+        <dl class="gezi-container fj_gezi_cont">
+            <dt class="left gezi-title" style="text-align-last: justify;padding: 0.18rem 0.4rem;">
+
+            </dt>
+        </dl>
+        <div class="white_body" id="onemain">
+        </div>
+    </div>
+</div>
+<!-- 图表 结束 -->
+<!--设备运行情况 开始-->
+<div id="shebeiyunxing">
+    <div class="col-xs-6">
+        <div class="media">
+            <div class="media-left">
+                <i class="icon w_0002_02 w_02_09"></i>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading yello"><span class="bigfont yello">{$data['hours']|default=0}</span>小时</h4>
+                今日累计开启时长
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div class="media">
+            <div class="media-left">
+                <i class="icon w_0002_02 w_02_11"></i>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading zise"><span class="bigfont zise">{$data['pm']|default=0}</span>室内PM2.5</h4>
+                历史平均室内空气质量
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div class="media">
+            <div class="media-left">
+                <i class="icon w_0002_02 w_02_10"></i>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading lanse"><span class="bigfont lanse">{$data['allDay']|default=0}</span>天</h4>
+                累计开启天数
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div class="media">
+            <div class="media-left">
+                <i class="icon w_0002_02 w_02_12"></i>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading qianhong"><span class="bigfont qianhong">{$data['day']|default=0}</span>天</h4>
+                累计运行天数
+            </div>
+        </div>
+    </div>
+</div>
+<!--设备运行情况 结束-->
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+    <script type="text/javascript">
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChartOne = echarts.init(document.getElementById('onemain'));
+        optionOne = {
+            // 手机端点击展示数据
+            tooltip: {
+                trigger: 'axis',
+            },
+            grid: {
+                left: '5%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: {$date}
+                }
+            ],
+            legend: {
+                data: ['pm走势图']
+            },
+            yAxis: [
+                {
+                    name:'PM2.5(μg/m3)',
+                <if condition="$rpm25 neq ''">
+                type: 'value',
+            min: 0,
+            max: 100,
+        <else/>
+        type: 'value',
+        </if>
+                }
+            ],
+            series: [
+                {
+                    name: 'pm走势图',
+                    type: 'line',
+                    smooth: true,
+                    // 背景颜色设置
+                    lineStyle: {
+                        normal: {
+                            width: 1.5,
+                            // 线条颜色
+                            color: ['#75CE68']
+                        }
+                    },
+                    data: {$rundatas},
+                    color: ['#75CE68']
+                },
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChartOne.setOption(optionOne);
+    </script>
+</block>

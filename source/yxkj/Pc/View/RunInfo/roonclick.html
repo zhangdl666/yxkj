@@ -1,0 +1,128 @@
+<div class="shouyitongji_block jhxg_danzi2">
+    <ul class="clearfix danzi">
+        <li>
+            <div class="danzidata dan1">
+                <i class="icon dan_icon i_dan17"></i>
+                <div class="danzinum"><span>{$data['hours']|default=0}</span>小时</div>
+                <div class="danziname">今日累计开启时长</div>
+            </div>
+        </li>
+        <li>
+            <div class="danzidata dan2">
+                <i class="icon dan_icon i_dan18"></i>
+                <div class="danzinum"><span>{$pm}</span>μg/m3</div>
+                <div class="danziname">历史平均室内PM2.5</div>
+            </div>
+        </li>
+        <li>
+            <div class="danzidata dan3">
+                <i class="icon dan_icon i_dan19"></i>
+                <div class="danzinum"><span>{$data['allDay']|default=0}</span>天</div>
+                <div class="danziname">累计开启天数</div>
+            </div>
+        </li>
+        <li>
+            <div class="danzidata dan4">
+                <i class="icon dan_icon i_dan20"></i>
+                <div class="danzinum"><span>{$data['day']|default=0}</span>天</div>
+                <div class="danziname">累计运行天数</div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="panel panel-default timesale">
+    <div class="panel-heading"><h1>当天室内空气质量统计</h1></div>
+    <div class="panel-body">
+        <div class="panel" id="onemain" style="height: 350px">
+
+        </div>
+    </div>
+    <!--</div>-->
+    <!--</div>-->
+    <script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+    <script type="text/javascript">
+        laydate.render({
+            elem: '#Time' //指定元素
+            , done: function (value, date, endDate) {
+                $.get('/RunInfo/getOneData', {date: value}, function (f) {
+                    $(".sales").html(f)
+                }, 'html')
+            }
+        });
+        // 点击展示数据
+        $(".room").click(function () {
+            var value = $(this).attr('value');
+            console.log(value);
+            $.get('/Pc/RunInfo/getOneDevice', {mac: value}, function (f) {
+                $(".sales").html(f);
+            }, 'html')
+        });
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChartOne = echarts.init(document.getElementById('onemain'));
+        optionOne = {
+            tooltip: {
+                trigger: 'axis',
+            },
+//        toolbox: {
+//            show: true,
+//            feature: {
+//                mark: {show: true},
+//                dataView: {show: true, readOnly: false},
+//                magicType: {
+//                    show: true,
+//                    type: ['pie', 'funnel']
+//                },
+//                restore: {show: true},
+//                saveAsImage: {show: true}
+//            }
+//        },
+            grid: {
+                left: '5%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: {$date}
+                }
+            ],
+            legend: {
+//            data: ['清洗']
+            },
+            yAxis: [
+                {
+                    name:'空气指数PM2.5(μg/m3)',
+                <if condition="$rpm25 neq ''">
+                type: 'value',
+            min: 0,
+            max: 100,
+        <else/>
+        type: 'value',
+        </if>
+                }
+            ],
+            series: [
+                {
+//                name: '清洗',
+                    type: 'line',
+                    smooth: true,
+                    // 背景颜色设置
+                    lineStyle: {
+                        normal: {
+                            width: 1.5,
+                            // 线条颜色
+                            color: ['#75CE68']
+                        }
+                    },
+                    data: {$pm25},
+                    color: ['#75CE68']
+                },
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChartOne.setOption(optionOne);
+    </script>

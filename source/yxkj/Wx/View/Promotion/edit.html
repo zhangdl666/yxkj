@@ -1,0 +1,330 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title><empty name="data['id']">新增<else/>编辑</empty>促销</title>
+</block>
+<block name="css">
+	<link rel="stylesheet" href="__CSS__/LCalendar.css">
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />-->
+	<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0, minimum-scale=1.0,maximum-scale=2.0,user-scalable=no;">
+	<style>
+		.form_data_cx li input {
+			width: 88vw;
+			height: 25px;
+			text-align: left;
+			padding-left: 0.2rem;
+		}
+		input{
+			border: none;
+			text-align: right;
+		}
+		.form_data .form_item .radio_div input {
+			width: 5vw;
+			height: auto;
+			text-align: left;
+			padding-left: 0.2rem;
+		}
+		.form_data .form_item .left {
+			color: rgb(51,51,51);
+			min-width: 1.3rem;
+			padding-left: 0.2rem;
+		}
+		.textarea {
+			background-color: #ffffff;
+			border: 1px solid #cccccc;
+			-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+			-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+			box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+			-webkit-transition: border linear .2s, box-shadow linear .2s;
+			-moz-transition: border linear .2s, box-shadow linear .2s;
+			-o-transition: border linear .2s, box-shadow linear .2s;
+			transition: border linear .2s, box-shadow linear .2s;
+			padding: 4px 6px;
+			font-size: 14px;
+			line-height: 20px;
+			color: #555555;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
+			vertical-align: middle;
+			outline: none;
+			height: 400px;
+			margin-left:-0.2rem!important;
+			width: 100%!important;
+		}
+		.textarea img{
+			width:100%!important;
+			height: auto!important;
+		}
+		.date_ctrl {
+			vertical-align: middle;
+			background-color: #d5d8df;
+			color: #000;
+			margin: 0;
+			height: auto;
+			width: 100%;
+			position: absolute;
+			left: 0;
+			top: 6.5rem;
+			z-index: 9901;
+			overflow: hidden;
+			-webkit-transform: translate3d(0, 0, 0);
+			transform: translate3d(0, 0, 0);
+		}
+		.none{
+			display: none!important;
+		}
+		.gearDatetime{font-size: 0.18rem;}
+	</style>
+	<link href="http://cdn.staticfile.org/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="__CSS__/jquery.qeditor.css" type="text/css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</block>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left "><a href="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+		</div>
+
+		<div class="main_body">
+			<div class="form_data_wrap renlingchakan">
+				<form method="post" action="{:U('handle')}">
+					<ul class="form_data form_data_cx" >
+						<li class="layoutlr form_item">
+							<!--<div class="left">促销名称</div>-->
+							<div class="right">
+								<div><input placeholder="请输入促销名称" type="text" name="title" value="{$data.title}"></div>
+							</div>
+						</li>
+						<input type="hidden" name="id" value="{$data.id}">
+						<li class="layoutlr form_item">
+							<div class="left">促销状态：</div>
+							<div class="right radio_div">
+								<label><input   type="radio"   value="1"  style="margin-right: 0.1rem;"  name="status"   <if condition="$data.status eq '1' || $data.status eq ''">checked="checked"
+							</if> /><span style="margin-right: 0.2rem">上架</span></label>
+								<label><input   type="radio"   value="0"   style="margin-right: 0.1rem;"  name="status"  <if condition="$data.status eq '0'">checked="checked"</if>
+								/><span style="margin-right: 0.2rem">下架</span></label>
+							</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</li>
+						<li class="layouttb form_item" style="background-color: #ffffff;padding-left: 0.2rem">
+							<div class="top">促销图片：</div>
+							<div class="bottom">
+								<dl class="uploadimg-container clearfix">
+									<dd class="imgwrap-container">
+										<if condition="$data['img'] neq ''">
+											<div class='imgwrap'>
+												<img class='img-rounded' src="{$data.img}">
+												<ul class='imgoprate'>
+													<li data-oprate='detele'><i class='icon'></i></li>
+												</ul>
+											</div>
+											<else/>
+										</if>
+									</dd>
+									<dt>
+									<div class="item btn-upload" v-show="uploadImgs.length==0"></div>
+									<div style="margin: 10px 0px 5px;color:#ccc;">(建议上传图片不大于2M,格式大小为1920*100)</div>
+									</dt>
+								</dl>
+								<input type="hidden" name="img" value="{$data.img}" class="img_val">
+							</div>
+						</li>
+						<li class="layoutlr form_item" style="margin-top: 0.3rem;padding-top: 0.2rem;padding-left: 0.2rem;padding-right: 0.2rem">
+							<tr >
+								<p>正文:</p>
+								<textarea id="post_body" name="content" class="textarea">{$data.content}</textarea>
+							</tr>
+						</li>
+					</ul>
+					<div class="form_data_btns" style="width: 96%;margin-left: 2%;">
+						<button class="btn maxbtn ajax-post">提交</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+<block name="js">
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script type="text/javascript" src="__JS__/LCalendar.js"></script>
+	<script src="__JS__/jquery-1.9.1.min.js"></script>
+	<script src="__JS__/jquery.qeditor.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$("#post_body").qeditor({});
+		var toolbar = $("#post_body").parent().find(".qeditor_toolbar");
+		var link = $("<a href='#'><span class='icon-smile' title='smile'></span></a>");
+		link.click(function(){
+			alert("Put you custom toolbar event in here.");
+			return false;
+		});
+		toolbar.append(link);
+
+		$('.ajax-post').click(function () {
+			var form = $(this).closest('form');//如果找到form,说明提交的是表单
+			var url = form.length==0?$(this).attr('url'):form.attr('action');  //找到form上的action属性作为url
+			var param = form.length==0?$('.id').serialize():form.serialize();  //获取form上的所有请求参数
+			var value =  CKEDITOR.instances[instance].getData();
+			var valuer = nbsp2Space(value);
+			alert(valuer);return false;
+			var params =param+"&content="+valuer;
+			// alert(params);return false;
+			//>>2.1发送post请求
+			$.post(url, params, function (data) {
+				//>>2.使用layer提示
+				showLayer(data);
+			},'json');
+			return false;//取消默认提交
+		})
+
+		function nbsp2Space(str) {
+			var arrEntities = {'nbsp' : ' '};
+			return str.replace(/&(nbsp);/ig, function(all, t){return arrEntities[t]})
+		}
+				$('.fa-link').addClass("none");
+				$('.fa-italic').addClass("none");
+				$('.qe-pre').addClass("none");
+				$('.qe-blockquote').addClass("none");
+				$('.qe-ol').addClass("none");
+				$('.fa-list-ol').addClass("none");
+				$('.fa-list-ul').addClass("none");
+				$('.qe-heading').addClass("none");
+				$('.fa-minus').addClass("none");
+				$('.fa-arrows-alt').addClass("none");
+		// 		/* 日期控件 */
+			/*$("#stime").focus(function(){
+				document.activeElement.blur();
+			});
+			var calendars = new LCalendar();
+			var date = new Date();
+			calendars.init({
+				'trigger': '#stime', //标签id
+				'type': 'datetime', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+				'minDate': date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(), //最小日期
+				//'maxDate': date.getFullYear() + '-' + 12 + '-' + 31 //最大日期
+			});
+			$("#etime").focus(function(){
+				document.activeElement.blur();
+			});
+			var calendare = new LCalendar();
+			calendare.init({
+				'trigger': '#etime', //标签id
+				'type': 'datetime', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+				'minDate': date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(), //最小日期
+				//'maxDate': date.getFullYear() + '-' + 12 + '-' + 31 //最大日期
+			});*/
+		wx.config({
+			debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			appId: '{$appId}', // 必填，公众号的唯一标识
+			timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+			nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+			signature: '{$signature}',// 必填，签名，见附录1
+			jsApiList: ['chooseImage','uploadImage','scanQRCode','hideAllNonBaseMenuItem'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		});
+		wx.ready(function(){
+			wx.error(function(res){
+				layer.open({
+					content: res.errMsg
+					,btn: '我知道了'
+				});
+				return false;
+			});
+
+			wx.hideAllNonBaseMenuItem();
+
+			/*wx.checkJsApi({
+			 jsApiList: ['chooseImage','uploadImage','scanQRCode'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+			 success: function(res) {
+			 // 以键值对的形式返回，可用的api值true，不可用为false
+			 // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+			 }
+			 });*/
+
+			window.onload=function () {
+				document.addEventListener('touchstart',function (event) {
+					if(event.touches.length>1){
+						event.preventDefault();
+					}
+				})
+				var lastTouchEnd=0;
+				document.addEventListener('touchend',function (event) {
+					var now=(new Date()).getTime();
+					if(now-lastTouchEnd<=300){
+						event.preventDefault();
+					}
+					lastTouchEnd=now;
+				},false)
+			}
+
+
+		});
+		$(".btn-upload").click(function(){
+			//选择图片
+			wx.chooseImage({
+				count: 1, // 默认9
+				sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+				sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+				success: function (res) {
+					var localIds = res.localIds;
+					//上传图片
+					wx.uploadImage({
+						localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+						isShowProgressTips: 1, // 默认为1，显示进度提示
+						success: function (res) {
+							var serverId = res.serverId; // 返回图片的服务器端ID
+							//上传的图片保存到本地服务器
+							$.post("{:U('saveWXFile')}",{img_dir:'ClaimHotel',media_id:serverId},function(res_data){
+								if(typeof res_data != "object"){
+									var res_data = eval("("+res_data+")");
+								}
+								$('.imgwrap-container').empty();
+
+								$(".imgwrap-container").append("<div class='imgwrap'>\
+                              <img class='img-rounded' src='"+res_data.data+"'>\
+                              <ul class='imgoprate'>\
+                                <li data-oprate='toleft'><i class='icon'></i></li>\
+                                <li data-oprate='detele'><i class='icon'></i></li>\
+                                <li data-oprate='toright'><i class='icon'></i></li>\
+                              </ul>\
+                            </div>");
+								count_img();
+							})
+						}
+					});
+				}
+			});
+		});
+		function count_img(){
+			var img_val = "";
+			$(".imgwrap-container div").each(function(i){
+				if(i != 0){
+					img_val += ",";
+				}
+				img_val += $(this).find("img").attr("src");
+			})
+			$(".img_val").val(img_val);
+		}
+
+		/*图片移动、删除*/
+		$('.imgwrap-container').on('click', '[data-oprate]', function() {
+			var _imgwrap = $(this).closest('.imgwrap');
+			switch($(this).attr('data-oprate')) {
+				case 'toleft':
+					_imgwrap.prev().before(_imgwrap);
+					//console.log('左边', $(this).attr('data-oprate'))
+					break;
+				case 'detele':
+					_imgwrap.remove();
+					break;
+				case 'toright':
+					_imgwrap.next().after(_imgwrap);
+					break;
+			}
+			count_img();
+		});
+	</script>
+</block>

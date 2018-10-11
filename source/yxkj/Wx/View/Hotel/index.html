@@ -1,0 +1,181 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>酒店管理</title>
+</block>
+<block name="css">
+	<style>
+		.loading{text-align: center;}
+		.aaa{
+			height:27px;
+			width:200px;
+			margin-top:-8px;
+		}
+		.bbb{
+			text-align:center
+		}
+		select::-ms-expand { display: none; }
+        select{
+            appearance:none;
+            -moz-appearance:none;
+            -webkit-appearance:none;
+            border: 0px;
+            background-color:#ffffff; 
+        }
+		.w_00_12{
+			position: relative;
+			top: -0.07rem;
+			left: 0.1rem;
+		}
+    .renling .renling_item .showdata li{margin-bottom: 0.1rem;width: 4.6rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;}
+		.search_container .search_input_wrap {
+			padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+		}
+	</style>
+</block>
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main">
+		<!-- header 开始 -->
+		<div class="header">
+			<div class="left"><a href="{:U('Index/index')}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+			<div class="center"></div>
+			<div class="right">
+				<a href="{:U('logged')}"><?php
+            $role_id = $_SESSION['USERINFO']['role_id'];
+            if($role_id!=9){
+                echo '<i class="icon add"></i>新增';
+            }
+            ?></a>
+			</div>
+		</div>
+		<!-- header 结束 -->
+		<div class="main_body">
+			<!--<form class="clearfix searchbar" action="{:U('index')}"  method="post">-->
+				<div class="search_container">
+					<!--<div class="bbb">-->
+						<div class="search_input_wrap">
+						<!--<input class="aaa" type="text" name="like" style="border: none;"  placeholder="输入酒店名进行关键字搜索">-->
+						<div class="search_input"><div style="float: right"><i class="icon w_0000_00 w_00_01"></i></div><div class="contenteditable on" contenteditable="" placeholder="{$wlike|default='输入酒店名进行关键字搜索'}"></div></div>
+						<!--<button class="btn btn-sm onlineBtn">搜索</button>-->
+						</div>
+						<!--</div>-->
+					<ul class="layoutlr search_select">
+						<li class="col">
+							<span class="selected" id="claim">
+								<select name="is_get">
+									<option value="3">全部</option>
+									<option value="-1" <eq name="wis_get" value="-1">selected</eq>>未认领</option>
+									<option value="1" <eq name="wis_get" value="1">selected</eq>>已认领</option>
+								</select>
+							</span><i class="icon w_0000_00 w_00_12"></i>
+						</li>
+						<li class="col">
+							<span class="selected" id="hotle">
+								<select name="ht_id">
+									<option value="">酒店类型</option>
+									<volist name="hotel" id="vo">
+										<option value="{$vo.id}" <eq name="vo.id" value="$wht_id">selected</eq>>{$vo.name}</option>
+									</volist>
+								</select>
+							</span><i class="icon w_0000_00 w_00_12"></i>
+						</li>
+					</ul>
+				</div>
+			<!--</form>-->
+			<ul class="renling">
+				<notempty name="row">
+				<volist name="row" id="row">
+						<li class="layoutlr renling_item">
+								<div class="left">
+									<div class="goodsimg">
+										<img src="<?php if($row['img']!=null){echo $row['img'];}else{echo '__IMG__/head.png';}?>" >
+									</div>
+								</div>
+								<div class="right">
+									<a href="{:U('jumpsel',array('id'=>$row['id']))}">
+									<ul class="showdata">
+										<!--<li >-->
+											<!--<i class="icon w_0007_07 w_07_01" style="vertical-align: middle;margin-right: 0.1rem;"></i>-->
+											<!--酒店ID：{$row.sn} </li>-->
+										<li style="margin-top: 0.1rem">
+											<i class="icon w_0007_07 w_07_02" style="vertical-align: middle;margin-right: 0.1rem;top: -0.06rem;"></i>
+											酒店名称：{$row.name} </li>
+										<li>
+											<i class="icon w_0007_07 w_07_03" style="vertical-align: middle;margin-right: 0.1rem;top: -0.06rem;"></i>
+											酒店星级：{$row.tname}</li>
+										<li>
+											<i class="icon w_0007_07 w_07_04" style="vertical-align: middle;margin-right: 0.1rem;top: -0.06rem;"></i>
+											认领状态：<?php if($row['is_get']==1){echo '已认领';}else{echo '未认领';}?></li>
+									</ul>
+									</a>
+								</div>
+
+						</li>
+				</volist>
+			<else/>
+                <li class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></li>
+            </notempty>
+			</ul>
+		</div>
+	</div>
+	<!-- 主体内容 结束 -->
+	<!--弹窗开始-->
+	<div class="selected_layer hide" data-relation="hotel_type">
+		<ul class="options_container" data-relation="hotel_type">
+			<li>
+				<span class="selected">全部</span>
+				<input type="hidden" name="is_get" value="3" class="selectedval">
+			</li>
+			<li>
+				<span class="selected">未认领</span>
+				<input type="hidden" name="is_get" value="-1" class="selectedval">
+			</li>
+			<li>
+				<span class="selected">已认领</span>
+				<input type="hidden" name="is_get" value="1" class="selectedval">
+			</li>
+		</ul>
+	</div>
+	<div class="selected_layer hide" data-relation="ht_id">
+		<ul class="options_container" data-relation="ht_id">
+			<li>
+				<span class="selected">全部</span>
+				<input type="hidden" name="ht_id" value="" class="selectedval">
+			</li>
+			<volist name="hotel" id="vo">
+				<li>
+					<span class="selected">{$vo.name}</span>
+					<input type="hidden" name="ht_id" value="{$vo.id}" class="selectedval">
+				</li>
+			</volist>
+		</ul>
+	</div>
+	<!--弹窗结束-->
+	<!--装页码的div-->
+	<div style="display:none" key="1" class="key"></div>
+	<div style="display:none" key="1" class="list-page"></div>
+</block>
+
+<block name="js">
+	<script type="text/javascript">
+		$("select[name='is_get']").change(function(){
+			select_fun();
+		})
+		$("select[name='ht_id']").change(function(){
+			select_fun();
+		})
+
+		function select_fun(){
+			var type = $("select[name='is_get'] option:selected").val();
+			var ht_id = $("select[name='ht_id'] option:selected").val();
+			var sousuo=$('.search_input').text();
+			self.location.href ='/Wx/Hotel/index/type/'+type+'/hotel/'+ht_id+'/like/'+sousuo;
+		}
+        $(".contenteditable").blur( function() {
+        	select_fun();
+        });
+	</script>
+</block>

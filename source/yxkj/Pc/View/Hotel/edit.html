@@ -1,0 +1,191 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>合同管理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>合同管理</a></li>
+        <li class="on">新增合同基础信息</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main">
+        <!-- 导航 开始 -->
+        <ul class="clearfix subnav hetongnav">
+            <li><a><i class="icon"></i><span class="cur_title">新增酒店</span></a></li>
+        </ul>
+        <!-- 导航 结束 -->
+
+
+        <!-- 内容 开始 -->
+        <div class="subpage jiudianxinzeng">
+            <form  action="{:U('logged')}">
+                <div class="subpage-block">
+                    <table class="table table-bordered table-form">
+                        <tbody>
+                        <tr>
+                            <th><span class="text-orange">*</span>酒店名称：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>酒店类型：</th>
+                            <td>
+                                <select>
+                                    <option>d所得到的多多多</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>客房数：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+
+                        <tr>
+                            <th>客房类型：</th>
+                            <td>
+                                <label class="checkbox-container" data-type="radio">
+                                    <input type="radio" name="kefangleixing">
+                                    <i class="icon icon01 i_radio"></i>
+                                    <span class="checkbox_txt">大床（100）</span>
+                                </label>
+                                <label class="checkbox-container" data-type="radio">
+                                    <input type="radio" name="kefangleixing">
+                                    <i class="icon icon01 i_radio"></i>
+                                    <span class="checkbox_txt">标准间（200）</span>
+                                </label>
+                                <label class="checkbox-container" data-type="radio">
+                                    <input type="radio" name="kefangleixing">
+                                    <i class="icon icon01 i_radio"></i>
+                                    <span class="checkbox_txt">套房（400）</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr class="suoshudiqu">
+                            <th><span class="text-orange">*</span>所属地区：</th>
+                            <td>
+                                <select>
+                                    <option>d所得到的多多多</option>
+                                </select>
+                                <select>
+                                    <option>d所得到的多多多</option>
+                                </select>
+                                <select>
+                                    <option>d所得到的多多多</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>详细地址：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th><span class="text-orange">*</span>联系方式：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th>商务负责人：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th>酒店图片：</th>
+                            <td>
+                                <dl class="uploadimg-container">
+                                    <dd class="imgwrap-container">
+                                        <div class="imgwrap">
+                                            <img class="img-rounded" src="../../imgs/a.jpg">
+                                            <ul class="imgoprate">
+                                                <li data-oprate="toleft"><i class="icon"></i></li>
+                                                <li data-oprate="detele"><i class="icon"></i></li>
+                                                <li data-oprate="toright"><i class="icon"></i></li>
+                                            </ul>
+                                        </div>
+                                        <div class="imgwrap">
+                                            <img class="img-rounded" src="../../imgs/b.jpg">
+                                            <ul class="imgoprate">
+                                                <li data-oprate="toleft"><i class="icon"></i></li>
+                                                <li data-oprate="detele"><i class="icon"></i></li>
+                                                <li data-oprate="toright"><i class="icon"></i></li>
+                                            </ul>
+                                        </div>
+                                    </dd>
+                                    <dt>
+                                        <div class="item btn-upload" v-show="uploadImgs.length==0"></div>
+                                    </dt>
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>商务负责电话：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th>酒店总经理：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th>酒店总经理电话：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th>商务负责人：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th>总经理电话：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th>财务负责人：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th>财务负责人电话：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th>工程负责人：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th>工程负责人电话：</th>
+                            <td><input type="text" name=""></td>
+                        </tr>
+                        <tr>
+                            <th>指定销售人员：</th>
+                            <td>
+                                <select>
+                                    <option>d所得到的多多多</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>酒店状态：</th>
+                            <td>
+                                <label class="checkbox-container" data-type="radio">
+                                    <input type="radio" name="jiudianzhuangtai">
+                                    <i class="icon icon01 i_radio"></i>
+                                    <span class="checkbox_txt">营业中</span>
+                                </label>
+                                <label class="checkbox-container" data-type="radio">
+                                    <input type="radio" name="jiudianzhuangtai">
+                                    <i class="icon icon01 i_radio"></i>
+                                    <span class="checkbox_txt">已结业</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <button type="button" class="btn btn-tijiao">提交</button>
+                                <button type="button" class="btn btn-quxiao">取消</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+</block>

@@ -1,0 +1,72 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>酒店工作人员管理</title>
+</block>
+
+<block name="top">
+  <ol class="breadcrumb">
+    当前的位置：
+    <li><a>系统设置</a></li>
+    <li class="on">查看角色</li>
+  </ol>
+</block>
+
+<block name="main">
+  <div id="main">
+    <!-- 导航 开始 -->
+    <ul class="clearfix subnav hetongnav">
+      <li><a><i class="icon"></i><span class="cur_title">查看角色</span></a></li>
+    </ul>
+    <!-- 导航 结束 -->
+
+    <!-- 内容 开始 -->
+    <div class="subpage jiudianxinzeng">
+      <form method="post" action="{:U('operation')}">
+        <div class="subpage-block">
+          <table class="table table-bordered table-form">
+           <tr>
+             <th>用户账号：</th>
+             <td><input type="text" value="{$row.name}" disabled='disabled'/></td>
+           </tr>
+            <tr>
+              <th>用户姓名：</th>
+              <td><input type="text" value="{$row.real_name}" disabled='disabled'/></td>
+            </tr>
+            <tr>
+              <th>酒店名：</th>
+              <td><input type="text"  value="{$row.hname}" disabled='disabled'/></td>
+            </tr>
+            <tr>
+              <th>用户类型：</th>
+              <td><input type="text" value="{$row.rname}" disabled='disabled'/></td>
+            </tr>
+            <tr>
+              <th>联系方式：</th>
+              <td>
+                <input type="text" value="{$row.mobile}" disabled='disabled'/>
+              </td>
+            </tr>
+            <tr>
+              <th>绑定微信号：</th>
+              <td>
+                <input type="text" value="{$row.uuid}" disabled='disabled'/>
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td>
+                <empty name="redonly">
+                  <button type="button" class="btn btn-quxiao back">返回</button>
+                <else />
+                </empty>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+    <!-- 内容 结束 -->
+  </div>
+</block>
+

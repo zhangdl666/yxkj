@@ -1,0 +1,353 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>保养维修统计</title>
+</block>
+<block name="css">
+    <link rel="stylesheet" href="__CSS__/LCalendar.css">
+    <style type="text/css">
+        .screening_time {
+            padding-left: 0.56rem;
+            margin-left: 0rem!important;
+        }
+        select {
+            width: auto;
+            padding:0 0.7rem;
+            direction: inherit;
+            color: rgb(102,102,102);
+            font-size: 0.22rem;
+            text-align: center;
+        }
+        select option {
+            direction: inherit;
+            text-align: center;
+        }
+        input{
+            text-align: center;
+        }
+        .xiaoshoue .xiaoshoutongji_echart .right {
+            width: 45%;
+            margin-right: 4%;
+            float: left;
+            margin-top: 0.5rem;
+        }
+
+        .header .right .icon {
+            margin-right: 0rem;
+        }
+
+        /*.screening_condition_wrap select, .screening_condition_wrap input {*/
+            /*width: 4rem;*/
+        /*}*/
+        .btn {
+             width: 3.4rem;
+            height: 0.8rem;
+            margin-left: 0.2rem;
+            margin-right: 0.2rem;
+            font-size: 0.3rem;
+        }
+        .screening_condition_wrap div + div {
+             margin-top: 0rem;
+        }
+        .swiper-container-02 .swiper-tab-nav .swiper-slide {
+            width: calc(50%);
+
+        }
+
+    </style>
+</block>
+<block name="title">
+    <title>维修/保养统计</title>
+</block>
+<block name="main">
+    <!-- 主体内容 开始 -->
+    <div class="main swiper-container-02 xiaoshoutongji">
+        <!-- 【此处嵌套 header】 -->
+        <!-- header 开始 -->
+        <div class="header">
+            <div class="left back"><i class="icon w_0000_00 w_00_08"></i><a href="{:U('Index/index')}">返回</a></div>
+            <!--<div class="center"></div>-->
+            <div class="right"><i class="icon w_0004_04 w_04_10"></i></div>
+        </div>
+
+        <div class="main_body">
+            <!-- 筛选条件 开始 -->
+            <div class="screening_condition_wrap" style="z-index: 99;display: none;top: -8.36rem;">
+                <div class="screening_condition">
+                    <dl class="screening">
+                        <dt>选择地区</dt>
+                        <dd id="provice">
+                            <button id="all-provice" class="btn on" value="">全部</button>
+                            <button class="btn" value="北京">北京</button>
+                            <button class="btn" value="天津">天津</button>
+                            <button class="btn" value="河北">河北</button>
+                            <button class="btn" value="山西">山西</button>
+                            <button class="btn" value="内蒙古">内蒙古</button>
+                            <button class="btn" value="辽宁">辽宁</button>
+                            <button class="btn" value="吉林">吉林</button>
+                            <button class="btn" value="黑龙江">黑龙江</button>
+                            <button class="btn" value="上海">上海</button>
+                            <button class="btn" value="江苏">江苏</button>
+                            <button class="btn" value="浙江">浙江</button>
+                            <button class="btn" value="安徽">安徽</button>
+                            <button class="btn" value="福建">福建</button>
+                            <button class="btn" value="江西">江西</button>
+                            <button class="btn" value="山东">山东</button>
+                            <button class="btn" value="河南">河南</button>
+                            <button class="btn" value="湖北">湖北</button>
+                            <button class="btn" value="湖南">湖南</button>
+                            <button class="btn" value="广东">广东</button>
+                            <button class="btn" value="广西">广西</button>
+                            <button class="btn" value="海南">海南</button>
+                            <button class="btn" value="重庆">重庆</button>
+                            <button class="btn" value="四川">四川</button>
+                            <button class="btn" value="贵州">贵州</button>
+                            <button class="btn" value="云南">云南</button>
+                            <button class="btn" value="西藏">西藏</button>
+                            <button class="btn" value="陕西">陕西</button>
+                            <button class="btn" value="甘肃">甘肃</button>
+                            <button class="btn" value="青海">青海</button>
+                            <button class="btn" value="宁夏">宁夏</button>
+                            <button class="btn" value="新疆">新疆</button>
+                            <button class="btn" value="香港">香港</button>
+                            <button class="btn" value="澳门">澳门</button>
+                            <button class="btn" value="台湾">台湾</button>
+                            <button class="btn" value="国外">国外</button>
+                        </dd>
+                    </dl>
+                    <dl class="screening screening_time" style="padding-bottom: 0.3rem;">
+                        <dt>选择时间</dt>
+                        <dd>
+                            <div style="margin-bottom: 0.2rem;"><label>开始时间</label><input type="text" name="" id="stime" style="background-color: #f4f4f4;" class="editdate" readonly>
+                            </div>
+                            <div><label>结束时间</label><input type="text" name="" id="etime" style="background-color: #f4f4f4;" class="editdate" readonly>
+                            </div>
+                        </dd>
+                    </dl>
+                    <div class="jiudianxuanze">
+                        <div style="margin-bottom: 0.2rem;">
+                            <label>酒店</label>
+                            <select name="hotels" id="hotelsss">
+                                <option value="">--请选择--</option>
+                                <foreach name="hotel" item="vo">
+                                    <option value="{$vo.id}">{$vo.name}</option>
+                                </foreach>
+                            </select>
+                        </div>
+                        <div>
+                            <label>合同</label>
+                            <select name="hetong" id="hetongss">
+                                <option>请选择合同</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="btns">
+                        <button class="btn qks">重置条件</button>
+                        <button class="btn queren">确认</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 筛选条件 结束 -->
+
+            <div class="swiper-container swiper-tab-nav">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide swiper-tab-link on" value="1">
+                        <p class="text">保养统计</p>
+                        <!--<p class="num"><span class="min">￥</span>{$salenum}</p>-->
+                    </div>
+                    <div class="swiper-slide swiper-tab-link" value="2">
+                        <p class="text">维修统计</p>
+                        <!--<p class="num">{$hotelnum}<span class="min">个</span></p>-->
+                    </div>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+
+
+            <div class="swiper-container swiper-tab-page xiaoshoue">
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+    <script type="text/javascript" src="__JS__/LCalendar.js"></script>
+    <script type="text/javascript">
+
+
+        $('#provice .btn').click(function () {
+           $(this).addClass('on').siblings().removeClass('on')
+        });
+
+
+        $("#stime").focus(function () {
+            document.activeElement.blur();
+        });
+        /* 日期控件 */
+        var calendars = new LCalendar();
+        var date = new Date();
+        calendars.init({
+            'trigger': '#stime', //标签id
+            'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+//            'minDate': date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(), //最小日期
+            //'maxDate': date.getFullYear() + '-' + 12 + '-' + 31 //最大日期
+        });
+
+        $("#etime").focus(function () {
+            document.activeElement.blur();
+        });
+        var calendare = new LCalendar();
+        calendare.init({
+            'trigger': '#etime', //标签id
+            'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+//            'minDate': date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(), //最小日期
+            //'maxDate': date.getFullYear() + '-' + 12 + '-' + 31 //最大日期
+        });
+        $(".qks").click(function () {
+            quId = ''; //区域姓名
+            type = ''; //渠道人员
+            ht_id = ''//合同id
+            $("#stime").val('');
+            $("#etime").val('');
+            $('#provice').children('#all-provice').addClass('on').siblings().removeClass('on');
+            $("#hotelsss option:first").prop("selected", 'selected');
+            $("#hetongss option:first").prop("selected", 'selected');
+        })
+        // 筛选所需要的数据
+        var quId; //区域姓名
+        var type; //渠道人员
+        var ht_id //合同id
+        // 起止时间
+        //        var startTime = $("#stime").val();
+        //        var endTime = $("#etime").val();
+        $(".queren").click(function () {
+            var startTime = $("#stime").val();
+            var endTime = $("#etime").val();
+            if (startTime > endTime) {
+                layer.open({
+                    content: '开始时间不能大于结束时间'
+                    , btn: '我知道了'
+                });
+                return false;
+            }
+            $('.swiper-wrapper div').each(function () {
+                if ($(this).hasClass('on')) {
+                    typetongji = $(this).attr('value');
+                }
+            })
+            if (typetongji == 1) {
+                $.get('/Wx/Maintain/lifterRepair', {
+                    startTime: startTime,
+                    endTime: endTime,
+                    quyu: quId,
+                    type: type,
+                    ht_id: ht_id
+                }, function (f) {
+                    $(".xiaoshoue").empty();
+                    $(".xiaoshoue").html(f);
+                }, 'html')
+            } else {
+                $.get('/Wx/RepairCount/lifterRepair', {
+                    startTime: startTime,
+                    endTime: endTime,
+                    quyu: quId,
+                    type: type,
+                    ht_id: ht_id
+                }, function (f) {
+                    $(".xiaoshoue").empty();
+                    $(".xiaoshoue").html(f);
+                }, 'html')
+            }
+            $('.screening_condition_wrap').animate({top: '-8.36rem'}, function () {
+                $('.screening_condition_wrap').css('display', 'none');
+            });
+        })
+
+        $('select[name="hotels"]').on('change', function () {
+            var hotel = $(this).val();
+            if (hotel) {
+                $.post('/Pc/RepairCount/getContaract', {id: hotel}, function (f) {
+                    if (f.code == 1) {
+                        $('select[name="hetong"]').find('option').remove();
+                        var strings = '<option value="">--暂无合同--</option>';
+                        $('select[name="hetong"]').html(strings);
+                        layer.msg(f.message, {time: 1000, offset: 0, icon: 2});
+                    } else {
+                        var strings = '<option value="">--请选择合同--</option>';
+                        for (var i in f.data) {
+                            strings += '<option value="' + f.data[i].id + '">' + f.data[i].name + '</option> ';
+                        }
+                        $('select[name="hetong"]').html(strings);
+                    }
+                })
+            } else {
+                $('select[name="hetong"]').find('option').remove();
+                var strings = '<option value="">--暂无合同--</option>';
+                $('select[name="hetong"]').html(strings);
+            }
+        });
+
+        $("#provice").on('click', 'button', function () {
+            quId = $(this).attr('value');
+//            if(quId){
+                $.post('/Pc/RepairCount/getData', {provice: quId}, function (f) {
+                    if (f.code == 0) {
+                        $('select[name="hotels"]').empty();
+                        var strings = '<option value="">--请选择酒店--</option>';
+                        for (var i in f.data) {
+                            strings += '<option value="' + f.data[i].id + '">' + f.data[i].name + '</option> ';
+                        }
+                        $('select[name="hotels"]').html(strings);
+                    }
+                });
+//            }
+        });
+
+        $('select[name="hetong"]').on('change', function () {
+            ht_id = $(this).val();
+        });
+
+
+        //
+        <!--筛选条件-->
+        var kaiguan = true;
+        $('div.right').on('click', function () {
+            if (kaiguan) {
+                kaiguan = false;
+                $('.screening_condition_wrap').css('display', 'block');
+                $('.screening_condition_wrap').animate({top: '0.84rem'});
+            } else {
+                kaiguan = true;
+                $('.screening_condition_wrap').animate({top: '-8.36rem'}, function () {
+                    $('.screening_condition_wrap').css('display', 'none');
+                });
+            }
+        });
+
+        $('.main').on('click', '.swiper-tab-link', function () {
+            $('.swiper-tab-link').removeClass('on');
+            $(this).addClass('on');
+            var ids = $(this).attr('value');
+            if (ids == 2) {
+                $.get('/Wx/RepairCount/RepairCount', {ids: ids}, function (f) {
+                    $(".xiaoshoue").empty();
+                    $(".xiaoshoue").html(f);
+                }, 'html')
+            } else {
+                $.get('/Wx/Maintain/RepairCount', {ids: ids}, function (f) {
+                    $(".xiaoshoue").empty();
+                    $(".xiaoshoue").html(f);
+                }, 'html')
+            }
+        });
+        $(function () {
+            $.get('/Wx/Maintain/RepairCount', {ids: 1}, function (f) {
+                $(".xiaoshoue").empty();
+                $(".xiaoshoue").html(f);
+            }, 'html')
+        })
+    </script>
+</block>

@@ -1,0 +1,199 @@
+<extend name="Public:index"/>
+<block name="title">
+  <title>合同管理</title>
+</block>
+<block name="css">
+  <style type="text/css">
+    .right{
+      color: #666666!important;
+      font-size: 0.3rem;
+    }
+    .qy_left{
+      width:50%;float: left;color: #666666
+    }
+    .qy_left_title{
+      margin-top: 0.1rem;
+    }
+  </style>
+</block>
+<block name="main">
+  <!-- 主体内容 开始 -->
+  <div class="main swiper-container-01">
+    <div class="header">
+      <div class="left backs" data-url="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+      <!-- <div class="center">合同管理</div> -->
+    
+      <if condition="in_array('HotelContract/hinfo',$method_arr) && ($hc_status eq 0) && empty($einstall)">
+        <div class="right"><a class="s" style="color: white;" href="{:U('editc',array('id'=>$hcid))}"><i class="icon edit"></i>编辑</a></div>
+      </if>
+    </div>
+
+    <div class="main_body">
+      <div class="swiper-container swiper-tab-nav">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-link on" onclick="now_href('{:U('read',array('id'=>$hcid))}')">基础信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('installe',array('id'=>$hcid))}')">安装信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('return_money',array('id'=>$hcid))}')">结算信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('upkeep',array('id'=>$hcid))}')">保养信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('maintain',array('id'=>$hcid))}')">维修信息</div>
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+      </div>
+
+      <div class="swiper-container swiper-tab-page hetongpage">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-content">
+                <div class="hetong_content">
+                  <div class="btns_wrap">
+                    <button class="btn" onclick="now_href('{:U('read',array('id'=>$hcid))}')">酒店信息</button>
+                    <button class="btn" onclick="now_href('{:U('readuser',array('id'=>$hcid))}')">联系人信息</button>
+                    <button class="btn on" onclick="now_href('{:U('readc',array('id'=>$hcid))}')">合同信息</button>
+                  </div>
+
+                  <!-- 合同信息 开始 -->
+                  <div class="form_data_wrap hetongxinxi">
+                    <ul class="form_data">
+                      <li class="layoutlr form_item">
+                        <div class="left">合同名称</div>
+                        <div class="right">{$name}</div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">合同周期</div>
+                        <div class="right"><span>{$stime|date="Y-m-d",###}至{$etime|date="Y-m-d",###}&nbsp;&nbsp;</span>{$period}个月</div>
+                      </li>
+                      <li class="layoutlr form_item qianyuekefang">
+                        <div class="left qy_left_title" style="display: block!important;">签约客房</div>
+                        <div class="right" style="width: 70vw;">
+                          <volist name="hcre_items" id="hcre_item">
+                            <div>
+                              <div class="left qy_left">{$hcre_item.name}:{$hcre_item.r_num}</div>
+                              <div class="right" style="width: 50%; overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin-right: -1.3rem;">{$hcre_item.e1_name}:{$hcre_item.e1_num}</div>
+                            </div>
+                            <div style="width: 100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin-right: -21rem;">{$hcre_item.e2_name}:{$hcre_item.e2_num}</div>
+                          </volist>
+                        </div>
+                        <!--<div class="top">签约客房</div>-->
+                        <!--<div class="bottom">-->
+                        <!--<volist name="hcre_items" id="hcre_item">-->
+                        <!--<p>{$hcre_item.name}:{$hcre_item.r_num}&emsp;净化器{$hcre_item.e1_name}:{$hcre_item.e1_num}&emsp;监控器{$hcre_item.e2_name}:{$hcre_item.e2_num}</p>-->
+                        <!--</volist>-->
+                        <!--</div>-->
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">保养频率</div>
+                        <div class="right">1次/{$maintenance}天</div>
+                      </li>
+                      <li class="layoutlr form_item jiesuanmoshi">
+                        <div class="left">结算模式</div>
+                        <div class="right">
+                          <p>{$at_name}</p>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item jiesuanmoshi">
+                        <div class="left">滞纳金比例</div>
+                        <div class="right">
+                          <p>{$ls_num}‱</p>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item jiesuanmoshi">
+                        <div class="left" style="display:inline!important;line-height: 0.7rem;">产生滞纳金条件</div>
+                        <div class="right" style="text-align: left;width: 60vw">
+                          <p style="font-size: 0.26rem">{$ls_remark}</p>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item jiesuanmoshi">
+                        <div class="left">安装日期</div>
+                        <div class="right">{$oper_time}</p>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item hetongfujian">
+                        <div class="top">合同附件</div>
+                        <div class="bottom">
+                          <dl class="uploadimg-container clearfix">
+                            <dd class="imgwrap-container">
+                              <volist name="himgs" id="himg">
+                              <div class='imgwrap'>
+                                <img class="img-rounded" src="{$himg}">
+                              </div>
+                              </volist>
+                            </dd>
+                          </dl>                          
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- 合同信息 结束 -->
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+<script src="__PUBLIC__/Swiper-3.4.1/js/swiper.jquery.min.js"></script>
+<script type="text/javascript">
+var swiperNav = new Swiper('.swiper-tab-nav', {
+    // pagination: '.swiper-pagination',
+    slidesPerView: 'auto',
+    // centeredSlides: true,
+    // paginationClickable: true,
+    // spaceBetween: 30
+    // slidesPerView: 3,
+    paginationClickable: true,
+    // spaceBetween: 30,
+    onInit: function(swiper) { // 初始化回调函数
+// 
+    },
+    onClick: function(swiper) {
+    swiperPage.slideTo($(swiper.clickedSlide).index(), 500, false);//切换到第一个slide，速度为1秒
+    },
+});
+
+var swiperPage = new Swiper ('.swiper-tab-page', {
+  // loop: true,
+  onInit: function(swiper) { // 初始化回调函数
+
+  },
+  onTouchEnd: function(swiper) { // 初始化回调函数
+    swiperNav.slideTo(swiper.previousIndex, 500, false);//切换到第一个slide，速度为1秒
+    setTimeout(function() {
+      if($('.swiper-tab-link.on').index() != swiperPage.activeIndex) {
+        $('.swiper-tab-link').removeClass('on');
+        $($('.swiper-tab-link')[swiperPage.activeIndex]).addClass('on');
+      }
+    }, 100);
+  },
+});
+
+/* 跳转 */
+function now_href(url){
+  window.location.href = url;
+}
+
+/* 返回 */
+$(".backs").click(function(){
+  window.location.href = "{:U('index')}";
+})
+
+
+//下载
+$(".download").click(function(){
+  var hcid = {$hcid};
+  $.post("{:U('download_file')}",{hcid:hcid,check:1},function(re_result){
+    if(typeof re_result != "object"){
+      re_result = eval("("+re_result+")");
+    }
+    if(re_result.status){
+      window.location.href = "{:U('download_file',array('hcid'=>$hcid))}";
+    }else{
+      layer.open({content:'不存在合同文件',time:2});
+    }
+  })
+  
+});
+</script>
+</block>

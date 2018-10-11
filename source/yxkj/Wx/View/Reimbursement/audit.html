@@ -1,0 +1,118 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>审核报销</title>
+</block>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left backs" data-url="{:U('index',array('type'=>$type))}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+		</div>
+
+		<div class="main_body">
+			<div class="swiper-container swiper-tab-nav daishenhebiaoxiao-nav">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide swiper-tab-link on"><i class="icon w_0006_06 w_06_01"></i>待审核</div>
+					<div class="swiper-slide swiper-tab-link"><i class="icon w_0006_06 w_06_02"></i>待打款</div>
+					<div class="swiper-slide swiper-tab-link"><i class="icon w_0006_06 w_06_03"></i>已打款</div>
+				</div>
+				<!-- Add Pagination -->
+				<div class="swiper-pagination"></div>
+			</div>
+
+
+			<div class="daishenhebiaoxiao-page">
+
+				<div class="form_data_wrap daishenhe">
+					<ul class="form_data">
+						<li class="layoutlr form_item">
+							<div class="left">报销类型</div>
+							<div class="right">{$reimbursement_type_name}</div>
+						</li>
+						<li class="layoutlr form_item baoxiaojine">
+							<div class="left">报销金额</div>
+							<div class="right">
+								<p>￥{$price}</p>
+								<!--<p>本月可报销额度剩余￥2,000.00</p>-->
+							</div>
+						</li>
+
+
+						<li class="layoutlr form_item qianyuekefang">
+							<div class="left">酒店名称</div>
+							<div class="right">{$hotel_name}</div>
+						</li>
+						<li class="layoutlr form_item">
+							<div class="left">合同名称</div>
+							<div class="right">{$hotel_contract_name}</div>
+						</li>
+						<li class="form_item beizhuxinxi">
+							<div class="">备注信息</div>
+							<div class="">{$remark}</div>
+						</li>
+						<li class="form_item biaoxiaorenqk">
+							<div class="">报销人基本情况</div>
+							<div class="" style="font-size: 0.24rem;">
+								<p>累计申请的报销金额 ￥{$total_price}</p>
+								<p>已认领的酒店数 {$claimed_hotel_num}个</p>
+								<p>已签订的合同数 {$sign_contract_num}个</p>
+								<p>合同已回款金额 ￥{$payment_money}</p>
+								<p>基本信息提取时间 {$basic_time|date="Y-m-d H:i:s",###}</p>
+							</div>
+						</li>
+						<li class="form_item beizhuxinxi">
+							<div class="">驳回原因：</div>
+							<div class=""><textarea placeholder="说点什么？" name="decline_remark" id="decline_remark"></textarea></div>
+						</li>
+					</ul>
+					<input type="hidden" name="id" value="{$id}">
+					<div class="form_data_btns btn2">
+						<li class="layoutlr">
+							<div class="left">
+								<button type="button" class="btn maxbtn ajax-posts" flag="2">同意</button>
+							</div>
+							<div class="right">
+								<button type="button" class="btn maxbtn btn_green ajax-posts" flag="4">驳回</button>
+							</div>
+						</li>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+
+<block name="js">
+<script type="text/javascript">
+	//$(function(){
+		$('.ajax-posts').click(function () {
+			var form = $(this).closest('form');//如果找到form,说明提交的是表单
+			var url ='/Wx/Reimbursement/audit' ;  //找到form上的action属性作为url
+			var id = $("input[name='id']").val();
+			var status = $(this).attr('flag');
+			var decline_remark = $("#decline_remark").val();
+			if((status == 4) && ((decline_remark == '') || (decline_remark == undefined))){
+                layer.open({content:'请填写驳回原因',time:2});
+				return false;
+			}
+			//>>2.1发送post请求
+			$.post(url, {id:id,status:status,decline_remark:decline_remark}, function (data) {
+				//>>2.使用layer提示
+                if(typeof data != "object"){
+                    var data = eval("("+data+")");
+                }
+                layer.open({content:data.info,time:2});
+                if (data.status) {  //成功的时候跳转到指定的url地址
+                    location.href = '/Wx/Reimbursement/index'
+                }
+			});
+			return false;//取消默认提交
+		});
+	//});
+
+</script>
+</block>
+

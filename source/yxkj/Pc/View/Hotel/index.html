@@ -1,0 +1,310 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>酒店录入</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        .danzi {
+            padding: 10px 6px 0px;
+        }
+        .panel .panel-heading {
+            padding: 10px 0px 6px 0!important;
+        }
+
+        .jiudianluru .danzi > li {
+            width: calc(20% - 18px);
+        }
+    </style>
+</block>
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <li class="on">酒店查看</li>
+    </ol>
+</block>
+
+<block name="main">
+    <style type="text/css">
+    .btn-warning{margin-left:20px;}
+    </style>
+    <div id="main" class="bgfff jiudianluru">
+        <ul class="clearfix danzi">
+            <li>
+                <div class="danzidata dan1">
+                    <i class="icon dan_icon i_dan5"></i>
+                    <div class="danzinum"><span>{$count.allHotel}</span>家</div>
+                    <div class="danziname">总酒店数</div>
+                </div>
+            </li>
+            <li>
+                <div class="danzidata dan2">
+                    <i class="icon dan_icon i_dan6"></i>
+                    <div class="danzinum"><span>{$count.norHotel}</span>家</div>
+                    <div class="danziname">正常营业酒店数</div>
+                </div>
+            </li>
+            <li>
+                <div class="danzidata dan3">
+                    <i class="icon dan_icon i_dan7"></i>
+                    <div class="danzinum"><span>{$count.wroHotel}</span>家</div>
+                    <div class="danziname">非正常营业酒店数</div>
+                </div>
+            </li>
+            <li>
+                <div class="danzidata dan4">
+                    <i class="icon dan_icon i_dan8"></i>
+                    <div class="danzinum"><span>{$count.yciHotel}</span>家</div>
+                    <div class="danziname">已被认领酒店数</div>
+                </div>
+            </li>
+            <li>
+                <div class="danzidata dan4">
+                    <i class="icon dan_icon i_dan9"></i>
+                    <div class="danzinum"><span>{$count.nciHotel}</span>家</div>
+                    <div class="danziname">未被认领酒店数</div>
+                </div>
+            </li>
+        </ul>
+        <!--<div class="panel panel-default table-datawrap">-->
+        <!--<div class="panel-heading">-->
+        <!--&lt;!&ndash; Single button &ndash;&gt;-->
+        <!--<form class="clearfix searchbar">-->
+        <!--<div class="col">-->
+        <!--<input type="text" class="form-control search" placeholder="输入姓名进行搜索" id="hotelname" value="{$filter.name|default=''}">-->
+        <!--<div class="btn-group">-->
+        <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"-->
+        <!--aria-haspopup="true" aria-expanded="false">-->
+        <!--<span class="text"><span class="default">认领状态</span></span> <span class="caret"></span>-->
+        <!--</button>-->
+        <!--<ul class="dropdown-menu">-->
+        <!--<li><a>Action</a></li>-->
+        <!--<li><a>Another action</a></li>-->
+        <!--<li><a>Something else here</a></li>-->
+        <!--<li role="separator" class="divider"></li>-->
+        <!--<li><a>Separated link</a></li>-->
+        <!--</ul>-->
+        <!--<ul class="dropdown-menu">-->
+        <!--<li><a>Action</a></li>-->
+        <!--<li><a>Another action</a></li>-->
+        <!--<li><a>Something else here</a></li>-->
+        <!--<li role="separator" class="divider"></li>-->
+        <!--<li><a>Separated link</a></li>-->
+        <!--</ul>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col">-->
+        <!--<div class="navbar-form navbar-left">-->
+        <!--<button type="button" class="btn btn-warning searchs">搜索</button>-->
+        <!--<button type="button" class="btn btn-warning">导入</button>-->
+        <!--<button type="button" class="btn btn-warning">下载模板</button>-->
+        <!--<button type="button" class="btn btn-warning" urls="{:U('/Pc/Hotel/logged')}">新增酒店</button>-->
+        <!--</div>-->
+        <!--</form>-->
+        <!--</div>-->
+
+        <!--</div>-->
+        <div class="panel panel-default table-datawrap">
+            <div class="panel-heading">
+                <!-- Single button -->
+                <form class="clearfix searchbar">
+                    <div class="col">
+                        <input type="text" style="margin-left: 6px;" class="form-control search" placeholder="输入酒店名称进行搜索" id="hotelname"
+                               value="{$filter.name|default=''}">
+                    </div>
+                    <div class="col">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span class="text"><span class="default">{$filter.is_name|default='认领状态'}</span></span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu is_gets">
+                                <li><a value=''>全部</a></li>
+                                <li><a value='0'>未认领</a></li>
+                                <li><a value='1'>已认领</a></li>
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span class="text"><span class="default">{$filter.type_name|default='酒店类型'}</span></span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu hotel_types">
+                                <li><a>酒店类型</a></li>
+                                <foreach name="HotelType" item="vos">
+                                    <li><a value="{$vos.id}">{$vos.name}</a></li>
+                                </foreach>
+                            </ul>
+                        </div>
+                        <div class="navbar-form navbar-left">
+                            <input type="hidden" id="is_get" value="{$filter.is_get}">
+                            <input type="hidden" id="hotel_type" value="{$filter.ht_id}">
+                            <input type="hidden" id="is_get_name" value="{$filter.is_name}">
+                            <input type="hidden" id="hotel_type_name" value="{$filter.type_name}">
+                            <button type="button" class="btn btn-warning searchs">搜索</button>
+                            <!--<button type="button" class="btn btn-warning chongzhi">重置</button>-->
+                            <if condition="$role neq '1'">
+                            <button type="button" class="btn btn-warning daoru">导入</button>
+                            <!--<button type="button" class="btn btn-warning xiazai">下载Excel表格模板</button>-->
+                            <button type="button" class="btn btn-warning xiazais">下载表格模板</button>
+                                <if condition="$role neq '2'">
+                            <button type="button" class="btn btn-warning" urls="{:U('/Pc/Hotel/logged')}">新增酒店</button>
+                                </if>
+                            </if>
+                        </div>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="panel-body">
+            <table class="table table-condensed table-data">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>酒店ID</th>
+                    <th>酒店名称</th>
+                    <th>酒店联系方式</th>
+                    <th>认领状态</th>
+                    <th>酒店类型</th>
+                    <th>酒店图片</th>
+                    <th>营业状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <notempty name="data">
+                <foreach name="data" item="vo">
+                    <tr>
+                        <td>{$key+1}</td>
+                        <td>{$vo.sn}</td>
+                        <td title="{$vo.name}"><a>{$vo.name|msubstr=0,15}</a></td>
+                        <td>{$vo.tell}</td>
+                        <td>
+                            <if condition="$vo.is_get eq 1">已认领
+                                <else/>
+                                未认领
+                            </if>
+                        </td>
+                        <td>{$vo.type_name}</td>
+                        <td><img class="jiudiantupian img-rounded" src="{$vo.img|default='__IMG__/head.png'}" name="{$vo.name}"></td>
+                        <td>
+                            <if condition="$vo.status eq 1">正常营业
+                                <else/>
+                                非正常营业
+                            </if>
+                        </td>
+                        <td class="orprate"><a class="text-warning"
+                                               url="{:U('/Pc/Hotel/seeHotel',array('id'=>$vo['id']))}">立即查看</a>
+                            <if condition="$role neq 1">
+                                丨  <a class="text-warning" url="{:U('/Pc/Hotel/logged',array('id'=>$vo['id']))}">编辑信息</a>
+                            </if>
+
+                        </td>
+                    </tr>
+                </foreach>
+                <else/>
+                <tr><td colspan="9">暂无数据</td></tr>
+                </notempty>
+                </tbody>
+            </table>
+            <div class="pagination-container">
+                <div class="pagination">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 弹窗 开始 -->
+    <!-- <div class="modal fade bs-example-modal-lg jiudiantupian_modal" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <img class="max_jiudiantupian" src="../../imgs/a.jpg">
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- 弹窗 结束 -->
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__JS__/jquery.z-pager.js"></script>
+    <script type="text/javascript">
+
+        $(document).keypress(function(e) {
+            // 回车键事件
+            if(e.which == 13) {
+                var name = $("#hotelname").val();
+                var is_get = $("#is_get").val();
+                var ht_id = $("#hotel_type").val();
+                var is_get_name = $("#is_get_name").val();
+                var hotel_type_name = $("#hotel_type_name").val();
+                window.location.href = "{:U('')}?name=" + name + "&is_get=" + is_get + "&ht_id=" + ht_id + "&is_name=" + is_get_name + "&type_name=" + hotel_type_name;
+                return false;
+                jQuery(".confirmButton").click();
+            }
+        });
+
+
+        $(".btn-warning").click(function () {
+            var url = $(this).attr('urls');
+            window.location.href = url;
+        })
+        $(".text-warning").click(function () {
+            var url = $(this).attr('url');
+            window.location.href = url;
+        })
+        $(".chongzhi").click(function () {
+            window.location.href='/Pc/Hotel/index'
+        })
+
+        // 打开弹窗
+        /*$('body').on('click', '.jiudiantupian', function () {
+            $(".max_jiudiantupian").attr('src', $(this).attr('src'));
+            $(".imgname").text($(this).attr('name'));
+            $('#myModal').modal({
+                keyboard: false
+            });
+        });*/
+
+        //下载
+        $(".xiazai").click(function () {
+            window.location.href = '/Pc/Hotel/loadtempxlsx'
+        })
+
+        $(".xiazais").click(function () {
+            window.location.href = '/Pc/Hotel/loadtempxlsxs'
+        })
+
+        $(".daoru").click(function () {
+            window.location.href = '/Pc/Import/index'
+        })
+
+
+        // 搜索
+        $(".searchs").click(function () {
+            var name = $("#hotelname").val();
+            var is_get = $("#is_get").val();
+            var ht_id = $("#hotel_type").val();
+            var is_get_name = $("#is_get_name").val();
+            var hotel_type_name = $("#hotel_type_name").val();
+            window.location.href = "{:U('')}?name=" + name + "&is_get=" + is_get + "&ht_id=" + ht_id + "&is_name=" + is_get_name + "&type_name=" + hotel_type_name;
+        });
+
+        $(".is_gets li a").click(function () {
+            $("#is_get").val($(this).attr('value'));
+            $("#is_get_name").val($(this).text());
+        });
+
+        $(".hotel_types li a").click(function () {
+            $("#hotel_type").val($(this).attr('value'));
+            $("#hotel_type_name").val($(this).text());
+        });
+    </script>
+</block>

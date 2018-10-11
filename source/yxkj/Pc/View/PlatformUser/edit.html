@@ -1,0 +1,165 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>角色平台工作人员</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>系统设置</a></li>
+      <li class="on"><notempty name="id">编辑<else/>新增</notempty>平台工作人员</li>
+    </ol>
+</block>
+
+<block name="main">
+    <notempty name="redonly">
+        <style type="text/css">
+            .safari_caret{
+                display: none;
+            }
+        </style>
+    </notempty>
+	<div id="main">
+      <!-- 导航 开始 -->
+      <ul class="clearfix subnav hetongnav">
+        <li><a><i class="icon"></i><span class="cur_title">平台工作人员</span></a></li>
+      </ul>
+      <!-- 导航 结束 -->
+
+      <!-- 内容 开始 -->
+      <div class="subpage jiudianxinzeng">
+          <form method="post" action="{:U('operation')}">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                <tr>
+                  <th><span class="text-orange">*</span>用户账号：</th>
+                  <td>
+                    <input type="text" name="name" value="{$name}" <notempty name="redonly">disabled</notempty>>
+                  </td>
+                </tr>
+                  <tr>
+                    <th><span class="text-orange">*</span>用户姓名：</th>
+                    <td>
+                      <input type="text" name="real_name" value="{$real_name}" <notempty name="redonly">disabled</notempty>>
+                    </td>
+                  </tr> 
+
+
+                  <empty name="redonly">
+                  <tr>
+                    <th><empty name="id"><span class="text-orange">*</span></empty>密码：</th>
+                    <td>
+                      <input type="password" name="password">
+                    </td>
+                  </tr>
+                  </empty>
+
+                  <tr>
+                    <th><span class="text-orange">*</span>联系方式：</th>
+                    <td>
+                      <input type="text" name="mobile" value="{$mobile}" <notempty name="redonly">disabled</notempty>>
+                    </td>
+                  </tr> 
+                  <neq name="role_id" value="1">
+                  <tr>
+                    <th>用户类型：</th>
+                    <td>
+                      <select class="user-type-js" name="role_id" <notempty name="redonly">disabled</notempty>>
+                        <volist name="role_list" id="role">
+                          <option value="{$role.id}" <eq name="role.id" value="$role_id">selected</eq>>{$role.name}</option>
+                        </volist>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="parent1" style="display:none;">
+                    <th><span class="text-orange">*</span>渠道类型：</th>
+                    <td>
+                      <select name="channel_type" <notempty name="redonly">disabled</notempty>>
+                        <option value="1" <eq name="channel_type" value="1">selected</eq>>内聘</option>
+                        <option value="2" <eq name="channel_type" value="2">selected</eq>>个人</option>
+                        <option value="3" <eq name="channel_type" value="3">selected</eq>>团队</option>
+                      </select>
+                    </td>
+                  </tr> 
+                  <tr class="parent2" style="display:none;">
+                    <th><span class="text-orange">*</span>上级领导：</th>
+                    <td>
+                      <select name="parent_id" <notempty name="redonly">disabled</notempty>>
+                      </select>
+                    </td>
+                  </tr>
+
+                    <tr>
+                      <th>绑定微信号：</th>
+                      <td>
+                        <input type="text" name="name" value="{$uuid}" disabled='disabled' <notempty name="redonly">disabled</notempty>>
+                      </td>
+                    </tr>
+                </neq>
+                  <tr>
+                    <th><input type="hidden" name="id" value="{$id}"></th>
+                    <td>
+                       <notempty name="redonly">
+                          <button type="button" class="btn btn-quxiao back">返回</button>
+                        <else/>
+                         <if condition="$id eq null">
+                           <button type="button" class="btn btn-tijiao ajax-post">保存</button>
+                           <button type="button" class="btn btn-quxiao back">取消</button>
+                           <else/>
+                           <button type="button" class="btn btn-tijiao ajax-post">保存</button>
+                           <button type="button" class="btn btn-quxiao back">取消</button>
+                           <if condition="$uuid neq ''">
+                           <a class="btn btn-yellow" href="{:U('wxdel',array('id'=>$id))}">解除微信</a>
+                           </if>
+                         </if>
+                       </notempty>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <!-- 内容 结束 -->
+    </div>
+</block>
+<block name="js">
+<script type="text/javascript">
+show_leader($("select[name='role_id'] option:selected").val(),{$parent_id|default='0'});
+
+$("select[name='role_id']").change(function(){
+    var rid = $(this).val();
+    show_leader(rid);
+});
+
+//是否显示上级领导
+function show_leader(rid,pid){
+    if(rid == 2 || rid == 4){
+        $.post("{:U('get_parents')}",{rid:rid},function(re_data){
+            re_data = eval("("+re_data+")");
+            var poption = "";
+            $(re_data.data.pusers).each(function(){
+                if(pid > 0 && pid == $(this).attr("id")){
+                  poption += "<option value='"+$(this).attr("id")+"' selected>"+re_data.data.rname+"-"+$(this).attr("name")+"</option>";
+                }else{
+                  poption += "<option value='"+$(this).attr("id")+"'>"+re_data.data.rname+"-"+$(this).attr("name")+"</option>";
+                }
+
+            });
+            $("select[name='parent_id']").html(poption);
+            if(rid == 2){
+                $(".parent1").show();
+            }else {
+                $(".parent1").hide();
+            }
+            $(".parent2").show();
+        });
+    }else{
+        $("select[name='parent_id']").html("<option value=''></option>");
+        $(".parent1").hide();
+        $(".parent2").hide();
+    }
+}
+</script>
+</block>

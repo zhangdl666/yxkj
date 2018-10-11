@@ -1,0 +1,88 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>维修详情</title>
+</block>
+<block name="css">
+<style type="text/css">
+	.loading{text-align: center;display: none;}
+</style>
+</block>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left back"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+			<!-- <div class="center">{$status}详情</div> -->
+		</div>
+
+		<div class="main_body anzhuangxiangx">
+			<div class="anzhuangxiangx_content">
+				<div class="daishenhebiaoxiao-page">
+
+					<!-- 待审核 开始 -->
+					<form id="" method="post" action="{:U('EquipmentUpkeep/oioperation')}">
+					<div class="form_data_wrap anzhuangxinxi">
+	        			<ul class="form_data">
+	        				<li class="layoutlr form_item">
+	        					<div class="left">设备ID</div>
+	        					<div class="right">{$equipment_sno}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">房间类型</div>
+	        					<div class="right">{$rt_name}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">楼层</div>
+	        					<div class="right">{$floor}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">房间号</div>
+	        					<div class="right">{$room_sno}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">负责人</div>
+	        					<div class="right">{$uname}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">负责人联系方式</div>
+	        					<div class="right">{$mobile}</div>
+	        				</li>
+	        				<li class="layoutlr form_item">
+	        					<div class="left">维修方式</div>
+	        					<div class="right">
+	        						<select name="eo_id">
+	        							<volist name="eoper_items" id="oper">
+	        								<option value="{$oper.id}">{$oper.name}</option>
+							            </volist>
+	        						</select>
+	        						<i class="icon w_0000_00 w_00_11"></i>
+	        					</div>
+	        				</li>
+	        			</ul>
+	        			<notempty name="equipment_sno">
+	        			<div class="form_data_btns">
+	        				<input type="hidden" name="oo_id" value="{$oo_id}">
+	        				<input type="hidden" name="id" value="{$id}">
+	    					<button type="button" class="btn maxbtn ajax-post">确认</button>
+		    			</div>
+		    			</notempty>
+	        		</div>
+	        	</form>
+					<!-- 待审核 结束 -->
+				</div>
+			</div>
+		</div>
+
+		<!-- 彈窗內容 開始 -->
+        <!-- <div class="selected_layer hide" data-relation="eoper">
+          <ul class="options_container" data-relation="eoper">
+            <volist name="eoper_items" id="oper">
+              <li><span data="{$oper.id}">{$oper.name}</span></li>
+            </volist>
+          </ul>
+        </div> -->
+        <!-- 彈窗內容 結束 -->
+	</div>
+	<!-- 主体内容 结束 -->
+</block>

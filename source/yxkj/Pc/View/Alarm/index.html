@@ -1,0 +1,335 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>禁烟&防火监控预警</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        .table-forms {
+            width: 310px;
+            height: 38px;
+            border: 1px solid #dedede;
+            padding-left: 10px;
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        .jhxg_main .shouyitongji_block li {
+            width: calc(25% - 8px) !important;
+        }
+
+        .gezi-container .gezi-group .btn {
+            margin: 14px;
+            /*width: calc(6.3% - 10px);*/
+            width: 90px;
+            height: 42px;
+        }
+
+        @media screen and (max-width: 1199px) and (min-width: 1000px) {
+            .gezi-container .gezi-group .btn {
+                margin: 14px !important;
+            }
+        }
+
+        .btn_icon {
+            width: 26px;
+            height: 19px;
+            display: block;
+            float: right;
+        }
+
+        .max_btn_icon {
+            width: 37px;
+            height: 27px;
+            display: block;
+            margin: 10px auto;
+        }
+
+        .btn_icon_bottom {
+            background: url("__IMG__/wx_kq_bottom_bottom.png");
+            background-size: 100%;
+        }
+
+        .btn_icon_top {
+            background: url("__IMG__/wx_kq_bottom_top.png");
+            background-size: 100%;
+        }
+
+        .pc_kq_height {
+            height: 68px;
+            overflow: hidden;
+        }
+
+        .pitch_on {
+            background: url("__IMG__/pitch_on.png") no-repeat;
+            background-position: right bottom;
+            color: #4e4e4e !important;
+        }
+        .gj_panel-heading label{
+            font-size: 18px;
+            color: #505050;
+            cursor: pointer;
+            font-weight: lighter;
+        }
+        .gj_label_click{
+            color: #19B958!important;
+        }
+        .gj_list{
+            width: 98%;
+            margin: 0 auto;
+        }
+        .gj_history_list{
+            width: 98%;
+            margin: 0 auto;
+            display: none;
+        }
+
+    </style>
+
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <li class="on">禁烟&防火监控预警{$role_id}</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main" class="jhxg_main">
+        <!-- 导航 开始 -->
+        <if condition="($role_id eq 11) OR ($role_id eq 12)">
+            <ul class="clearfix subnav hetongnav">
+                <li style="width:50%;margin-left:20px;"><a title="{$hotelname}" style="text-align: left;"><i class="icon"></i><span class="cur_title">{$hotelname}</span></a></li>
+            </ul>
+        </if>
+        <!-- 导航 结束 -->
+
+        <!-- 内容 开始 -->
+        <div class="subpage hetongxinxi02 jhxg">
+            <div class="gezi-container-wrap jhxg-gezi2">
+                <dl class="gezi-container">
+                    <dt class="gezi-title">
+                        <form action="{:U('Alarm/index')}" method="get" id="form">
+                            <div class="col right table-form editdate" style="margin-left: 10px;line-height:38px ">
+                                <span class="riqiq" style="float: left;margin-right: 10px">选择酒店</span>
+                                <empty name="userinfo['hotel_id']">
+                                    <select name="h_id" id="h_id">
+                                        <foreach name="hotels" item="vo">
+                                            <option value="{$vo.id}" <if condition="$vo.id eq $h_id">selected="selected"</if>>{$vo.name}</option>
+                                        </foreach>
+                                    </select>
+                                    <else />
+                                    <select name="h_id" id="h_id" disabled="disabled">
+                                        <foreach name="hotels" item="vo">
+                                            <option value="{$vo.id}" <if condition="$vo.id eq $userinfo['hotel_id']">selected="selected"</if>>{$vo.name}</option>
+                                        </foreach>
+                                    </select>
+                                </empty>
+
+                            </div>
+                        </form>
+                        <div class="checkbox-container gezi-green" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">运行正常</span>
+                        </div>
+                        <div class="checkbox-container gezi-red" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">一级预警</span>
+                        </div>
+                        <div class="checkbox-container gezi-orange" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">二级预警</span>
+                        </div>
+                        <div class="checkbox-container gezi-orange2" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">三级预警</span>
+                        </div>
+                        <div class="checkbox-container gezi-gray" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">离线</span>
+                        </div>
+                        <i class="btn_icon btn_kq_icon btn_icon_bottom"></i>
+                    </dt>
+                    <dd class="gezi-group pc_kq_height" id="kq_height">
+                        <foreach name="roomdata" item="v">
+                            <switch name="v.mark" >
+                                <case value="1"><button type="button" class="btn green" value="{$v.equipment_sno}">{$v.room_sno}</button></case>
+                                <case value="2"><button type="button" class="btn red" value="{$v.equipment_sno}">{$v.room_sno}</button></case>
+                                <case value="3"><button type="button" class="btn orange" value="{$v.equipment_sno}">{$v.room_sno}</button></case>
+                                <case value="4"><button type="button" class="btn orange2" value="{$v.equipment_sno}">{$v.room_sno}</button></case>
+                                <case value="5"><button type="button" class="btn gay" value="{$v.equipment_sno}">{$v.room_sno}</button></case>
+                            </switch>
+
+                        </foreach>
+                    </dd>
+                    <dd><i class="max_btn_icon btn_kq_icon btn_icon_bottom"></i></dd>
+                </dl>
+            </div>
+
+            <div class="saled">
+                <div class="shouyitongji_block jhxg_danzi2 devtime">
+                    <ul class="clearfix danzi">
+                        <li>
+                            <div class="danzidata dan1">
+                                <i class="icon jg_icon"></i>
+                                <div class="danzinum" style="color: #d783fd"><span>{$alarmtotal|default=0}</span>个</div>
+                                <div class="danziname">当前告警总数</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="danzidata dan2">
+                                <i class="icon jg_icon2"></i>
+                                <div class="danzinum" style="color: #E72B39"><span>{$firstnum|default=0}</span>个</div>
+                                <div class="danziname">当前一级告警数</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="danzidata dan3">
+                                <i class="icon jg_icon3"></i>
+                                <div class="danzinum" style="color: #FF9C03"><span>{$secondnum|default=0}</span>个</div>
+                                <div class="danziname">当前二级告警数</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="danzidata dan4">
+                                <i class="icon jg_icon4"></i>
+                                <div class="danzinum" style="color: #FFDD1E;"><span>{$thirdnum|default=0}</span>个</div>
+                                <div class="danziname">当前三级告警数</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel panel-default sales timesale">
+                    <div class="panel-heading gj_panel-heading" style="padding: 30px 0 15px 0px !important;">
+                        <label id="gj_list_label" class=" gj_label_click" style="padding: 0px  45px">当前告警</label>
+                        <label id="ls_list_label">历史告警</label>
+                    </div>
+                    <div class="panel-body">
+                        <div class="gj_list table-datawrap">
+                            <table class="table table-condensed table-data" id="">
+                                <thead>
+                                <tr>
+                                    <th>告警房间</th>
+                                    <th>告警等级</th>
+                                    <th>PM2.5</th>
+                                    <th>开始时间</th>
+                                    <th>持续时间(秒)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <notempty name="alarmdatas">
+                                    <volist name="alarmdatas" id="row">
+                                        <tr>
+                                            <td>{$row.room_sno}</td>
+                                            <td>{$row.name}</td>
+                                            <td>{$row.start_pm25}—{$row.end_pm25}</td>
+                                            <td>{$row.start_time|date='Y-m-d H:i:s',###}</td>
+                                            <td>{$row.len_time}</td>
+                                        </tr>
+                                    </volist>
+                                    <else/>
+                                    <tr><td colspan="5">暂无数据</td></tr>
+                                </notempty>
+                                </tbody>
+                            </table>
+                            <div class="pagination-container">
+                                <div class="pagination">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gj_history_list table-datawrap" id="history">
+                            <table class="table table-condensed table-data" >
+                                <thead>
+                                <tr>
+                                    <th>告警房间</th>
+                                    <th>告警等级</th>
+                                    <th>PM2.5</th>
+                                    <th>开始时间</th>
+                                    <th>结束时间</th>
+                                    <th>持续时间(秒)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <notempty name="items">
+                                    <volist name="items" id="row2">
+                                        <tr>
+                                            <td>{$row2.room_sno}</td>
+                                            <td>{$row2.name}</td>
+                                            <td>{$row2.start_pm25}—{$row2.end_pm25}</td>
+                                            <td>{$row2.start_time|date='Y-m-d H:i:s',###}</td>
+                                            <td>{$row2.end_time|date='Y-m-d H:i:s',###}</td>
+                                            <td>{$row2.len_time}</td>
+                                        </tr>
+                                    </volist>
+                                    <else/>
+                                    <tr><td colspan="5">暂无数据</td></tr>
+                                </notempty>
+                                </tbody>
+                            </table>
+                            <div class="pagination-container">
+                                <div class="pagination">
+                                    {$pageHtml}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 内容 结束 -->
+    </div>
+    </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Alarm/run_back_comon.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Alarm/run_front_comon.js"></script>
+    <script src='https://cdn.bootcss.com/socket.io/2.0.3/socket.io.js'></script>
+    <script>
+        $(function(){
+            //选择酒店
+            $("#h_id").change(function(){
+                $("#form").submit();
+            });
+
+            //历史告警上一页、下一页局部刷新
+            $(".pagination").on('click','a',function(){
+                var h_id = $("#h_id").val();
+                var page_id = $.trim($(this).attr('page-id'));
+                var url = 'pieceslist/p/'+page_id;
+                $('#history').load(url,{"h_id":h_id});
+                return false;
+            });
+
+            var role_id = '{$role}';
+            if(role_id>= 10 && role_id <= 13){
+                // 如果服务端不在本机，请把127.0.0.1改成服务端ip
+                var socket = io("http://{$server_ip}:2129");
+                var uid    = "{$user_id}";
+                
+                if(uid){
+                    // 当连接服务端成功时触发connect默认事件
+                    socket.on('connect', function(){
+                        socket.emit('login', uid);
+                    });
+                }
+                // 后端推送来消息时
+                socket.on('new_msg', function(msg){
+                    if(msg != 'look'){
+                        //播放告警音乐
+                        if(msg == 'Alarm/index'){
+                           window.location.href=window.location.href;
+                        }                    
+                    }
+                });
+            }/*else{
+                // 20秒自动刷新页面
+                setTimeout(function(){ window.location.href=window.location.href; }, 20000);
+            }*/
+            
+        });
+
+    </script>
+</block>

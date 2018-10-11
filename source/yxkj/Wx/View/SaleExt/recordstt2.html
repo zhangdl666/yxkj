@@ -1,0 +1,121 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title>提现记录详情</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        input{
+            text-align: right;
+        }
+    </style>
+</block>
+<block name="main">
+
+    <div class="header">
+        <div class="left"><a href="{:U('index',array('status'=>$row['status']))}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+        <div class="center">
+
+        </div>
+        <div class="right"><a class="s">
+        </a>
+        </div>
+    </div>
+    <br/><br/>
+    <div class="main_body">
+        <div class="form_data_wrap renlingchakan">
+            <form id="" method="post" action="{:U('index')}">
+                <ul class="form_data">
+                    <li class="layoutlr form_item">
+                        <div class="left">申请时间:</div>
+                        <div class="right">
+                            <div class="input_container">
+                                <input type="text" value="<?php echo date('Y-m-d H:i:s',$row['ctime']);?>"  disabled="disabled" >
+                            </div>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">申请金额:</div>
+                        <div class="right">
+                            <ul class="layoutlr search_select">
+                                <li class="col dropdown"><input type="text" value="￥{$row['rprice']}" disabled="disabled" ></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!--<li class="layoutlr form_item">-->
+                        <!--<div class="left">个人所得税:</div>-->
+                        <!--<div class="right">-->
+                            <!--<ul class="layoutlr search_select">-->
+                                <!--<li class="col dropdown"><input type="text" value="￥{$row['mprice']}" disabled="disabled" ></li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <li class="layoutlr form_item">
+                        <div class="left">到账金额:</div>
+                        <div class="right">
+                            <ul class="layoutlr search_select">
+                                <li class="col dropdown">
+                                    <input type="text" value="￥{$row['price']}" disabled="disabled" >
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">提现银行:</div>
+                        <div class="right">
+                            <ul class="layoutlr search_select">
+                                <li class="col dropdown">
+                                    <input type="text"  value="{$row1['bname']}" disabled="disabled" >
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">提现卡号:</div>
+                        <div class="right">
+                            <ul class="layoutlr search_select">
+                                <li class="col dropdown">
+                                    <input type="text" value="{$row1['bank_num']}" disabled="disabled" >
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">提现状态:</div>
+                        <div class="right">
+                            <ul class="layoutlr search_select">
+                                <li class="col dropdown">
+                                    <input type="text" value="<?php if($row['status']==1){echo '待打款';}else{echo '已打款';}?>" disabled="disabled" >
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="top">打款凭证:</div>
+                        <div class="bottom">
+                            <dl class="uploadimg-container clearfix">
+                                <dd class="imgwrap-container">
+                                    <volist name="row.give_img" id="gimg">
+                                        <div class="imgwrap" style="width: 2.23rem;height: 1.66rem;">
+                                            <img class="img-rounded" style="width: 100%;height: 100%;" src="{$gimg}">
+                                        </div>
+                                    </volist>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">打款时间:</div>
+                        <div class="right">
+                            <ul class="layoutlr search_select">
+                                <li class="col dropdown">
+                                    <input type="text" value="<?php echo date('Y-m-d H:i:s',$row['give_time']);?>" disabled="disabled" >
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+
+        </div>
+    </div>
+</block>

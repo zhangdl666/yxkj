@@ -1,0 +1,71 @@
+<extend name="Public:index"/>
+<block name="title">
+    <block name="title">
+        <title>收益</title>
+    </block>
+    <!--<title><?php $role_id = $_SESSION['USERINFO']['role_id'];-->
+                <!--$role_id = 3;-->
+            <!--?>-->
+        <!--<if condition="$role_id eq 3">-->
+            <!--销售经理收益-->
+            <!--<else/>-->
+            <!--销售总经理收益-->
+        <!--</if></title>-->
+</block>
+<block name="main">
+    <!-- header 开始 -->
+    <div class="header">
+        <div class="left"></i><a href="{:U('Index/index')}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+        <div class="center">
+
+        </div>
+        <div class="right"><a class="s">
+        </a>
+        </div>
+    </div>
+    <!-- header 结束 -->
+    <!-- 主体内容 开始 -->
+    <div class="main swiper-container-01">
+        <div class="main_body">
+            <div class="swiper-container swiper-tab-nav">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide swiper-tab-link <?php if($order == 'desc'){ echo 'on';};?>"><a href="?order=desc">按收益由高到低</a>></div>
+                    <div class="swiper-slide swiper-tab-link <?php if($order == 'asc'){ echo 'on';};?> "><a href="?order=asc">按收益由低到高</a>></div>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="swiper-container swiper-tab-page">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide swiper-tab-content">
+                        <ul class="shouyi">
+                            <notempty name="row">
+                            <volist name="row" id="row">
+                                <li class="layoutlr">
+                                <div class="left">
+                                    <div class="radius">
+                                        <p>￥<span class="price">{$row.price}</span></p>
+                                        <p>收益金额</p>
+                                    </div>
+                                </div>
+                                <div class="right">
+                                    <ul class="showdata">
+                                        <li class="dian dian01">渠道名： <span class="data">{$row.uname}</span></li>
+                                        <li class="dian dian02">渠道类型： <span class="data"><?php if($row['channel_type']==1){echo '内聘';}elseif($row['channel_type']==2){echo '个人';}else{echo '团队';}?></span></li>
+                                        <li class="dian dian03">渠道等级： <span class="data">{$row.name}</span></li>
+                                        <li class="dian dian04">联系方式： <span class="data">{$row.mobile}</span></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            </volist>
+                        <else/>
+                            <li class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></li>
+                        </notempty>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 主体内容 结束 -->
+</block>

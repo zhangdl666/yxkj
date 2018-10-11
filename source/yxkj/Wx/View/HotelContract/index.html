@@ -1,0 +1,194 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>合同管理</title>
+</block>
+<block name="css">
+<style type="text/css">
+	.loading{text-align: center;display:none;}
+	.w_07_01{
+		top: 0.06rem;
+		margin-right: 0.1rem;}
+	.aaa{
+            height:28px;
+            width:200px;
+            margin-top:-8px;
+        }
+        .bbb{
+            text-align:center
+        }
+        .col{
+            width: 50%;
+        }
+	.layoutlr {
+
+		height: 0.5rem;
+		line-height: 0.5rem;
+
+	}
+	.right,.class_text{
+		color: #666666!important;
+		font-size: 0.3rem!important;
+	}
+	.hc li{
+		width: 4.6rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.search_container .search_input_wrap {
+
+		padding-bottom: 0rem;
+	}
+	.pitch_on{
+		background: url("__IMG__/pitch_on.png") no-repeat;
+		background-size: 40%;
+		background-position: right bottom;
+		color: #4e4e4e!important;
+	}
+</style>
+</block>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main swiper-container-01">
+		<div class="header">
+			<div class="left backs" data-url="{:U('Index/index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+			<!-- <div class="center">合同管理</div> -->
+			<if condition="in_array('HotelContract/hinfo',$method_arr)">
+				<div class="right"><a class="s" href="{:U('HotelContract/hinfo')}" style="color:white"><i class="icon add"></i>新增合同</a></div>
+			</if>
+		</div>
+		
+
+		<div class="main_body">
+			<div class='search_container' style="background: #fff; color: #5C5C5C;">
+				<div class="search_input_wrap">
+                    <div class="search_input" style="margin: 0.3rem 0.2rem 0.1rem 0.2rem;"><div style="float: right"><i class="icon w_0000_00 w_00_01 search-btn"></i></div><div class="contenteditable on" contenteditable="" placeholder="{$keyword|default='输入酒店名称进行搜索'}"></div></div>
+                    <!-- <input type="text" class="search_input" name="" placeholder="输入关键词进行搜索"> -->
+                </div>
+			</div>
+
+
+	    	<ul class="renling">
+	    		<notempty name="datas">
+	    		<volist name="datas" id="data">
+	        	<li class="layoutlr renling_item" data="{$data.id}">
+		        	<div class="left hc">
+		        		<div class="goodsimg">
+		        			<img src="{$data.h_img|default='__IMG__/head.png'}">
+		        		</div>
+		        	</div>
+		        	<div class="right">
+		        		<ul class="showdata hc" style="width: 5.36rem">
+		        			<li><i class="icon w_0007_07 w_07_01"></i>合同名称：{$data.name}</li>
+		        			<li><i class="icon w_0007_07 w_07_02"></i>酒店名称：{$data.h_name}</li>
+		        			<li><i class="icon w_0007_07 w_07_03"></i>酒店类型：{$data.ht_name}</li>
+		        		</ul>
+		        	</div>
+	        	</li>
+	        	</volist>
+	        <else/>
+	        	<li class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></li>
+	    	</notempty>
+
+	    	</ul>
+	    	<div class="col-xs-12 loading">
+	            <img src="__IMG__/loading.gif" alt="">
+	        </div>
+		</div>
+	</div>
+	<!-- 主体内容 结束 -->
+
+<!--装页码的div-->
+<div style="display:none" key="1" class="key"></div>
+<div style="display:none" key="1" class="list-page"></div>
+
+</block>
+<block name="js">
+<script type="text/javascript">
+//搜索
+$(".search-btn").click( function() {
+    var sousuo=$('.search_input').text();
+    self.location.href = "{:U('index')}?keyword="+sousuo;
+});
+
+$(".main_body").on("click",".hc",function(){
+	var hcid = $(this).closest('li').attr('data');
+	window.location.href = "{:U('read')}?id="+hcid;
+
+})
+
+$(".main_body").on("click",".edit",function(){
+	var hcid = $(this).closest('li').attr('data');
+	window.location.href = "{:U('edit')}?id="+hcid;
+
+})
+
+//下拉显示更多
+//当前的数据一定要超过页面显示的
+$(window).scroll(function () {
+
+    var docHei = $(document).height(), winHei = $(window).height(), scrHei = $(document).scrollTop();
+    if (scrHei >= docHei - winHei) {
+        $(".loading").show();
+        var key = $('.key').attr('key');//当前页码
+        key = key * 1 + 1;
+        //获取加载数据
+        $.ajax({
+            type:"POST",
+            url:"{:U('show_more_data')}?page="+$(".list-page").attr('key'),
+            data:{key:key},
+            success:function(info){
+                info = eval("("+info+")");
+                if (info.status) {
+                    var re_data = info.data;
+                    $('.key').attr('key', re_data.key);          //添加最新显示页码
+                    $(".list-page").attr('key',re_data.page);   //添加最新查询页码
+
+                    //显示加载的数据
+                    showHtml(re_data.datas);
+
+                    //>>隐藏加载图
+                    setTimeout(function () {
+                        $(".loading").hide();
+                    }, 1000);
+                } else {
+                    $(".loading").empty();
+                    $(".loading").text("已全部加载完");
+                }
+            }
+        });
+    }
+});
+
+//显示加载的数据
+function showHtml(datas){
+    $(datas).each(function () {
+        var status = $(this).attr('type');
+        var h_img  =  $(this).attr("h_img");
+        if(h_img!="" || h_img!=undefined){
+        	;
+        }else{
+        	h_img = "__IMG__/head.png";
+        }
+        var html  = "<li class='layoutlr renling_item hc' data='"+$(this).attr("id")+"'>\
+		        	<div class='left'>\
+		        		<div class='goodsimg'>\
+		        			<img src='"+h_img+"'>\
+		        		</div>\
+		        	</div>\
+		        	<div class='right'>\
+		        		<ul class='showdata'>\
+		        			<li><i class='icon w_0007_07 w_07_04'></i>合同名称："+$(this).attr("name")+"</li>\
+		        			<li><i class='icon w_0007_07 w_07_02'></i>酒店名称："+$(this).attr("h_name")+"</li>\
+		        			<li><i class='icon w_0007_07 w_07_03'></i>酒店类型："+$(this).attr("ht_name")+"</li>\
+		        		</ul>\
+		        	</div>\
+	        	</li>";
+
+
+        $(".renling").append(html);
+    });
+}
+</script>
+</block>

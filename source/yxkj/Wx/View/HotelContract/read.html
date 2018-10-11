@@ -1,0 +1,180 @@
+<extend name="Public:index"/>
+<block name="title">
+  <title>合同管理</title>
+</block>
+<block name="css">
+  <style type="text/css">
+    .form_data .layouttb {
+      padding: 0.2rem 0;
+      margin: 0.2rem 0;
+    }
+    .class_text{
+      color: #666666!important;
+      font-size: 0.3rem!important;
+    }
+  </style>
+</block>
+<block name="main">
+  <!-- 主体内容 开始 -->
+  <div class="main swiper-container-01">
+    <div class="header">
+      <div class="left backs" data-url="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</div>
+    </div>
+
+    <div class="main_body">
+      <div class="swiper-container swiper-tab-nav">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-link on" onclick="now_href('{:U('read',array('id'=>$hcid))}')">基础信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('installe',array('id'=>$hcid))}')">安装信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('return_money',array('id'=>$hcid))}')">结算信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('upkeep',array('id'=>$hcid))}')">保养信息</div>
+              <div class="swiper-slide swiper-tab-link" onclick="now_href('{:U('maintain',array('id'=>$hcid))}')">维修信息</div>
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+      </div>
+
+      <div class="swiper-container swiper-tab-page hetongpage">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-tab-content">
+                <div class="hetong_content">
+                  <div class="btns_wrap">
+                    <button class="btn on" onclick="now_href('{:U('read',array('id'=>$hcid))}')">酒店信息</button>
+                    <button class="btn" onclick="now_href('{:U('readuser',array('id'=>$hcid))}')">联系人信息</button>
+                    <button class="btn" onclick="now_href('{:U('readc',array('id'=>$hcid))}')">合同信息</button>
+                  </div>
+
+                  <!-- 酒店信息 开始 -->
+                  <div class="form_data_wrap jiudianxinxi">
+                    <ul class="form_data">
+                      <li class="layoutlr form_item">
+                        <div class="left">酒店名称</div>
+                        <div class="right">{$name}</div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">酒店类型</div>
+                        <div class="right">{$type_name}</div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">客房数</div>
+                        <div class="right">{$room_num}</div>
+                      </li>
+                      <li class="layouttb form_item">
+                        <div class="top">客房类型</div>
+                        <div class="bottom">
+
+                          <volist name="hrt_items" id="hrt_item">
+                            <label class="checkbox-container" data-type="checkbox">
+                              <span class="checkbox_txt class_text">{$hrt_item.name}({$hrt_item.room_num})</span>&emsp;
+                            </label>
+                          </volist>
+
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">所属地区</div>
+                        <div class="right">{$provice}{$city}{$county}</div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">详细地址</div>
+                        <div class="right">{$area}</div>
+                      </li>
+                      
+                      <li class="layouttb form_item">
+                        <div class="top">酒店图片</div>
+                        <div class="bottom">
+                          <dl class="uploadimg-container clearfix">
+                            <dd class="imgwrap-container">
+
+                              <volist name="himgs" id="himg">
+                              <div class="imgwrap">
+                                <img class="img-rounded" src="{$himg}">
+                              </div>
+                              </volist>
+
+                            </dd>
+                          </dl>
+                        </div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">认领状态</div>
+                        <div class="right"><eq name="is_get" value="1">已认领<else/>未认领</eq></div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">认领人</div>
+                        <div class="right">{$hotel_user_name}</div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left" style="min-width: 3rem">历史销售人员</div>
+                        <div class="right">{$sale_name}</div>
+                      </li>
+                      <li class="layoutlr form_item">
+                        <div class="left">签约状态</div>
+                        <div class="right"><eq name="is_get" value="1">已签约<else/>未签约</eq></div>
+                      </li>                      
+                      <li class="layoutlr form_item">
+                        <div class="left">酒店状态</div>
+                        <div class="right"><eq name="status" value="1">营业中<else/>已结业</eq></div>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- 酒店信息 结束 -->
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- 主体内容 结束 -->
+</block>
+<block name="js">
+<script src="__PUBLIC__/Swiper-3.4.1/js/swiper.jquery.min.js"></script>
+<script type="text/javascript">
+var swiperNav = new Swiper('.swiper-tab-nav', {
+    // pagination: '.swiper-pagination',
+    slidesPerView: 'auto',
+    // centeredSlides: true,
+    // paginationClickable: true,
+    // spaceBetween: 30
+
+    // slidesPerView: 3,
+    paginationClickable: true,
+    // spaceBetween: 30,
+
+    onInit: function(swiper) { // 初始化回调函数
+// 
+    },
+    onClick: function(swiper) {
+    swiperPage.slideTo($(swiper.clickedSlide).index(), 500, false);//切换到第一个slide，速度为1秒
+    },
+});
+
+var swiperPage = new Swiper ('.swiper-tab-page', {
+  // loop: true,
+
+  onInit: function(swiper) { // 初始化回调函数
+
+  },
+  onTouchEnd: function(swiper) { // 初始化回调函数
+    swiperNav.slideTo(swiper.previousIndex, 500, false);//切换到第一个slide，速度为1秒
+    setTimeout(function() {
+      if($('.swiper-tab-link.on').index() != swiperPage.activeIndex) {
+        $('.swiper-tab-link').removeClass('on');
+        $($('.swiper-tab-link')[swiperPage.activeIndex]).addClass('on');
+      }
+    }, 100);
+  },
+});
+
+/* 跳转 */
+function now_href(url){
+  window.location.href = url;
+}
+
+/* 返回 */
+$(".backs").click(function(){
+  window.location.href = "{:U('index')}";
+})
+</script>
+</block>

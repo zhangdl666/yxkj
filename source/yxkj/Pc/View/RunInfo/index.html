@@ -1,0 +1,214 @@
+<extend name="Public:index"/>
+<block name="head">
+    <title>运行信息</title>
+</block>
+<block name="css">
+    <style type="text/css">
+        .table-forms {
+            width: 310px;
+            height: 38px;
+            border: 1px solid #dedede;
+            padding-left: 10px;
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        .jhxg_main .shouyitongji_block li {
+            width: calc(25% - 8px) !important;
+        }
+
+        .gezi-container .gezi-group .btn {
+            margin: 11.5px;
+            /*width: calc(6.3% - 10px);*/
+            width: 90px;
+            height: 42px;
+        }
+
+        @media screen and (max-width: 1199px) and (min-width: 1000px) {
+            .gezi-container .gezi-group .btn {
+                margin: 10px !important;
+            }
+        }
+
+        .btn_icon {
+            width: 26px;
+            height: 19px;
+            display: block;
+            float: right;
+        }
+
+        .max_btn_icon {
+            width: 37px;
+            height: 27px;
+            display: block;
+            margin: 10px auto;
+        }
+
+        .btn_icon_bottom {
+            background: url("__IMG__/wx_kq_bottom_bottom.png");
+            background-size: 100%;
+        }
+
+        .btn_icon_top {
+            background: url("__IMG__/wx_kq_bottom_top.png");
+            background-size: 100%;
+        }
+
+        .pc_kq_height {
+            height: 68px;
+            overflow: hidden;
+        }
+
+        .pitch_on {
+            background: url("__IMG__/pitch_on.png") no-repeat;
+            background-position: right bottom;
+            color: #4e4e4e !important;
+        }
+
+    </style>
+
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+        当前的位置：
+        <li><a>首页</a></li>
+        <li class="on">运行信息{$role_id}</li>
+    </ol>
+</block>
+
+<block name="main">
+    <div id="main" class="jhxg_main">
+        <!-- 导航 开始 -->
+        <if condition="($role_id eq 11) OR ($role_id eq 12)">
+            <ul class="clearfix subnav hetongnav">
+                <li style="width:50%;margin-left:20px;"><a title="{$hotelname}" style="text-align: left;"><i
+                        class="icon"></i><span class="cur_title">{$hotelname}</span></a></li>
+            </ul>
+        </if>
+        <!-- 导航 结束 -->
+
+        <!-- 内容 开始 -->
+        <div class="subpage hetongxinxi02 jhxg">
+            <div class="gezi-container-wrap jhxg-gezi2">
+                <dl class="gezi-container">
+                    <dt class="gezi-title">
+                        <if condition="($role_ids eq 11) OR ($role_ids eq 12)">
+                            <span class="riqiq" style="float: left;margin-right: 10px">选择日期</span>
+                            <input type="text" class="editdate" name="now_time" value="{$nowtime}" id="Times">
+                            <else/>
+                            <span class="riqiq" style="float: left;margin-right: 10px;margin-left: 10px">选择日期</span>
+                            <input type="text" class="editdate" name="now_time" value="{$nowtime}" id="Times">
+                        </if>
+                        <if condition="($role_ids eq 5) OR ($role_ids eq 9) OR ($role_ids eq 1)">
+                            <div class="col right table-form editdate" style="margin-left: 10px">
+                                <select name="hotels">
+                                    <option value="0">--请选择酒店查看--</option>
+                                    <foreach name="hoteldata" item="vo">
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                    </foreach>
+                                </select>
+                            </div>
+                        </if>
+                        <div class="checkbox-container gezi-green" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">运行正常</span>
+                        </div>
+                        <div class="checkbox-container gezi-red" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">超标预警</span>
+                        </div>
+                        <div class="checkbox-container gezi-orange" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">离线预警</span>
+                        </div>
+                        <div class="checkbox-container gezi-gay" data-type="checkbox">
+                            <i class="icon icon01 i_radio"></i>
+                            <span class="checkbox_txt">暂未开启</span>
+                        </div>
+                        <i class="btn_icon btn_kq_icon btn_icon_bottom"></i>
+                    </dt>
+                    <dd class="gezi-group pc_kq_height" id="kq_height">
+
+                        <foreach name="datas" item="vo">
+                            <button type="button" class="btn {$vo.status} rooms" value="{$vo.equipment_sno}">
+                                {$vo.room_sno}
+                            </button>
+                        </foreach>
+
+                    </dd>
+                    <dd><i class="max_btn_icon btn_kq_icon btn_icon_bottom"></i></dd>
+                </dl>
+            </div>
+
+            <div class="saled">
+                <div class="shouyitongji_block jhxg_danzi2 devtime">
+                    <ul class="clearfix danzi">
+                        <li>
+                            <div class="danzidata dan1">
+                                <i class="icon dan_icon i_dan17"></i>
+                                <div class="danzinum"><span>{$hours|default=0}</span>小时</div>
+                                <div class="danziname">今日累计开启时长</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="danzidata dan2">
+                                <i class="icon dan_icon i_dan18"></i>
+                                <div class="danzinum" style="color: #d783fd"><span>{$pm|default=0}</span>μg/m3</div>
+                                <div class="danziname">历史平均室内PM2.5</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="danzidata dan3">
+                                <i class="icon dan_icon i_dan19"></i>
+                                <div class="danzinum"><span>{$allday|default=0}</span>天</div>
+                                <div class="danziname">累计开启天数</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="danzidata dan4">
+                                <i class="icon dan_icon i_dan20"></i>
+                                <div class="danzinum" style="color: #ff7d76;"><span>{$day|default=0}</span>天</div>
+                                <div class="danziname">累计运行天数</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel panel-default sales timesale">
+                    <div class="panel-heading"><h1>当天室内空气质量统计</h1></div>
+                    <div class="panel-body">
+                        <div class="panel" id="onemain" style="height: 350px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 内容 结束 -->
+    </div>
+    </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/laydate/laydate.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Runinfo/run_back_comon.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Runinfo/run_front_comon.js"></script>
+    <script>
+        laydate.render({
+            elem: '#Times' //指定元素
+            , done: function (value, date, endDate) {
+                $(".rooms").removeClass("pitch_on");
+                var room_dev = '';
+                var hotel_id = $('select[name="hotels"]').val();
+                $.get('/Pc/RunInfo/getDevicerhartsData', {
+                    rooms: room_dev,
+                    time: value,
+                    hotel_id: hotel_id,
+                    type:1
+                }, function (f) {
+                    $(".timesale").html(f);
+                }, 'html')
+            }
+        });
+    </script>
+</block>

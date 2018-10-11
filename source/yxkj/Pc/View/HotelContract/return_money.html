@@ -1,0 +1,120 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>合同管理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>合同管理</a></li>
+      <li class="on">结算信息</li>
+    </ol>
+    <style type="text/css">
+    .container .article #main{height:82%;}
+    .danzi li{
+      width: calc(25% - 18px)!important;
+    }
+    .subnav > li {
+      width: 116px;
+      padding: 0px 24px;
+    }
+    @media screen and (max-width: 1199px) and (min-width: 1000px){
+      .danzi .dan_icon {
+        display: none;
+      }
+    }
+    </style>
+</block>
+
+<block name="main">
+
+
+  <div id="main" class="bgfff">
+    <!-- 导航 开始 -->
+    <ul class="clearfix subnav hetongnav">
+      <li><a><i class="icon"></i><span class="cur_title">结算信息</span></a></li>
+      <li><a rel="link" href="{:U('read',array('id'=>$hcid))}">基础信息</a><span class="nav_border"></span></li>
+      <li><a rel="link" href="{:U('installe',array('id'=>$hcid))}">安装信息</a><span class="nav_border"></span></li>
+      <li class="on"><a rel="link" class="active" href="{:U('return_money',array('id'=>$hcid))}">结算信息</a><span class="nav_border"></span></li>
+      <li><a rel="link" href="{:U('upkeep',array('id'=>$hcid))}">保养信息</a><span class="nav_border"></span></li>
+      <li><a rel="link" href="{:U('maintain',array('id'=>$hcid))}">维修信息</a></li>
+    </ul>
+    <!-- 导航 结束 -->
+    <ul class="clearfix danzi">
+      <li>
+        <div class="danzidata dan1">
+          <i class="icon dan_icon i_dan1"></i>
+          <div class="danzinum"><span>{$rm_price|default='0.00'}</span></div>
+          <div class="danziname">已结算金额</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan2">
+          <i class="icon dan_icon i_dan2"></i>
+          <div class="danzinum"><span>{$rm_num}</span>次</div>
+          <div class="danziname">已结算次数</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan3">
+          <i class="icon dan_icon i_dan3"></i>
+          <div class="danzinum"><span>{$nrm_num}</span>次</div>
+          <div class="danziname">逾期未缴次数</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata dan4">
+          <i class="icon dan_icon i_dan4"></i>
+          <div class="danzinum"><span>{$nrm_price|default='0.00'}</span></div>
+          <div class="danziname">逾期金额</div>
+        </div>
+      </li>
+    </ul>
+    <div class="panel panel-default table-datawrap" style="margin-top:20px;">
+      <div class="panel-body">
+        <table class="table table-condensed table-data">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>结算账期</th>
+              <th>结算模式</th>
+              <th>本期使用天次</th>
+              <th>应结算金额</th>
+              <th>实际结算金额</th>
+              <th>应结算日期</th>
+              <th>实际结算日期</th>
+              <th>逾期天数</th>
+              <th>滞纳金</th>
+              <th>结算状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <notempty name="items">
+            <volist name="items" id="item">
+            <tr>
+              <td>{$key+1}</td>
+              <td>{$item.etime}</td>
+              <td><if condition="$item.type eq 1">共享({$item.at_price}元/天次)<elseif condition="$item.type eq 2"/>租赁({$item.at_price}元/天)<else/>月租($item.month_price元/月)</if></td>
+              <td>{$item.num}</td>
+              <td>{$item.rprice}</td>
+              <td>{$item.price}</td>
+              <td>{$item.rtime|date='Y-m-d',###}</td>
+              <td><notempty name="item['time']">{$item.time|date='Y-m-d',###}</notempty></td>
+              <td>{$item.mtime}</td>
+              <td>{$item.mprice}</td>
+              <td><if condition="$item.status eq 1">待结算<elseif condition="$item.status eq 2"/>待确认<else/>已结算</if></td>
+            </tr>
+            </volist>
+            <else/>
+            <tr><td colspan="11">暂无数据</td></tr>
+            </notempty>
+          </tbody>
+        </table>
+        <div class="pagination-container">
+            <div class="pagination">
+                {$pageHtml}
+            </div>
+          </div>
+      </div>
+    </div>
+</block>

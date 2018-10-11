@@ -1,0 +1,347 @@
+<!-- 内容 开始 -->
+<block name="css">
+    <style type="text/css">
+        button.btn.black.room {
+            background-color: #aaaca2;
+        }
+        </style>
+</block>
+<div class="subpage hetongxinxi02 jhxg">
+
+    <div class="gezi-container-wrap jhxg-gezi1">
+        <dl class="gezi-container">
+            <if condition="($role_id eq 9) OR ($role_id eq 1) OR ($role_id eq 5)">
+                <div class="col right table-form">
+                    <select name="hotels">
+                        <option value="0">--请选择酒店查看--</option>
+                        <foreach name="Hotel" item="vo">
+                            <option value="{$vo.id}" <if condition="$id eq $vo['id']">selected="selected"</if>>{$vo.name}</option>
+                        </foreach>
+                    </select>
+                </div>
+            </if>
+
+            <dt class="gezi-title">
+                <div class="checkbox-container gezi-green" data-type="checkbox">
+                    <i class="icon icon01 i_radio"></i>
+                    <span class="checkbox_txt">优</span>
+                </div>
+                <div class="checkbox-container gezi-orange" data-type="checkbox">
+                    <i class="icon icon01 i_radio"></i>
+                    <span class="checkbox_txt">良</span>
+                </div>
+                <div class="checkbox-container gezi-red" data-type="checkbox">
+                    <i class="icon icon01 i_radio"></i>
+                    <span class="checkbox_txt">差</span>
+                </div>
+                <div class="checkbox-container gezi-gray" data-type="checkbox">
+                    <i class="icon icon01 i_radio"></i>
+                    <span class="checkbox_txt">离线</span>
+                </div>
+                <div class="checkbox-container gezi-black" data-type="checkbox">
+                    <i class="icon icon01 i_radio"></i>
+                    <span class="checkbox_txt">关闭</span>
+                </div>
+                <i class="btn_icon btn_kq_icon btn_icon_bottom"></i>
+            </dt>
+            <dd class="gezi-group pc_kq_height" id="kq_height">
+                <foreach name="roomInfo" item="vo">
+                    <button type="button" class="btn {$vo.status} room" value="{$vo.equipment_sno}" data-type="{$vo.room_sno}">{$vo.room_sno}</button>
+                </foreach>
+
+            </dd>
+            <dd><i class="max_btn_icon btn_kq_icon btn_icon_bottom"></i></dd>
+        </dl>
+    </div>
+
+    <div class="shouyitongji_block jhxg_danzi1">
+        <ul class="clearfix danzi">
+            <li>
+                <div class="danzidata dan1">
+                    <i class="icon dan_icon i_dan21"></i>
+                    <div class="danzinum"><span>{$roomnums|default=0}</span>间</div>
+                    <div class="danziname">优享客房数</div>
+                </div>
+            </li>
+            <li>
+                <div class="danzidata dan2">
+                    <i class="icon dan_icon i_dan22"></i>
+                    <div class="danzinum"><span>{$translate|default=0}</span>天</div>
+                    <div class="danziname">室内空气累计优质天数</div>
+                </div>
+            </li>
+            <li>
+                <div class="danzidata dan3">
+                    <i class="icon dan_icon i_dan15">PM2.5</i>
+                    <div class="dpro">
+                        <span class="dantitle">当日室内空气质量均值</span>
+                        <div class="progress-container progress01"><div class="progress" data-width="{$indoor_pms / 5}" style="width: {$indoor_pms / 5}%;"></div></div>
+                        <div class="prodata"><span class="max">{$indoor_pms}</span>
+                            <if condition="$indoor_pming eq 1"> 优
+                                <elseif condition="$indoor_pming eq 2"/>良
+                                <else /> 差
+                            </if>
+                        </div>
+                    </div>
+                    <div class="dpro">
+                        <span class="dantitle">当日室外空气质量均值</span>
+                        <div class="progress-container progress03"><div class="progress" data-width="{$outdoor_pms / 5}" style="width: {$outdoor_pms / 5}%;"></div></div>
+                        <div class="prodata"><span class="max">{$outdoor_pms}</span>
+                            <if condition="$outdoor_pming eq 1"> 优
+                                <elseif condition="$outdoor_pming eq 2"/>良
+                                <else /> 差
+                            </if></div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="sales">
+        <div class="panel panel-default out-room">
+            <div class="panel-heading"><h1 class="out-air-info" >近7日空气质量走势统计</h1><h1 class="room-air-info" style="margin-left: 20px;display: none"></h1></div>
+            <div class="panel-body">
+                <div class="panel" id="onemain" style="height: 350px">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        /***房间数量超出一排显示下拉开关***/
+        function but_show(){
+            var kg_btn = $("#kq_height");
+            var btn_icon =$(".btn_kq_icon");
+            var btn_length = kg_btn.children(".btn").length;
+            var btn_num =parseInt(kg_btn.width() / 110);
+            if(btn_length > btn_num){
+                btn_icon.addClass("btn_block");
+                btn_icon.removeClass("btn_none");
+            }else {
+                btn_icon.addClass("btn_none");
+                btn_icon.removeClass("btn_block");
+            }
+        }
+        but_show();
+        /***********浏览器窗口宽度发生变化时执行************/
+        $(window).resize(function() {
+            but_show();
+        });
+
+        /********房间下拉图标和向上关闭图标切换********/
+        $(function(){
+            var on_num = 0;
+            $(".btn_kq_icon").click(function(){
+                var this_icon =  $(".btn_kq_icon");
+                if(on_num == 0){
+                    this_icon.removeClass("btn_icon_bottom");
+                    $("#kq_height").removeClass("pc_kq_height");
+                    this_icon.addClass("btn_icon_top");
+                    on_num = 1;
+                }else if(on_num == 1){
+                    $("#kq_height").addClass("pc_kq_height");
+                    this_icon.addClass("btn_icon_bottom");
+                    this_icon.removeClass("btn_icon_top");
+                    on_num = 0;
+                }
+            })
+        });
+    });
+
+    // 查看某一家酒店数据
+    $('select[name="hotels"]').on('change', function () {
+        var index = layer.load(1, {
+            shade: [0.5,'#fff'] //0.1透明度的白色背景
+        });
+        var hotel_id = $(this).val();
+//        if(hotel_id){
+            $.post('/Pc/RemovalInfo/getHotelInfo', {hotel_id: hotel_id}, function (f) {
+                layer.close(index);
+                $(".hoteliofs").html(f);
+                but_show();
+            },'html');
+//        }
+    });
+
+    // 点击展示数据
+    $(".room").click(function () {
+        $(".room").removeClass("pitch_on");
+        $(this).addClass("pitch_on");
+        var room_name = $(this).data('type');
+        var value = $(this).attr('value');
+        $.post('/Pc/RemovalInfo/clickRooms', {mac: value}, function (f) {
+            if(f.code == 1){
+//                $('.out-air-info').css('color','#ccc');
+                $(".out-air-info").addClass("no_click_h1");
+                $('.room-air-info').css('display','inline-block');
+                $('.room-air-info').html(room_name+'房间空气质量走势统计');
+                $('.panel-body').append(f.message);
+                $('#onemain').css('display','none');
+            }else {
+                layer.msg(f.message);
+            }
+            //$(".sales").html(f);
+        },'json')
+    });
+//    $('.out-air-info').click(function () {
+//        var color=$(this).css('color');
+//        if(color == 'rgb(204, 204, 204)'){
+//            $(this).css('color','rgb(25, 185, 88)');
+//            $('.room-air-info').css('color','rgb(204, 204, 204)');
+//            $('#onemain').css('display','block');
+//            $('.room_onemain').css('display','none');
+//        }
+//    });
+//    $('.room-air-info').click(function () {
+//        var color=$(this).css('color');
+//        if(color == 'rgb(204, 204, 204)'){
+//            $(this).css('color','rgb(25, 185, 88)');
+//            $('.out-air-info').css('color','rgb(204, 204, 204)');
+//            $('#room_onemain').css('display','block');
+//            $('#onemain').css('display','none');
+//        }
+//    });
+    $('.panel-heading h1').click(function () {
+        var _this = $(this);
+        var _one_main = _this.hasClass("out-air-info");
+        var _room_one_main = _this.hasClass("room-air-info");
+        var _this_main = _this.hasClass("no_click_h1");
+        if(_this_main){
+            $('.panel-heading h1').removeClass("no_click_h1");
+            if(_one_main){
+                $(".room-air-info").addClass("no_click_h1");
+                $('#onemain').css('display','block');
+                $('#room_onemain').css('display','none');
+            }else if(_room_one_main){
+                $(".out-air-info").addClass("no_click_h1");
+                $('#room_onemain').css('display','block');
+                $('#onemain').css('display','none');
+            }
+        }
+    });
+    // 基于准备好的dom，初始化echarts实例
+    var myChartOne= echarts.init(document.getElementById('onemain'));
+    optionOne = {
+        tooltip : {
+            trigger: 'axis',
+        },
+//        toolbox: {
+//            show : true,
+//            feature : {
+//                mark : {show: true},
+//                dataView : {show: true, readOnly: false},
+//                magicType : {
+//                    show: true,
+//                    type: ['pie', 'funnel']
+//                },
+//                restore : {show: true},
+//                saveAsImage : {show: true}
+//            }
+//        },
+        grid: {
+            left: '5%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : {$date}
+            }
+        ],
+        legend: {
+            data: ['室内','室外']
+        },
+        yAxis : [
+            {
+                name:'PM2.5(μg/m3)',
+            <if condition="($spm25 eq '[]') AND ($sapm25 eq '[]')">
+            min: 0,
+        max: 100,
+    </if>
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name: '室内',
+                type:'line',
+                smooth: true,
+                areaStyle: {
+                    normal: {
+                    }
+                },
+//                itemStyle : {
+//                    normal : {
+//                        lineStyle:{
+//                            color:'#00FF00'
+//                        }
+//                    }
+//                },
+//                // 背景颜色设置
+//                lineStyle: {
+//                    normal: {
+//                        width: 1.5,
+//                        // 线条颜色
+//                        color: ['#B9A7DE']
+//                    }
+//                },
+                areaStyle: {
+                    normal: {
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        width: 1.5
+                    }
+                },
+                data:{$numtwo},
+                color: ['#7DD9B2']
+            },
+            {
+                name: '室外',
+                type:'line',
+                smooth: true,
+                areaStyle: {
+                    normal: {
+                    }
+                },
+//                itemStyle : {
+//                    normal : {
+//                        lineStyle:{
+//                            color:'#00FF00'
+//                        }
+//                    }
+//                },
+//                // 背景颜色设置
+//                lineStyle: {
+//                    normal: {
+//                        width: 1.5,
+//                        // 线条颜色
+//                        color: ['#7DD9B2']
+//                    }
+//                },
+                areaStyle: {
+                    normal: {
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        width: 1.5
+                    }
+                },
+                data:{$numone},
+                color: ['#B9A7DE']
+            },
+
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartOne.setOption(optionOne);
+</script>
+</script>

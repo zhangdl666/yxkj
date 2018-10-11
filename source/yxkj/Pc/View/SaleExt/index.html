@@ -1,0 +1,430 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>收益统计</title>
+</block>
+<block name="css">
+</block>
+<block name="top">
+  <ol class="breadcrumb">
+    当前的位置：
+    <li><a class="a_no_hover">个人收益统计</a></li>
+    <li class="on">收益统计列表</li>
+  </ol>
+</block>
+<block name="main">
+  <style type="text/css">
+    .shouyitongji_main .qian_block th, .shouyitongji_main .qian_block td{
+      width: 18%;
+    }
+    .shouyitongji_main .qian_block td .i_icon02_03{
+      top: -15px;
+    }
+    .shouyitongji_main .shouyitongji_danzi > li {
+      width: 16%;
+      margin: 0;
+    }
+    .dengji{
+      background-image: url(__IMG__/rank.png);
+      background-size: cover;
+      width: 50px;
+      height: 50px;
+      font-style: normal;
+      font-size: 18px;
+      font-weight: bold;
+      color: rgb(245,198,7);
+      line-height: 55px;
+    }
+    td.level-full{
+     display: inline-table;
+      width:300% !important;
+      height: 187px;
+      line-height: 187px;
+      color: #ffb533;
+      font-size: 26px;
+      text-align: left !important;
+      /*margin-left: 25%;*/
+    }
+    .container .article #main {
+      background-color: transparent;
+    }
+    .shouyitongji_main .shouyitongji_danzi2 .danzidata {
+      padding: 0 10px 0 102px!important;
+      text-align: right;
+    }
+  </style>
+  <style type="text/css">
+    .shouyitongji_main .shouyitongji_danzi2{left:0px;width:100%;}
+    .danzi{padding:0px;}
+    .shouyitongji_main .shouyitongji_danzi2 li:nth-of-type(1){
+      margin-left: 0;
+    }
+    .shouyitongji_main .shouyitongji_danzi2 li:last-child{
+      margin-right: 0;
+    }
+    .shouyitongji_main .shouyitongji_danzi2 li{
+      /*min-width: 180px;*/
+      width: calc(25% - 10.5px)!important;
+    }
+
+
+    @media screen and (max-width: 1199px) and (min-width: 1000px){
+      .shouyitongji_main .shouyitongji_danzi2 .danzidata .dan_icon {
+        top: 9px;
+      }
+      .dan_icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+      }
+      .danzi .dan_icon {
+        position: absolute;
+        left: 20px;
+        top: 34px;
+      }
+      .xs_danzi .dan_icon {
+        width: 60px;
+        height: 60px;
+      }
+      .i_dan10 {
+        background-position: -6px -856px;
+        background-size:483%;
+      }
+
+      .i_dan11 {
+        background-position: -6px -946px;background-size:483%; }
+
+      .i_dan12 {
+        background-position: -6px -1032px;background-size:483%; }
+      .i_dan13 {
+        background-position: -110px 0;background-size:483%; }
+
+      .i_dan14 {
+        background-position: -110px -90px; background-size:483%;}
+      .i_dan15 {
+        background-position: -110px -180px;background-size:483%; }
+      .i_dan16 {
+        background-position: -110px -270px!important;
+        background-size:483%;
+      }
+
+    }
+    @media screen and (max-width: 1500px) and (min-width: 1200px){
+      .shouyitongji_main .shouyitongji_danzi > li {
+        width: 16%;
+        margin: 0; }
+      .danzi .dan_icon {
+        position: absolute;
+        left: 20px;
+        top: 34px;
+      }
+      .shouyitongji_main .shouyitongji_danzi > li:nth-child(4){
+        width: 15%;
+        margin: 0; }
+      .danzi li .danziname {
+        font-size: 16px;
+      }
+    }
+    @media screen and (min-width:1501px) and (max-width:1700px){
+      .shouyitongji_main .shouyitongji_danzi > li {
+        width:16%;
+        margin: 0; }
+      .danzi .dan_icon {
+        position: absolute;
+        left: 20px;
+        top: 34px;
+      }
+      .shouyitongji_main .shouyitongji_danzi > li:nth-child(4){
+        width: 15%;
+        margin: 0; }
+      .danzi li .danziname {
+        font-size: 16px;
+      }
+    }
+    @media screen and (max-width: 1900px) and (min-width: 1701px){
+      .shouyitongji_main .shouyitongji_danzi > li {
+        width: 16%;
+        margin: 0; }
+      .danzi .dan_icon {
+        position: absolute;
+        left: 20px;
+        top: 25px;
+      }
+      .shouyitongji_main .shouyitongji_danzi > li:nth-child(4){
+        width: 14%;
+        margin: 0; }
+    }
+    a{color:#ffffff !important;}
+    a:link    {color:#ffffff !important;}
+    a:visited {color:#ffffff !important;}
+    a:hover   {color:#ffffff !important;background-color: rgb(244,144,0)}
+    a:active  {color:#ffffff !important;}
+    .a_no_hover{
+      color: rgb(102,102,102)!important;
+    }
+    .a_no_hover:hover{
+      color: rgb(102,102,102)!important;
+      background-color: #f5f5f5!important;
+    }
+  </style>
+  <div id="main" class="shouyitongji_main" style="width: 98%">
+    <ul class="clearfix danzi shouyitongji_danzi">
+      <li>
+        <div class="danzidata">
+          <!--<i class="icon dan_icon i_dan10"></i>-->
+          <div class="danzinum"><span class="min">￥</span><span>{$saleAllMoney|default=0.00}</span></div>
+          <div class="danziname">渠道总收益</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata">
+          <!--<i class="icon dan_icon i_dan10"></i>-->
+          <div class="danzinum"><span class="min">￥</span><span>{$saleAllReimbursementMoney|default=0.00}</span></div>
+          <div class="danziname">报销总额</div>
+        </div>
+      </li>
+      <li>
+        <div class="danzidata">
+          <!--<i class="icon dan_icon i_dan11"></i>-->
+          <div class="danzinum"><span class="min">￥</span><span>{$saleAllGetMoney|default=0.00}</span></div>
+          <div class="danziname">历史提现总金额</div>
+        </div>
+      </li>
+        <li>
+            <div class="danzidata">
+                <!--<i class="icon dan_icon i_dan10"></i>-->
+                <div class="danzinum"><span class="min">￥</span><span>{$saleLeftMoney|default=0.00}</span></div>
+                <div class="danziname">可提现金额</div>
+            </div>
+        </li>
+      <li>
+        <div class="danzidata">
+          <!--<i class="icon dan_icon i_dan12"></i>-->
+          <div class="danzinum"><span>{$row.name}</span></div>
+          <div class="danziname">当前等级</div>
+        </div>
+      </li>
+      <li>
+        <div class="btns">
+            <a class="btn btn-yellow" style="" href="{:U('add')}">提现</a>
+          <a class="btn btn-yellow" href="{:U('saleGetmoney')}">提现记录</a>
+        </div>
+      </li>
+    </ul>
+    <div class="shouyitongji_block shouyitongji_danzi2">
+      <ul class="clearfix danzi">
+        <li>
+          <div class="danzidata dan1">
+            <i class="icon dan_icon i_dan16"></i>
+            <div class="danzinum" style="color: #ffa11a"><span>{$row.equipment_num|default=0}</span>个</div>
+            <div class="danziname">已签约设备数</div>
+          </div>
+        </li>
+        <li>
+          <div class="danzidata dan2">
+            <i class="icon dan_icon i_dan15"></i>
+            <div class="danzinum" style="color: #82cf65"><span>{$row.room_num|default=0}</span>个</div>
+            <div class="danziname">当前已签约房间数</div>
+          </div>
+        </li>
+        <li>
+          <div class="danzidata dan3">
+            <i class="icon dan_icon i_dan14"></i>
+            <div class="danzinum" style="color: #34d4ec"><span>{$row.hotel_num|default=0}</span>个</div>
+            <div class="danziname">已签约酒店数</div>
+          </div>
+        </li>
+        <li>
+          <div class="danzidata dan4">
+            <i class="icon dan_icon i_dan13"></i>
+            <div class="danzinum" style="color:#c388f2"><span>{$row.hc_num|default=0}</span>个</div>
+            <div class="danziname">已签约合同数</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="shouyitongji_block bgfff qian_block">
+      <table>
+        <thead>
+        <tr>
+          <th style="width: 5%"></th>
+          <th>已回款金额</th>
+          <th></th>
+          <th>渠道等级</th>
+          <th></th>
+          <th>收益</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach name="zprofit" key="ke" item="vo">
+          <tr>
+            <td  style="width: 5%">
+              <div class="qian_num on_title"></div>
+            </td>
+            <td>
+                <if condition="($ke+1) eq $count">
+                    <!--------    金色背景图 开始   ------------------->
+                    <div class="qian_img">
+                        <i class="icon qian01 i_qian01"></i>
+                    </div>
+                    <div class="qian_num"><span class="min">￥</span>{$vo.price}</div>
+                    <!--------    金色背景图   结束 ------------------->
+                    <else/>
+                    <!--------    灰色背景图   开始 ------------------->
+                    <div class="qian_img">
+                        <i class="icon h_money h_money_001"></i>
+                    </div>
+                    <div class="h_qian_num"><span class="min">￥</span>{$vo.price}</div>
+                    <!--------    灰色背景图   结束 ------------------->
+                </if>
+            </td>
+            <td><i class="icon icon02 i_icon02_01"></i></td>
+            <td>
+                <if condition="($ke+1) eq $count">
+                    <!--------    金色背景图 开始   ------------------->
+                    <div class="qian_img h_qian_img">
+                        <i class="icon h_money j_money_001"></i>
+                        <span class="h_span j_span">{$vo.name}</span>
+                    </div>
+                    <div class="qian_num"><span class="min">提成比例:</span> {$vo.rate}%</div>
+                    <!--------    金色背景图   结束 ------------------->
+                    <else/>
+                    <!--------    灰色背景图   开始 ------------------->
+                    <div class="qian_img h_qian_img">
+                        <i class="icon h_money h_money_002"></i>
+                        <span class="h_span j_span">{$vo.name}</span>
+                    </div>
+                    <div class="h_qian_num"><span class="min">提成比例:</span> {$vo.rate}%</div>
+                    <!--------    灰色背景图   结束 ------------------->
+                </if>
+            </td>
+            <td><i class="icon icon02 i_icon02_02"></i></td>
+            <td>
+                <if condition="($ke+1) eq $count">
+                    <!--------    金色背景图 开始   ------------------->
+                    <div class="qian_img">
+                        <i class="icon qian01 i_qian03"></i>
+                    </div>
+                    <div class="qian_num"><span class="min">￥</span>{$vo.trueprofit}</div>
+                    <!--------    金色背景图   结束 ------------------->
+                    <else/>
+                    <!--------    灰色背景图   开始 ------------------->
+                    <div class="qian_img">
+                        <i class="icon h_money h_money_003"></i>
+                    </div>
+                    <div class="h_qian_num"><span class="min">￥</span>{$vo.trueprofit}</div>
+                    <!--------    灰色背景图   结束 ------------------->
+                </if>
+            </td>
+          </tr>
+        </foreach>
+        </tbody>
+      </table>
+    </div>
+    <div class="shouyitongji_block bgfff qian_block">
+      <table>
+        <thead>
+        <tr>
+          <th style="width: 5%"></th>
+          <th>待回款金额</th>
+          <th></th>
+          <th>渠道等级</th>
+          <th></th>
+          <th>收益</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td  style="width: 5%">
+            <div class="qian_num on_title">当前等级</div>
+          </td>
+          <td>
+            <div class="qian_img"><i class="icon qian01 i_qian01"></i></div>
+            <div class="qian_num"><span class="min">￥</span>{$dmoney}</div>
+          </td>
+          <td><i class="icon icon02 i_icon02_01"></i></td>
+          <td>
+            <div class="qian_img"><i class="icon h_money j_money_001"></i><span class="h_span j_span">{$row['name']}</span></div>
+            <div class="qian_num"> <span class="min">提成比例： </span> {$row['rate']}%</div>
+          </td>
+          <td><i class="icon icon02 i_icon02_02"></i></td>
+          <td>
+            <div class="qian_img"><i class="icon qian01 i_qian03"></i></div>
+            <div class="qian_num"><span class="min">￥</span>{$dzprofit}</div>
+          </td>
+        </tr>
+        <tr>
+          <td  style="width: 5%"></td>
+          <td></td>
+          <td></td>
+          <empty name="next">
+            <td class="level-full">
+              <div>恭喜你，已晋升最高等级！</div>
+            </td>
+            <else/>
+            <td>
+              <i class="icon icon02 i_icon02_03" style=""></i>
+<!--------    金色背景图 开始   ------------------->
+              <!--<div class="qian_img"><i class="icon h_money j_money_001"></i></div>-->
+              <!--<div class="qian_num"><span class="min">{$next.name}提成比例:</span> {$next.rate}%</div>-->
+<!--------    金色背景图 结束   ------------------->
+<!--------    灰色背景图   开始 ------------------->
+              <div class="qian_img h_qian_img"><i class="icon h_money h_money_004"></i><span class="h_span j_span_01">{$next.name}</span></div>
+              <div class="h_qian_num"><span class="min">提成比例:</span> {$next.rate}%</div>
+<!--------    灰色背景图   结束 ------------------->
+
+              <div class="tb-lr">距离钻石等级只差{$next.room_less}间</div>
+            </td>
+            <td><i style="top: 35px;" class="icon icon02 i_icon02_02"></i></td>
+            <td>
+              <i class="icon icon02 i_icon02_03" style=" text-indent: 16px;font-size: 16px;font-style: normal;"><span style="color: #19b958;">+{$next.money_more}%</span></i>
+<!--------    金色背景图 开始   ------------------->
+              <!--<div class="qian_img"><i class="icon qian01 i_qian01"></i></div>-->
+              <!--<div class="qian_num"><span class="min">￥</span>{$next.trueprofit}</div>-->
+<!--------    金色背景图 结束   ------------------->
+<!--------    灰色背景图   开始 ------------------->
+              <div class="qian_img">
+                <i class="icon h_money h_money_005"></i>
+              </div>
+              <div class="h_qian_num"><span class="min">￥</span>{$next.trueprofit}</div>
+<!--------    灰色背景图   结束 ------------------->
+            </td>
+          </empty>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading"></div>
+      <div class="panel-body">
+        <div class="shitu"></div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading"></div>
+      <div class="panel-body">
+        <div class="shitu1"></div>
+      </div>
+    </div>
+  </div>
+</block>
+<block name="js">
+  <script type="text/javascript" src="__PUBLIC__/Echarts/echarts.common.min.js"></script>
+  <script type="text/javascript">
+      $(function () {
+          // 异步加载页面
+          $.get('/Pc/SaleExt/earnings', function (f) {
+              $(".shitu").html(f);
+          }, 'html');
+
+//        alert($(window).width()); //浏览器时下窗口可视区域高度
+      });
+
+      $(function () {
+          // 异步加载页面
+          $.get('/Pc/SaleExt/reimbursement', function (f) {
+              $(".shitu1").html(f);
+          }, 'html');
+      });
+  </script>
+</block>

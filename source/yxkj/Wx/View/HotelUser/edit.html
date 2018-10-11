@@ -1,0 +1,131 @@
+<extend name="Public:index"/>
+<block name="title">
+    <title><?php
+            $role_id = $_SESSION['USERINFO']['role_id'];
+            if($role_id==2){
+                echo '修改酒店人员';
+            }elseif($role_id==3){
+                echo '销售经理';
+            }elseif($role_id==9){
+                echo '平台总经理';
+            }elseif($role_id==12){
+                echo '酒店总经理';
+            }
+            ?></title>
+</block>
+<block name="css">
+    <style>
+        input{
+            border: none;
+            text-align: right;
+        }
+        .renlingchakan {
+            padding-bottom: 0.2rem;
+        }
+    </style>
+</block>
+<block name="main">
+    <!-- 主体内容 开始 -->
+    <div class="main">
+        <!-- header 开始 -->
+        <div class="header">
+            <div class="left"></i><a href="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+            <div class="center"></div>
+            <div class="right"><a class="s"><a href="{:U('del',array('id'=>$user['id']))}"><i class="icon del"></i>删除</a></a></div>
+        </div>
+        <!-- header 结束 -->
+        <div class="main_body">
+            <div class="form_data_wrap renlingchakan">
+                <form id="" method="post" action="{:U('edit')}">
+                <ul class="form_data">
+                    <li class="layoutlr form_item">
+                        <div class="left">用户账号</div>
+                        <div class="right">
+                            <div class="input_container">
+                                <input type="text" style="width: 174px;height: 30px" value="{$user['name']}"  disabled="disabled" >
+                                <input type="hidden" name="name" style="width: 174px;height: 30px" value="{$user['name']}" >
+                            </div>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">用户姓名</div>
+                        <div class="right">
+                            <ul class="layoutlr search_select">
+                                <li class=""><input type="text" name="real_name" style="width: 174px;height: 30px" value="{$user['real_name']}"></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">设置密码</div>
+                        <div class="right">
+                            <ul class="layoutlr search_select">
+                                <li class="col "><input type="password" name="password" placeholder="不填写则为原密码" style="width: 174px;height: 30px"></li>
+                                <li><input type="hidden" value="{$user['password']}" name="pwd"></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left">联系方式</div>
+                        <div class="right">
+                            <ul class="layoutlr search_select">
+                                <li class="col "><input type="text" name="mobile" style="width: 174px;height: 30px" value="{$user['mobile']}"></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left"><font color="red">*</font>酒店名称</div>
+                        <div class="right">
+                            <div class="" data-relation="hotel_type">
+                                <select name="hid" style="width: 127px">
+                                    <volist name="hotel" id="row">
+                                        <option value="{$row.id}" <if condition="$user['hotel_id'] eq $row['id']">selected="selected"</if>>{$row.name}</option>
+                                    </volist>
+                                </select>
+                                <i class="icon w_0000_00 w_00_12"></i>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li class="layoutlr form_item">
+                        <div class="left"><font color="red">*</font>用户类型</div>
+                        <div class="right">
+                            <div class="" data-relation="hotel_type1">
+                                <select name="rid" style="width: 129px">
+                                    <volist name="role" id="row">
+                                        <option value="{$row.id}" <if condition="$data_role['id'] eq $row['id']">selected="selected"</if>>{$row.name}</option>
+                                    </volist>
+                                </select>
+                                <i class="icon w_0000_00 w_00_12"></i>
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
+                    <div class="form_data_btns">
+                        <input type="hidden" name="id" value="{$user['id']}">
+                        <button type="button" class="btn maxbtn onlineBtn ajax-post">提交</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="selected_layer hide" data-relation="hotel_type">
+        <ul class="options_container" data-relation="hotel_type">
+            <volist name="hotel" id="row">
+                <li><span data="{$row.id}">{$row.name}</span></li>
+                <input type="hidden" name="hid" value="{$row.id}">
+            </volist>
+        </ul>
+    </div>
+    <div class="selected_layer hide" data-relation="hotel_type1">
+        <ul class="options_container" data-relation="hotel_type1">
+            <volist name="role" id="row">
+                <li><span data="{$row.id}">{$row.name}</span></li>
+                <input type="hidden" name="rid" value="{$row.id}">
+            </volist>
+        </ul>
+    </div>
+    <!-- 主体内容 结束 -->
+</block>

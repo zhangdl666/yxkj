@@ -1,0 +1,30 @@
+<ul class="clearfix danzi">
+    <li>
+        <div class="danzidata dan1">
+            <i class="icon dan_icon i_dan17"></i>
+            <div class="danzinum"><span>{$data['hours']|default=0}</span>小时</div>
+            <div class="danziname">今日累计开启时长</div>
+        </div>
+    </li>
+    <li>
+        <div class="danzidata dan2">
+            <i class="icon dan_icon i_dan18"></i>
+            <div class="danzinum" style="color: #d783fd"><span>{$pm|default=0}</span>μg/m3</div>
+            <div class="danziname">历史平均室内PM2.5</div>
+        </div>
+    </li>
+    <li>
+        <div class="danzidata dan3">
+            <i class="icon dan_icon i_dan19"></i>
+            <div class="danzinum"><span>{$data['allDay']|default=0}</span>天</div>
+            <div class="danziname">累计开启天数</div>
+        </div>
+    </li>
+    <li>
+        <div class="danzidata dan4">
+            <i class="icon dan_icon i_dan20"></i>
+            <div class="danzinum" style="color: #ff7d76;"><span>{$data['day']|default=0}</span>天</div>
+            <div class="danziname">累计运行天数</div>
+        </div>
+    </li>
+</ul>

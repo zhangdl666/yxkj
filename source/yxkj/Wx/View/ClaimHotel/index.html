@@ -1,0 +1,222 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>认领管理</title>
+</block>
+<block name="css">
+	<style>
+		.loading{text-align: center;}
+		.aaa{
+			height:27px;
+			width:200px;
+			margin-top:-8px;
+		}
+		.bbb{
+			text-align:center
+		}
+		.search_container .search_select .col{
+			width: 50%;
+		}
+		.search_container .search_select .col + .col:before{
+			display: none;
+		}
+		.search_container .search_input_wrap {
+			padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+		}
+		.loading{
+			padding: 0.5rem 0;
+			font-size: 0.3rem;
+		}
+		select::-ms-expand { display: none; }
+        select{
+            appearance:none;
+            -moz-appearance:none;
+            -webkit-appearance:none;
+            border: 0px;
+            background-color:#ffffff; 
+        }
+		.w_00_12{
+			position: relative;
+			top: -0.07rem;
+			left: 0.1rem;
+		}
+		.renling .renling_item .showdata li {
+			margin-bottom: 0.06rem;
+			width: 4.6rem;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+		@media only screen and (max-width:320px){
+			.renling .renling_item .showdata li {
+				width: 4rem;
+			}
+		}
+
+	</style>
+</block>
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main">
+		<!-- header 开始 -->
+		<div class="header">
+			<div class="left"><a href="{:U('Index/index')}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+			<div class="right">
+				<if condition="$role eq 2">
+					<a href="{:U('ouser')}"><i class="icon claim"></i>我的认领</a>
+				</if>
+			</div>
+		</div>
+		<!-- header 结束 -->
+
+		<div class="main_body">
+			<form class="clearfix searchbar" action="{:U('index')}"  method="post">
+				<div class="search_container">
+					<div class="search_input_wrap">
+						<div class="search_input">
+							<div style="float: right"><i class="icon w_0000_00 w_00_01"></i></div>
+							<div class="contenteditable on" contenteditable="" placeholder="{$wlike|default='输入酒店名进行关键字搜索'}"></div>
+						</div>
+					</div>
+					<ul class="layoutlr search_select">
+						<li class="col">
+							<span class="selected" id="claim">
+								<select name="is_get">
+									<option value="3">全部</option>
+									<option value="-1" <eq name="wis_get" value="-1">selected</eq>>未认领</option>
+									<option value="1" <eq name="wis_get" value="1">selected</eq>>已认领</option>
+								</select>
+							</span><i class="icon w_0000_00 w_00_12"></i>
+							<span style="border-right: 0.01rem solid #cfcfcf;width:0.01rem;height:0.16rem;margin-top: 0.13rem;display:inline-block;float: right"></span>
+						</li>
+
+						<li class="col">
+							<span class="selected" id="hotle">
+								<select name="ht_id">
+									<option value="">酒店类型</option>
+									<volist name="hotel" id="vo">
+										<option value="{$vo.id}" <eq name="vo.id" value="$wht_id">selected</eq>>{$vo.name}</option>
+									</volist>
+								</select>
+							</span><i class="icon w_0000_00 w_00_12"></i>
+						</li>
+					</ul>
+				</div>
+			</form>
+			<ul class="renling">
+				<notempty name="items">
+				<volist name="items" id="vol">
+					<a href="{:U('edit',array(id =>$vol['id']))}">
+						<li class="layoutlr renling_item">
+								<div class="left">
+									<div class="goodsimg">
+										<img src="{$vol.img|default='__IMG__/head.png'}" >
+									</div>
+								</div>
+								<div class="right">
+									<ul class="showdata">
+										<li><i class="icon w_0007_07 w_07_02"></i>酒店名称：{$vol.name} </li>
+										<li><i class="icon w_0007_07 w_07_03"></i>酒店星级：{$vol.type_name}</li>
+									</ul>
+								</div>
+						</li>
+					</a>
+				</volist>
+			<else/>
+				<li class="no_data_div"><img src="__IMG__/no_data.png"><span>暂时没有数据</span></li>
+			</notempty>
+			</ul>
+		</div>
+
+	</div>
+	<!-- 主体内容 结束 -->
+	<div class="col-xs-12 loading" style="text-align: center;display: none;">
+		<img src="__IMG__/loading.gif" alt="">
+	</div>
+	<!--装页码的div-->
+	<div style="display:none" key="1" class="key"></div>
+	<div style="display:none" key="1" class="list-page"></div>
+	<!-- 主体内容 结束 -->
+</block>
+<block name="js">
+	<script type="text/javascript">
+		//搜索
+		$("select[name='is_get']").change(function(){
+			select_fun();
+		})
+		$("select[name='ht_id']").change(function(){
+			select_fun();
+		})
+
+		function select_fun(){
+			var type = $("select[name='is_get'] option:selected").val();
+			var ht_id = $("select[name='ht_id'] option:selected").val();
+			var sousuo=$('.search_input').text();
+			self.location.href ='/Wx/ClaimHotel/index/type/'+type+'/hotel/'+ht_id+'/like/'+sousuo;
+		}
+        $(".contenteditable").blur( function() {
+        	select_fun();
+        });
+		//下拉显示更多
+		//当前的数据一定要超过页面显示的
+		$(window).scroll(function () {
+			var docHei = $(document).height(), winHei = $(window).height(), scrHei = $(document).scrollTop();
+			if (scrHei >= docHei - winHei) {
+				$(".loading").show();
+				var key = $('.key').attr('key');//当前页码
+				key = key * 1 + 1;
+				//获取加载数据
+				$.ajax({
+					type:"POST",
+					async: false,
+					url:"{:U('show_more_data')}?page="+$(".list-page").attr('key'),
+					data:{key:key},
+					success:function(info){
+						info = eval("("+info+")");
+						if (info.status) {
+							var re_data = info.data;
+							$('.key').attr('key', re_data.key);          //添加最新显示页码
+							$(".list-page").attr('key',re_data.page);   //添加最新查询页码
+							//显示加载的数据
+							showHtml(re_data.datas,25);
+							//>>隐藏加载图
+							setTimeout(function () {
+								$(".loading").hide();
+							}, 1000);
+						} else {
+							$(".loading").empty();
+							$(".loading").text("已全部加载完");
+						}
+					}
+				});
+			}
+		});
+		//显示加载的数据
+		function showHtml(datas,show_content_div_num){
+			$(datas).each(function () {
+				var status = $(this).attr('type');
+				if($(this).attr('img') == "" || $(this).attr('img') == null){
+					var image =' __IMG__/head.png';
+				}else{
+					var image =$(this).attr('img');
+				}
+				var id = '/Wx/ClaimHotel/edit/id/'+$(this).attr("id");
+				var html  ="<a href="+id+">\
+						<li class='layoutlr renling_item hc' data='"+$(this).attr("id")+"'>\
+		        	<div class='left'>\
+		        		<div class='goodsimg'>\
+		        			<img src='"+image+"'  >\
+		        		</div>\
+		        	</div>\
+		        	<div class='right'>\
+		        		<ul class='showdata'>\
+							<li><i class='icon w_0007_07 w_07_02'></i><span>酒店名称："+$(this).attr("name")+"</span></li>\
+							<li><i class='icon w_0007_07 w_07_03'></i>酒店星级："+$(this).attr("type_name")+"</li>\
+						</ul>\
+		        	</div>\
+	        	</li>\
+				</a>\	";
+				$(".renling").append(html);
+			});
+		}
+	</script>
+</block>

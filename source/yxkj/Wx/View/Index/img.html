@@ -1,0 +1,103 @@
+<extend name="Public:index"/>
+
+<block name="main">
+	<!-- 主体内容 开始 -->
+	<div class="main">
+		<!-- header 开始 -->
+		<div class="header">
+			<div class="left"><i class="icon"></i>Myself</div>
+			<div class="center">首页</div>
+		</div>
+		<!-- header 结束 -->
+	<ul class="index_item">
+
+	<div class="upimg">上传</div>
+	<div><img src="" class="img"></div>
+
+	<button type="button" class="rishscan">扫一扫</button>
+</ul>
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+
+<block name="js">
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript">
+/* 微信上传图片所需 start */
+wx.config({
+    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: '{$appId}', // 必填，公众号的唯一标识
+    timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+    nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+    signature: '{$signature}',// 必填，签名，见附录1
+    jsApiList: ['chooseImage','uploadImage','scanQRCode'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});
+
+wx.ready(function(){
+    wx.error(function(res){
+	    alert(res.errMsg);
+	    return false;
+	});
+
+	wx.checkJsApi({
+	    jsApiList: ['chooseImage','uploadImage','scanQRCode'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+	    success: function(res) {
+	        // 以键值对的形式返回，可用的api值true，不可用为false
+	        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+	    }
+	});
+});
+
+$(".upimg").click(function(){
+	//选择图片
+	wx.chooseImage({
+	    count: 1, // 默认9
+	    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+	    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+	    success: function (res) {
+			var localIds = res.localIds;
+	        // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+	        //$(".img").attr("src",localIds);
+	        //上传图片
+	        wx.uploadImage({
+			    localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+			    isShowProgressTips: 1, // 默认为1，显示进度提示
+			    success: function (res) {
+			        var serverId = res.serverId; // 返回图片的服务器端ID
+			        //上传的图片保存到本地服务器
+			        $.post("{:U('saveWXFile')}",{img_dir:'保存在服务器中的地址',media_id:serverId},function(res_data){
+			        	if(typeof res_data != "object"){
+					        var res_data = eval("("+res_data+")");
+					    }
+					    $(".img").attr("src",res_data.data);
+			        })
+			    }
+			});
+	    }
+	});	
+})
+
+/* 微信上传图片所需 end */
+
+$(".rishscan").click(function(){
+	var url = "{:U('oper',array('id'=>$id,'status'=>$estatus))}";
+	wx.scanQRCode({
+	    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+	    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+	    success: function (res) {
+	    	var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+	    	$.post("{:U('get_mac')}",{rishscan:encodeURI(result)},function(re_data){
+	    		if(typeof re_data != "object"){
+			        var re_data = eval("("+re_data+")");
+			    }
+			    if(re_data.status){
+			    	window.location.href = url+"?sno="+re_data.data;
+			    }else{
+			    	alert(re_data.info);
+			    }
+	    	})
+		}
+	});
+});
+</script>
+</block>

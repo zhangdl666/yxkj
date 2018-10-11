@@ -1,0 +1,500 @@
+<extend name="Public:index"/>
+<block name="title">
+	<title>结算信息</title>
+</block>
+<block name="main">
+	<style type="text/css">
+		.jiesuanxinxi .show_data_warp:first-child .left {
+			width: 5em;
+		}
+		.uploadimg-container .imgwrap img {
+			width: 100%;
+			height: 62px;
+		}
+		.uploadimg-container .btn-upload {
+			position: relative;
+			border: 1px solid #dedede;
+			border-radius: 6px;
+			width: 80px;
+			height: 62px;
+		}
+		dl .PlayMoneyer{
+			/*当图片出现一张时，上传图片的图标自动换行了*/
+			/*overflow: hidden;*/
+		}
+		.jiesuanxinxi_content{
+			margin-bottom: 0.2rem;
+		}
+		.layoutlr {
+			 line-height: 0.5rem;
+			height: 0.5rem;
+
+		}
+		.js_title{
+			width: 100%;
+			background-color: #000;
+			opacity: 0.2;
+			padding: 0.2rem;
+			height: 0.72rem;
+			line-height: 0.72rem;
+			left: 0!important;
+		}
+		.show_data .data_item .left, .show_data .data_item .right {
+			line-height: 0.4rem;
+		}
+		.uploadimg-container .imgwrap {
+			margin: 13px 6px 0 6px;
+		}
+		.maxbtn {
+			width:90%;
+			margin: 0 5% 0.2rem 5%;
+		}
+		input{
+			font-size: 0.3rem;
+			color: #666;
+
+			border: 0.01rem solid #dedede;padding: 0.15rem;border-radius: 5px;    margin-top: -0.15rem;;
+		}
+	</style>
+	<!-- 主体内容 开始 -->
+	<div class="main">
+
+		 <!--header 开始-->
+		<div class="header">
+			<div class="left"><a href="{:U('index')}"><i class="icon w_0000_00 w_00_08"></i>返回</a></div>
+		</div>
+		<!-- header 结束 -->
+
+		<div class="main_body jiesuanxinxi">
+			<div class="swiper-container banner_container">
+				<div class="swiper-wrapper">
+					<if condition="$data['hotel_img'] eq ''">
+						<div class="swiper-slide"><img src="__IMG__/head.png"></div>
+							<else/>
+							<volist name="data['arr_hotel']" id="val">
+								<div class="swiper-slide"><img src="{$val}"></div>
+							</volist>
+					</if>
+
+
+				</div>
+				<!-- 如果需要分页器 -->
+				<div class="swiper-pagination"></div>
+				<div class="jiusianinfo js_title" >
+					<span class="name">{$data.name}</span>
+					<span class="levl">{$data.type_name}</span>
+				</div>
+			</div>
+				<!-- 如果需要分页器 -->
+				<div class="jiesuanxinxi_content" >
+					<div class="show_data_warp">
+						<ul class="show_data">
+							<li class="layoutlr data_item hetongmingcheng">
+								<div class="left">合同名称:</div>
+								<div class="right">{$data.contract_name}
+									<if condition="$data['mtime'] neq 0">
+									<i class="icon w_0008_08 w_08_03"></i>
+										<else/>
+								</if>
+								</div>
+							</li>
+							<li class="layoutlr data_item">
+								<div class="left">合同编号:</div>
+								<div class="right">{$data.contract_sno}</div>
+							</li>
+							<li class="layoutlr data_item">
+								<div class="left">结算账期:</div>
+								<div class="right">{$data.etime}</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			<form action="{:U('returnedit')}">
+			<div class="jiesuanxinxi_content" style="background-color: #fff">
+				<div class="show_data_warp">
+					<ul class="show_data">
+					<li class="layoutlr data_item">
+						<div class="left">结算模式:</div>
+						<div class="right">
+							<div class="input_container">
+								<if condition="$data['type'] eq 1">
+									共享({$data.type_price}元/天次)
+									<else />
+									租赁({$data.type_price}元/天)
+								</if>
+							</div>
+						</div>
+					</li>
+					<li class="layoutlr data_item">
+						<div class="left" style="width: 7em;">本期使用天次:</div>
+						<div class="right">
+							<div class="input_container">
+								<span class="selected">{$data.num}天</span>
+							</div>
+						</div>
+					</li>
+						<li class="layoutlr data_item">
+							<div class="left" style="width: 6.6em">应回款金额:</div>
+							<div class="right">
+								<div class="input_container">
+									<input type="hidden" name="rprice" value="{$data.rprice}">
+									<span class="selected">{$data.rprice}元</span>
+								</div>
+							</div>
+						</li>
+					<li class="layoutlr data_item">
+						<div class="left" style="width: 6.6em">应回款日期:</div>
+						<div class="right">
+							<div class="input_container">
+								<span class="selected">{$data.rtime|date='Y-m-d',###}</span>
+							</div>
+						</div>
+					</li>
+					<li class="layoutlr data_item">
+						<div class="left" style="width: 6em">逾期天数：</div>
+						<div class="right">
+							<div class="input_container">
+								<span class="selected">{$data.mtime}天</span>
+							</div>
+						</div>
+					</li>
+					<li class="layoutlr data_item">
+						<div class="left" style="width: 4.5em">滞纳金：</div>
+						<div class="right">
+							<div class="input_container">
+								<span class="selected">{$data.mprice}元</span>
+							</div>
+						</div>
+					</li>
+					<if condition="$type eq 2 || $type eq 3">
+						<if  condition="$type eq 2 &&  $data['user_role'] == 10" >
+							<li class="layoutlr data_item">
+								<div class="left" style="width: 7.5em;">实际回款金额：</div>
+								<div class="right">
+									<input type="text" name="price" value="{$data.price}">
+								</div>
+							</li>
+							<else />
+							<li class="layoutlr data_item">
+								<div class="left" style="width: 7.5em;">实际回款金额：</div>
+								<div class="right">
+									<div class="input_container">
+										<input type="hidden" name="price" value="{$data.price}">
+										<span class="selected">{$data.price}元</span>
+									</div>
+								</div>
+							</li>
+						</if>
+						<elseif condition="$type eq 1 && $data['user_role'] == 10"/>
+						<li class="layoutlr data_item">
+							<div class="left" style="width: 7.5em;">实际回款金额：</div>
+							<div class="right">
+								<input type="text"  name="price" value="{$data.price}">
+							</div>
+						</li>
+						<else />
+					</if>
+
+					<if condition="$type eq 2 || $type eq 3">
+						<if condition="$type eq 2 && $data['user_role'] eq 10">
+							<li class="layouttb data_item">
+								<div class="top" style="width: 7em;">上传打款凭证:</div>
+
+							</li>
+							<li class="layoutlr data_item">
+								<div class="bottom">
+									<dl class="uploadimg-container clearfix" >
+										<div  class="imgwrap-container PlayMoneyer">
+											<volist name="data.arr_giv" id="vol">
+												<div class="imgwrap">
+													<img class="img-rounded" src="{$vol}">
+													<ul class="imgoprate returns">
+														<li data-oprate="toleft"><i class="icon"></i></li>
+														<li data-oprate="detele"><i class="icon"></i></li>
+														<li data-oprate="toright"><i class="icon"></i></li>
+													</ul>
+												</div>
+											</volist>
+										</div>
+										<dt>
+										<div class="item btn-upload" id="PlayMoney" v-show="uploadImgs.length==0"></div>
+										</dt>
+									</dl>
+									<input type="hidden" name="give_img" value="{$data.give_img}" class="img_val">
+								</div>
+							</li>
+							<else />
+							<li class="layoutlr data_item">
+								<div class="left" >打款凭证：</div>
+								<!--<div class="bottom">-->
+									<!--<dl class="uploadimg-container clearfix">-->
+										<!--<dd class="imgwrap-container">-->
+											<!--<volist name="data.arr_giv" id="vol">-->
+												<!--<div class="imgwrap">-->
+													<!--<img class="img-rounded" src="{$vol}">-->
+												<!--</div>-->
+											<!--</volist>-->
+										<!--</dd>-->
+									<!--</dl>-->
+								<!--</div>-->
+							</li>
+							<li class="layoutlr data_item" style="height: 0.3rem;line-height: 0.4rem">
+								<div class="bottom">
+									<dl class="uploadimg-container clearfix">
+										<dd class="imgwrap-container">
+											<volist name="data.arr_giv" id="vol">
+												<div class="imgwrap">
+													<img class="img-rounded" src="{$vol}">
+												</div>
+											</volist>
+											</notempty>
+										</dd>
+									</dl>
+								</div>
+							</li>
+						</if>
+						<elseif condition="$type eq 1 && $data['user_role'] eq 10 "/>
+						<li class="layouttb data_item">
+							<div class="top" style="width: 7em;">上传打款凭证:</div>
+						</li>
+						<li class="layoutlr data_item">
+							<div class="bottom">
+								<dl class="uploadimg-container clearfix" >
+									<div  class="imgwrap-container PlayMoneyer">
+
+									</div>
+									<dt>
+									<div class="item btn-upload" id="PlayMoney" v-show="uploadImgs.length==0"></div>
+									</dt>
+								</dl>
+								<input type="hidden" name="give_img" value="{$data.give_img}" class="img_val">
+							</div>
+						</li>
+						<else />
+					</if>
+					<if condition="$type eq 2 && $data['user_role'] eq 6">
+						<li class="layoutlr data_item">
+							<div class="left" style="width: 7em;">上传到账凭证：</div>
+							</li>
+						<li class="layoutlr data_item">
+							<div class="bottom">
+								<dl class="uploadimg-container clearfix">
+									<div class="imgwrap-container Arrivaler">
+
+									</div>
+									<dt>
+									<div class="item btn-upload" id="Arrival"></div>
+									</dt>
+								</dl>
+								<input type="hidden" name="Arrival" value="{$data.get_img}" class="return">
+							</div>
+						</li>
+
+						<elseif condition="$type eq 3"/>
+						<li class="layoutlr data_item">
+							<div class="left">到账凭证：</div>
+						</li>
+						<li class="layoutlr data_item" style="height: 0.3rem;line-height: 0.4rem">
+							<div class="bottom">
+								<dl class="uploadimg-container clearfix">
+									<dd class="imgwrap-container">
+										<volist name="data.arr_git" id="vol">
+											<div class="imgwrap">
+												<img class="img-rounded" src="{$vol}">
+											</div>
+										</volist>
+										</notempty>
+									</dd>
+								</dl>
+							</div>
+						</li>
+						<else/>
+					</if>
+					<input type="hidden" name="id" value="{$data.id}">
+				</ul>
+				</div ><input type="hidden" name="role" value="{$data['user_role']}">
+				<if condition="$type eq 1  && $data['user_role'] eq 10">
+					<button type="button" class="btn maxbtn ajax-post">提交</button>
+					<elseif condition="$type eq 2 && $data['user_role'] eq 6"/>
+					<button type="button" class="btn maxbtn ajax-posts">提交</button>
+					<else/>
+					<if condition="$type eq 2  && $data['user_role'] eq 10">
+						<button type="button" class="btn maxbtn ajax-post">提交</button>
+					</if>
+				</if>
+		</div>
+
+			</form>
+	</div>
+	<!-- 主体内容 结束 -->
+</block>
+<block name="js">
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script type="text/javascript">
+		/* 微信上传图片所需 start */
+		wx.config({
+			debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			appId: '{$appId}', // 必填，公众号的唯一标识
+			timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+			nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+			signature: '{$signature}',// 必填，签名，见附录1
+			jsApiList: ['chooseImage','uploadImage','scanQRCode'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		});
+
+		wx.ready(function(){
+			wx.error(function(res){
+				alert(res.errMsg);
+				return false;
+			});
+
+			wx.checkJsApi({
+				jsApiList: ['chooseImage','uploadImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+				success: function(res) {
+					// 以键值对的形式返回，可用的api值true，不可用为false
+					// 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+				}
+			});
+		});
+		var role = $('input[name="role"]').val();
+		var rprice =parseInt($('input[name="rprice"]').val());
+		var price =parseInt($('input[name="price"]').val());
+		$('.ajax-posts').click(function () {
+			var form = $(this).closest('form');//如果找到form,说明提交的是表单
+			var url = '/Wx/ReturnMoney/returnconfim';
+			var param = form.length==0?$('.id').serialize():form.serialize();  //获取form上的所有请求参数
+			if(role == 6){
+				if(rprice > price){
+					layer.open({
+						content:'该酒店实际回款金额低于应回款金额，是否确认结算？'
+						,btn:['确定','取消']
+						,yes:function () {
+							//>>2.1发送post请求
+							$.post(url, param, function (data) {
+								//>>2.使用layer提示
+								showLayer(data);
+							},'json');
+							return false;//取消默认提交
+						}
+					})
+				}else{
+					$.post(url, param, function (data) {
+						//>>2.使用layer提示
+						showLayer(data);
+					},'json');
+					return false;//取消默认提交
+				}
+			}
+			// alert(params);return false;
+
+		})
+		$("#PlayMoney").click(function(){
+			//选择图片
+			wx.chooseImage({
+				count: 1, // 默认9
+				sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+				sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+				success: function (res) {
+					var localIds = res.localIds;
+					//上传图片
+					wx.uploadImage({
+						localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+						isShowProgressTips: 1, // 默认为1，显示进度提示
+						success: function (res) {
+							var serverId = res.serverId; // 返回图片的服务器端ID
+							//上传的图片保存到本地服务器
+							$.post("{:U('saveWXFile')}",{img_dir:'ReturnMoney',media_id:serverId},function(res_data){
+								if(typeof res_data != "object"){
+									var res_data = eval("("+res_data+")");
+								}
+								//打款凭证
+								$(".PlayMoneyer").append("<div class='imgwrap'>\
+                              <img class='img-rounded' src='"+res_data.data+"'>\
+                              <ul class='imgoprate '>\
+                                <li data-oprate='toleft'><i class='icon'></i></li>\
+                                <li data-oprate='detele'><i class='icon'></i></li>\
+                                <li data-oprate='toright'><i class='icon'></i></li>\
+                              </ul>\
+                            </div>");
+								count_img();
+							})
+						}
+					});
+				}
+			});
+		});
+		$("#Arrival").click(function(){
+			//选择图片
+			wx.chooseImage({
+				count: 1, // 默认9
+				sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+				sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+				success: function (res) {
+					var localIds = res.localIds;
+					//上传图片
+					wx.uploadImage({
+						localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+						isShowProgressTips: 1, // 默认为1，显示进度提示
+						success: function (res) {
+							var serverId = res.serverId; // 返回图片的服务器端ID
+							//上传的图片保存到本地服务器
+							$.post("{:U('saveWXFile')}",{img_dir:'ReturnMoney',media_id:serverId},function(res_data){
+								if(typeof res_data != "object"){
+									var res_data = eval("("+res_data+")");
+								}
+								$(".Arrivaler").append("<div class='imgwrap'>\
+                              <img class='img-rounded' src='"+res_data.data+"'>\
+                              <ul class='imgoprate '>\
+                                <li data-oprate='toleft'><i class='icon'></i></li>\
+                                <li data-oprate='detele'><i class='icon'></i></li>\
+                                <li data-oprate='toright'><i class='icon'></i></li>\
+                              </ul>\
+                            </div>");
+								inmoney();
+							})
+						}
+					});
+				}
+			});
+		});
+		/* 微信上传图片所需 end */
+		//计算图片
+		function count_img(){
+			var img_val = "";
+			$(".PlayMoneyer div").each(function(i){
+				if(i != 0){
+					img_val += ",";
+				}
+				img_val += $(this).find("img").attr("src");
+			})
+			$(".img_val").val(img_val);
+		}
+		function inmoney() {
+			var img_val = "";
+			$(".Arrivaler div").each(function(i){
+				if(i != 0){
+					img_val += ",";
+				}
+				img_val += $(this).find("img").attr("src");
+			})
+			$(".return").val(img_val);
+		}
+		/*图片移动、删除*/
+		$('.imgwrap-container').on('click', '[data-oprate]', function() {
+			var _imgwrap = $(this).closest('.imgwrap');
+			switch($(this).attr('data-oprate')) {
+				case 'toleft':
+					_imgwrap.prev().before(_imgwrap);
+					//console.log('左边', $(this).attr('data-oprate'))
+					break;
+				case 'detele':
+					_imgwrap.remove();
+					inmoney();count_img();
+					break;
+				case 'toright':
+					_imgwrap.next().after(_imgwrap);
+					break;
+			}
+			count_img();
+		});
+	</script>
+</block>

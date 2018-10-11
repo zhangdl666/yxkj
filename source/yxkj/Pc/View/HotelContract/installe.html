@@ -1,0 +1,308 @@
+<extend name="Public:index"/>
+<block name="head">
+  <title>合同管理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置：
+      <li><a>合同管理</a></li>
+      <li class="on">安装信息</li>
+    </ol>
+</block>
+<block name="css">
+  <style type="text/css">
+    .gezi-container .gezi-group .btn {
+      margin: 10px;
+      height: 42px;
+      width: 90px;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+    }
+    .btn_icon{
+      width: 26px;
+      height: 19px;
+      display: none;
+      float: right;
+    }
+
+    .max_btn_icon{
+      width: 37px;
+      height: 27px;
+      display: none;
+      margin: 10px auto;
+    }
+    .btn_icon_bottom{
+      background: url("__IMG__/wx_kq_bottom_bottom.png");
+      background-size: 100%;
+    }
+    .btn_icon_top{
+      background: url("__IMG__/wx_kq_bottom_top.png");
+      background-size: 100%;
+    }
+    .pc_kq_height{
+      height: 68px;
+      overflow: hidden;
+    }
+    input[type="text"], .table-form select, .table-form .btn-group .btn, input[type="password"] {
+      border: 0px;
+    }
+    input{border: 0px;}
+    .subnav > li {
+      width: 116px;
+      padding: 0px 24px;
+    }
+    .subnav > li {
+      width: 116px;
+      padding: 0px 24px;
+    }
+    .pitch_on{
+      background: url("__IMG__/pitch_on.png") no-repeat;
+      background-position: right bottom;
+      color: #4e4e4e!important;
+    }
+  </style>
+</block>
+<block name="main">
+  <div id="main">
+      <!-- 导航 开始 -->
+      <ul class="clearfix subnav hetongnav">
+        <li><a><i class="icon"></i><span class="cur_title">安装信息</span></a></li>
+        <li><a rel="link" href="{:U('read',array('id'=>$hcid))}">基础信息</a><span class="nav_border"></span></li>
+        <li class="on"><a rel="link" class="active" href="{:U('installe',array('id'=>$hcid))}">安装信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('return_money',array('id'=>$hcid))}">结算信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('upkeep',array('id'=>$hcid))}">保养信息</a><span class="nav_border"></span></li>
+        <li><a rel="link" href="{:U('maintain',array('id'=>$hcid))}">维修信息</a></li>
+      </ul>
+      <!-- 导航 结束 -->
+
+      <!-- 内容 开始 -->
+      <div class="subpage hetongxinxi02">
+          <form id="">
+            <div class="subpage-block">
+              <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th>工单编号：</th>
+                    <td>{$sno}</td>
+                  </tr>
+                  <tr>
+                    <th>安装进度：</th>
+                    <td>
+                      <div class="table-form-text">
+                        <div class="progress-container progress03"><div class="progress" data-width="{$num_ratio}%" style="width: {$num_ratio}%;"></div></div>
+                        <div>{$now_nume}/{$nume}</div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>安装状态：</th>
+                    <td><input type="text" name="" value="<if condition="$status eq 1">待分配<elseif condition="$status eq 2"/>待安装<elseif condition="$status eq 3"/>待确认<else/>已完成</if>" readonly><span class="errortips"></span></td>
+                  </tr>
+                  <tr>
+                    <th>预计安装时间：</th>
+                    <td>
+                      <input type="text" class="editdate" name="stime" value="{$rsinstall|date='Y-m-d',###}" readonly>
+                      &emsp;至&emsp;
+                      <input type="text" class="editdate" name="etime" value="{$reinstall|date='Y-m-d',###}" readonly>
+                    </td>
+                  </tr>
+                  <notempty name="stime">
+                  <tr>
+                    <th>实际安装时间：</th>
+                    <td><input type="text" name="" value="{$stime|date='Y-m-d',###}" readonly><span class="errortips"></span></td>
+                  </tr>
+                  <notempty name="etime">
+                  <tr>
+                    <th>实际结束时间：</th>
+                    <td><input type="text" name="" value="{$etime|date='Y-m-d',###}" readonly><span class="errortips"></span></td>
+                  </tr>
+                  <tr>
+                    <th>安装确认单：</th>
+                    <td>
+                      <dl class="uploadimg-container">
+                        <dt>
+                          <volist name="imgs" id="imgi">
+                          <div class="imgwrap">
+                              <img class="img-rounded" src="{$imgi}">
+                          </div>
+                          </volist>
+                        </dt>
+                      </dl>
+                    </td>
+                  </tr>
+                  </notempty>
+                </notempty>
+                  <notempty name="u_name">
+                  <tr>
+                    <th>安装负责人：</th>
+                    <td><input type="text" name="" value="{$u_name}" readonly><span class="errortips"></span></td>
+                  </tr>
+                  <tr>
+                    <th>安装负责人电话：</th>
+                    <td><input type="text" name="" value="{$mobile}" readonly><span class="errortips"></span></td>
+                  </tr>
+
+                  <tr>
+                    <th>安装详细：</th>
+                    <td>
+                      <dl class="gezi-container">
+                        <dt class="gezi-title">
+                          <div class="checkbox-container gezi-type1" data-type="checkbox">
+                              <i class="icon icon01 i_radio"></i>
+                              <span class="checkbox_txt">已安装</span>
+                          </div>
+                          <div class="checkbox-container gezi-type2" data-type="checkbox">
+                              <i class="icon icon01 i_radio"></i>
+                              <span class="checkbox_txt">未安装</span>
+                          </div>
+                        <i class="btn_icon btn_kq_icon btn_icon_bottom"></i>
+                        </dt>
+                        <dd  class="gezi-group ">
+                          <div id="kq_height" class="pc_kq_height">
+                            <volist name="room_arr" id="room">
+                              <button type="button" class="rooms btn <eq name="room.open" value="1">on</eq>" data="{$room.id}">{$room.room_sno}</button>
+                            </volist>
+                          </div>
+                <div style="margin-top:20px;display:none;" class="room_info">
+                <table class="table table-bordered table-form">
+                <tbody>
+                  <tr>
+                    <th>设备ID：</th>
+                    <td><span class="table-form-text equipment"></span></td>
+                  </tr>
+                  <tr>
+                    <th>房间类型：</th>
+                    <td><span class="table-form-text rtype"></span></td>
+                  </tr>
+                  <tr>
+                    <th>楼层：</th>
+                    <td><span class="table-form-text floor"></span></td>
+                  </tr>
+                  <tr>
+                    <th>是否有窗：</th>
+                    <td><span class="table-form-text iswindown"></span></td>
+                  </tr>
+                  <tr>
+                    <th>朝向：</th>
+                    <td><span class="table-form-text orienta"></span></td>
+                  </tr>
+                  <tr>
+                    <th>安装位置：</th>
+                    <td><span class="table-form-text place"></span></td>
+                  </tr>
+                  <tr>
+                    <th>中央空调：</th>
+                    <td><span class="table-form-text air"></span></td>
+                  </tr>
+                  <tr>
+                    <th>净化器类型：</th>
+                    <td><span class="table-form-text e1_type"></span></td>
+                  </tr>
+                  <tr>
+                    <th>监控器类型：</th>
+                    <td><span class="table-form-text e2_type"></span></td>
+                  </tr>
+                  <tr>
+                    <th>安装时间：</th>
+                    <td><span class="table-form-text installtime"></span></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+                        </dd>
+                        <dd><i class="max_btn_icon btn_kq_icon btn_icon_bottom"></i></dd>
+                      </dl>
+                    </td>
+                  </tr>
+
+                  <if condition="!empty($roll_back)">
+                      <volist name="roll_back" id="rback">
+                        <tr style="color:red;">
+                          <th>打回原因：</th>
+                          <td><span class="table-form-text">{$rback.content}</span></td>
+                        </tr>
+                      </volist>
+                  </if>
+
+                </tbody>
+              </table>
+            </div>
+          </form>
+      </div>
+      <!-- 内容 结束 -->
+    </div>
+    </block>
+<block name="js">
+<script type="text/javascript">
+  $(document).ready(function(){
+    /***房间数量超出一排显示下拉开关***/
+    function but_show(){
+      var kg_btn = $("#kq_height");
+      var btn_icon =$(".btn_kq_icon");
+      var btn_length = kg_btn.children(".btn").length;
+      var btn_num =parseInt(kg_btn.width() / 110);
+      if(btn_length > btn_num){
+        btn_icon.addClass("btn_block");
+        btn_icon.removeClass("btn_none");
+      }else {
+        btn_icon.addClass("btn_none");
+        btn_icon.removeClass("btn_block");
+      }
+    }
+    but_show();
+    /***********浏览器窗口宽度发生变化时执行************/
+    $(window).resize(function() {
+      but_show();
+
+    });
+
+    /********房间下拉图标和向上关闭图标切换********/
+    $(function(){
+      var on_num = 0;
+      $(".btn_kq_icon").click(function(){
+        var this_icon =  $(".btn_kq_icon");
+        if(on_num == 0){
+          this_icon.removeClass("btn_icon_bottom");
+          $("#kq_height").removeClass("pc_kq_height");
+          this_icon.addClass("btn_icon_top");
+          on_num = 1;
+        }else if(on_num == 1){
+          $("#kq_height").addClass("pc_kq_height");
+          this_icon.addClass("btn_icon_bottom");
+          this_icon.removeClass("btn_icon_top");
+          on_num = 0;
+        }
+      })
+    });
+  });
+
+$(".rooms").click(function(){
+  $(".rooms").removeClass("pitch_on");
+
+ //是否已经安装  hasClass检查被选元素是否包含指定的 class
+ if($(this).hasClass("on")){
+   $(this).addClass("pitch_on");
+  var id = $(this).attr("data");
+  $.post("{:U('get_install_room_info')}",{id:id},function(re_data){
+    re_data = eval("("+re_data+")");
+    $(".equipment").text(re_data.data.equipment_sno);
+    $(".rtype").text(re_data.data.rt_name);
+    $(".floor").text(re_data.data.floor);
+    $(".iswindown").text(re_data.data.iswindow);
+    $(".orienta").text(re_data.data.orienta);
+    $(".place").text(re_data.data.place);
+    $(".air").text(re_data.data.air_name);
+    $(".e1_type").text(re_data.data.e1_name);
+    $(".e2_type").text(re_data.data.e2_name);
+    $(".installtime").text(re_data.data.install_time);
+    $(".room_info").show();
+  });
+
+ }else{
+  $(".room_info").hide();
+ }
+})
+</script>
+</block>

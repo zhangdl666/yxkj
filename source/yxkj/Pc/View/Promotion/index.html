@@ -1,0 +1,77 @@
+<extend name="Public:index"/>
+<block name="head">
+	<title>促销管理</title>
+</block>
+
+<block name="top">
+    <ol class="breadcrumb">
+      当前的位置 ：
+      <li><a>酒店维护人员 </a></li>
+      <li class="on">促销管理</li>
+    </ol>
+</block>
+
+<block name="main">
+  <div id="main" class="bgfff">
+    <div class="panel panel-default table-datawrap">
+      <div class="panel-heading">
+        <!-- Single button -->
+        <form class="clearfix searchbar">
+          <div class="col">
+            <if condition="$user eq  13 && $count eq 0">
+            <button type="button" class="btn btn-warning" onclick="now_href('{:U('add')}')">新增</button>
+              </if>
+          </div>
+        </form>
+    </div>
+
+      <div class="panel-body">
+        <table class="table table-condensed table-data">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>信息编号</th>
+              <th>促销信息名称</th>
+              <th>促销状态</th>
+              <th>信息提交时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          <notempty name="items">
+            <volist name="items" id="item">
+            <tr>
+              <td>{$key+1}</td>
+              <td>{$item.sno}</td>
+              <td>{$item.title}</td>
+              <td><if condition="$item.status eq '1'">
+                上架
+                <else/>
+                下架
+              </if></td>
+              <td>{$item.ctime|date='Y-m-d H:i:s',###}</td>
+              <td class="orprate">
+                <a class="text-warning"  href="{:U('edit',array('id'=>$item['id']))}">编辑</a>
+                丨 <a class="text-warning" href="{:U('look',array('id'=>$item['id']))}">查看</a>
+                丨 <a class="text-warning ajax-oper-get" href="{:U('looked',array('id'=>$item['id']))}">删除</a></td>
+            </tr>
+            </volist>
+            <else/>
+            <tr><td colspan="7">暂无数据</td></tr>
+            </notempty>
+          </tbody>
+        </table>
+        <div class="pagination">
+          {$pageHtml}
+        </div>
+      </div>
+    </div>
+</block>
+<block name="js">
+
+<script type="text/javascript">
+  function now_href(url){
+    window.location.href = url;
+  }
+</script>
+</block>
